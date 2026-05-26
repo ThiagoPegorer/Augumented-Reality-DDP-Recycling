@@ -1,0 +1,56 @@
+{
+  "product_id": "vcu_001",
+  "identity": {
+    "manufacturer": "Generic Auto Electronics GmbH",
+    "model": "VCU-G1",
+    "serial_number": "VCU-2026-001",
+    "production_date": "2026-04-15",
+    "country_of_origin": "DE"
+  },
+  "components": [
+    {
+      "id": "housing_top",
+      "name": "Upper Housing",
+      "material": "PETG",
+      "weight_g": 45.0,
+      "recycling_code": "1",
+      "disassembly_order": 1,
+      "hazardous": false
+    },
+    {
+      "id": "pcb",
+      "name": "Main PCB",
+      "material": "FR-4",
+      "weight_g": 22.0,
+      "recycling_code": "WEEE",
+      "disassembly_order": 2,
+      "hazardous": false
+    },
+    {
+      "id": "housing_bottom",
+      "name": "Lower Housing",
+      "material": "PETG",
+      "weight_g": 50.0,
+      "recycling_code": "1",
+      "disassembly_order": 3,
+      "hazardous": false
+    }
+  ],
+  "environmental": {
+    "co2_footprint_kg": null,
+    "scenarios": [
+      {"id": 1, "name": "No recycling baseline", "value_kg": null},
+      {"id": 2, "name": "Current recycling methods", "value_kg": null},
+      {"id": 3, "name": "AR-DPP prototype (estimate)", "value_kg": null},
+      {"id": 4, "name": "Full component reuse (estimate)", "value_kg": null}
+    ]
+  },
+  "disassembly": {
+    "total_steps": 3,
+    "estimated_time_min": 5
+  },
+  "end_of_life": {
+    "recycling_route": "WEEE collection",
+    "hazardous_warnings": []
+  }
+}

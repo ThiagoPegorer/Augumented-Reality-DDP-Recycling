@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thesis.local/schemas/dpp.json",
+  "title": "Digital Product Passport (VCU)",
+  "description": "DPP schema for Vehicle Control Unit. Aligned with EU DPP draft direction (CIRPASS).",
+  "type": "object",
+  "required": ["product_id", "identity", "components", "environmental", "disassembly", "end_of_life"],
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "Unique product identifier, also encoded in the QR code."
+    },
+    "identity": {
+      "type": "object",
+      "required": ["manufacturer", "model", "serial_number", "production_date", "country_of_origin"],
+      "properties": {
+        "manufacturer": { "type": "string" },
+        "model": { "type": "string" },
+        "serial_number": { "type": "string" },
+        "production_date": { "type": "string", "format": "date" },
+        "country_of_origin": { "type": "string", "minLength": 2, "maxLength": 2 }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "material", "weight_g", "recycling_code", "disassembly_order", "hazardous"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "material": { "type": "string" },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "recycling_code": { "type": "string" },
+          "disassembly_order": { "type": "integer", "minimum": 1 },
+          "hazardous": { "type": "boolean" }
+        }
+      }
+    },
+    "environmental": {
+      "type": "object",
+      "properties": {
+        "co2_footprint_kg": { "type": ["number", "null"] },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "integer" },
+              "name": { "type": "string" },
+              "value_kg": { "type": ["number", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "disassembly": {
+      "type": "object",
+      "required": ["total_steps", "estimated_time_min"],
+      "properties": {
+        "total_steps": { "type": "integer", "minimum": 1 },
+        "estimated_time_min": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "end_of_life": {
+      "type": "object",
+      "required": ["recycling_route"],
+      "properties": {
+        "recycling_route": { "type": "string" },
+        "hazardous_warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
