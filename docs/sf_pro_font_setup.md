@@ -25,7 +25,7 @@ The DPP UI spec (`DPP_UI_Specs/00 §3`) calls for **SF Pro** — `SF Pro Display
    - Click **Generate Font Atlas** → **Save** as `Assets/Fonts/SF Pro Display SDF.asset`
 3. Repeat for the Bold file → save as `Assets/Fonts/SF Pro Display Bold SDF.asset`.
 
-Naming matters only in one way: the builder treats any TMP font asset in `Assets/Fonts/` whose filename contains **"Bold"** as the bold face, and the first one without it as the regular face.
+Naming matters only in one way: the builder scans `Assets/Fonts/` **and** `Assets/Font/`, ignores anything containing "Italic", treats filenames containing **"Bold"** as the bold face and the rest as regular, and prefers **"Display"** cuts over "Text" cuts.
 
 ## 3. Apply
 

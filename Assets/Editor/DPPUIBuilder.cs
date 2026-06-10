@@ -320,17 +320,28 @@ namespace DPP.EditorTools
         {
             _fontRegular = _fontBold = null;
 
-            if (AssetDatabase.IsValidFolder("Assets/Fonts"))
+            var fontFolders = new System.Collections.Generic.List<string>();
+            if (AssetDatabase.IsValidFolder("Assets/Fonts")) fontFolders.Add("Assets/Fonts");
+            if (AssetDatabase.IsValidFolder("Assets/Font"))  fontFolders.Add("Assets/Font");
+
+            if (fontFolders.Count > 0)
             {
-                foreach (string guid in AssetDatabase.FindAssets("t:TMP_FontAsset", new[] { "Assets/Fonts" }))
+                foreach (string guid in AssetDatabase.FindAssets("t:TMP_FontAsset", fontFolders.ToArray()))
                 {
                     string path = AssetDatabase.GUIDToAssetPath(guid);
                     var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(path);
                     if (font == null) continue;
 
-                    bool isBold = path.ToLowerInvariant().Contains("bold");
-                    if (isBold) { if (_fontBold == null) _fontBold = font; }
-                    else        { if (_fontRegular == null) _fontRegular = font; }
+                    string lower = path.ToLowerInvariant();
+                    if (lower.Contains("italic")) continue; // UI uses upright only
+
+                    bool isBold = lower.Contains("bold");
+                    bool isDisplay = lower.Contains("display");
+
+                    // Prefer "Display" cuts (panel text is mostly >=13 px at AR scale);
+                    // a Display asset replaces a previously-found Text asset.
+                    if (isBold) { if (_fontBold == null || isDisplay) _fontBold = font; }
+                    else        { if (_fontRegular == null || isDisplay) _fontRegular = font; }
                 }
             }
 

@@ -78,10 +78,11 @@ backend/**/__pycache__/
 
 # --- Fonts: SF Pro source files (Apple license — keep local; commit only
 #     the generated TMP "... SDF.asset" files, see docs/sf_pro_font_setup.md) ---
-[Aa]ssets/Fonts/*.otf
-[Aa]ssets/Fonts/*.otf.meta
-[Aa]ssets/Fonts/*.ttf
-[Aa]ssets/Fonts/*.ttf.meta
+#     Covers both Assets/Fonts and Assets/Font spellings.
+[Aa]ssets/Font*/*.otf
+[Aa]ssets/Font*/*.otf.meta
+[Aa]ssets/Font*/*.ttf
+[Aa]ssets/Font*/*.ttf.meta
 
 # --- OS noise ---
 .DS_Store
