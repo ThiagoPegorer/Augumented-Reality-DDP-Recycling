@@ -28,6 +28,9 @@ namespace DPP
         [Tooltip("Screen 01 — Main Page view (Canva design). Populated with serial + step count.")]
         [SerializeField] private DPP.UI.MainPageView mainPage;
 
+        [Tooltip("Screen 02 — Information tab view (Canva design). Populated with full v0.3 passport data.")]
+        [SerializeField] private DPP.UI.InfoTabView infoTab;
+
         [Header("Editor test")]
         [Tooltip("On Start, fetch this product_id without waiting for a QR scan. Useful in Editor.")]
         [SerializeField] private bool fetchOnStart = true;
@@ -72,6 +75,7 @@ namespace DPP
                 }
                 if (dashboard != null) dashboard.Populate(data);
                 if (mainPage != null)  mainPage.Populate(data);
+                if (infoTab != null)   infoTab.Populate(data);
                 Debug.Log($"[DPPManager] Populated UI for product_id={data.product_id}");
             }
             catch (System.Exception ex)

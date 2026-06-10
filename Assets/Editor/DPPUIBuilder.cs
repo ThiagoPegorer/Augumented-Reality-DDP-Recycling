@@ -26,7 +26,7 @@ namespace DPP.EditorTools
     ///
     /// Safe to re-run: an existing DPPPanelCanvas is deleted and rebuilt.
     /// </summary>
-    public static class DPPUIBuilder
+    public static partial class DPPUIBuilder
     {
         // ---- Canvas geometry (00 §1; placement carried over from the old DashboardCanvas) ----
         private const float PanelW = 640f, PanelH = 430f;
@@ -292,9 +292,9 @@ namespace DPP.EditorTools
             return tmp;
         }
 
-        private static void WireClick(Button button, ScreenRouter router, string methodName)
+        private static void WireClick(Button button, object target, string methodName)
         {
-            var action = (UnityAction)System.Delegate.CreateDelegate(typeof(UnityAction), router, methodName);
+            var action = (UnityAction)System.Delegate.CreateDelegate(typeof(UnityAction), target, methodName);
             UnityEventTools.AddPersistentListener(button.onClick, action);
         }
 

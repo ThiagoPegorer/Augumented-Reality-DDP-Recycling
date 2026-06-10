@@ -20,10 +20,23 @@ namespace DPP.EditorTools
         // Names used by the builders.
         public const string RoundedR22 = "ui_rounded_r22"; // 9-sliced — panel, hover outlines
         public const string RoundedR20 = "ui_rounded_r20"; // 9-sliced — choice cards
-        public const string Pill       = "ui_pill";        // capsule, exact aspect 200x22 — grabber bar
-        public const string Grip       = "ui_grip";        // capsule, exact aspect 44x4 — grip + chevron bars
+        public const string RoundedR13 = "ui_rounded_r13"; // 9-sliced — accordion rows
+        public const string RoundedR3  = "ui_rounded_r3";  // 9-sliced — small bars (recovery, scrollbar)
+        public const string Pill       = "ui_pill";        // capsule — grabber bar, tab pills
+        public const string Grip       = "ui_grip";        // capsule — grip + chevron bars
         public const string Circle64   = "ui_circle_64";   // icon circles
         public const string Recycle    = "ui_icon_recycle";// recycling glyph
+        public const string FadeV      = "ui_fade_v";      // vertical fade (alpha 1 top → 0 bottom)
+
+        // Stroke icons (white, transparent bg, tint via Image.color).
+        public const string IcHouse   = "ui_ic_house";
+        public const string IcPerson  = "ui_ic_person";
+        public const string IcLayers  = "ui_ic_layers";
+        public const string IcWarning = "ui_ic_warning";
+        public const string IcShield  = "ui_ic_shield";
+        public const string IcLeaf    = "ui_ic_leaf";
+        public const string IcChevron = "ui_ic_chevron";   // points DOWN; rotate 180 for up, +90 for right
+        public const string IcBack    = "ui_ic_back";      // ← arrow (modal back button)
 
         [MenuItem("DPP/Generate UI Sprites", false, 100)]
         public static void GenerateAll()
@@ -32,13 +45,127 @@ namespace DPP.EditorTools
 
             MakeRoundedRectSliced(RoundedR22, 22);
             MakeRoundedRectSliced(RoundedR20, 20);
+            MakeRoundedRectSliced(RoundedR13, 13);
+            MakeRoundedRectSliced(RoundedR3, 3);
             MakeRoundedRectExact(Pill, 400, 44, 22);   // displayed at 200x22 → r11
             MakeRoundedRectExact(Grip, 176, 16, 8);    // displayed at 44x4  → r2
             MakeCircle(Circle64, 64);
             MakeRecycleIcon(Recycle, 128);
+            MakeVerticalFade(FadeV);
+
+            MakeStrokeIcon(IcHouse, 2.0f,
+                Poly(-7,1, 0,-6, 7,1), Poly(-5,0, -5,7, 5,7, 5,0));
+            MakeStrokeIcon(IcPerson, 2.0f,
+                CirclePts(0,-4.5f,3.6f), ArcPts(0,9,6,7,180,0)); // shoulders: upper semi-ellipse
+            MakeStrokeIcon(IcLayers, 2.0f,
+                Poly(-5,-5, 5,-5, 5,5, -5,5, -5,-5), Poly(-2,-1, 2,-1), Poly(-2,2, 2,2));
+            MakeStrokeIcon(IcWarning, 2.0f,
+                Poly(0,-8, 8,6, -8,6, 0,-8), Poly(0,-2, 0,1.5f), Poly(0,4.4f, 0,4.5f));
+            MakeStrokeIcon(IcShield, 2.0f,
+                Poly(-5,-6, 5,-6, 5,6, -5,6, -5,-6), Poly(-2,0, 0,2, 3,-3));
+            // "Life cycle" glyph: two opposing circular arrows (clearer at 24 px
+            // than the previous arc+arrow which read as a blob).
+            MakeStrokeIcon(IcLeaf, 2.0f,
+                ArcPts(0,0,7,7,150,30),  Poly(6.1f,-3.5f, 6.1f,-6.3f),  Poly(6.1f,-3.5f, 3.7f,-4.9f),
+                ArcPts(0,0,7,7,330,210), Poly(-6.1f,3.5f, -6.1f,6.3f),  Poly(-6.1f,3.5f, -3.7f,4.9f));
+            MakeStrokeIcon(IcChevron, 2.2f,
+                Poly(-7,-3.5f, 0,3.5f, 7,-3.5f));
+            MakeStrokeIcon(IcBack, 2.0f,
+                Poly(3,-6, -4,0, 3,6), Poly(-4,0, 8,0));
 
             AssetDatabase.Refresh();
             Debug.Log($"[DPPSpriteFactory] UI sprites generated in {SpriteDir}.");
+        }
+
+        // ---- icon path helpers (glyph space ~±10, y-down like SVG) ----
+
+        private static Vector2[] Poly(params float[] xy)
+        {
+            var pts = new Vector2[xy.Length / 2];
+            for (int i = 0; i < pts.Length; i++) pts[i] = new Vector2(xy[2 * i], xy[2 * i + 1]);
+            return pts;
+        }
+
+        private static Vector2[] CirclePts(float cx, float cy, float r)
+        {
+            var pts = new Vector2[25];
+            for (int i = 0; i <= 24; i++)
+            {
+                float a = i / 24f * Mathf.PI * 2f;
+                pts[i] = new Vector2(cx + r * Mathf.Cos(a), cy + r * Mathf.Sin(a));
+            }
+            return pts;
+        }
+
+        /// <summary>Elliptical arc, angles in degrees (0° = +x, increasing sweeps through -y i.e. visually over the top in y-down glyph space).</summary>
+        private static Vector2[] ArcPts(float cx, float cy, float rx, float ry, float fromDeg, float toDeg)
+        {
+            const int N = 24;
+            var pts = new Vector2[N + 1];
+            for (int i = 0; i <= N; i++)
+            {
+                float a = Mathf.Lerp(fromDeg, toDeg, i / (float)N) * Mathf.Deg2Rad;
+                pts[i] = new Vector2(cx + rx * Mathf.Cos(a), cy - ry * Mathf.Sin(a));
+            }
+            return pts;
+        }
+
+        /// <summary>Rasterizes round-capped polylines (glyph space ~±10) into a 96px white icon (4×4 supersampled).</summary>
+        private static void MakeStrokeIcon(string name, float strokeWidth, params Vector2[][] lines)
+        {
+            const int size = 96;
+            const float scale = 4.0f;
+            float half = size * 0.5f;
+            float rPx = strokeWidth * 0.5f * scale;
+
+            var tex = NewTexture(size, size);
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float cov = 0f;
+                for (int sy = 0; sy < 4; sy++)
+                for (int sx = 0; sx < 4; sx++)
+                {
+                    float px = x + (sx + 0.5f) / 4f;
+                    float py = y + (sy + 0.5f) / 4f;
+                    // texture (row 0 = bottom) → glyph space (y-down), same mapping
+                    // as MakeRecycleIcon: top rows ↔ negative glyph y.
+                    var p = new Vector2((px - half) / scale, (half - py) / scale);
+
+                    float d = float.MaxValue;
+                    for (int l = 0; l < lines.Length; l++)
+                    {
+                        var pts = lines[l];
+                        for (int i = 0; i < pts.Length - 1; i++)
+                            d = Mathf.Min(d, DistToSegment(p, pts[i], pts[i + 1]));
+                    }
+                    if (d * scale <= rPx - 0.25f) cov += 1f;
+                }
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, cov / 16f));
+            }
+            tex.Apply();
+            SavePng(name, tex, Vector4.zero);
+        }
+
+        private static float DistToSegment(Vector2 p, Vector2 a, Vector2 b)
+        {
+            Vector2 ab = b - a;
+            float len2 = ab.sqrMagnitude;
+            float t = len2 < 1e-6f ? 0f : Mathf.Clamp01(Vector2.Dot(p - a, ab) / len2);
+            return Vector2.Distance(p, a + t * ab);
+        }
+
+        /// <summary>4×64 white texture, alpha 1 at top → 0 at bottom. Tint navy, flip for bottom fade.</summary>
+        private static void MakeVerticalFade(string name)
+        {
+            var tex = NewTexture(4, 64);
+            for (int y = 0; y < 64; y++)
+            {
+                float a = y / 63f; // row 0 = bottom = transparent... row 63 = top = opaque
+                for (int x = 0; x < 4; x++) tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
+            }
+            tex.Apply();
+            SavePng(name, tex, Vector4.zero);
         }
 
         public static Sprite Load(string name) =>
