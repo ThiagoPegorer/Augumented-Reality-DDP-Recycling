@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://thesis.local/schemas/dpp.json",
   "title": "Digital Product Passport (VCU)",
-  "description": "DPP schema for Vehicle Control Unit. Aligned with EU DPP draft direction (CIRPASS).",
+  "description": "DPP schema for Vehicle Control Unit. Aligned with EU DPP draft direction (CIRPASS). v0.3 (2026-06-10): Bosch MS 50.4 model - specifications, 12-line BOM with step mapping, precious metals, lifecycle stages S1-S4, recovery potential, usage profile, compliance. EoL scenario comparison lives in the thesis LCA model, not here.",
   "type": "object",
   "required": ["product_id", "identity", "components", "environmental", "disassembly", "end_of_life"],
   "properties": {
@@ -16,43 +16,117 @@
       "properties": {
         "manufacturer": { "type": "string" },
         "model": { "type": "string" },
+        "type_number": { "type": ["string", "null"], "description": "Manufacturer order/type number." },
         "serial_number": { "type": "string" },
         "production_date": { "type": "string", "format": "date" },
         "country_of_origin": { "type": "string", "minLength": 2, "maxLength": 2 }
       }
     },
+    "specifications": {
+      "type": ["object", "null"],
+      "description": "Datasheet facts shown in the Identity category.",
+      "properties": {
+        "size_mm": { "type": ["string", "null"] },
+        "weight_g": { "type": ["number", "null"] },
+        "protection_class": { "type": ["string", "null"] },
+        "supply_voltage": { "type": ["string", "null"] },
+        "operating_temp_c": { "type": ["string", "null"] },
+        "connectors": { "type": ["string", "null"] }
+      }
+    },
     "components": {
       "type": "array",
+      "description": "Mirrors the 12-line LCA BOM (VCU_LCA_Model_v3.xlsx).",
       "items": {
         "type": "object",
-        "required": ["id", "name", "material", "weight_g", "recycling_code", "disassembly_order", "hazardous"],
+        "required": ["id", "name", "material", "weight_g", "recycling_code", "disassembly_step", "hazardous"],
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
           "material": { "type": "string" },
           "weight_g": { "type": "number", "minimum": 0 },
           "recycling_code": { "type": "string" },
-          "disassembly_order": { "type": "integer", "minimum": 1 },
-          "hazardous": { "type": "boolean" }
+          "disassembly_step": { "type": "integer", "minimum": 1, "description": "Guided disassembly step (1-5) that handles this part." },
+          "hazardous": { "type": "boolean" },
+          "basis": { "type": ["string", "null"], "description": "BOM transparency: datasheet | estimate." }
+        }
+      }
+    },
+    "precious_metals": {
+      "type": "array",
+      "description": "Precious & critical metals sub-inventory (from LCA BOM).",
+      "items": {
+        "type": "object",
+        "required": ["metal", "location", "mass_mg"],
+        "properties": {
+          "metal": { "type": "string" },
+          "location": { "type": "string" },
+          "mass_mg": { "type": "number", "minimum": 0 }
         }
       }
     },
     "environmental": {
       "type": "object",
       "properties": {
-        "co2_footprint_kg": { "type": ["number", "null"] },
-        "scenarios": {
+        "co2_footprint_kg": {
+          "type": ["number", "null"],
+          "description": "Headline: lifecycle total (S1+S2+S3+S4), kg CO2-eq."
+        },
+        "method": { "type": ["string", "null"] },
+        "recycled_content_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "lifecycle_stages": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["id", "name"],
+            "required": ["id", "name", "co2_kg"],
             "properties": {
-              "id": { "type": "integer" },
+              "id": { "type": "string", "description": "S1..S4" },
               "name": { "type": "string" },
-              "value_kg": { "type": ["number", "null"] }
+              "co2_kg": { "type": "number" },
+              "note": { "type": ["string", "null"] }
             }
           }
+        },
+        "recovery_potential": {
+          "type": ["object", "null"],
+          "description": "Forward-looking: avoidable CO2 through proper recycling (net Sc2 vs Sc1).",
+          "properties": {
+            "total_avoidable_kg": { "type": "number" },
+            "note": { "type": ["string", "null"] },
+            "credits": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["material", "avoided_kg"],
+                "properties": {
+                  "material": { "type": "string" },
+                  "avoided_kg": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "usage_profile": {
+          "type": ["object", "null"],
+          "description": "Design service-life assumptions (telemetry in a production DPP).",
+          "properties": {
+            "service_life_years": { "type": ["integer", "null"] },
+            "lifetime_distance_km": { "type": ["integer", "null"] },
+            "operating_hours": { "type": ["integer", "null"] },
+            "lifetime_energy_kwh": { "type": ["number", "null"] },
+            "note": { "type": ["string", "null"] }
+          }
         }
+      }
+    },
+    "compliance": {
+      "type": ["object", "null"],
+      "description": "Nullable until verified - UI shows an em-dash for null.",
+      "properties": {
+        "ce": { "type": ["boolean", "null"] },
+        "rohs": { "type": ["boolean", "null"] },
+        "reach": { "type": ["boolean", "null"] },
+        "weee_category": { "type": ["string", "null"] }
       }
     },
     "disassembly": {
@@ -68,10 +142,8 @@
       "required": ["recycling_route"],
       "properties": {
         "recycling_route": { "type": "string" },
-        "hazardous_warnings": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "contains_battery": { "type": "boolean" },
+        "hazardous_warnings": { "type": "array", "items": { "type": "string" } }
       }
     }
   }

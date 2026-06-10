@@ -3,22 +3,33 @@ using System.Collections.Generic;
 
 namespace DPP.Models
 {
-    // C# mirror of the DPP JSON schema (schema/dpp_schema.json) and Pydantic models in backend/models.py.
-    // Keep all three in sync.
+    // C# mirror of the DPP JSON schema v0.3 (schema/dpp_schema.json) and the
+    // Pydantic models in backend/models.py. Keep all three in sync.
     //
-    // NOTE: Unity's built-in JsonUtility does NOT support nullable types or top-level arrays.
-    //       Recommended deserializer: Newtonsoft.Json (com.unity.nuget.newtonsoft-json package).
-    //       Example:
-    //         using Newtonsoft.Json;
-    //         var dpp = JsonConvert.DeserializeObject<DPPData>(jsonString);
+    // v0.3 (2026-06-10) — Bosch Motorsport VCU MS 50.4 data model:
+    //   - Identity gains type_number; new Specifications block.
+    //   - Component.disassembly_order renamed to disassembly_step (maps each
+    //     of the 12 BOM lines to its guided step 1–5); new basis field.
+    //   - New PreciousMetal list.
+    //   - Environmental: scenarios[] replaced by lifecycle_stages[] (S1–S4),
+    //     recovery_potential (net avoidable CO2 + per-material credits) and
+    //     usage_profile. co2_footprint_kg is now the LIFECYCLE TOTAL.
+    //   - New Compliance block (nullable until verified).
+    //   - EndOfLife gains contains_battery.
+    //
+    // NOTE: Unity's built-in JsonUtility does NOT support nullable types.
+    //       Use Newtonsoft.Json: JsonConvert.DeserializeObject<DPPData>(json).
 
     [Serializable]
     public class DPPData
     {
         public string product_id;
         public Identity identity;
+        public Specifications specifications;
         public List<Component> components;
+        public List<PreciousMetal> precious_metals;
         public Environmental environmental;
+        public Compliance compliance;
         public Disassembly disassembly;
         public EndOfLife end_of_life;
     }
@@ -28,9 +39,21 @@ namespace DPP.Models
     {
         public string manufacturer;
         public string model;
+        public string type_number;        // manufacturer order/type no. (nullable)
         public string serial_number;
-        public string production_date;     // ISO 8601 date string
-        public string country_of_origin;   // ISO 3166-1 alpha-2
+        public string production_date;    // ISO 8601 date string
+        public string country_of_origin;  // ISO 3166-1 alpha-2
+    }
+
+    [Serializable]
+    public class Specifications
+    {
+        public string size_mm;            // "166 x 121 x 41"
+        public float? weight_g;
+        public string protection_class;   // "IP67"
+        public string supply_voltage;     // "5-18 V"
+        public string operating_temp_c;   // "-20 to 80"
+        public string connectors;         // "3 motorsport (198 pins) + USB"
     }
 
     [Serializable]
@@ -41,23 +64,71 @@ namespace DPP.Models
         public string material;
         public float weight_g;
         public string recycling_code;
-        public int disassembly_order;
+        public int disassembly_step;      // guided step (1-5) handling this part
         public bool hazardous;
+        public string basis;              // "datasheet" | "estimate" (nullable)
+    }
+
+    [Serializable]
+    public class PreciousMetal
+    {
+        public string metal;              // "Gold (Au)"
+        public string location;
+        public float mass_mg;
+    }
+
+    [Serializable]
+    public class LifecycleStage
+    {
+        public string id;                 // "S1".."S4"
+        public string name;
+        public float co2_kg;
+        public string note;               // e.g. "modelled use profile" (nullable)
+    }
+
+    [Serializable]
+    public class RecoveryCredit
+    {
+        public string material;
+        public float avoided_kg;
+    }
+
+    [Serializable]
+    public class RecoveryPotential
+    {
+        public float total_avoidable_kg;
+        public string note;
+        public List<RecoveryCredit> credits;
+    }
+
+    [Serializable]
+    public class UsageProfile
+    {
+        public int? service_life_years;
+        public int? lifetime_distance_km;
+        public int? operating_hours;
+        public float? lifetime_energy_kwh;
+        public string note;
     }
 
     [Serializable]
     public class Environmental
     {
-        public float? co2_footprint_kg;
-        public List<Scenario> scenarios;
+        public float? co2_footprint_kg;   // headline: lifecycle total
+        public string method;
+        public float? recycled_content_pct;
+        public List<LifecycleStage> lifecycle_stages;
+        public RecoveryPotential recovery_potential;
+        public UsageProfile usage_profile;
     }
 
     [Serializable]
-    public class Scenario
+    public class Compliance
     {
-        public int id;
-        public string name;
-        public float? value_kg;
+        public bool? ce;
+        public bool? rohs;
+        public bool? reach;
+        public string weee_category;
     }
 
     [Serializable]
@@ -71,6 +142,7 @@ namespace DPP.Models
     public class EndOfLife
     {
         public string recycling_route;
+        public bool contains_battery;
         public List<string> hazardous_warnings;
     }
 }

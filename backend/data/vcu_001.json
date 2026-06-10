@@ -1,56 +1,191 @@
 {
   "product_id": "vcu_001",
   "identity": {
-    "manufacturer": "Generic Auto Electronics GmbH",
-    "model": "VCU-G1",
+    "manufacturer": "Bosch Motorsport",
+    "model": "Vehicle Control Unit MS 50.4",
+    "type_number": "F02U.V02.965-02",
     "serial_number": "VCU-2026-001",
-    "production_date": "2026-04-15",
+    "production_date": "2026-03-27",
     "country_of_origin": "DE"
+  },
+  "specifications": {
+    "size_mm": "166 x 121 x 41",
+    "weight_g": 660,
+    "protection_class": "IP67",
+    "supply_voltage": "5-18 V",
+    "operating_temp_c": "-20 to 80",
+    "connectors": "3 motorsport (198 pins) + USB"
   },
   "components": [
     {
-      "id": "housing_top",
-      "name": "Upper Housing",
-      "material": "PETG",
-      "weight_g": 45.0,
-      "recycling_code": "1",
-      "disassembly_order": 1,
-      "hazardous": false
+      "id": "fasteners",
+      "name": "Fasteners (screws, washers)",
+      "material": "Stainless steel",
+      "weight_g": 19.8,
+      "recycling_code": "Fe",
+      "disassembly_step": 1,
+      "hazardous": false,
+      "basis": "estimate"
     },
     {
-      "id": "pcb",
-      "name": "Main PCB",
-      "material": "FR-4",
-      "weight_g": 22.0,
+      "id": "connectors",
+      "name": "Connectors & pins (LIFE, SENS-A, SENS-B)",
+      "material": "Brass (Cu-Zn) + Au/Ni plating",
+      "weight_g": 57.75,
+      "recycling_code": "Cu",
+      "disassembly_step": 2,
+      "hazardous": false,
+      "basis": "datasheet pin count + estimate"
+    },
+    {
+      "id": "pcb_substrate",
+      "name": "PCB substrate (4-layer)",
+      "material": "FR-4 (epoxy + E-glass)",
+      "weight_g": 90.75,
       "recycling_code": "WEEE",
-      "disassembly_order": 2,
-      "hazardous": false
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
     },
     {
-      "id": "housing_bottom",
-      "name": "Lower Housing",
-      "material": "PETG",
-      "weight_g": 50.0,
-      "recycling_code": "1",
-      "disassembly_order": 3,
-      "hazardous": false
+      "id": "pcb_copper",
+      "name": "PCB copper (traces, planes, pads)",
+      "material": "Copper (Cu)",
+      "weight_g": 41.25,
+      "recycling_code": "Cu",
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "solder",
+      "name": "Solder",
+      "material": "Lead-free SnAgCu (SAC305)",
+      "weight_g": 6.6,
+      "recycling_code": "WEEE",
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "passives",
+      "name": "Passive components (R, C, L)",
+      "material": "Ceramic + metal oxide",
+      "weight_g": 29.7,
+      "recycling_code": "WEEE",
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "tim",
+      "name": "Thermal interface material",
+      "material": "Silicone-based TIM",
+      "weight_g": 8.25,
+      "recycling_code": "Other",
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "coating",
+      "name": "Conformal coating",
+      "material": "Acrylic / silicone",
+      "weight_g": 3.3,
+      "recycling_code": "Other",
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "wiring",
+      "name": "Wire bonds & internal wiring",
+      "material": "Copper (+ minor gold)",
+      "weight_g": 4.95,
+      "recycling_code": "Cu",
+      "disassembly_step": 3,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "actives",
+      "name": "Active components (processors, ICs, MOSFETs)",
+      "material": "Silicon die + epoxy + Cu leadframe",
+      "weight_g": 19.8,
+      "recycling_code": "WEEE",
+      "disassembly_step": 4,
+      "hazardous": false,
+      "basis": "estimate"
+    },
+    {
+      "id": "housing",
+      "name": "Housing (top + bottom shells)",
+      "material": "Die-cast aluminium (AlSi)",
+      "weight_g": 363.0,
+      "recycling_code": "Al",
+      "disassembly_step": 5,
+      "hazardous": false,
+      "basis": "datasheet"
+    },
+    {
+      "id": "misc",
+      "name": "Labels, adhesives, misc.",
+      "material": "Mixed polymer",
+      "weight_g": 14.85,
+      "recycling_code": "Other",
+      "disassembly_step": 5,
+      "hazardous": false,
+      "basis": "estimate"
     }
   ],
+  "precious_metals": [
+    { "metal": "Gold (Au)", "location": "Connector plating, wire bonds, IC pads", "mass_mg": 62.7 },
+    { "metal": "Silver (Ag)", "location": "Solder paste, capacitor terminations", "mass_mg": 250.8 },
+    { "metal": "Palladium (Pd)", "location": "MLCC capacitor terminations", "mass_mg": 27.6 },
+    { "metal": "Tantalum (Ta)", "location": "Ta capacitors", "mass_mg": 82.5 },
+    { "metal": "Nickel (Ni)", "location": "Connector underplating, leadframes", "mass_mg": 2475.0 }
+  ],
   "environmental": {
-    "co2_footprint_kg": null,
-    "scenarios": [
-      {"id": 1, "name": "No recycling baseline", "value_kg": null},
-      {"id": 2, "name": "Current recycling methods", "value_kg": null},
-      {"id": 3, "name": "AR-DPP prototype (estimate)", "value_kg": null},
-      {"id": 4, "name": "Full component reuse (estimate)", "value_kg": null}
-    ]
+    "co2_footprint_kg": 63.92,
+    "method": "ISO 14040 LCA - GWP100 (IPCC AR6) - estimated BOM",
+    "recycled_content_pct": null,
+    "lifecycle_stages": [
+      { "id": "S1", "name": "Raw material extraction", "co2_kg": 8.94, "note": null },
+      { "id": "S2", "name": "Manufacturing", "co2_kg": 0.88, "note": null },
+      { "id": "S3", "name": "Distribution", "co2_kg": 0.1, "note": null },
+      { "id": "S4", "name": "Use phase", "co2_kg": 54.0, "note": "modelled use profile, not telemetry" }
+    ],
+    "recovery_potential": {
+      "total_avoidable_kg": 6.57,
+      "note": "net of recycling process emissions, vs no-recycling baseline",
+      "credits": [
+        { "material": "Aluminium", "avoided_kg": 3.2 },
+        { "material": "Gold", "avoided_kg": 2.7 },
+        { "material": "Palladium", "avoided_kg": 0.4 },
+        { "material": "Other metals", "avoided_kg": 0.43 }
+      ]
+    },
+    "usage_profile": {
+      "service_life_years": 15,
+      "lifetime_distance_km": 225000,
+      "operating_hours": 4500,
+      "lifetime_energy_kwh": 216,
+      "note": "design assumptions; a production DPP would carry vehicle telemetry"
+    }
+  },
+  "compliance": {
+    "ce": null,
+    "rohs": null,
+    "reach": null,
+    "weee_category": "Cat. 5 (small equipment) - to verify"
   },
   "disassembly": {
     "total_steps": 5,
     "estimated_time_min": 8
   },
   "end_of_life": {
-    "recycling_route": "WEEE collection",
+    "recycling_route": "WEEE - selective treatment recommended",
+    "contains_battery": false,
     "hazardous_warnings": []
   }
 }
