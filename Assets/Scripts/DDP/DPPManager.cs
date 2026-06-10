@@ -21,7 +21,12 @@ namespace DPP
     {
         [Header("Wiring")]
         [SerializeField] private DPPClient client;
+
+        [Tooltip("Legacy colloquium dashboard. Optional — superseded by the Canva-design screens.")]
         [SerializeField] private DPPDashboard dashboard;
+
+        [Tooltip("Screen 01 — Main Page view (Canva design). Populated with serial + step count.")]
+        [SerializeField] private DPP.UI.MainPageView mainPage;
 
         [Header("Editor test")]
         [Tooltip("On Start, fetch this product_id without waiting for a QR scan. Useful in Editor.")]
@@ -42,10 +47,14 @@ namespace DPP
         /// </summary>
         public void FetchAndPopulate(string productId)
         {
-            if (client == null || dashboard == null)
+            if (client == null)
             {
-                Debug.LogError("[DPPManager] DPPClient or DPPDashboard reference is missing in the Inspector.");
+                Debug.LogError("[DPPManager] DPPClient reference is missing in the Inspector.");
                 return;
+            }
+            if (dashboard == null && mainPage == null)
+            {
+                Debug.LogWarning("[DPPManager] No UI assigned (dashboard/mainPage) — fetch will run but nothing will display.");
             }
 
             StartCoroutine(client.GetDPP(productId, OnDPPSuccess, OnDPPError));
@@ -61,8 +70,9 @@ namespace DPP
                     Debug.LogError("[DPPManager] Deserialized DPP is null.");
                     return;
                 }
-                dashboard.Populate(data);
-                Debug.Log($"[DPPManager] Populated dashboard for product_id={data.product_id}");
+                if (dashboard != null) dashboard.Populate(data);
+                if (mainPage != null)  mainPage.Populate(data);
+                Debug.Log($"[DPPManager] Populated UI for product_id={data.product_id}");
             }
             catch (System.Exception ex)
             {

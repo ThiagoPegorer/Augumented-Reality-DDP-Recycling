@@ -93,6 +93,7 @@ namespace DPP
         private Renderer _leftReticleRenderer, _rightReticleRenderer;
         private MaterialPropertyBlock _mpb;
         private float _leftPinchFlashUntil, _rightPinchFlashUntil;
+        private GameObject _leftHoverTarget, _rightHoverTarget;
 
         void Awake()
         {
@@ -103,8 +104,8 @@ namespace DPP
 
         void Update()
         {
-            UpdateHand(leftHand,  ref _leftWasPinching,  ref _leftPinchFlashUntil,  leftReticle,  _leftReticleRenderer,  "LEFT");
-            UpdateHand(rightHand, ref _rightWasPinching, ref _rightPinchFlashUntil, rightReticle, _rightReticleRenderer, "RIGHT");
+            UpdateHand(leftHand,  ref _leftWasPinching,  ref _leftPinchFlashUntil,  ref _leftHoverTarget,  leftReticle,  _leftReticleRenderer,  "LEFT");
+            UpdateHand(rightHand, ref _rightWasPinching, ref _rightPinchFlashUntil, ref _rightHoverTarget, rightReticle, _rightReticleRenderer, "RIGHT");
 
             if (verboseLogging && Time.unscaledTime >= _nextLogTime)
             {
@@ -125,6 +126,7 @@ namespace DPP
         //   2. Drive the pointer reticle: shown + positioned on hit, hidden otherwise.
         //   3. On pinch rising edge, fire the button's OnClick and flash the reticle.
         private void UpdateHand(PXR_Hand hand, ref bool wasPinching, ref float pinchFlashUntil,
+                                ref GameObject hoverTarget,
                                 Transform reticle, Renderer reticleRenderer, string label)
         {
             // Default: reticle hidden until proven we have a valid hit.
@@ -132,12 +134,12 @@ namespace DPP
             Vector3 reticlePos = Vector3.zero;
             Quaternion reticleRot = Quaternion.identity;
 
-            if (hand == null)            { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; return; }
-            if (!hand.Computed)          { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; return; }
-            if (!hand.RayValid)          { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; return; }
+            if (hand == null)            { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
+            if (!hand.Computed)          { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
+            if (!hand.RayValid)          { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
 
             Transform rayPose = hand.transform.Find("RayPose");
-            if (rayPose == null)         { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; return; }
+            if (rayPose == null)         { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
 
             Vector3 origin = rayPose.position;
             Vector3 direction = rayPose.forward;
@@ -146,6 +148,13 @@ namespace DPP
             // Same logic as the pinch path — extracted so the reticle and the
             // click decision both use the identical hit result.
             CanvasHit hit = FindClickableHit(origin, direction);
+
+            // Hover dispatch: tell the element under the ray it is hovered
+            // (and the previous one it no longer is) so HoverHighlight and
+            // other IPointerEnter/ExitHandlers respond to the hand ray
+            // exactly like they do to the Editor mouse.
+            DispatchHover(ref hoverTarget, hit.hasHit ? hit.target : null);
+
             if (hit.hasHit)
             {
                 wantReticleVisible = true;
@@ -188,6 +197,25 @@ namespace DPP
 
             SetReticle(reticle, reticleRenderer, wantReticleVisible, reticlePos, reticleRot,
                        Time.unscaledTime < pinchFlashUntil ? 1f : 0f, ref pinchFlashUntil);
+        }
+
+        // Fires pointerExit on the previously hovered GameObject and
+        // pointerEnter on the new one whenever the ray's target changes.
+        // Each hand tracks its own target; receivers that care about both
+        // hands at once (e.g. HoverHighlight) ref-count enter/exit pairs.
+        private void DispatchHover(ref GameObject hoverTarget, GameObject newTarget)
+        {
+            if (hoverTarget == newTarget) return;
+            if (EventSystem.current == null) { hoverTarget = newTarget; return; }
+
+            PointerEventData ped = new PointerEventData(EventSystem.current);
+
+            if (hoverTarget != null)
+                ExecuteEvents.ExecuteHierarchy(hoverTarget, ped, ExecuteEvents.pointerExitHandler);
+            if (newTarget != null)
+                ExecuteEvents.ExecuteHierarchy(newTarget, ped, ExecuteEvents.pointerEnterHandler);
+
+            hoverTarget = newTarget;
         }
 
         // Sets the reticle's transform + visibility + color in one place.

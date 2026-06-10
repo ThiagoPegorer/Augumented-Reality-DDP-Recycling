@@ -46,8 +46,8 @@
     ]
   },
   "disassembly": {
-    "total_steps": 3,
-    "estimated_time_min": 5
+    "total_steps": 5,
+    "estimated_time_min": 8
   },
   "end_of_life": {
     "recycling_route": "WEEE collection",

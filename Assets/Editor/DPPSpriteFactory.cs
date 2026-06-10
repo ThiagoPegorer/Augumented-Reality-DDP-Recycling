@@ -1,0 +1,201 @@
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+
+namespace DPP.EditorTools
+{
+    /// <summary>
+    /// Generates the reusable UI sprites (rounded rects, circle, recycling
+    /// glyph, capsule pill, grip) procedurally and saves them as PNGs under
+    /// Assets/Textures/UI. Run via the DPP menu or implicitly by the screen
+    /// builders. Idempotent — always regenerates, safe to re-run.
+    ///
+    /// All shapes are rendered white-on-transparent so the UI tints them via
+    /// Image.color with the DPPTheme tokens.
+    /// </summary>
+    public static class DPPSpriteFactory
+    {
+        public const string SpriteDir = "Assets/Textures/UI";
+
+        // Names used by the builders.
+        public const string RoundedR22 = "ui_rounded_r22"; // 9-sliced — panel, hover outlines
+        public const string RoundedR20 = "ui_rounded_r20"; // 9-sliced — choice cards
+        public const string Pill       = "ui_pill";        // capsule, exact aspect 200x22 — grabber bar
+        public const string Grip       = "ui_grip";        // capsule, exact aspect 44x4 — grip + chevron bars
+        public const string Circle64   = "ui_circle_64";   // icon circles
+        public const string Recycle    = "ui_icon_recycle";// recycling glyph
+
+        [MenuItem("DPP/Generate UI Sprites", false, 100)]
+        public static void GenerateAll()
+        {
+            Directory.CreateDirectory(SpriteDir);
+
+            MakeRoundedRectSliced(RoundedR22, 22);
+            MakeRoundedRectSliced(RoundedR20, 20);
+            MakeRoundedRectExact(Pill, 400, 44, 22);   // displayed at 200x22 → r11
+            MakeRoundedRectExact(Grip, 176, 16, 8);    // displayed at 44x4  → r2
+            MakeCircle(Circle64, 64);
+            MakeRecycleIcon(Recycle, 128);
+
+            AssetDatabase.Refresh();
+            Debug.Log($"[DPPSpriteFactory] UI sprites generated in {SpriteDir}.");
+        }
+
+        public static Sprite Load(string name) =>
+            AssetDatabase.LoadAssetAtPath<Sprite>($"{SpriteDir}/{name}.png");
+
+        // ---------------------------------------------------------------
+        // Shape renderers (4x4 supersampled coverage → smooth edges)
+        // ---------------------------------------------------------------
+
+        /// <summary>Rounded rect filling the whole texture; imported 9-sliced with border = radius+2.</summary>
+        private static void MakeRoundedRectSliced(string name, int radius)
+        {
+            int size = 2 * (radius + 2) + 16;
+            var tex = RenderRoundedRect(size, size, radius);
+            SavePng(name, tex, new Vector4(radius + 2, radius + 2, radius + 2, radius + 2));
+        }
+
+        /// <summary>Rounded rect at an exact aspect ratio, used as a simple (non-sliced) stretched sprite.</summary>
+        private static void MakeRoundedRectExact(string name, int w, int h, int radius)
+        {
+            var tex = RenderRoundedRect(w, h, radius);
+            SavePng(name, tex, Vector4.zero);
+        }
+
+        private static Texture2D RenderRoundedRect(int w, int h, int radius)
+        {
+            var tex = NewTexture(w, h);
+            float hw = w * 0.5f, hh = h * 0.5f;
+            float rx = hw - radius, ry = hh - radius;
+
+            for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                float cov = 0f;
+                for (int sy = 0; sy < 4; sy++)
+                for (int sx = 0; sx < 4; sx++)
+                {
+                    float px = x + (sx + 0.5f) / 4f - hw;
+                    float py = y + (sy + 0.5f) / 4f - hh;
+                    float qx = Mathf.Max(Mathf.Abs(px) - rx, 0f);
+                    float qy = Mathf.Max(Mathf.Abs(py) - ry, 0f);
+                    if (Mathf.Sqrt(qx * qx + qy * qy) <= radius - 0.5f) cov += 1f;
+                }
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, cov / 16f));
+            }
+            tex.Apply();
+            return tex;
+        }
+
+        private static void MakeCircle(string name, int size)
+        {
+            var tex = NewTexture(size, size);
+            float c = size * 0.5f, r = size * 0.5f - 1f;
+
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float cov = 0f;
+                for (int sy = 0; sy < 4; sy++)
+                for (int sx = 0; sx < 4; sx++)
+                {
+                    float dx = x + (sx + 0.5f) / 4f - c;
+                    float dy = y + (sy + 0.5f) / 4f - c;
+                    if (dx * dx + dy * dy <= r * r) cov += 1f;
+                }
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, cov / 16f));
+            }
+            tex.Apply();
+            SavePng(name, tex, Vector4.zero);
+        }
+
+        /// <summary>
+        /// The recycling glyph from the approved SVG (01_main_page.md §9):
+        /// one arrow polygon repeated at 0°/120°/240°. Rendered by even-odd
+        /// point-in-polygon tests against the base path in SVG coordinates.
+        /// </summary>
+        private static void MakeRecycleIcon(string name, int size)
+        {
+            // Base arrow polygon from the spec SVG (y-down coordinates).
+            Vector2[] poly =
+            {
+                new Vector2(-1.8f, -9f), new Vector2(1.8f, -9f), new Vector2(5.2f, -3f),
+                new Vector2(8.4f, -4.9f), new Vector2(7f, 2f), new Vector2(0.5f, 0.5f),
+                new Vector2(3.7f, -1.3f), new Vector2(0f, -7.6f)
+            };
+            float scale = size / 21.4f; // glyph extent ~±9.6 → comfortable margin
+            float half = size * 0.5f;
+
+            var tex = NewTexture(size, size);
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float cov = 0f;
+                for (int sy = 0; sy < 4; sy++)
+                for (int sx = 0; sx < 4; sx++)
+                {
+                    // Texture (y-up) → SVG glyph space (y-down).
+                    float gx = (x + (sx + 0.5f) / 4f - half) / scale;
+                    float gy = (half - (y + (sy + 0.5f) / 4f)) / scale;
+
+                    var p = new Vector2(gx, gy);
+                    if (InPoly(poly, p) ||
+                        InPoly(poly, RotateSvg(p, -120f)) ||
+                        InPoly(poly, RotateSvg(p, -240f)))
+                        cov += 1f;
+                }
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, cov / 16f));
+            }
+            tex.Apply();
+            SavePng(name, tex, Vector4.zero);
+        }
+
+        private static Vector2 RotateSvg(Vector2 p, float degrees)
+        {
+            float a = degrees * Mathf.Deg2Rad;
+            float ca = Mathf.Cos(a), sa = Mathf.Sin(a);
+            return new Vector2(p.x * ca - p.y * sa, p.x * sa + p.y * ca);
+        }
+
+        private static bool InPoly(Vector2[] poly, Vector2 p)
+        {
+            bool inside = false;
+            for (int i = 0, j = poly.Length - 1; i < poly.Length; j = i++)
+            {
+                if ((poly[i].y > p.y) != (poly[j].y > p.y) &&
+                    p.x < (poly[j].x - poly[i].x) * (p.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
+                    inside = !inside;
+            }
+            return inside;
+        }
+
+        // ---------------------------------------------------------------
+        // Asset plumbing
+        // ---------------------------------------------------------------
+
+        private static Texture2D NewTexture(int w, int h) =>
+            new Texture2D(w, h, TextureFormat.RGBA32, false);
+
+        private static void SavePng(string name, Texture2D tex, Vector4 border)
+        {
+            string path = $"{SpriteDir}/{name}.png";
+            File.WriteAllBytes(path, tex.EncodeToPNG());
+            Object.DestroyImmediate(tex);
+
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+
+            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spriteBorder = border;
+            importer.spritePixelsPerUnit = 100f;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.SaveAndReimport();
+        }
+    }
+}
