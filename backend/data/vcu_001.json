@@ -35,6 +35,7 @@
       "recycling_code": "Cu",
       "disassembly_step": 2,
       "hazardous": false,
+      "high_value": true,
       "basis": "datasheet pin count + estimate"
     },
     {
@@ -115,6 +116,7 @@
       "recycling_code": "WEEE",
       "disassembly_step": 4,
       "hazardous": false,
+      "high_value": true,
       "basis": "estimate"
     },
     {
@@ -181,7 +183,8 @@
   },
   "disassembly": {
     "total_steps": 5,
-    "estimated_time_min": 8
+    "estimated_time_min": 8,
+    "tools": ["Torx driver", "spudger"]
   },
   "end_of_life": {
     "recycling_route": "WEEE - selective treatment recommended",

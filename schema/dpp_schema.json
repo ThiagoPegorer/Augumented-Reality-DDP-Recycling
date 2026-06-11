@@ -48,6 +48,7 @@
           "recycling_code": { "type": "string" },
           "disassembly_step": { "type": "integer", "minimum": 1, "description": "Guided disassembly step (1-5) that handles this part." },
           "hazardous": { "type": "boolean" },
+          "high_value": { "type": "boolean", "default": false, "description": "v0.3.1: worth dedicated recovery (intro Recover card, step value tags)." },
           "basis": { "type": ["string", "null"], "description": "BOM transparency: datasheet | estimate." }
         }
       }
@@ -134,7 +135,8 @@
       "required": ["total_steps", "estimated_time_min"],
       "properties": {
         "total_steps": { "type": "integer", "minimum": 1 },
-        "estimated_time_min": { "type": "integer", "minimum": 0 }
+        "estimated_time_min": { "type": "integer", "minimum": 0 },
+        "tools": { "type": "array", "items": { "type": "string" }, "description": "v0.3.1: required tools, first = primary (basis: estimate)." }
       }
     },
     "end_of_life": {

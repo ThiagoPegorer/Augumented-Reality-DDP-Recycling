@@ -45,6 +45,15 @@ namespace DPP.UI
             Show(disassemblyIntro, "Disassembly intro");
         }
 
+        /// <summary>
+        /// Start button on the Disassembly intro. Phase 4 will replace this stub
+        /// with the two-canvas step flow (instruction + exploded view).
+        /// </summary>
+        public void ShowStepFlow()
+        {
+            Debug.Log("[ScreenRouter] Step flow not built yet (phase 4).");
+        }
+
         private void Show(GameObject target, string label)
         {
             if (target == null)

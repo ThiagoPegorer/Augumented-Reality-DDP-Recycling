@@ -58,7 +58,7 @@ namespace DPP.EditorTools
 
             // ---- Landing: header + card grid ----
             var landing = Stretch("Landing", screen);
-            BuildLandingHeader(landing, router);
+            MakeTabHeader(landing, router, disassemblyActive: false);
             BuildCategoryCards(landing, view, modalRouter);
 
             // ---- Modal pages ----
@@ -126,11 +126,13 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // Landing header: home + tab pills + separator (spec 02 v3 §3.1)
+        // Shared tab header: home + tab pills + separator (02 v3 §3.1 / 03 v2 §3).
+        // Used by the Information tab (disassemblyActive=false) and the
+        // Disassembly intro (disassemblyActive=true).
         // =================================================================
-        private static void BuildLandingHeader(RectTransform landing, ScreenRouter router)
+        internal static void MakeTabHeader(RectTransform parent, ScreenRouter router, bool disassemblyActive)
         {
-            var home = TLCenter("HomeButton", landing, 42, 44, 40, 40);
+            var home = TLCenter("HomeButton", parent, 42, 44, 40, 40);
             var homeOutline = AddImage(CenterIn("HoverOutline", home, 50, 50), DPPSpriteFactory.Circle64, Color.white);
             homeOutline.gameObject.SetActive(false);
             AddImage(CenterIn("Ring", home, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
@@ -144,12 +146,12 @@ namespace DPP.EditorTools
             var homeHover = home.gameObject.AddComponent<HoverHighlight>();
             SetRef(homeHover, "highlightOutline", homeOutline.gameObject);
 
-            BuildTabPill(landing, router, "TabInformations", 130, active: true,  label: "Informations",
+            BuildTabPill(parent, router, "TabInformations", 130, active: !disassemblyActive, label: "Informations",
                 method: nameof(ScreenRouter.ShowInformations));
-            BuildTabPill(landing, router, "TabDisassembly", 322, active: false, label: "Disassembly",
+            BuildTabPill(parent, router, "TabDisassembly", 322, active: disassemblyActive, label: "Disassembly",
                 method: nameof(ScreenRouter.ShowDisassembly));
 
-            AddImage(TL("Separator", landing, 24, 76, 592, 1), null, DPPTheme.Hex("#1a335f"));
+            AddImage(TL("Separator", parent, 24, 76, 592, 1), null, DPPTheme.Hex("#1a335f"));
         }
 
         private static void BuildTabPill(RectTransform parent, ScreenRouter router,

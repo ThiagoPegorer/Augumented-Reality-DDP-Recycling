@@ -47,6 +47,7 @@ class Component(BaseModel):
     recycling_code: str
     disassembly_step: int       # which guided step (1-5) handles this part
     hazardous: bool = False
+    high_value: bool = False     # v0.3.1 — worth dedicated recovery (Recover card, step value tags)
     basis: Optional[str] = None  # "datasheet" | "estimate" — BOM transparency
 
 
@@ -104,6 +105,7 @@ class Compliance(BaseModel):
 class Disassembly(BaseModel):
     total_steps: int
     estimated_time_min: int
+    tools: List[str] = Field(default_factory=list)  # v0.3.1 — e.g. ["Torx driver", "spudger"]; basis: estimate
 
 
 class EndOfLife(BaseModel):

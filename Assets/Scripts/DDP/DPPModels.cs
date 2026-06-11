@@ -66,6 +66,7 @@ namespace DPP.Models
         public string recycling_code;
         public int disassembly_step;      // guided step (1-5) handling this part
         public bool hazardous;
+        public bool high_value;           // v0.3.1: worth dedicated recovery
         public string basis;              // "datasheet" | "estimate" (nullable)
     }
 
@@ -136,6 +137,7 @@ namespace DPP.Models
     {
         public int total_steps;
         public int estimated_time_min;
+        public List<string> tools;        // v0.3.1: e.g. ["Torx driver", "spudger"]
     }
 
     [Serializable]
