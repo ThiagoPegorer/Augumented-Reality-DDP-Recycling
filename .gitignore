@@ -63,6 +63,9 @@ crashlytics-build.properties
 *.swp
 *.swo
 
+# --- Recovery reports (generated at runtime, not source data) ---
+backend/data/reports/
+
 # --- Python backend ---
 backend/.venv/
 backend/venv/

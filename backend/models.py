@@ -133,6 +133,17 @@ class EndOfLife(BaseModel):
     hazardous_warnings: List[str] = Field(default_factory=list)
 
 
+class RecoveryReport(BaseModel):
+    """v0.5 — recovery report posted by the AR client after a completed
+    disassembly (spec 09 §7). Closes the UC4 data-feedback loop."""
+    product_id: str
+    timestamp: str               # ISO 8601 UTC, client-supplied
+    elapsed_s: int               # start → finish stopwatch, whole seconds
+    steps_completed: int
+    recovered_component_ids: List[str] = Field(default_factory=list)
+    co2_avoided_kg: Optional[float] = None
+
+
 class DPP(BaseModel):
     """Top-level Digital Product Passport for a VCU."""
     product_id: str

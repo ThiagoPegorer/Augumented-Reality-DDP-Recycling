@@ -20,6 +20,7 @@ namespace DPP.UI
     {
         [Header("Wiring")]
         [SerializeField] private ScreenRouter router;
+        [SerializeField] private CompletionSummaryView summary;
 
         [Header("Header")]
         [SerializeField] private TMP_Text stepIndicator;   // "Step n of 5"
@@ -52,6 +53,7 @@ namespace DPP.UI
         private List<Step> _steps;
         private int _index;
         private Coroutine _progressAnim;
+        private float _flowStartTime;   // stopwatch: flow entry → finish (spec 09 §3)
 
         // Accent colors (spec 04 §3).
         private static readonly Color TealRing = DPPTheme.TealLight;
@@ -68,6 +70,7 @@ namespace DPP.UI
         private void OnEnable()
         {
             _index = 0;
+            _flowStartTime = Time.realtimeSinceStartup; // timer starts with the flow
             Refresh(false);
         }
 
@@ -78,7 +81,11 @@ namespace DPP.UI
             int total = TotalSteps();
             if (_index >= total - 1)
             {
-                Debug.Log("[StepFlowController] Flow complete — completion summary not built yet (phase 5).");
+                // Finish: stop the stopwatch, hand the session to the summary.
+                int elapsed = Mathf.RoundToInt(Time.realtimeSinceStartup - _flowStartTime);
+                if (summary != null) summary.SetSession(elapsed, total, total);
+                if (router != null) router.ShowCompletion();
+                else Debug.LogWarning("[StepFlowController] No router — cannot show completion summary.");
                 return;
             }
             _index++;

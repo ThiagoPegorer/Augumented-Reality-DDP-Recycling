@@ -48,6 +48,9 @@ namespace DPP.EditorTools
         public const string IcMagnify = "ui_ic_magnify";
         public const string IcChip    = "ui_ic_chip";
         public const string IcLabel   = "ui_ic_label";
+        public const string IcClock   = "ui_ic_clock";    // completion summary time card
+        public const string IcStar    = "ui_ic_star";     // gold recovery cards
+        public const string IcCheck   = "ui_ic_check";    // done header
 
         [MenuItem("DPP/Generate UI Sprites", false, 100)]
         public static void GenerateAll()
@@ -105,6 +108,12 @@ namespace DPP.EditorTools
                 Poly(-2,-4.5f, -2,-7.5f), Poly(2,-4.5f, 2,-7.5f), Poly(-2,4.5f, -2,7.5f), Poly(2,4.5f, 2,7.5f));
             MakeStrokeIcon(IcLabel, 2.0f,
                 Poly(-6,-6, 6,-6, 6,2, 2,6, -6,6, -6,-6), Poly(6,2, 2,2, 2,6));
+            MakeStrokeIcon(IcClock, 1.8f,
+                CirclePts(0,0,8f), Poly(0,-4.5f, 0,0, 3,2.2f));
+            MakeStrokeIcon(IcStar, 1.8f,
+                Poly(0,-8, 2.4f,-2.6f, 8,-2.2f, 3.8f,1.6f, 5,7.4f, 0,4.2f, -5,7.4f, -3.8f,1.6f, -8,-2.2f, -2.4f,-2.6f, 0,-8));
+            MakeStrokeIcon(IcCheck, 2.6f,
+                Poly(-7,0, -2,5, 7,-5));
 
             AssetDatabase.Refresh();
             Debug.Log($"[DPPSpriteFactory] UI sprites generated in {SpriteDir}.");

@@ -37,6 +37,9 @@ namespace DPP
         [Tooltip("Screens 04–08 — guided step flow controller. Populated with disassembly.steps[].")]
         [SerializeField] private DPP.UI.StepFlowController stepFlow;
 
+        [Tooltip("Screen 09 — completion summary view. Populated with identity + recovery data.")]
+        [SerializeField] private DPP.UI.CompletionSummaryView completionSummary;
+
         [Header("Editor test")]
         [Tooltip("On Start, fetch this product_id without waiting for a QR scan. Useful in Editor.")]
         [SerializeField] private bool fetchOnStart = true;
@@ -83,7 +86,8 @@ namespace DPP
                 if (mainPage != null)         mainPage.Populate(data);
                 if (infoTab != null)          infoTab.Populate(data);
                 if (disassemblyIntro != null) disassemblyIntro.Populate(data);
-                if (stepFlow != null)         stepFlow.Populate(data);
+                if (stepFlow != null)          stepFlow.Populate(data);
+                if (completionSummary != null) completionSummary.Populate(data);
                 Debug.Log($"[DPPManager] Populated UI for product_id={data.product_id}");
             }
             catch (System.Exception ex)

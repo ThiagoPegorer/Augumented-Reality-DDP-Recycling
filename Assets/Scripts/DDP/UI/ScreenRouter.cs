@@ -23,6 +23,7 @@ namespace DPP.UI
         [SerializeField] private GameObject informationTab;
         [SerializeField] private GameObject disassemblyIntro;
         [SerializeField] private GameObject stepFlow;
+        [SerializeField] private GameObject completionSummary;
 
         [Tooltip("Separate world-space exploded-view canvas — active only during the step flow.")]
         [SerializeField] private GameObject explodedCanvas;
@@ -63,6 +64,17 @@ namespace DPP.UI
             Show(stepFlow, "Step flow");
         }
 
+        /// <summary>Step 5 'Finish & see summary' → completion summary (09).</summary>
+        public void ShowCompletion()
+        {
+            if (completionSummary == null)
+            {
+                Debug.Log("[ScreenRouter] Completion summary not built yet (phase 5).");
+                return;
+            }
+            Show(completionSummary, "Completion summary");
+        }
+
         private void Show(GameObject target, string label)
         {
             if (target == null)
@@ -71,10 +83,11 @@ namespace DPP.UI
                 return;
             }
 
-            SetActiveSafe(mainPage,         target == mainPage);
-            SetActiveSafe(informationTab,   target == informationTab);
-            SetActiveSafe(disassemblyIntro, target == disassemblyIntro);
-            SetActiveSafe(stepFlow,         target == stepFlow);
+            SetActiveSafe(mainPage,          target == mainPage);
+            SetActiveSafe(informationTab,    target == informationTab);
+            SetActiveSafe(disassemblyIntro,  target == disassemblyIntro);
+            SetActiveSafe(stepFlow,          target == stepFlow);
+            SetActiveSafe(completionSummary, target == completionSummary);
 
             // The exploded-view canvas lives alongside the step flow only.
             SetActiveSafe(explodedCanvas,   target == stepFlow);

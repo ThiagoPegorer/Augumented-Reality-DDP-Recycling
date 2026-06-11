@@ -11,12 +11,13 @@ required fields, the endpoint returns 500 with a clear validation error.
 from pathlib import Path
 import json
 import logging
+import re
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
 
-from models import DPP
+from models import DPP, RecoveryReport
 
 logger = logging.getLogger("dpp")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -24,7 +25,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 app = FastAPI(
     title="DPP API",
     description="Digital Product Passport API for VCU AR prototype",
-    version="0.2.0",
+    version="0.5.0",
 )
 
 # CORS — open during prototype dev so Unity (any host) can call the API.
@@ -32,11 +33,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
 DATA_DIR = Path(__file__).parent / "data"
+REPORTS_DIR = DATA_DIR / "reports"
 
 
 @app.get("/")
@@ -93,3 +95,41 @@ def get_dpp(product_id: str) -> DPP:
             status_code=500,
             detail=f"DPP {product_id} fails schema validation: {exc.errors()}",
         ) from exc
+
+
+@app.post(
+    "/dpp/{product_id}/report",
+    status_code=201,
+    summary="Submit a recovery report (v0.5, spec 09 §7)",
+)
+def submit_report(product_id: str, report: RecoveryReport):
+    """
+    Store a recovery report posted by the AR client after a completed
+    disassembly. One JSON file per report in data/reports/.
+
+    - **404** if the product_id has no DPP.
+    - **422** (automatic) if the payload fails RecoveryReport validation.
+    """
+    if not (DATA_DIR / f"{product_id}.json").exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"Unknown product_id: {product_id}",
+        )
+    if report.product_id != product_id:
+        raise HTTPException(
+            status_code=400,
+            detail="product_id in path and payload do not match",
+        )
+
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    # Filesystem-safe timestamp for the filename.
+    ts_safe = re.sub(r"[^0-9A-Za-z]", "-", report.timestamp)
+    report_id = f"report_{product_id}_{ts_safe}"
+    out_path = REPORTS_DIR / f"{report_id}.json"
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(report.model_dump(), f, indent=2)
+
+    logger.info("Stored recovery report %s (elapsed %ss, co2 %s kg)",
+                out_path.name, report.elapsed_s, report.co2_avoided_kg)
+    # Future (spec 09 §9): also render a one-page PDF alongside the JSON.
+    return {"status": "stored", "report_id": report_id}
