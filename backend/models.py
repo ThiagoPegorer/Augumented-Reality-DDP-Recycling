@@ -102,10 +102,29 @@ class Compliance(BaseModel):
     weee_category: Optional[str] = None
 
 
+class StepAction(BaseModel):
+    """One action card inside a guided step (v0.4)."""
+    title: str
+    subtitle: Optional[str] = None
+    icon: str = "cross"          # keyword mapped to a sprite in Unity:
+                                 # cross|up|pins|usb|lever|board|magnify|chip|recycle|label
+    value: bool = False          # true → gold high-value accent
+
+
+class Step(BaseModel):
+    """One guided disassembly step (v0.4). Content per DPP_UI_Specs 04–08."""
+    id: int                      # 1-based, matches Component.disassembly_step
+    title: str
+    tool: Optional[str] = None
+    component_ids: List[str] = Field(default_factory=list)
+    actions: List[StepAction] = Field(default_factory=list)
+
+
 class Disassembly(BaseModel):
     total_steps: int
     estimated_time_min: int
     tools: List[str] = Field(default_factory=list)  # v0.3.1 — e.g. ["Torx driver", "spudger"]; basis: estimate
+    steps: List[Step] = Field(default_factory=list)  # v0.4 — guided step content
 
 
 class EndOfLife(BaseModel):

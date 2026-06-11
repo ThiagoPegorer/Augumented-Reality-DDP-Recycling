@@ -184,7 +184,59 @@
   "disassembly": {
     "total_steps": 5,
     "estimated_time_min": 8,
-    "tools": ["Torx driver", "spudger"]
+    "tools": ["Torx driver", "spudger"],
+    "steps": [
+      {
+        "id": 1,
+        "title": "Open the housing",
+        "tool": "Torx driver",
+        "component_ids": ["fasteners"],
+        "actions": [
+          { "title": "Remove the housing screws", "subtitle": "Torx driver · keep them aside", "icon": "cross", "value": false },
+          { "title": "Lift off the top cover", "subtitle": "Exposes the main PCB", "icon": "up", "value": false }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Remove the connectors",
+        "tool": null,
+        "component_ids": ["connectors"],
+        "actions": [
+          { "title": "Unscrew the 3 round connectors", "subtitle": "198 gold-plated pins · recover", "icon": "pins", "value": true },
+          { "title": "Disconnect the USB lead", "subtitle": "Set aside · reusable part", "icon": "usb", "value": false }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Lift out the main PCB",
+        "tool": "spudger",
+        "component_ids": ["pcb_substrate", "pcb_copper", "solder", "passives", "tim", "coating", "wiring"],
+        "actions": [
+          { "title": "Free the board from its mounts", "subtitle": "Spudger · gentle leverage, no bending", "icon": "lever", "value": false },
+          { "title": "Lift the PCB out flat", "subtitle": "Carries processors, memory & sensors", "icon": "board", "value": false }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Recover the silicon",
+        "tool": null,
+        "component_ids": ["actives"],
+        "actions": [
+          { "title": "Locate the two processors", "subtitle": "667 MHz dual-core pair · centre of board", "icon": "magnify", "value": false },
+          { "title": "Remove processors & memory ICs", "subtitle": "High-value silicon · reuse stream", "icon": "chip", "value": true }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Sort the housing",
+        "tool": null,
+        "component_ids": ["housing", "misc"],
+        "actions": [
+          { "title": "Shells into the aluminium stream", "subtitle": "Die-cast AlSi · 363 g · highest CO2 credit", "icon": "recycle", "value": false },
+          { "title": "Peel labels & adhesive residue", "subtitle": "Mixed polymer · separate bin", "icon": "label", "value": false }
+        ]
+      }
+    ]
   },
   "end_of_life": {
     "recycling_route": "WEEE - selective treatment recommended",

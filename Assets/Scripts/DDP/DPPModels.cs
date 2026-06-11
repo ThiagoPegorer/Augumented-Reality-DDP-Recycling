@@ -133,11 +133,31 @@ namespace DPP.Models
     }
 
     [Serializable]
+    public class StepAction
+    {
+        public string title;
+        public string subtitle;
+        public string icon;               // cross|up|pins|usb|lever|board|magnify|chip|recycle|label
+        public bool value;                // true → gold high-value accent
+    }
+
+    [Serializable]
+    public class Step
+    {
+        public int id;                    // 1-based, matches Component.disassembly_step
+        public string title;
+        public string tool;
+        public List<string> component_ids;
+        public List<StepAction> actions;
+    }
+
+    [Serializable]
     public class Disassembly
     {
         public int total_steps;
         public int estimated_time_min;
         public List<string> tools;        // v0.3.1: e.g. ["Torx driver", "spudger"]
+        public List<Step> steps;          // v0.4: guided step content
     }
 
     [Serializable]

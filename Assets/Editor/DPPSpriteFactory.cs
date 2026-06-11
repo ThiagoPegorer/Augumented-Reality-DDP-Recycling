@@ -38,6 +38,17 @@ namespace DPP.EditorTools
         public const string IcChevron = "ui_ic_chevron";   // points DOWN; rotate 180 for up, +90 for right
         public const string IcBack    = "ui_ic_back";      // ← arrow (modal back button)
 
+        // Step action icons (v0.4 keywords, spec 04 §8). "recycle" maps to Recycle.
+        public const string IcCross   = "ui_ic_cross";
+        public const string IcUp      = "ui_ic_up";
+        public const string IcPins    = "ui_ic_pins";
+        public const string IcUsb     = "ui_ic_usb";
+        public const string IcLever   = "ui_ic_lever";
+        public const string IcBoard   = "ui_ic_board";
+        public const string IcMagnify = "ui_ic_magnify";
+        public const string IcChip    = "ui_ic_chip";
+        public const string IcLabel   = "ui_ic_label";
+
         [MenuItem("DPP/Generate UI Sprites", false, 100)]
         public static void GenerateAll()
         {
@@ -72,6 +83,28 @@ namespace DPP.EditorTools
                 Poly(-7,-3.5f, 0,3.5f, 7,-3.5f));
             MakeStrokeIcon(IcBack, 2.0f,
                 Poly(3,-6, -4,0, 3,6), Poly(-4,0, 8,0));
+
+            // Step action icons (scaled to read inside r15 card circles).
+            MakeStrokeIcon(IcCross, 2.2f,
+                Poly(-5,-5, 5,5), Poly(5,-5, -5,5));
+            MakeStrokeIcon(IcUp, 2.2f,
+                Poly(0,7, 0,-6), Poly(-5,-1, 0,-6, 5,-1));
+            MakeStrokeIcon(IcPins, 2.0f,
+                CirclePts(-5,0,3f), CirclePts(2.5f,-4,3f), CirclePts(2.5f,4,3f));
+            MakeStrokeIcon(IcUsb, 2.0f,
+                Poly(-6,-5, 6,-5, 6,3, -6,3, -6,-5), Poly(-2.5f,3, -2.5f,7), Poly(2.5f,3, 2.5f,7));
+            MakeStrokeIcon(IcLever, 2.2f,
+                Poly(-6,5, 6,-5), Poly(-6,5, -1,6.2f));
+            MakeStrokeIcon(IcBoard, 2.0f,
+                Poly(-7,-5, 7,-5, 7,5, -7,5, -7,-5), Poly(-3.5f,-5, -3.5f,5), Poly(0,-5, 0,5), Poly(3.5f,-5, 3.5f,5));
+            MakeStrokeIcon(IcMagnify, 2.0f,
+                CirclePts(-1.5f,-1.5f,4.6f), Poly(2.2f,2.2f, 7,7));
+            MakeStrokeIcon(IcChip, 1.8f,
+                Poly(-4.5f,-4.5f, 4.5f,-4.5f, 4.5f,4.5f, -4.5f,4.5f, -4.5f,-4.5f),
+                Poly(-4.5f,-2, -7.5f,-2), Poly(-4.5f,2, -7.5f,2), Poly(4.5f,-2, 7.5f,-2), Poly(4.5f,2, 7.5f,2),
+                Poly(-2,-4.5f, -2,-7.5f), Poly(2,-4.5f, 2,-7.5f), Poly(-2,4.5f, -2,7.5f), Poly(2,4.5f, 2,7.5f));
+            MakeStrokeIcon(IcLabel, 2.0f,
+                Poly(-6,-6, 6,-6, 6,2, 2,6, -6,6, -6,-6), Poly(6,2, 2,2, 2,6));
 
             AssetDatabase.Refresh();
             Debug.Log($"[DPPSpriteFactory] UI sprites generated in {SpriteDir}.");

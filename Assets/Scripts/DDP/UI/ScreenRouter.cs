@@ -22,6 +22,10 @@ namespace DPP.UI
         [SerializeField] private GameObject mainPage;
         [SerializeField] private GameObject informationTab;
         [SerializeField] private GameObject disassemblyIntro;
+        [SerializeField] private GameObject stepFlow;
+
+        [Tooltip("Separate world-space exploded-view canvas — active only during the step flow.")]
+        [SerializeField] private GameObject explodedCanvas;
 
         public void ShowMainPage() => Show(mainPage, "Main page");
 
@@ -46,12 +50,17 @@ namespace DPP.UI
         }
 
         /// <summary>
-        /// Start button on the Disassembly intro. Phase 4 will replace this stub
-        /// with the two-canvas step flow (instruction + exploded view).
+        /// Start button on the Disassembly intro → the two-canvas step flow
+        /// (instruction screen + separate exploded-view canvas).
         /// </summary>
         public void ShowStepFlow()
         {
-            Debug.Log("[ScreenRouter] Step flow not built yet (phase 4).");
+            if (stepFlow == null)
+            {
+                Debug.Log("[ScreenRouter] Step flow not built yet (phase 4).");
+                return;
+            }
+            Show(stepFlow, "Step flow");
         }
 
         private void Show(GameObject target, string label)
@@ -65,6 +74,10 @@ namespace DPP.UI
             SetActiveSafe(mainPage,         target == mainPage);
             SetActiveSafe(informationTab,   target == informationTab);
             SetActiveSafe(disassemblyIntro, target == disassemblyIntro);
+            SetActiveSafe(stepFlow,         target == stepFlow);
+
+            // The exploded-view canvas lives alongside the step flow only.
+            SetActiveSafe(explodedCanvas,   target == stepFlow);
 
             Debug.Log($"[ScreenRouter] Showing {label}.");
         }

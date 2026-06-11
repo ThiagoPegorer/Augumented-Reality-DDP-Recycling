@@ -34,6 +34,9 @@ namespace DPP
         [Tooltip("Screen 03 — Disassembly intro view (Canva design). Populated with tools/time/scope/recover stats.")]
         [SerializeField] private DPP.UI.DisassemblyIntroView disassemblyIntro;
 
+        [Tooltip("Screens 04–08 — guided step flow controller. Populated with disassembly.steps[].")]
+        [SerializeField] private DPP.UI.StepFlowController stepFlow;
+
         [Header("Editor test")]
         [Tooltip("On Start, fetch this product_id without waiting for a QR scan. Useful in Editor.")]
         [SerializeField] private bool fetchOnStart = true;
@@ -80,6 +83,7 @@ namespace DPP
                 if (mainPage != null)         mainPage.Populate(data);
                 if (infoTab != null)          infoTab.Populate(data);
                 if (disassemblyIntro != null) disassemblyIntro.Populate(data);
+                if (stepFlow != null)         stepFlow.Populate(data);
                 Debug.Log($"[DPPManager] Populated UI for product_id={data.product_id}");
             }
             catch (System.Exception ex)

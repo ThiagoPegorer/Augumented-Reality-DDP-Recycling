@@ -136,7 +136,34 @@
       "properties": {
         "total_steps": { "type": "integer", "minimum": 1 },
         "estimated_time_min": { "type": "integer", "minimum": 0 },
-        "tools": { "type": "array", "items": { "type": "string" }, "description": "v0.3.1: required tools, first = primary (basis: estimate)." }
+        "tools": { "type": "array", "items": { "type": "string" }, "description": "v0.3.1: required tools, first = primary (basis: estimate)." },
+        "steps": {
+          "type": "array",
+          "description": "v0.4: guided step content (DPP_UI_Specs 04-08).",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "actions"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1, "description": "Matches Component.disassembly_step." },
+              "title": { "type": "string" },
+              "tool": { "type": ["string", "null"] },
+              "component_ids": { "type": "array", "items": { "type": "string" } },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["title"],
+                  "properties": {
+                    "title": { "type": "string" },
+                    "subtitle": { "type": ["string", "null"] },
+                    "icon": { "type": "string", "description": "cross|up|pins|usb|lever|board|magnify|chip|recycle|label" },
+                    "value": { "type": "boolean", "description": "true = gold high-value accent" }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "end_of_life": {
