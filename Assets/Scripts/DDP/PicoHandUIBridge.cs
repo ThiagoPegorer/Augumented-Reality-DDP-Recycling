@@ -71,6 +71,9 @@ namespace DPP
         [Tooltip("Small Transform that follows the RIGHT ray's canvas hit point. Hidden when not over a button. Optional.")]
         [SerializeField] private Transform rightReticle;
 
+        [Tooltip("Reticle color when the ray is valid but NOT over a clickable button (free-floating cursor).")]
+        [SerializeField] private Color idleColor = new Color(1f, 1f, 1f, 0.45f);
+
         [Tooltip("Reticle color when hovering over a clickable button (not pinching).")]
         [SerializeField] private Color hoverColor = new Color(1f, 1f, 1f, 0.85f);
 
@@ -82,6 +85,9 @@ namespace DPP
 
         [Tooltip("Small offset toward the camera, in meters, so the reticle doesn't z-fight with the canvas surface.")]
         [SerializeField] private float reticleSurfaceOffset = 0.003f;
+
+        [Tooltip("Where the reticle floats when the ray hits nothing at all (no canvas, no 3D collider), in meters along the ray.")]
+        [SerializeField] private float reticleIdleDistance = 2.5f;
 
         [Header("Diagnostics")]
         [Tooltip("If true, prints a status snapshot once per second to Logcat. Turn off after debugging.")]
@@ -129,17 +135,19 @@ namespace DPP
                                 ref GameObject hoverTarget,
                                 Transform reticle, Renderer reticleRenderer, string label)
         {
-            // Default: reticle hidden until proven we have a valid hit.
-            bool wantReticleVisible = false;
+            // The reticle is now always visible whenever the ray is valid — it
+            // free-floats in space even outside any canvas. It only hides when
+            // the hand itself is unavailable (not computed / no valid ray).
+            bool overClickable = false;
             Vector3 reticlePos = Vector3.zero;
             Quaternion reticleRot = Quaternion.identity;
 
-            if (hand == null)            { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
-            if (!hand.Computed)          { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
-            if (!hand.RayValid)          { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
+            if (hand == null)            { SetReticle(reticle, reticleRenderer, false, default, default, false, 0f); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
+            if (!hand.Computed)          { SetReticle(reticle, reticleRenderer, false, default, default, false, 0f); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
+            if (!hand.RayValid)          { SetReticle(reticle, reticleRenderer, false, default, default, false, 0f); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
 
             Transform rayPose = hand.transform.Find("RayPose");
-            if (rayPose == null)         { SetReticle(reticle, reticleRenderer, false, default, default, 0f, ref pinchFlashUntil); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
+            if (rayPose == null)         { SetReticle(reticle, reticleRenderer, false, default, default, false, 0f); wasPinching = false; DispatchHover(ref hoverTarget, null); return; }
 
             Vector3 origin = rayPose.position;
             Vector3 direction = rayPose.forward;
@@ -155,14 +163,34 @@ namespace DPP
             // exactly like they do to the Editor mouse.
             DispatchHover(ref hoverTarget, hit.hasHit ? hit.target : null);
 
+            // Decide where the reticle sits, in priority order:
+            //   1. On a clickable button  → snap to the canvas, color = hover.
+            //   2. On any World Space canvas plane (even non-clickable) → idle.
+            //   3. On a 3D collider along the ray → idle at the surface.
+            //   4. Nothing → float at a fixed distance along the ray → idle.
             if (hit.hasHit)
             {
-                wantReticleVisible = true;
+                overClickable = true;
                 // Push the reticle a few mm toward the camera along the canvas
                 // normal so it doesn't z-fight with the button graphic.
                 Vector3 normal = hit.canvas.transform.forward * -1f;
                 reticlePos = hit.worldPoint + normal * reticleSurfaceOffset;
                 reticleRot = Quaternion.LookRotation(-normal, hit.canvas.transform.up);
+            }
+            else if (TryFindAnyCanvasPoint(origin, direction, out Vector3 canvasPt, out Vector3 canvasNormal, out Transform canvasT))
+            {
+                reticlePos = canvasPt + canvasNormal * reticleSurfaceOffset;
+                reticleRot = Quaternion.LookRotation(-canvasNormal, canvasT.up);
+            }
+            else if (Physics.Raycast(origin, direction, out RaycastHit phys, maxRayDistance, raycastMask, QueryTriggerInteraction.Collide))
+            {
+                reticlePos = phys.point + phys.normal * reticleSurfaceOffset;
+                reticleRot = Quaternion.LookRotation(-phys.normal, Vector3.up);
+            }
+            else
+            {
+                reticlePos = origin + direction * reticleIdleDistance;
+                reticleRot = Quaternion.LookRotation(-direction, Vector3.up);
             }
 
             // ---- pinch edge detection ----
@@ -195,8 +223,8 @@ namespace DPP
                 }
             }
 
-            SetReticle(reticle, reticleRenderer, wantReticleVisible, reticlePos, reticleRot,
-                       Time.unscaledTime < pinchFlashUntil ? 1f : 0f, ref pinchFlashUntil);
+            SetReticle(reticle, reticleRenderer, true, reticlePos, reticleRot,
+                       overClickable, Time.unscaledTime < pinchFlashUntil ? 1f : 0f);
         }
 
         // Fires pointerExit on the previously hovered GameObject and
@@ -219,10 +247,10 @@ namespace DPP
         }
 
         // Sets the reticle's transform + visibility + color in one place.
-        // `flashAmount` is 1 right after a click and 0 otherwise; we use it to
-        // pick between pinchColor (flashing) and hoverColor (steady).
+        // Color priority: pinchColor while flashing > hoverColor when over a
+        // clickable button > idleColor when free-floating in space.
         private void SetReticle(Transform reticle, Renderer reticleRenderer, bool visible,
-                                Vector3 pos, Quaternion rot, float flashAmount, ref float _)
+                                Vector3 pos, Quaternion rot, bool overClickable, float flashAmount)
         {
             if (reticle == null) return;
             if (reticle.gameObject.activeSelf != visible) reticle.gameObject.SetActive(visible);
@@ -231,7 +259,7 @@ namespace DPP
             if (reticleRenderer != null)
             {
                 reticleRenderer.GetPropertyBlock(_mpb);
-                Color c = flashAmount > 0f ? pinchColor : hoverColor;
+                Color c = flashAmount > 0f ? pinchColor : (overClickable ? hoverColor : idleColor);
                 _mpb.SetColor("_BaseColor", c);
                 _mpb.SetColor("_Color", c);
                 reticleRenderer.SetPropertyBlock(_mpb);
@@ -284,109 +312,55 @@ namespace DPP
             return best;
         }
 
-        // Fires pointerClickHandler on the hit's target.
-        private void DeliverClick(CanvasHit hit, string label)
+        // Like FindClickableHit, but snaps to the nearest raycast-target
+        // Graphic the ray crosses — clickable or not. This covers panel
+        // backgrounds, decorative images, AND the grabber bar (which has no
+        // click handler by design), so the reticle stays visible and snapped
+        // when the worker points at the drag tab below the panel, not just at
+        // buttons inside it. We test each Graphic's own rect (not the canvas's
+        // outer rect) so chrome that sits outside the canvas bounds still
+        // registers.
+        private bool TryFindAnyCanvasPoint(Vector3 origin, Vector3 direction,
+                                           out Vector3 point, out Vector3 normal, out Transform canvasT)
         {
-            if (EventSystem.current == null)
-            {
-                if (verboseLogging) Debug.LogWarning($"[PicoBridge] {label}: EventSystem.current is null. The scene needs an EventSystem GameObject.");
-                return;
-            }
+            point = Vector3.zero; normal = Vector3.forward; canvasT = null;
+            float bestDist = float.PositiveInfinity;
 
-            Camera eventCam = hit.canvas != null ? hit.canvas.worldCamera : null;
-            if (eventCam == null) eventCam = Camera.main;
-            Vector2 screenForPed = eventCam != null ? (Vector2)eventCam.WorldToScreenPoint(hit.worldPoint) : Vector2.zero;
-            PointerEventData ped = new PointerEventData(EventSystem.current) { position = screenForPed };
+            Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+            for (int c = 0; c < canvases.Length; c++)
+            {
+                Canvas canvas = canvases[c];
+                if (canvas == null || !canvas.isActiveAndEnabled) continue;
+                if (canvas.renderMode != RenderMode.WorldSpace) continue;
 
-            GameObject handled = ExecuteEvents.ExecuteHierarchy(hit.target, ped, ExecuteEvents.pointerClickHandler);
-            if (handled != null)
-            {
-                if (verboseLogging) Debug.Log($"[PicoBridge] {label}: pointer click delivered to '{handled.name}'.");
+                Transform t = canvas.transform;
+                Plane plane = new Plane(-t.forward, t.position);
+                Ray ray = new Ray(origin, direction);
+                if (!plane.Raycast(ray, out float dist)) continue;
+                if (dist < 0f || dist > maxRayDistance || dist >= bestDist) continue;
+
+                Vector3 worldHit = ray.GetPoint(dist);
+                // Accept the hit if it lands inside the canvas's own rect (the
+                // whole panel surface — so the reticle sits ON the panel over
+                // empty areas, not just on buttons), OR on any raycast-target
+                // Graphic's rect (which also catches the grabber bar and other
+                // chrome that sits outside the canvas bounds).
+                bool onPanel = CanvasRectContains(canvas, worldHit) || AnyGraphicContains(canvas, worldHit);
+                if (!onPanel) continue;
+
+                bestDist = dist;
+                point = worldHit;
+                normal = -t.forward;
+                canvasT = t;
             }
-            else if (verboseLogging)
-            {
-                Debug.LogWarning($"[PicoBridge] {label}: hit graphic '{hit.target.name}' but ExecuteEvents.ExecuteHierarchy returned null.");
-            }
+            return canvasT != null;
         }
 
-        // Returns the topmost CLICKABLE Graphic on the given Canvas whose
-        // RectTransform contains the given world point. A graphic is
-        // considered clickable if it (or any ancestor) has an
-        // IPointerClickHandler — which is true for Unity UI Buttons and for
-        // any custom component that listens for clicks. Plain decorative
-        // Images (like a panel background with raycastTarget=true but no
-        // listener) are skipped, so they don't block clicks to actual buttons.
-        private static readonly List<Graphic> _graphicBuf = new List<Graphic>();
-        private static Graphic FindGraphicAt(Canvas canvas, Vector3 worldPoint)
+        // True if the world point falls inside the canvas's own RectTransform
+        // bounds — i.e. anywhere on the panel surface, button or not.
+        private static bool CanvasRectContains(Canvas canvas, Vector3 worldPoint)
         {
-            _graphicBuf.Clear();
-            canvas.GetComponentsInChildren(false, _graphicBuf);
-            Graphic best = null;
-            int bestOrder = int.MinValue;
-            for (int i = 0; i < _graphicBuf.Count; i++)
-            {
-                Graphic g = _graphicBuf[i];
-                if (!g.raycastTarget) continue;
-                RectTransform rt = g.rectTransform;
-                // Project world point into the rect's local plane.
-                Vector3 local = rt.InverseTransformPoint(worldPoint);
-                Rect r = rt.rect;
-                if (local.x < r.xMin || local.x > r.xMax) continue;
-                if (local.y < r.yMin || local.y > r.yMax) continue;
-                // Only consider this graphic if it (or an ancestor) actually
-                // handles pointer clicks. This skips decorative panels.
-                if (!HasClickHandler(g.transform)) continue;
-                int order = ComputeDepth(g.transform);
-                if (order > bestOrder)
-                {
-                    bestOrder = order;
-                    best = g;
-                }
-            }
-            return best;
-        }
-
-        // Returns true if the given Transform or any ancestor has an
-        // IPointerClickHandler (which Button implements).
-        private static bool HasClickHandler(Transform t)
-        {
-            while (t != null)
-            {
-                var handler = t.GetComponent<IPointerClickHandler>();
-                if (handler != null) return true;
-                t = t.parent;
-            }
-            return false;
-        }
-
-        // Cheap depth metric: walk the hierarchy and combine sibling indices.
-        // Bigger = drawn later = on top.
-        private static int ComputeDepth(Transform t)
-        {
-            int depth = 0;
-            while (t != null)
-            {
-                depth = depth * 1000 + t.GetSiblingIndex();
-                t = t.parent;
-            }
-            return depth;
-        }
-
-        // Editor-only sanity draw so you can see the rays in the Scene view.
-        void OnDrawGizmosSelected()
-        {
-            DrawRay(leftHand, Color.cyan);
-            DrawRay(rightHand, new Color(1f, 0.6f, 0.2f));
-        }
-
-        private void DrawRay(PXR_Hand hand, Color c)
-        {
-            if (hand == null) return;
-            Transform rp = hand.transform.Find("RayPose");
-            if (rp == null) return;
-            Gizmos.color = c;
-            Gizmos.DrawLine(rp.position, rp.position + rp.forward * maxRayDistance);
-        }
-    }
-}
-#endif
+            RectTransform crt = canvas.transform as RectTransform;
+            if (crt == null) return false;
+            Vector3 local = crt.InverseTransformPoint(worldPoint);
+            Rect r = c

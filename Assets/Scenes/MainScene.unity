@@ -17381,10 +17381,12 @@ MonoBehaviour:
       m_Calls: []
   leftReticle: {fileID: 1507287789}
   rightReticle: {fileID: 684669853}
+  idleColor: {r: 1, g: 1, b: 1, a: 0.45}
   hoverColor: {r: 1, g: 1, b: 1, a: 0.85}
   pinchColor: {r: 1, g: 0.8, b: 0.2, a: 1}
   pinchFlashSeconds: 0.18
   reticleSurfaceOffset: 0.003
+  reticleIdleDistance: 2.5
   verboseLogging: 0
 --- !u!1 &1042879675
 GameObject:
@@ -18313,6 +18315,7 @@ GameObject:
   - component: {fileID: 1134200669}
   - component: {fileID: 1134200668}
   - component: {fileID: 1134200667}
+  - component: {fileID: 1134200670}
   m_Layer: 0
   m_Name: ExplodedCanvas
   m_TagString: Untagged
@@ -18387,6 +18390,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0.514, y: 1.1176}
   m_SizeDelta: {x: 268, y: 430}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1134200670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134200666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 4
+  m_PresetInfoIsWorld: 1
 --- !u!1 &1136317758
 GameObject:
   m_ObjectHideFlags: 0
@@ -21250,6 +21276,7 @@ GameObject:
   - component: {fileID: 1270976169}
   - component: {fileID: 1270976168}
   - component: {fileID: 1270976167}
+  - component: {fileID: 1270976171}
   m_Layer: 0
   m_Name: DPPPanelCanvas
   m_TagString: Untagged
@@ -21340,6 +21367,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1.1176}
   m_SizeDelta: {x: 640, y: 430}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1270976171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270976166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 4
+  m_PresetInfoIsWorld: 1
 --- !u!1 &1274017521
 GameObject:
   m_ObjectHideFlags: 0
@@ -28921,7 +28971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17716d5062b161446bf52faf05f9742b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUrl: http://127.0.0.1:8000
+  baseUrl: http://172.20.10.8:8000
 --- !u!4 &1656300813
 Transform:
   m_ObjectHideFlags: 0
@@ -38513,7 +38563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3164627227892419151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3541414294419633605, guid: ad88f1cd021f7e84193410be2350800d, type: 3}
@@ -38966,7 +39016,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &8992329467426531840
 MonoBehaviour:
   m_ObjectHideFlags: 0
