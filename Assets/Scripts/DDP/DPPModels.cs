@@ -156,7 +156,9 @@ namespace DPP.Models
     {
         public int total_steps;
         public int estimated_time_min;
-        public List<string> tools;        // v0.3.1: e.g. ["Torx driver", "spudger"]
+        public List<string> tools;        // v0.3.1: e.g. ["Allen key (hex 2.5 mm)"]
+        public List<string> parts;        // 2026-07-10: physical part groups for the intro
+                                          // "Dismantling" list (display strings, not components[])
         public List<Step> steps;          // v0.4: guided step content
     }
 

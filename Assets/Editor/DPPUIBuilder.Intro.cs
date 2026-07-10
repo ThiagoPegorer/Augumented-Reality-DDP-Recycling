@@ -10,22 +10,38 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Phase 3 builder — Screen 03: Disassembly intro (spec 03 v2, approved 2026-06-11).
-    /// Split layout: 2×2 stat matrix left, teardown preview floating right,
-    /// full-width teal Start CTA. Built under the existing DPPPanelCanvas.
+    /// Phase 3 builder — Screen 03: Disassembly intro (spec 03 v3, 2026-07-10).
     ///
-    /// The teardown hero is the static background-removed PNG at
-    /// Assets/Textures/Intro/vcu_teardown.png (spec 03 §5.1); the animated
-    /// frame-sequence / 3D loop upgrade path (spec 03 §5.2) swaps the Image
-    /// content only — layout stays.
+    /// v3 changes (approved mock 03_intro_v3.svg):
+    ///   - 2×2 stat-card matrix REMOVED (boxes read as buttons). Left half is
+    ///     now plain label/value rows: Tools · Est. time · Scope.
+    ///   - Recover card REMOVED; replaced by a "Dismantling" bullet list bound
+    ///     to backend disassembly.parts[] (physical part groups).
+    ///   - Teardown hero: static PNG replaced by a LIVE 3D loop — a preview
+    ///     camera films VCU_assembly (driven by DisassemblyAnimator via
+    ///     TeardownPreviewLoop) into a RenderTexture shown by a RawImage in
+    ///     the same slot. Caption: "Teardown preview · live 3D".
     ///
-    /// Safety banner (spec 03 §4) is intentionally NOT built — the MS 50.4 has
-    /// no hazards; DisassemblyIntroView logs a warning if data ever disagrees.
-    /// Safe to re-run (rebuilds the DisassemblyIntro object).
+    /// Safety banner (spec 03 §4) is still intentionally NOT built.
+    /// Safe to re-run (rebuilds DisassemblyIntro + TeardownPreviewCamera only —
+    /// never the canvas).
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        private const string TeardownTexPath = "Assets/Textures/Intro/vcu_teardown.png";
+        private const string TeardownTexPath = "Assets/Textures/Intro/vcu_teardown.png"; // legacy PNG (kept on disk, no longer used)
+        private const string PreviewCamName = "TeardownPreviewCamera";
+
+        // Demo content baked at build time; Populate() overwrites from backend.
+        // Laid out as TWO columns of three (v3.1): index 0–2 = column 1, 3–5 = column 2.
+        private static readonly string[] DemoParts =
+        {
+            "VCU case",
+            "PCB board",
+            "3 processors",
+            "3 chips",
+            "3 connectors",
+            "14 screws",
+        };
 
         [MenuItem("DPP/Build Phase 3 — Disassembly Intro", false, 3)]
         public static void BuildPhase3()
@@ -54,42 +70,62 @@ namespace DPP.EditorTools
             // ---- Header (shared with 02; Disassembly active) ----
             MakeTabHeader(screen, router, disassemblyActive: true);
 
-            // ---- Left half: eyebrow + 2×2 stat matrix (spec 03 §2/§6) ----
+            // ---- Left half: unboxed job overview (spec 03 v3) ----
             AddText(TL("Eyebrow", screen, 24, 96, 200, 16), "Job overview", 12.5f, DPPTheme.TextCaption, bold: false);
 
-            var tools = MakeStatCard(screen, "ToolsCard", 24, 116, "Tools", "Torx driver", "+ spudger", accent: false);
-            SetRef(view, "toolsValue", tools.value);
-            SetRef(view, "toolsSub", tools.sub);
+            SetRef(view, "toolsValue", MakeOverviewRow(screen, "ToolsRow", 124, "Tools", "Allen key (hex 2.5 mm)"));
+            SetRef(view, "timeValue",  MakeOverviewRow(screen, "TimeRow",  152, "Est. time", "~5 min"));
+            SetRef(view, "scopeValue", MakeOverviewRow(screen, "ScopeRow", 180, "Scope", "5 steps"));
 
-            var time = MakeStatCard(screen, "TimeCard", 174, 116, "Est. time", "~8 min", null, accent: false, valueSize: 17);
-            SetRef(view, "timeValue", time.value);
+            // Divider between overview and dismantling list.
+            AddImage(TL("Divider", screen, 24, 210, 276, 1.5f), DPPSpriteFactory.Grip,
+                DPPTheme.Hex("#1a335f"), sliced: false);
 
-            var scope = MakeStatCard(screen, "ScopeCard", 24, 206, "Scope", "5 steps", "12 parts", accent: false);
-            SetRef(view, "scopeValue", scope.value);
-            SetRef(view, "scopeSub", scope.sub);
+            // ---- Dismantling list (bound to disassembly.parts[]) ----
+            AddText(TL("DismantlingEyebrow", screen, 24, 226, 200, 16), "Dismantling", 12.5f, DPPTheme.TextCaption, bold: false);
 
-            var recover = MakeStatCard(screen, "RecoverCard", 174, 206, "Recover", "2 high-value", "connectors · silicon", accent: true);
-            SetRef(view, "recoverValue", recover.value);
-            SetRef(view, "recoverSub", recover.sub);
-
-            // ---- Right half: teardown preview floating on navy (spec 03 §5.1) ----
-            var teardownSprite = LoadTeardownSprite();
-            var hero = TLCenter("TeardownPreview", screen, 468, 205, 242, 225);
-            var heroImg = hero.gameObject.AddComponent<Image>();
-            heroImg.sprite = teardownSprite;
-            heroImg.preserveAspect = true;
-            heroImg.raycastTarget = false;
-            if (teardownSprite == null)
+            var partLabels = new TMP_Text[DemoParts.Length];
+            for (int i = 0; i < DemoParts.Length; i++)
             {
-                heroImg.color = DPPTheme.Hex("#0c2348"); // visible placeholder if PNG missing
-                Debug.LogWarning($"[DPPUIBuilder] Teardown image not found at {TeardownTexPath} — placeholder shown.");
+                // Two columns of three: rows 0–2 at x24, rows 3–5 at x168.
+                float colX = i < 3 ? 24f : 168f;
+                float rowY = 248f + (i % 3) * 22f;
+                var row = TL($"PartRow{i + 1}", screen, colX, rowY, 140, 18);
+                var dot = TLCenter("Dot", row, 6, 9, 6, 6);
+                AddImage(dot, DPPSpriteFactory.Circle64, DPPTheme.TealAccent);
+                // Same style as the Job-overview values ("Allen key (hex 2.5 mm)").
+                partLabels[i] = AddText(TL("Label", row, 18, 0, 122, 18),
+                    DemoParts[i], 14, DPPTheme.TextOnNavy, bold: true);
             }
+            SetRefArray(view, "partLabels", partLabels);
+
+            // ---- Right half: LIVE 3D teardown preview (spec 03 v3 §5) ----
+            var hero = TLCenter("TeardownPreview", screen, 468, 205, 242, 225);
+            var raw = hero.gameObject.AddComponent<RawImage>();
+            raw.raycastTarget = false;
+            raw.enabled = false; // TeardownPreviewLoop enables it with the RT at runtime
 
             AddText(TLCenter("PreviewCaption", screen, 468, 346, 300, 14),
-                "Teardown preview · illustrative", 11, DPPTheme.TextTip, bold: false,
+                "Teardown preview", 11, DPPTheme.TextTip, bold: false,
                 align: TextAlignmentOptions.Center);
 
-            // ---- Start CTA (spec 03 §7) ----
+            // Preview camera (scene root, disabled — the loop turns it on).
+            RemoveByName(PreviewCamName);
+            var camGO = new GameObject(PreviewCamName, typeof(Camera));
+            Undo.RegisterCreatedObjectUndo(camGO, "Build DPP Disassembly Intro");
+            var cam = camGO.GetComponent<Camera>();
+            cam.enabled = false;
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+
+            var loop = screen.gameObject.AddComponent<TeardownPreviewLoop>();
+            SetRef(loop, "previewCamera", cam);
+            SetRef(loop, "target", raw);
+            var animator = Object.FindFirstObjectByType<DisassemblyAnimator>();
+            if (animator != null) SetRef(loop, "vcuAnimator", animator);
+            else Debug.LogWarning("[DPPUIBuilder] No DisassemblyAnimator found (VCU_assembly missing?) — preview loop will retry at runtime.");
+
+            // ---- Start CTA (spec 03 §7, unchanged) ----
             BuildStartButton(screen, router);
 
             // ---- Wiring ----
@@ -102,16 +138,43 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 3 — Disassembly Intro built. Save the scene.");
+            Debug.Log("[DPPUIBuilder] Phase 3 — Disassembly Intro v3 built. Save the scene.");
         }
 
+        /// <summary>One unboxed overview row: grey label at x24, bold white value at x112.</summary>
+        private static TMP_Text MakeOverviewRow(RectTransform screen, string name, float y,
+            string label, string demoValue)
+        {
+            var row = TL(name, screen, 24, y, 296, 20);
+            AddText(TL("Label", row, 0, 1, 84, 18), label, 12.5f, DPPTheme.TextLabel, bold: false);
+            return AddText(TL("Value", row, 88, 0, 208, 20), demoValue, 14, DPPTheme.TextOnNavy, bold: true);
+        }
+
+        /// <summary>Assigns a private [SerializeField] ARRAY by name via SerializedObject.</summary>
+        private static void SetRefArray(Object target, string fieldName, Object[] values)
+        {
+            var so = new SerializedObject(target);
+            var prop = so.FindProperty(fieldName);
+            if (prop == null || !prop.isArray)
+            {
+                Debug.LogWarning($"[DPPUIBuilder] Array field '{fieldName}' not found on {target.GetType().Name}.");
+                return;
+            }
+            prop.arraySize = values.Length;
+            for (int i = 0; i < values.Length; i++)
+                prop.GetArrayElementAtIndex(i).objectReferenceValue = values[i];
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // =================================================================
+        // Legacy helpers kept for other partials / reference
         // =================================================================
         private struct StatCard
         {
             public TMP_Text value, sub;
         }
 
-        /// <summary>140×80 stat card (spec 03 §6). Accent = teal Recover styling.</summary>
+        /// <summary>140×80 stat card (spec 03 v2 §6 — RETIRED on this screen, kept for reuse).</summary>
         private static StatCard MakeStatCard(RectTransform screen, string name, float x, float y,
             string label, string demoValue, string demoSub, bool accent, float valueSize = 15)
         {
@@ -139,6 +202,33 @@ namespace DPP.EditorTools
                     align: TextAlignmentOptions.Center);
 
             return new StatCard { value = value, sub = sub };
+        }
+
+        /// <summary>Loads the legacy teardown PNG, fixing import settings on first
+        /// use. No longer used on screen 03 (live 3D loop since v3) but still
+        /// called by the Phase 4 builder (DPPUIBuilder.StepFlow.cs) for the
+        /// static exploded-canvas preview.</summary>
+        private static Sprite LoadTeardownSprite()
+        {
+            var importer = AssetImporter.GetAtPath(TeardownTexPath) as TextureImporter;
+            if (importer == null)
+            {
+                AssetDatabase.Refresh(); // file may exist but not yet imported
+                importer = AssetImporter.GetAtPath(TeardownTexPath) as TextureImporter;
+            }
+            if (importer == null) return null;
+
+            if (importer.textureType != TextureImporterType.Sprite)
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.alphaIsTransparency = true;
+                importer.mipmapEnabled = false;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.maxTextureSize = 1024;
+                importer.SaveAndReimport();
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(TeardownTexPath);
         }
 
         private static void BuildStartButton(RectTransform screen, ScreenRouter router)
@@ -169,30 +259,6 @@ namespace DPP.EditorTools
 
             var hover = btn.gameObject.AddComponent<HoverHighlight>();
             SetRef(hover, "highlightOutline", outline.gameObject);
-        }
-
-        /// <summary>Loads the teardown PNG, fixing import settings on first use.</summary>
-        private static Sprite LoadTeardownSprite()
-        {
-            var importer = AssetImporter.GetAtPath(TeardownTexPath) as TextureImporter;
-            if (importer == null)
-            {
-                AssetDatabase.Refresh(); // file may exist but not yet imported
-                importer = AssetImporter.GetAtPath(TeardownTexPath) as TextureImporter;
-            }
-            if (importer == null) return null;
-
-            if (importer.textureType != TextureImporterType.Sprite)
-            {
-                importer.textureType = TextureImporterType.Sprite;
-                importer.spriteImportMode = SpriteImportMode.Single;
-                importer.alphaIsTransparency = true;
-                importer.mipmapEnabled = false;
-                importer.wrapMode = TextureWrapMode.Clamp;
-                importer.maxTextureSize = 1024;
-                importer.SaveAndReimport();
-            }
-            return AssetDatabase.LoadAssetAtPath<Sprite>(TeardownTexPath);
         }
     }
 }

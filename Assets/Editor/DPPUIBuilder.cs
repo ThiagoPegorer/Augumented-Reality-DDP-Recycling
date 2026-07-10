@@ -81,19 +81,16 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // Screen 01 — Main Page (spec 01_main_page.md §2)
+        // Screen 01 — Main Page (spec 01_main_page.md §2, v2 2026-07-10:
+        // serial hero removed, cards re-centered, static subtitles)
         // =================================================================
         private static RectTransform BuildMainPage(RectTransform canvasRT, ScreenRouter router)
         {
             var page = Stretch("MainPage", canvasRT);
-            var view = page.gameObject.AddComponent<MainPageView>();
+            page.gameObject.AddComponent<MainPageView>(); // kept as future-bindings hook (no live data since v2)
 
             // Panel surface — navy, r22.
             AddImage(Stretch("PanelBG", page), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
-
-            // Hero serial — 32 bold white, baseline ≈ y100.
-            var serial = AddText(TL("SerialText", page, 30, 64, 580, 44),
-                "VCU-DEMO-001", 32, DPPTheme.TextOnNavy, bold: true);
 
             // ---- Informations card (left choice) ----
             // 2026-06-10: switched from the light-grey mockup style to the same
@@ -103,7 +100,7 @@ namespace DPP.EditorTools
                 fill: DPPTheme.CardBlue, stroke: DPPTheme.TabActiveStroke, strokeWidth: 2,
                 circleColor: DPPTheme.NavyPanel,
                 title: "Informations", titleColor: DPPTheme.TextOnNavy,
-                subtitle: "Passport & materials", subtitleColor: DPPTheme.TextSubtitleNavy);
+                subtitle: "Digital Product Passport", subtitleColor: DPPTheme.TextSubtitleNavy);
             AddText(Stretch("iGlyph", infoCard.iconCircle), "i", 21, DPPTheme.TextOnNavy,
                 bold: false, align: TextAlignmentOptions.Center);
             WireClick(infoCard.button, router, nameof(ScreenRouter.ShowInformations));
@@ -113,7 +110,7 @@ namespace DPP.EditorTools
                 fill: DPPTheme.CardBlue, stroke: DPPTheme.TabActiveStroke, strokeWidth: 2,
                 circleColor: DPPTheme.TealAccent,
                 title: "Disassembly", titleColor: DPPTheme.TextOnNavy,
-                subtitle: "Guided recycling · 5 steps", subtitleColor: DPPTheme.TextSubtitleNavy);
+                subtitle: "Guided recycling", subtitleColor: DPPTheme.TextSubtitleNavy);
             AddImage(CenterIn("RecycleIcon", disCard.iconCircle, 30, 30),
                 DPPSpriteFactory.Recycle, Color.white);
             // Chevron › built from two capsule bars (font-independent).
@@ -121,11 +118,7 @@ namespace DPP.EditorTools
             ChevronBar(disCard.card, "ChevronBottom", cy: 54, zRot: 45f);
             WireClick(disCard.button, router, nameof(ScreenRouter.ShowDisassembly));
 
-            // Bind view fields.
-            SetRef(view, "serialText", serial);
-            SetRef(view, "disassemblySubtitleText",
-                disCard.card.Find("Subtitle").GetComponent<TMP_Text>());
-
+            // v2: no view bindings — serial removed, subtitles are static copy.
             return page;
         }
 
@@ -136,13 +129,13 @@ namespace DPP.EditorTools
             public Button button;
         }
 
-        /// <summary>One 280×100 r20 choice card at panel y170: hover outline + stroke + fill + icon circle + title + subtitle.</summary>
+        /// <summary>One 280×100 r20 choice card at panel y165 (v2: vertically centered, no serial above): hover outline + stroke + fill + icon circle + title + subtitle.</summary>
         private static ChoiceCard BuildChoiceCard(RectTransform page, string name, float x,
             Color fill, Color stroke, int strokeWidth, Color circleColor,
             string title, Color titleColor, string subtitle, Color subtitleColor)
         {
             const float W = 280f, H = 100f;
-            var card = TL(name, page, x, 170, W, H);
+            var card = TL(name, page, x, 165, W, H);
 
             // Hover-only white outline (00 §4), behind everything, disabled at rest.
             var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),

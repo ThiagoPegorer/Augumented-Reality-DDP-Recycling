@@ -123,7 +123,10 @@ class Step(BaseModel):
 class Disassembly(BaseModel):
     total_steps: int
     estimated_time_min: int
-    tools: List[str] = Field(default_factory=list)  # v0.3.1 — e.g. ["Torx driver", "spudger"]; basis: estimate
+    tools: List[str] = Field(default_factory=list)  # v0.3.1 — e.g. ["Allen key (hex 2.5 mm)"]
+    parts: List[str] = Field(default_factory=list)   # 2026-07-10 — physical part groups for the
+                                                     # intro "Dismantling" list (display strings;
+                                                     # NOT the material-based components[] view)
     steps: List[Step] = Field(default_factory=list)  # v0.4 — guided step content
 
 

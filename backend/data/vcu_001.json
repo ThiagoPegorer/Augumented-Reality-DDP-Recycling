@@ -2,25 +2,25 @@
   "product_id": "vcu_001",
   "identity": {
     "manufacturer": "Bosch Motorsport",
-    "model": "Vehicle Control Unit MS 50.4",
-    "type_number": "F02U.V02.965-02",
+    "model": "VCU Bosch MS 50.4 (model)",
+    "type_number": null,
     "serial_number": "VCU-2026-001",
     "production_date": "2026-03-27",
     "country_of_origin": "DE"
   },
   "specifications": {
-    "size_mm": "166 x 121 x 41",
+    "size_mm": "200 x 150 x 60",
     "weight_g": 660,
-    "protection_class": "IP67",
+    "protection_class": "IP67 (representative)",
     "supply_voltage": "5-18 V",
     "operating_temp_c": "-20 to 80",
-    "connectors": "3 motorsport (198 pins) + USB"
+    "connectors": "3 round connectors (LIFE, SENS-A, SENS-B), screw-fixed"
   },
   "components": [
     {
       "id": "fasteners",
-      "name": "Fasteners (screws, washers)",
-      "material": "Stainless steel",
+      "name": "Fasteners (14 M3 Allen bolts + 14 heat-set inserts)",
+      "material": "Steel bolts + brass inserts",
       "weight_g": 19.8,
       "recycling_code": "Fe",
       "disassembly_step": 1,
@@ -183,37 +183,45 @@
   },
   "disassembly": {
     "total_steps": 5,
-    "estimated_time_min": 8,
-    "tools": ["Torx driver", "spudger"],
+    "estimated_time_min": 5,
+    "tools": ["Allen key (hex 2.5 mm)"],
+    "parts": [
+      "VCU case",
+      "PCB board",
+      "3 processors",
+      "3 chips",
+      "3 connectors",
+      "14 screws"
+    ],
     "steps": [
       {
         "id": 1,
         "title": "Open the housing",
-        "tool": "Torx driver",
+        "tool": "Allen key (hex 2.5 mm)",
         "component_ids": ["fasteners"],
         "actions": [
-          { "title": "Remove the housing screws", "subtitle": "Torx driver · keep them aside", "icon": "cross", "value": false },
-          { "title": "Lift off the top cover", "subtitle": "Exposes the main PCB", "icon": "up", "value": false }
+          { "title": "Remove the 4 lid screws", "subtitle": "Allen key · M3 · keep them aside", "icon": "cross", "value": false },
+          { "title": "Lift off the top cover", "subtitle": "Locating lip disengages · exposes the PCB", "icon": "up", "value": false }
         ]
       },
       {
         "id": 2,
         "title": "Remove the connectors",
-        "tool": null,
+        "tool": "Allen key (hex 2.5 mm)",
         "component_ids": ["connectors"],
         "actions": [
-          { "title": "Unscrew the 3 round connectors", "subtitle": "198 gold-plated pins · recover", "icon": "pins", "value": true },
-          { "title": "Disconnect the USB lead", "subtitle": "Set aside · reusable part", "icon": "usb", "value": false }
+          { "title": "Unscrew the 3 round connectors", "subtitle": "2 screws each · gold-plated contacts · recover", "icon": "pins", "value": true },
+          { "title": "Pull each connector out of its bore", "subtitle": "Set aside · reusable parts", "icon": "up", "value": false }
         ]
       },
       {
         "id": 3,
         "title": "Lift out the main PCB",
-        "tool": "spudger",
+        "tool": "Allen key (hex 2.5 mm)",
         "component_ids": ["pcb_substrate", "pcb_copper", "solder", "passives", "tim", "coating", "wiring"],
         "actions": [
-          { "title": "Free the board from its mounts", "subtitle": "Spudger · gentle leverage, no bending", "icon": "lever", "value": false },
-          { "title": "Lift the PCB out flat", "subtitle": "Carries processors, memory & sensors", "icon": "board", "value": false }
+          { "title": "Unscrew the 4 board screws", "subtitle": "Allen key · M3 · into the floor mounts", "icon": "cross", "value": false },
+          { "title": "Lift the PCB out flat", "subtitle": "Carries the processors & passives", "icon": "board", "value": false }
         ]
       },
       {
@@ -222,8 +230,8 @@
         "tool": null,
         "component_ids": ["actives"],
         "actions": [
-          { "title": "Locate the two processors", "subtitle": "667 MHz dual-core pair · centre of board", "icon": "magnify", "value": false },
-          { "title": "Remove processors & memory ICs", "subtitle": "High-value silicon · reuse stream", "icon": "chip", "value": true }
+          { "title": "Locate the processors & ICs", "subtitle": "3 processors + 3 chips in the board pockets", "icon": "magnify", "value": false },
+          { "title": "Pop the chips out of their pockets", "subtitle": "High-value silicon · reuse stream", "icon": "chip", "value": true }
         ]
       },
       {

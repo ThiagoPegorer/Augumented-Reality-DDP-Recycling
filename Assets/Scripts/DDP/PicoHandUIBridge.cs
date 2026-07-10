@@ -363,4 +363,135 @@ namespace DPP
             RectTransform crt = canvas.transform as RectTransform;
             if (crt == null) return false;
             Vector3 local = crt.InverseTransformPoint(worldPoint);
-            Rect r = c
+            Rect r = crt.rect;
+            return local.x >= r.xMin && local.x <= r.xMax &&
+                   local.y >= r.yMin && local.y <= r.yMax;
+        }
+
+        // True if any active raycast-target Graphic on this canvas contains the
+        // world point within its rect. Mirrors FindGraphicAt minus the
+        // click-handler requirement.
+        private static bool AnyGraphicContains(Canvas canvas, Vector3 worldPoint)
+        {
+            _graphicBuf.Clear();
+            canvas.GetComponentsInChildren(false, _graphicBuf);
+            for (int i = 0; i < _graphicBuf.Count; i++)
+            {
+                Graphic g = _graphicBuf[i];
+                if (!g.raycastTarget) continue;
+                RectTransform rt = g.rectTransform;
+                Vector3 local = rt.InverseTransformPoint(worldPoint);
+                Rect r = rt.rect;
+                if (local.x < r.xMin || local.x > r.xMax) continue;
+                if (local.y < r.yMin || local.y > r.yMax) continue;
+                return true;
+            }
+            return false;
+        }
+
+        // Fires pointerClickHandler on the hit's target.
+        private void DeliverClick(CanvasHit hit, string label)
+        {
+            if (EventSystem.current == null)
+            {
+                if (verboseLogging) Debug.LogWarning($"[PicoBridge] {label}: EventSystem.current is null. The scene needs an EventSystem GameObject.");
+                return;
+            }
+
+            Camera eventCam = hit.canvas != null ? hit.canvas.worldCamera : null;
+            if (eventCam == null) eventCam = Camera.main;
+            Vector2 screenForPed = eventCam != null ? (Vector2)eventCam.WorldToScreenPoint(hit.worldPoint) : Vector2.zero;
+            PointerEventData ped = new PointerEventData(EventSystem.current) { position = screenForPed };
+
+            GameObject handled = ExecuteEvents.ExecuteHierarchy(hit.target, ped, ExecuteEvents.pointerClickHandler);
+            if (handled != null)
+            {
+                if (verboseLogging) Debug.Log($"[PicoBridge] {label}: pointer click delivered to '{handled.name}'.");
+            }
+            else if (verboseLogging)
+            {
+                Debug.LogWarning($"[PicoBridge] {label}: hit graphic '{hit.target.name}' but ExecuteEvents.ExecuteHierarchy returned null.");
+            }
+        }
+
+        // Returns the topmost CLICKABLE Graphic on the given Canvas whose
+        // RectTransform contains the given world point. A graphic is
+        // considered clickable if it (or any ancestor) has an
+        // IPointerClickHandler — which is true for Unity UI Buttons and for
+        // any custom component that listens for clicks. Plain decorative
+        // Images (like a panel background with raycastTarget=true but no
+        // listener) are skipped, so they don't block clicks to actual buttons.
+        private static readonly List<Graphic> _graphicBuf = new List<Graphic>();
+        private static Graphic FindGraphicAt(Canvas canvas, Vector3 worldPoint)
+        {
+            _graphicBuf.Clear();
+            canvas.GetComponentsInChildren(false, _graphicBuf);
+            Graphic best = null;
+            int bestOrder = int.MinValue;
+            for (int i = 0; i < _graphicBuf.Count; i++)
+            {
+                Graphic g = _graphicBuf[i];
+                if (!g.raycastTarget) continue;
+                RectTransform rt = g.rectTransform;
+                // Project world point into the rect's local plane.
+                Vector3 local = rt.InverseTransformPoint(worldPoint);
+                Rect r = rt.rect;
+                if (local.x < r.xMin || local.x > r.xMax) continue;
+                if (local.y < r.yMin || local.y > r.yMax) continue;
+                // Only consider this graphic if it (or an ancestor) actually
+                // handles pointer clicks. This skips decorative panels.
+                if (!HasClickHandler(g.transform)) continue;
+                int order = ComputeDepth(g.transform);
+                if (order > bestOrder)
+                {
+                    bestOrder = order;
+                    best = g;
+                }
+            }
+            return best;
+        }
+
+        // Returns true if the given Transform or any ancestor has an
+        // IPointerClickHandler (which Button implements).
+        private static bool HasClickHandler(Transform t)
+        {
+            while (t != null)
+            {
+                var handler = t.GetComponent<IPointerClickHandler>();
+                if (handler != null) return true;
+                t = t.parent;
+            }
+            return false;
+        }
+
+        // Cheap depth metric: walk the hierarchy and combine sibling indices.
+        // Bigger = drawn later = on top.
+        private static int ComputeDepth(Transform t)
+        {
+            int depth = 0;
+            while (t != null)
+            {
+                depth = depth * 1000 + t.GetSiblingIndex();
+                t = t.parent;
+            }
+            return depth;
+        }
+
+        // Editor-only sanity draw so you can see the rays in the Scene view.
+        void OnDrawGizmosSelected()
+        {
+            DrawRay(leftHand, Color.cyan);
+            DrawRay(rightHand, new Color(1f, 0.6f, 0.2f));
+        }
+
+        private void DrawRay(PXR_Hand hand, Color c)
+        {
+            if (hand == null) return;
+            Transform rp = hand.transform.Find("RayPose");
+            if (rp == null) return;
+            Gizmos.color = c;
+            Gizmos.DrawLine(rp.position, rp.position + rp.forward * maxRayDistance);
+        }
+    }
+}
+#endif
