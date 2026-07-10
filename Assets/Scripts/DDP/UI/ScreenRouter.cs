@@ -83,16 +83,29 @@ namespace DPP.UI
                 return;
             }
 
-            SetActiveSafe(mainPage,          target == mainPage);
-            SetActiveSafe(informationTab,    target == informationTab);
-            SetActiveSafe(disassemblyIntro,  target == disassemblyIntro);
-            SetActiveSafe(stepFlow,          target == stepFlow);
-            SetActiveSafe(completionSummary, target == completionSummary);
+            // PASS 1 — deactivate every non-target FIRST. Outgoing screens
+            // release shared resources in OnDisable (the preview camera, the
+            // model's pose via ResetInstant). Activating the incoming screen
+            // before that (old behaviour) let e.g. the intro's loop claim the
+            // camera and then the step flow's OnDisable switched it back off —
+            // the intro animation appeared dead after Back from step 1.
+            DeactivateUnless(mainPage,          target);
+            DeactivateUnless(informationTab,    target);
+            DeactivateUnless(disassemblyIntro,  target);
+            DeactivateUnless(stepFlow,          target);
+            DeactivateUnless(completionSummary, target);
+            if (target != stepFlow) SetActiveSafe(explodedCanvas, false);
 
-            // The exploded-view canvas lives alongside the step flow only.
-            SetActiveSafe(explodedCanvas,   target == stepFlow);
+            // PASS 2 — activate the target (and its companion canvas).
+            SetActiveSafe(target, true);
+            if (target == stepFlow) SetActiveSafe(explodedCanvas, true);
 
             Debug.Log($"[ScreenRouter] Showing {label}.");
+        }
+
+        private static void DeactivateUnless(GameObject go, GameObject target)
+        {
+            if (go != null && go != target) SetActiveSafe(go, false);
         }
 
         private static void SetActiveSafe(GameObject go, bool active)

@@ -8,22 +8,30 @@ using DPP.Models;
 namespace DPP.UI
 {
     /// <summary>
-    /// State machine + view for the guided step flow (spec 04 v2, screens 04–08).
-    /// One screen, content swapped per step from backend v0.4 `disassembly.steps[]`.
+    /// State machine + view for the guided step flow (spec 04 v3, screens 04–08).
+    /// One screen, content swapped per step from backend `disassembly.steps[]`.
     ///
-    /// Navigation: Back on step 1 → intro; Confirm on last step → completion
-    /// (phase 5; logs a stub until built). Entering the flow always restarts at
-    /// step 1 (OnEnable). The exploded-view canvas is shown/hidden by
-    /// ScreenRouter together with this screen.
+    /// v3 (2026-07-10):
+    ///   - Header eyebrow + "Step n of 5" REMOVED (progress rail carries n/5).
+    ///   - Task rows are UNBOXED; each has a clickable status circle:
+    ///     RED (pending, shows the action glyph) → tap → GREEN (done, shows a
+    ///     check). Tapping again un-checks (glove mis-taps happen).
+    ///   - "Confirm & next" is LOCKED (grey, non-interactable) until BOTH
+    ///     tasks are green. Task state resets on entering a step (incl. Back).
+    ///   - The how-to slot plays the current step's motion on the real model
+    ///     via StepHowToLoop (SetStep on every refresh).
+    ///
+    /// Navigation: Back on step 1 → intro; Confirm on last step → completion.
+    /// Entering the flow always restarts at step 1 (OnEnable).
     /// </summary>
     public class StepFlowController : MonoBehaviour
     {
         [Header("Wiring")]
         [SerializeField] private ScreenRouter router;
         [SerializeField] private CompletionSummaryView summary;
+        [SerializeField] private StepHowToLoop howToLoop;
 
-        [Header("Header")]
-        [SerializeField] private TMP_Text stepIndicator;   // "Step n of 5"
+        [Header("Title")]
         [SerializeField] private TMP_Text titleText;
 
         [Header("Progress (track height 378)")]
@@ -31,20 +39,30 @@ namespace DPP.UI
         [SerializeField] private TMP_Text progressLabel;   // "n/5"
         private const float TrackHeight = 378f;
 
-        [Header("Action card 1")]
-        [SerializeField] private Image card1Ring;
-        [SerializeField] private Image card1Icon;
-        [SerializeField] private TMP_Text card1Title;
-        [SerializeField] private TMP_Text card1Subtitle;
+        [Header("Task row 1")]
+        [SerializeField] private Image task1Fill;          // status circle fill (red/green)
+        [SerializeField] private Image task1Icon;          // action glyph (pending state)
+        [SerializeField] private GameObject task1Check;    // check mark (done state)
+        [SerializeField] private TMP_Text task1Title;
+        [SerializeField] private TMP_Text task1Subtitle;
 
-        [Header("Action card 2")]
-        [SerializeField] private Image card2Ring;
-        [SerializeField] private Image card2Icon;
-        [SerializeField] private TMP_Text card2Title;
-        [SerializeField] private TMP_Text card2Subtitle;
+        [Header("Task row 2")]
+        [SerializeField] private Image task2Fill;
+        [SerializeField] private Image task2Icon;
+        [SerializeField] private GameObject task2Check;
+        [SerializeField] private TMP_Text task2Title;
+        [SerializeField] private TMP_Text task2Subtitle;
 
-        [Header("Confirm button label")]
+        [Header("Cancel modal (Back opens it; Yes → main page, No → stay)")]
+        [SerializeField] private GameObject cancelModal;
+
+        [Header("Confirm button (lockable)")]
+        [SerializeField] private Button confirmButton;
+        [SerializeField] private Image confirmFill;
         [SerializeField] private TMP_Text confirmLabel;
+        [SerializeField] private Image confirmChevron1;
+        [SerializeField] private Image confirmChevron2;
+        [SerializeField] private HoverHighlight confirmHover;
 
         [Header("Icon lookup (wired by builder; keys per spec 04 §8)")]
         [SerializeField] private string[] iconKeys;
@@ -53,13 +71,14 @@ namespace DPP.UI
         private List<Step> _steps;
         private int _index;
         private Coroutine _progressAnim;
-        private float _flowStartTime;   // stopwatch: flow entry → finish (spec 09 §3)
+        private float _flowStartTime;                       // stopwatch: flow entry → finish (spec 09 §3)
+        private readonly bool[] _done = new bool[2];
 
-        // Accent colors (spec 04 §3).
-        private static readonly Color TealRing = DPPTheme.TealLight;
-        private static readonly Color TealIcon = DPPTheme.TealLight;
-        private static readonly Color GoldRing = DPPTheme.GoldPartStroke;
-        private static readonly Color GoldText = DPPTheme.Hex("#f0c879");
+        // Status + accent colors (spec 04 v3).
+        private static readonly Color PendingRed = DPPTheme.Hex("#e24b4a");
+        private static readonly Color DoneGreen  = DPPTheme.TealAccent;
+        private static readonly Color LockedText = DPPTheme.Hex("#5d7396");
+        private static readonly Color GoldText   = DPPTheme.Hex("#f0c879");
 
         public void Populate(DPPData data)
         {
@@ -71,13 +90,19 @@ namespace DPP.UI
         {
             _index = 0;
             _flowStartTime = Time.realtimeSinceStartup; // timer starts with the flow
+            if (cancelModal != null) cancelModal.SetActive(false);
             Refresh(false);
         }
 
         // ---- Button targets (wired by builder) ----
 
+        public void ToggleTask1() => ToggleTask(0);
+        public void ToggleTask2() => ToggleTask(1);
+
         public void Confirm()
         {
+            if (!(_done[0] && _done[1])) return;   // locked — belt & braces beside interactable=false
+
             int total = TotalSteps();
             if (_index >= total - 1)
             {
@@ -92,8 +117,13 @@ namespace DPP.UI
             Refresh(true);
         }
 
+        /// <summary>Back = abort (v3.1): opens the cancel modal from ANY step.
+        /// Per-step back-navigation was removed deliberately — the physical
+        /// teardown is one-way, and task state resets per step anyway.</summary>
         public void BackStep()
         {
+            if (cancelModal != null) { cancelModal.SetActive(true); return; }
+            // Fallback if the modal isn't built: old behaviour (step 1 → intro).
             if (_index == 0)
             {
                 if (router != null) router.ShowDisassembly();
@@ -103,16 +133,36 @@ namespace DPP.UI
             Refresh(true);
         }
 
+        /// <summary>Modal "Yes" — abandon the run, back to the main page.</summary>
+        public void CancelYes()
+        {
+            if (cancelModal != null) cancelModal.SetActive(false);
+            if (router != null) router.ShowMainPage();
+            else Debug.LogWarning("[StepFlowController] No router — cannot return to the main page.");
+        }
+
+        /// <summary>Modal "No" — dismiss, keep working.</summary>
+        public void CancelNo()
+        {
+            if (cancelModal != null) cancelModal.SetActive(false);
+        }
+
         // ---- Internals ----
 
         private int TotalSteps() => _steps != null && _steps.Count > 0 ? _steps.Count : 5;
+
+        private void ToggleTask(int i)
+        {
+            _done[i] = !_done[i];
+            ApplyTaskVisual(i);
+            ApplyConfirmState();
+        }
 
         private void Refresh(bool animateProgress)
         {
             int total = TotalSteps();
             int n = _index + 1;
 
-            if (stepIndicator != null) stepIndicator.text = $"Step {n} of {total}";
             if (progressLabel != null) progressLabel.text = $"{n}/{total}";
 
             float targetH = TrackHeight * n / total;
@@ -125,6 +175,15 @@ namespace DPP.UI
                     progressFill.sizeDelta = new Vector2(progressFill.sizeDelta.x, targetH);
             }
 
+            // Task gating: every step entry starts with both tasks pending.
+            _done[0] = _done[1] = false;
+            ApplyTaskVisual(0);
+            ApplyTaskVisual(1);
+            ApplyConfirmState();
+
+            // How-to loop follows the current step.
+            if (howToLoop != null) howToLoop.SetStep(n);
+
             if (_steps == null || _index >= _steps.Count)
             {
                 Debug.LogWarning("[StepFlowController] No step data — showing builder-baked demo content.");
@@ -134,14 +193,14 @@ namespace DPP.UI
             Step step = _steps[_index];
             if (titleText != null) titleText.text = step.title;
 
-            ApplyAction(step, 0, card1Ring, card1Icon, card1Title, card1Subtitle);
-            ApplyAction(step, 1, card2Ring, card2Icon, card2Title, card2Subtitle);
+            ApplyAction(step, 0, task1Icon, task1Title, task1Subtitle);
+            ApplyAction(step, 1, task2Icon, task2Title, task2Subtitle);
 
             if (confirmLabel != null)
                 confirmLabel.text = n >= total ? "Finish & see summary" : "Confirm & next";
         }
 
-        private void ApplyAction(Step step, int i, Image ring, Image icon, TMP_Text title, TMP_Text subtitle)
+        private void ApplyAction(Step step, int i, Image icon, TMP_Text title, TMP_Text subtitle)
         {
             bool has = step.actions != null && i < step.actions.Count;
             if (!has) return;
@@ -151,15 +210,37 @@ namespace DPP.UI
             if (subtitle != null)
             {
                 subtitle.text = a.subtitle ?? "";
+                // Gold high-value accent lives on the subtitle now (the icon
+                // circle is a status button — red/green only).
                 subtitle.color = a.value ? GoldText : DPPTheme.TextSecondary;
             }
-            if (ring != null) ring.color = a.value ? GoldRing : TealRing;
             if (icon != null)
             {
-                icon.color = a.value ? GoldText : TealIcon;
                 Sprite s = LookupIcon(a.icon);
                 if (s != null) icon.sprite = s;
             }
+        }
+
+        private void ApplyTaskVisual(int i)
+        {
+            Image fill = i == 0 ? task1Fill : task2Fill;
+            Image icon = i == 0 ? task1Icon : task2Icon;
+            GameObject check = i == 0 ? task1Check : task2Check;
+
+            if (fill != null) fill.color = _done[i] ? DoneGreen : PendingRed;
+            if (icon != null) icon.gameObject.SetActive(!_done[i]);
+            if (check != null) check.SetActive(_done[i]);
+        }
+
+        private void ApplyConfirmState()
+        {
+            bool unlocked = _done[0] && _done[1];
+            if (confirmButton != null) confirmButton.interactable = unlocked;
+            if (confirmFill != null) confirmFill.color = unlocked ? DPPTheme.TealAccent : DPPTheme.SecondaryButtonFill;
+            if (confirmLabel != null) confirmLabel.color = unlocked ? DPPTheme.TextOnNavy : LockedText;
+            if (confirmChevron1 != null) confirmChevron1.color = unlocked ? Color.white : LockedText;
+            if (confirmChevron2 != null) confirmChevron2.color = unlocked ? Color.white : LockedText;
+            if (confirmHover != null) confirmHover.enabled = unlocked;
         }
 
         private Sprite LookupIcon(string key)

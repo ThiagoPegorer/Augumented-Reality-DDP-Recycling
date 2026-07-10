@@ -10,15 +10,22 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Phase 4 builder — Screens 04–08: the guided step flow (spec 04 v2).
-    /// Builds ONE StepFlow screen on the DPPPanelCanvas (content swapped per
-    /// step by StepFlowController from backend v0.4 steps[]) plus the separate
-    /// world-space ExplodedCanvas (268×430) with its own grabber bar.
+    /// Phase 4 builder — Screens 04–08: the guided step flow (spec 04 v3, 2026-07-10).
     ///
-    /// v1 interim: both previews show the static teardown PNG; animation,
-    /// rotate/zoom and part highlighting are CAD-dependent (spec 04 §11).
-    /// Demo content baked = step 1; runtime data overwrites.
-    /// Safe to re-run (rebuilds StepFlow + ExplodedCanvas).
+    /// v3 changes (approved mock 04_step1_v3.svg):
+    ///   - Header eyebrow ("DISASSEMBLY · MS 50.4") + "Step n of 5" REMOVED —
+    ///     the progress rail's n/5 label carries that info. Home button stays.
+    ///   - Action cards UNBOXED into task rows; the icon circle is now a
+    ///     clickable STATUS BUTTON: red + action glyph (pending) → green +
+    ///     check (done). Hint line explains the tap.
+    ///   - "Confirm & next" starts LOCKED (grey); both tasks green unlock it.
+    ///   - How-to panel: static PNG → live per-step animation (StepHowToLoop
+    ///     films VCU_assembly via the shared TeardownPreviewCamera into a
+    ///     RenderTexture/RawImage). Badge "static" → "loop".
+    ///
+    /// The exploded-view canvas is UNCHANGED in v3 (still the static render) —
+    /// its live-3D/orbit/zoom upgrade is the next work block.
+    /// Safe to re-run (rebuilds StepFlow + ExplodedCanvas only).
     /// </summary>
     public static partial class DPPUIBuilder
     {
@@ -63,7 +70,7 @@ namespace DPP.EditorTools
             var progressLabel = AddText(TLCenter("ProgressLabel", screen, 26, 416, 40, 14), "1/5", 11,
                 DPPTheme.TealMuted, bold: false, align: TextAlignmentOptions.Center);
 
-            // ---- Header: home + eyebrow + step indicator ----
+            // ---- Header: home button only (v3 — eyebrow + step indicator removed) ----
             var home = TLCenter("HomeButton", screen, 70, 46, 36, 36);
             var homeOutline = AddImage(CenterIn("HoverOutline", home, 46, 46), DPPSpriteFactory.Circle64, Color.white);
             homeOutline.gameObject.SetActive(false);
@@ -77,37 +84,36 @@ namespace DPP.EditorTools
             var homeHover = home.gameObject.AddComponent<HoverHighlight>();
             SetRef(homeHover, "highlightOutline", homeOutline.gameObject);
 
-            AddText(TL("Eyebrow", screen, 100, 28, 300, 16), "DISASSEMBLY · MS 50.4", 12, DPPTheme.TextCaption, bold: false);
-            var stepInd = AddText(TL("StepIndicator", screen, 100, 44, 300, 20), "Step 1 of 5", 14.5f, DPPTheme.TextOnNavy, bold: true);
-
             // ---- Title ----
             var title = AddText(TL("Title", screen, 52, 88, 320, 32), "Open the housing", 25, DPPTheme.TextOnNavy, bold: true);
 
-            // ---- Action cards ----
-            var c1 = MakeActionCard(screen, "ActionCard1", 130, DPPSpriteFactory.IcCross,
-                "Remove the housing screws", "Torx driver · keep them aside");
-            var c2 = MakeActionCard(screen, "ActionCard2", 198, DPPSpriteFactory.IcUp,
-                "Lift off the top cover", "Exposes the main PCB");
+            // ---- Task rows (unboxed, with status buttons) ----
+            var r1 = MakeTaskRow(screen, "TaskRow1", 142, DPPSpriteFactory.IcCross,
+                "Remove the 4 lid screws", "Allen key · M3 · keep them aside",
+                controller, nameof(StepFlowController.ToggleTask1));
+            var r2 = MakeTaskRow(screen, "TaskRow2", 210, DPPSpriteFactory.IcUp,
+                "Lift off the top cover", "Locating lip disengages · exposes the PCB",
+                controller, nameof(StepFlowController.ToggleTask2));
 
-            // ---- How-to panel (static, spec 04 §5) ----
-            var howto = TL("HowToPanel", screen, 368, 130, 244, 200);
-            AddImage(Stretch("BG", howto), DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#08152b"), sliced: true);
-            var howtoStroke = AddImage(Stretch("Stroke", howto), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            howtoStroke.transform.SetSiblingIndex(0);
-            ((RectTransform)howtoStroke.transform).offsetMin = new Vector2(-1, -1);
-            ((RectTransform)howtoStroke.transform).offsetMax = new Vector2(1, 1);
-            AddText(TL("Eyebrow", howto, 16, 12, 160, 14), "HOW TO · this step", 11, DPPTheme.TextCaption, bold: false);
-            AddImage(CenterIn("BadgeBG", howto, 60, 18).Also(rt => { rt.anchorMin = rt.anchorMax = new Vector2(1, 1); rt.pivot = new Vector2(1, 1); rt.anchoredPosition = new Vector2(-12, -8); }),
-                DPPSpriteFactory.RoundedR13, DPPTheme.CardBlue, sliced: true);
-            AddText(TLCenter("BadgeLabel", howto, 202, 17, 56, 14), "static", 10, DPPTheme.TextSubtitleNavy, bold: false, align: TextAlignmentOptions.Center);
-            var howtoImg = TLCenter("Preview", howto, 122, 102, 150, 140);
-            var howtoImage = howtoImg.gameObject.AddComponent<Image>();
-            howtoImage.sprite = LoadTeardownSprite();
-            howtoImage.preserveAspect = true;
-            howtoImage.raycastTarget = false;
-            AddText(TLCenter("Caption", howto, 122, 186, 230, 12),
-                "static preview · animates when the CAD model lands", 9.5f, DPPTheme.TextTip,
-                bold: false, align: TextAlignmentOptions.Center);
+            AddText(TL("TaskHint", screen, 52, 278, 460, 16),
+                "Tap the icon when a task is done — both green unlock the next step",
+                11, DPPTheme.TextTip, bold: false);
+
+            // ---- How-to preview (v3.1: frameless — floats on the navy panel
+            // like the intro's preview, same 242×225 slot; no box, no eyebrow,
+            // no badge, no caption) ----
+            var howto = TLCenter("HowToPreview", screen, 468, 205, 242, 225);
+            var howtoRaw = howto.gameObject.AddComponent<RawImage>();
+            howtoRaw.raycastTarget = false;
+            howtoRaw.enabled = false; // StepHowToLoop enables it with the RT at runtime
+
+            // StepHowToLoop on the preview GO (enabled/disabled with the screen).
+            var loop = howto.gameObject.AddComponent<StepHowToLoop>();
+            SetRef(loop, "target", howtoRaw);
+            SetRef(loop, "previewCamera", FindOrCreatePreviewCamera());
+            var animator = Object.FindFirstObjectByType<DisassemblyAnimator>();
+            if (animator != null) SetRef(loop, "vcuAnimator", animator);
+            else Debug.LogWarning("[DPPUIBuilder] No DisassemblyAnimator found (VCU_assembly missing?) — how-to loop will retry at runtime.");
 
             // ---- Nav buttons ----
             var back = TL("BackButton", screen, 52, 350, 150, 52);
@@ -126,39 +132,53 @@ namespace DPP.EditorTools
             var confirm = TL("ConfirmButton", screen, 214, 350, 398, 52);
             var confOutline = AddImage(CenterIn("HoverOutline", confirm, 406, 60), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             confOutline.gameObject.SetActive(false);
-            var confFill = AddImage(CenterIn("Fill", confirm, 398, 52), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
-            var confLabel = AddText(Stretch("Label", confirm), "Confirm & next", 16, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            // Baked in the LOCKED state (tasks start pending); controller drives colors.
+            var confFill = AddImage(CenterIn("Fill", confirm, 398, 52), DPPSpriteFactory.RoundedR13, DPPTheme.SecondaryButtonFill, sliced: true, raycast: true);
+            var confLabel = AddText(Stretch("Label", confirm), "Confirm & next", 16, DPPTheme.Hex("#5d7396"), bold: true, align: TextAlignmentOptions.Center);
             var chevTop = TLCenter("ChevronTop", confirm, 290, 22, 12, 2.5f);
             chevTop.localRotation = Quaternion.Euler(0, 0, -45);
-            AddImage(chevTop, DPPSpriteFactory.Grip, Color.white);
+            var chev1 = AddImage(chevTop, DPPSpriteFactory.Grip, DPPTheme.Hex("#5d7396"));
             var chevBot = TLCenter("ChevronBottom", confirm, 290, 30, 12, 2.5f);
             chevBot.localRotation = Quaternion.Euler(0, 0, 45);
-            AddImage(chevBot, DPPSpriteFactory.Grip, Color.white);
+            var chev2 = AddImage(chevBot, DPPSpriteFactory.Grip, DPPTheme.Hex("#5d7396"));
             var confBtn = confirm.gameObject.AddComponent<Button>();
             confBtn.transition = Selectable.Transition.None;
             confBtn.targetGraphic = confFill;
+            confBtn.interactable = false;
             WireClick(confBtn, controller, nameof(StepFlowController.Confirm));
             var confHover = confirm.gameObject.AddComponent<HoverHighlight>();
             SetRef(confHover, "highlightOutline", confOutline.gameObject);
+            confHover.enabled = false;
 
-            // ================= Exploded-view canvas =================
+            // ---- Cancel modal (hidden; Back opens it from any step) ----
+            var modal = BuildCancelModal(screen, controller);
+            SetRef(controller, "cancelModal", modal);
+
+            // ================= Exploded-view canvas (unchanged in v3) =================
             var exploded = BuildExplodedCanvas(canvasRT);
 
             // ================= Wiring =================
             SetRef(controller, "router", router);
-            SetRef(controller, "stepIndicator", stepInd);
+            SetRef(controller, "howToLoop", loop);
             SetRef(controller, "titleText", title);
             SetRef(controller, "progressFill", fillRT);
             SetRef(controller, "progressLabel", progressLabel);
-            SetRef(controller, "card1Ring", c1.ring);
-            SetRef(controller, "card1Icon", c1.icon);
-            SetRef(controller, "card1Title", c1.title);
-            SetRef(controller, "card1Subtitle", c1.subtitle);
-            SetRef(controller, "card2Ring", c2.ring);
-            SetRef(controller, "card2Icon", c2.icon);
-            SetRef(controller, "card2Title", c2.title);
-            SetRef(controller, "card2Subtitle", c2.subtitle);
+            SetRef(controller, "task1Fill", r1.fill);
+            SetRef(controller, "task1Icon", r1.icon);
+            SetRef(controller, "task1Check", r1.check);
+            SetRef(controller, "task1Title", r1.title);
+            SetRef(controller, "task1Subtitle", r1.subtitle);
+            SetRef(controller, "task2Fill", r2.fill);
+            SetRef(controller, "task2Icon", r2.icon);
+            SetRef(controller, "task2Check", r2.check);
+            SetRef(controller, "task2Title", r2.title);
+            SetRef(controller, "task2Subtitle", r2.subtitle);
+            SetRef(controller, "confirmButton", confBtn);
+            SetRef(controller, "confirmFill", confFill);
             SetRef(controller, "confirmLabel", confLabel);
+            SetRef(controller, "confirmChevron1", chev1);
+            SetRef(controller, "confirmChevron2", chev2);
+            SetRef(controller, "confirmHover", confHover);
             WireIconLookup(controller);
 
             if (router != null)
@@ -174,31 +194,113 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 4 — Step Flow + ExplodedCanvas built. Save the scene.");
+            Debug.Log("[DPPUIBuilder] Phase 4 — Step Flow v3 + ExplodedCanvas built. Save the scene.");
+        }
+
+        /// <summary>Confirmation modal over the step screen: dim overlay (blocks
+        /// clicks) + centered card, "Want to cancel this disassembly?", green Yes
+        /// (→ main page) and red No (→ dismiss). Built inactive, LAST sibling so
+        /// it draws on top of everything.</summary>
+        private static GameObject BuildCancelModal(RectTransform screen, StepFlowController controller)
+        {
+            var modal = Stretch("CancelModal", screen);
+
+            // Dim overlay — raycast target so it blocks the UI behind.
+            AddImage(Stretch("Dim", modal), DPPSpriteFactory.RoundedR22,
+                new Color(0f, 0f, 0f, 0.55f), sliced: true, raycast: true);
+
+            var card = CenterIn("Card", modal, 400, 170);
+            AddImage(CenterIn("Stroke", card, 404, 174), DPPSpriteFactory.RoundedR20, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", card, 400, 170), DPPSpriteFactory.RoundedR20, DPPTheme.Hex("#0d2a57"), sliced: true);
+
+            AddText(TL("Title", card, 20, 40, 360, 26), "Want to cancel this disassembly?",
+                17, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+
+            MakeModalButton(card, "YesButton", 43, DPPTheme.TealAccent, "Yes",
+                controller, nameof(StepFlowController.CancelYes));
+            MakeModalButton(card, "NoButton", 207, DPPTheme.Hex("#e24b4a"), "No",
+                controller, nameof(StepFlowController.CancelNo));
+
+            modal.gameObject.SetActive(false);
+            return modal.gameObject;
+        }
+
+        private static void MakeModalButton(RectTransform card, string name, float x, Color fill,
+            string label, StepFlowController controller, string method)
+        {
+            var btn = TL(name, card, x, 92, 150, 46);
+            var outline = AddImage(CenterIn("HoverOutline", btn, 158, 54), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            var fillImg = AddImage(CenterIn("Fill", btn, 150, 46), DPPSpriteFactory.RoundedR13, fill, sliced: true, raycast: true);
+            AddText(Stretch("Label", btn), label, 15, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            var b = btn.gameObject.AddComponent<Button>();
+            b.transition = Selectable.Transition.None;
+            b.targetGraphic = fillImg;
+            WireClick(b, controller, method);
+            var hover = btn.gameObject.AddComponent<HoverHighlight>();
+            SetRef(hover, "highlightOutline", outline.gameObject);
+        }
+
+        /// <summary>The shared preview camera (created by Phase 3; recreated here if missing).</summary>
+        private static Camera FindOrCreatePreviewCamera()
+        {
+            foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
+                if (root.name == PreviewCamName) return root.GetComponent<Camera>();
+
+            var camGO = new GameObject(PreviewCamName, typeof(Camera));
+            Undo.RegisterCreatedObjectUndo(camGO, "Build DPP Step Flow");
+            var cam = camGO.GetComponent<Camera>();
+            cam.enabled = false;
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+            return cam;
         }
 
         // =================================================================
-        private struct ActionCardParts
+        private struct TaskRowParts
         {
-            public Image ring, icon;
+            public Image fill, icon;
+            public GameObject check;
             public TMP_Text title, subtitle;
         }
 
-        private static ActionCardParts MakeActionCard(RectTransform screen, string name, float y,
-            string iconSprite, string demoTitle, string demoSubtitle)
+        /// <summary>Unboxed task row (spec 04 v3): clickable status circle (36 px,
+        /// red glyph → green check) + bold title + subtitle. No card box.</summary>
+        private static TaskRowParts MakeTaskRow(RectTransform screen, string name, float y,
+            string iconSprite, string demoTitle, string demoSubtitle,
+            StepFlowController controller, string toggleMethod)
         {
-            var card = TL(name, screen, 52, y, 300, 60);
-            AddImage(CenterIn("Stroke", card, 302, 62), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            AddImage(CenterIn("Fill", card, 300, 60), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            var row = TL(name, screen, 52, y, 320, 56);
 
-            var ring = AddImage(TLCenter("IconRing", card, 28, 30, 32, 32), DPPSpriteFactory.Circle64, DPPTheme.TealLight);
-            AddImage(TLCenter("IconBG", card, 28, 30, 29, 29), DPPSpriteFactory.Circle64, DPPTheme.CardBlue);
-            var icon = AddImage(TLCenter("Icon", card, 28, 30, 17, 17), iconSprite, DPPTheme.TealLight);
+            // Status button — the only interactive element of the row.
+            var status = TLCenter("StatusButton", row, 18, 18, 36, 36);
+            var outline = AddImage(CenterIn("HoverOutline", status, 46, 46), DPPSpriteFactory.Circle64, Color.white);
+            outline.gameObject.SetActive(false);
+            var fill = AddImage(CenterIn("Fill", status, 36, 36), DPPSpriteFactory.Circle64,
+                DPPTheme.Hex("#e24b4a"), sliced: false, raycast: true);
+            var icon = AddImage(CenterIn("Icon", status, 18, 18), iconSprite, Color.white);
 
-            var title = AddText(TL("Title", card, 56, 8, 235, 20), demoTitle, 14.5f, DPPTheme.TextOnNavy, bold: true);
-            var subtitle = AddText(TL("Subtitle", card, 56, 32, 235, 18), demoSubtitle, 12, DPPTheme.TextSecondary, bold: false);
+            // Check mark (hidden at rest) — two capsule bars forming a ✓.
+            var check = CenterIn("Check", status, 36, 36);
+            var bar1 = TLCenter("Bar1", check, 13, 21, 9, 3);
+            bar1.localRotation = Quaternion.Euler(0, 0, -45);
+            AddImage(bar1, DPPSpriteFactory.Grip, Color.white);
+            var bar2 = TLCenter("Bar2", check, 21, 18, 16, 3);
+            bar2.localRotation = Quaternion.Euler(0, 0, 45);
+            AddImage(bar2, DPPSpriteFactory.Grip, Color.white);
+            check.gameObject.SetActive(false);
 
-            return new ActionCardParts { ring = ring, icon = icon, title = title, subtitle = subtitle };
+            var btn = status.gameObject.AddComponent<Button>();
+            btn.transition = Selectable.Transition.None;
+            btn.targetGraphic = fill;
+            WireClick(btn, controller, toggleMethod);
+            var hover = status.gameObject.AddComponent<HoverHighlight>();
+            SetRef(hover, "highlightOutline", outline.gameObject);
+
+            var title = AddText(TL("Title", row, 50, 0, 270, 20), demoTitle, 14.5f, DPPTheme.TextOnNavy, bold: true);
+            var subtitle = AddText(TL("Subtitle", row, 50, 22, 270, 18), demoSubtitle, 12, DPPTheme.TextSecondary, bold: false);
+
+            return new TaskRowParts { fill = fill, icon = icon, check = check.gameObject, title = title, subtitle = subtitle };
         }
 
         private static void WireIconLookup(StepFlowController controller)

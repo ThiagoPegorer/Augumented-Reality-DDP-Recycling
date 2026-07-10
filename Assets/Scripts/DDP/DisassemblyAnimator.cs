@@ -46,6 +46,11 @@ namespace DPP
         [SerializeField] private float chipRise          = 0.035f; // chips off the raised board
         [SerializeField] private float shellDrop         = 0.08f;  // bottom shell straight down
 
+        [Header("Step focus (how-to highlight)")]
+        [Tooltip("Opacity of parts NOT relevant to the focused step (0.1 = 10%).")]
+        [Range(0.02f, 1f)]
+        [SerializeField] private float fadedAlpha = 0.1f;
+
         [Header("Timing")]
         [SerializeField] private float screwDur   = 1.0f;
         [SerializeField] private float partDur    = 1.2f;
@@ -76,6 +81,10 @@ namespace DPP
         private Vector3 _connectorAxisLocal = new Vector3(0f, 0f, -1f);
         private float _chipLift; // how far the chips were carried up by the PCB (step 3)
 
+        // --- step-focus material state ---
+        private readonly Dictionary<Renderer, Material[]> _origMats = new Dictionary<Renderer, Material[]>();
+        private readonly Dictionary<Material, Material> _fadeCache = new Dictionary<Material, Material>();
+
         /// <summary>World-space direction the connector face points at —
         /// the device's "front". Used by TeardownPreviewLoop to frame the camera.</summary>
         public Vector3 ConnectorAxisWorld => transform.TransformDirection(_connectorAxisLocal);
@@ -101,6 +110,9 @@ namespace DPP
                 if (rend != null && !meshCenter.ContainsKey(c))
                     meshCenter[c] = transform.InverseTransformPoint(rend.bounds.center);
             }
+
+            foreach (var r in GetComponentsInChildren<Renderer>(true))
+                _origMats[r] = r.sharedMaterials;
 
             _connectorAxisLocal = autoConnectorAxis ? DetectConnectorAxis() : manualConnectorAxis.normalized;
         }
@@ -263,6 +275,52 @@ namespace DPP
             yield return new WaitForSeconds(d2);
         }
 
+        /// <summary>Awaitable single step for external drivers (how-to loop):
+        /// <c>yield return animator.RunStep(n);</c></summary>
+        public IEnumerator RunStep(int step) => StepRoutine(step);
+
+        /// <summary>Snap the model to the END state of the given step, no animation.
+        /// Call ascending after ResetInstant() to precondition the model for a later
+        /// step's how-to loop (parts removed in earlier steps are already out).</summary>
+        public void ApplyStepInstant(int step)
+        {
+            switch (step)
+            {
+                case 1:
+                    SnapGroup(lidScrews, Vector3.up * lidScrewRise);
+                    Snap(lid, Vector3.up * lidRise);
+                    break;
+                case 2:
+                    SnapGroup(connectorScrews, _connectorAxisLocal * connectorScrewDist);
+                    SnapGroup(connectors, _connectorAxisLocal * connectorDist);
+                    break;
+                case 3:
+                    SnapGroup(pcbScrews, Vector3.up * pcbScrewRise);
+                    Snap(pcb, Vector3.up * pcbRise);
+                    SnapGroup(chips, Vector3.up * pcbRise);
+                    _chipLift = pcbRise;
+                    break;
+                case 4:
+                    SnapGroup(chips, Vector3.up * (_chipLift + chipRise));
+                    break;
+                case 5:
+                    Snap(bottomShell, Vector3.down * shellDrop);
+                    break;
+            }
+        }
+
+        private void Snap(Transform t, Vector3 offset)
+        {
+            if (t == null || !home.ContainsKey(t)) return;
+            DOTween.Kill(t);
+            t.localPosition = home[t].pos + offset;
+        }
+
+        private void SnapGroup(List<Transform> list, Vector3 offset)
+        {
+            foreach (var t in list) Snap(t, offset);
+        }
+
         public void PlayFullTeardown() => StartCoroutine(FullRoutine());
 
         /// <summary>Awaitable full teardown for external drivers (e.g. the intro
@@ -302,6 +360,103 @@ namespace DPP
                 kv.Key.localRotation = kv.Value.rot;
                 kv.Key.localScale    = kv.Value.scale;
             }
+        }
+
+        // ---------- step focus: ghost non-relevant parts ----------
+
+        /// <summary>Fades every part NOT involved in the given step to fadedAlpha,
+        /// so the how-to animation highlights only the relevant components.
+        /// Parts removed in earlier steps ghost too (visible as history).</summary>
+        public void SetStepFocus(int step)
+        {
+            var keep = new HashSet<Transform>();
+            switch (step)
+            {
+                case 1: keep.UnionWith(lidScrews); if (lid != null) keep.Add(lid); break;
+                case 2: keep.UnionWith(connectorScrews); keep.UnionWith(connectors); break;
+                case 3: keep.UnionWith(pcbScrews); if (pcb != null) keep.Add(pcb); keep.UnionWith(chips); break;
+                case 4: keep.UnionWith(chips); break;
+                case 5: if (bottomShell != null) keep.Add(bottomShell); break; // lid already off & sorted — bottom shell only
+                default: ClearFocus(); return;
+            }
+
+            foreach (var kv in _origMats)
+            {
+                var r = kv.Key;
+                if (r == null) continue;
+                r.sharedMaterials = IsUnderAny(r.transform, keep) ? kv.Value : FadedVersions(kv.Value);
+            }
+        }
+
+        /// <summary>Restores every part's original materials.</summary>
+        public void ClearFocus()
+        {
+            foreach (var kv in _origMats)
+                if (kv.Key != null) kv.Key.sharedMaterials = kv.Value;
+        }
+
+        private bool IsUnderAny(Transform t, HashSet<Transform> roots)
+        {
+            for (var p = t; p != null && p != transform; p = p.parent)
+                if (roots.Contains(p)) return true;
+            return false;
+        }
+
+        private Material[] FadedVersions(Material[] mats)
+        {
+            var faded = new Material[mats.Length];
+            for (int i = 0; i < mats.Length; i++)
+            {
+                var src = mats[i];
+                if (src == null) { faded[i] = null; continue; }
+                if (!_fadeCache.TryGetValue(src, out var m))
+                {
+                    m = CreateFadeMaterial(src, fadedAlpha);
+                    _fadeCache[src] = m;
+                }
+                faded[i] = m;
+            }
+            return faded;
+        }
+
+        /// <summary>Transparent ghost copy of a material. Tries URP Lit, falls back
+        /// to built-in Standard (Fade). NOTE for device builds: whichever shader is
+        /// used must be in Always Included Shaders, or ghosts render magenta/missing.</summary>
+        private static Material CreateFadeMaterial(Material src, float alpha)
+        {
+            Color baseCol = src.HasProperty("_BaseColor") ? src.GetColor("_BaseColor")
+                          : src.HasProperty("_Color") ? src.color : Color.white;
+            baseCol.a = alpha;
+
+            Shader urp = Shader.Find("Universal Render Pipeline/Lit");
+            Material m;
+            if (urp != null)
+            {
+                m = new Material(urp);
+                m.SetFloat("_Surface", 1f); // transparent
+                m.SetOverrideTag("RenderType", "Transparent");
+                m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                m.SetInt("_ZWrite", 0);
+                m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                m.SetColor("_BaseColor", baseCol);
+                if (src.HasProperty("_BaseMap") && m.HasProperty("_BaseMap"))
+                    m.SetTexture("_BaseMap", src.GetTexture("_BaseMap"));
+            }
+            else
+            {
+                m = new Material(Shader.Find("Standard"));
+                m.SetFloat("_Mode", 2f); // Fade
+                m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                m.SetInt("_ZWrite", 0);
+                m.EnableKeyword("_ALPHABLEND_ON");
+                m.renderQueue = 3000;
+                m.color = baseCol;
+            }
+            m.name = src.name + " (ghost)";
+            return m;
         }
 
         // ---------- editor test buttons (enter Play mode first) ----------
