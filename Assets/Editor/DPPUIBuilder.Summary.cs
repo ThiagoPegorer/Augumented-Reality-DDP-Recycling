@@ -10,14 +10,28 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Phase 5 builder — Screen 09: Completion summary (spec 09 v2, approved
-    /// 2026-06-11). Single 640×430 screen on the DPPPanelCanvas: done header,
-    /// time + steps stat cards, 2×2 recovered grid, Done + Send report buttons.
+    /// Phase 5 builder — Screen 09: Completion summary (spec 09 v3, 2026-07-14).
+    ///
+    /// v3 (approved mock 09_summary_v3_2.svg): eyebrow (model · serial) and ALL
+    /// non-button boxes removed. Layout: check + title, one big total-time
+    /// value (no label), divider, TIME/RECOVERED column headers, five per-step
+    /// rows (title + materials-with-grams line + time split + step mass),
+    /// assumed-splits footnote, and the v2.1 single-action Send→Done button.
     /// Demo values baked = vcu_001; CompletionSummaryView binds data + session.
     /// Safe to re-run (rebuilds the CompletionSummary object).
     /// </summary>
     public static partial class DPPUIBuilder
     {
+        // Demo rows baked at build time (vcu_001); Populate/SetSession overwrite.
+        private static readonly (string title, string materials, string mass)[] DemoSteps =
+        {
+            ("1 · Open the housing",       "steel bolts 15 g · brass inserts 4.8 g",                    "20 g"),
+            ("2 · Remove the connectors",  "brass (Cu-Zn) 46 g · polymer insert 11 g · gold plating 0.8 g", "58 g"),
+            ("3 · Lift out the main PCB",  "FR-4 board 91 g · copper 41 g · passives 30 g · other 23 g", "185 g"),
+            ("4 · Recover the silicon",    "epoxy package 10 g · Cu leadframe 5.8 g · silicon die 4.0 g", "20 g"),
+            ("5 · Sort the housing",       "aluminium shells 363 g · labels & adhesive 15 g",            "378 g"),
+        };
+
         [MenuItem("DPP/Build Phase 5 — Completion Summary", false, 5)]
         public static void BuildPhase5()
         {
@@ -42,58 +56,67 @@ namespace DPP.EditorTools
 
             AddImage(Stretch("PanelBG", screen), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
-            // ---- Done header ----
+            // ---- Header: check + title (no eyebrow since v3) ----
             var done = TLCenter("DoneIcon", screen, 40, 48, 40, 40);
             AddImage(CenterIn("Ring", done, 44, 44), DPPSpriteFactory.Circle64, DPPTheme.TealAccent);
             AddImage(CenterIn("Fill", done, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.Hex("#10241e"));
             AddImage(CenterIn("Check", done, 24, 24), DPPSpriteFactory.IcCheck, DPPTheme.TealLight);
+            AddText(TL("Title", screen, 72, 36, 480, 28), "Nice work — unit fully dismantled", 22, DPPTheme.TextOnNavy, bold: true);
 
-            var eyebrow = AddText(TL("Eyebrow", screen, 72, 30, 400, 18), "MS 50.4 · VCU-2026-001", 13, DPPTheme.TealMuted, bold: false);
-            AddText(TL("Title", screen, 72, 48, 480, 28), "Nice work — unit fully dismantled", 22, DPPTheme.TextOnNavy, bold: true);
+            // ---- Big total time (value only, no label since v3) ----
+            var timeValue = AddText(TL("TimeValue", screen, 20, 84, 320, 38), "— min — s", 27, DPPTheme.TextOnNavy, bold: true);
 
-            // ---- Stat cards ----
-            // Time (teal accent)
-            var timeCard = TL("TimeCard", screen, 20, 88, 290, 80);
-            AddImage(CenterIn("Stroke", timeCard, 292, 82), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true);
-            AddImage(CenterIn("Fill", timeCard, 290, 80), DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#0e2335"), sliced: true);
-            AddImage(TLCenter("Icon", timeCard, 46, 40, 26, 26), DPPSpriteFactory.IcClock, DPPTheme.TealLight);
-            AddText(TL("Label", timeCard, 72, 16, 210, 16), "Total time · start → finish", 12, DPPTheme.TextLabel, bold: false);
-            var timeValue = AddText(TL("Value", timeCard, 72, 36, 210, 32), "— min — s", 26, DPPTheme.TextOnNavy, bold: true);
+            AddImage(TL("Divider", screen, 20, 132, 600, 1.5f), DPPSpriteFactory.Grip, DPPTheme.Hex("#1a335f"), sliced: false);
 
-            // Steps
-            var stepsCard = TL("StepsCard", screen, 326, 88, 290, 80);
-            AddImage(CenterIn("Stroke", stepsCard, 292, 82), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            AddImage(CenterIn("Fill", stepsCard, 290, 80), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
-            AddText(TL("Label", stepsCard, 26, 16, 200, 16), "Steps completed", 12, DPPTheme.TextLabel, bold: false);
-            var stepsValue = AddText(TL("Value", stepsCard, 26, 36, 140, 32), "5 / 5", 26, DPPTheme.TextOnNavy, bold: true);
-            for (int i = 0; i < 5; i++)
-                AddImage(TL($"Seg{i}", stepsCard, 204 + i * 14, 32, 10, 16), DPPSpriteFactory.RoundedR3, DPPTheme.TealLight, sliced: true);
+            // ---- Column headers ----
+            AddText(TL("ColTime", screen, 384, 144, 100, 14), "TIME", 10.5f, DPPTheme.TextCaption,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+            AddText(TL("ColRecovered", screen, 496, 144, 120, 14), "RECOVERED", 10.5f, DPPTheme.TextCaption,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
 
-            // ---- Recovered grid ----
-            AddText(TL("RecoveredLabel", screen, 20, 188, 200, 16), "RECOVERED", 13, DPPTheme.TextCaption, bold: false);
+            // ---- Step rows ----
+            int n = DemoSteps.Length;
+            var titles = new TMP_Text[n];
+            var materials = new TMP_Text[n];
+            var times = new TMP_Text[n];
+            var masses = new TMP_Text[n];
+            var tags = new GameObject[n];
 
-            MakeRecoveryCard(screen, "GoldPinsCard", 20, 208, gold: true, impact: false,
-                DPPSpriteFactory.IcStar, "Gold — 198 connector pins", "3 connectors + USB separated", out _, out _);
-            MakeRecoveryCard(screen, "SiliconCard", 326, 208, gold: true, impact: false,
-                DPPSpriteFactory.IcStar, "Processors & memory ICs", "high-value silicon, not shredded", out _, out _);
-            MakeRecoveryCard(screen, "AluminiumCard", 20, 268, gold: false, impact: false,
-                DPPSpriteFactory.IcLayers, "Aluminium housing · 363 g", "sorted to metal fraction", out TMP_Text aluTitle, out _);
-            MakeRecoveryCard(screen, "Co2Card", 326, 268, gold: false, impact: true,
-                DPPSpriteFactory.IcLeaf, "CO2 avoided · up to 6.6 kg", "vs no recycling · net of process", out TMP_Text co2Title, out _);
+            for (int i = 0; i < n; i++)
+            {
+                float y = 166 + i * 38;
+                titles[i] = AddText(TL($"Step{i + 1}Title", screen, 20, y, 340, 18),
+                    DemoSteps[i].title, 13.5f, DPPTheme.TextOnNavy, bold: true);
+                materials[i] = AddText(TL($"Step{i + 1}Materials", screen, 20, y + 16, 460, 15),
+                    DemoSteps[i].materials, 11, DPPTheme.TextCaption, bold: false);
 
-            // ---- Action row: confirmation message (left, hidden) + single action button (right) ----
-            // No separate Done button (spec 09 v2.1): the action button is
-            // "Send recovery report" and becomes "Done" after a successful send.
-            var sentMessage = AddText(TL("SentMessage", screen, 20, 360, 290, 50),
+                var tag = AddText(TL($"Step{i + 1}Longest", screen, 326, y + 2, 96, 14),
+                    "longest", 10.5f, DPPTheme.Hex("#f0c879"), bold: false, align: TextAlignmentOptions.MidlineRight);
+                tag.gameObject.SetActive(false);
+                tags[i] = tag.gameObject;
+
+                times[i] = AddText(TL($"Step{i + 1}Time", screen, 384, y, 100, 18),
+                    "—", 13.5f, DPPTheme.TextOnNavy, bold: false, align: TextAlignmentOptions.MidlineRight);
+                masses[i] = AddText(TL($"Step{i + 1}Mass", screen, 496, y, 120, 18),
+                    DemoSteps[i].mass, 13.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.MidlineRight);
+            }
+
+            // ---- Assumed-splits footnote ----
+            var footnote = AddText(TL("Footnote", screen, 20, 358, 400, 14),
+                "material splits: assumed · to be validated in openLCA", 10, DPPTheme.TextTip, bold: false);
+            footnote.fontStyle = FontStyles.Italic;
+
+            // ---- Action row (v2.1 single-button flow, unchanged) ----
+            var sentMessage = AddText(TL("SentMessage", screen, 20, 372, 290, 44),
                 "Report was successfully sent", 13, DPPTheme.TealText, bold: false,
                 align: TextAlignmentOptions.MidlineRight);
             sentMessage.gameObject.SetActive(false);
 
-            var sendRT = TL("ActionButton", screen, 326, 360, 290, 50);
-            var sendOutline = AddImage(CenterIn("HoverOutline", sendRT, 298, 58), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var sendRT = TL("ActionButton", screen, 326, 372, 290, 44);
+            var sendOutline = AddImage(CenterIn("HoverOutline", sendRT, 298, 52), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             sendOutline.gameObject.SetActive(false);
-            var sendFill = AddImage(CenterIn("Fill", sendRT, 290, 50), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
-            var sendLabel = AddText(Stretch("Label", sendRT), "Send recovery report", 15.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            var sendFill = AddImage(CenterIn("Fill", sendRT, 290, 44), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
+            var sendLabel = AddText(Stretch("Label", sendRT), "Send recovery report", 15f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
             var chevron = NewRT("Chevron", sendRT);
             chevron.anchorMin = chevron.anchorMax = new Vector2(1f, 0.5f);
             chevron.pivot = new Vector2(0.5f, 0.5f);
@@ -117,11 +140,12 @@ namespace DPP.EditorTools
             var client = Object.FindFirstObjectByType<DPPClient>();
             SetRef(view, "client", client);
             SetRef(view, "router", router);
-            SetRef(view, "eyebrowText", eyebrow);
             SetRef(view, "timeValue", timeValue);
-            SetRef(view, "stepsValue", stepsValue);
-            SetRef(view, "aluminiumTitle", aluTitle);
-            SetRef(view, "co2Title", co2Title);
+            SetRefArray(view, "stepTitles", titles);
+            SetRefArray(view, "stepMaterials", materials);
+            SetRefArray(view, "stepTimes", times);
+            SetRefArray(view, "stepMasses", masses);
+            SetRefArray(view, "longestTags", tags);
             SetRef(view, "actionLabel", sendLabel);
             SetRef(view, "actionButton", sendBtn);
             SetRef(view, "actionChevron", chevron.gameObject);
@@ -139,27 +163,7 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 5 — Completion Summary built. Save the scene.");
-        }
-
-        private static void MakeRecoveryCard(RectTransform screen, string name, float x, float y,
-            bool gold, bool impact, string iconSprite, string demoTitle, string demoSubtitle,
-            out TMP_Text title, out TMP_Text subtitle)
-        {
-            var card = TL(name, screen, x, y, 290, 52);
-
-            Color fill   = gold ? DPPTheme.Hex("#241c0e") : impact ? DPPTheme.Hex("#10241e") : DPPTheme.RowFill;
-            Color stroke = gold ? DPPTheme.GoldPartStroke : impact ? DPPTheme.TealAccent : DPPTheme.RowStroke;
-            Color titleC = impact ? DPPTheme.TealText : DPPTheme.TextOnNavy;
-            Color subC   = gold ? DPPTheme.Hex("#e6c489") : impact ? DPPTheme.TealMuted : DPPTheme.TextSecondary;
-            Color iconC  = gold ? DPPTheme.Hex("#f0c879") : DPPTheme.TealLight;
-
-            AddImage(CenterIn("Stroke", card, 292, 54), DPPSpriteFactory.RoundedR13, stroke, sliced: true);
-            AddImage(CenterIn("Fill", card, 290, 52), DPPSpriteFactory.RoundedR13, fill, sliced: true);
-            AddImage(TLCenter("Icon", card, 24, 26, 18, 18), iconSprite, iconC);
-
-            title = AddText(TL("Title", card, 42, 6, 240, 20), demoTitle, 13.5f, titleC, bold: true);
-            subtitle = AddText(TL("Subtitle", card, 42, 28, 240, 16), demoSubtitle, 11.5f, subC, bold: false);
+            Debug.Log("[DPPUIBuilder] Phase 5 — Completion Summary v3 built. Save the scene.");
         }
     }
 }

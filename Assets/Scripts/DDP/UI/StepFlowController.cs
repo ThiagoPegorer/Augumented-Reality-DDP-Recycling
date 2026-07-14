@@ -72,6 +72,8 @@ namespace DPP.UI
         private int _index;
         private Coroutine _progressAnim;
         private float _flowStartTime;                       // stopwatch: flow entry → finish (spec 09 §3)
+        private float _stepStartTime;                       // split stopwatch: current step entry
+        private readonly List<int> _stepSplits = new List<int>();  // per-step seconds (summary v3 + report)
         private readonly bool[] _done = new bool[2];
 
         // Status + accent colors (spec 04 v3).
@@ -90,6 +92,8 @@ namespace DPP.UI
         {
             _index = 0;
             _flowStartTime = Time.realtimeSinceStartup; // timer starts with the flow
+            _stepStartTime = _flowStartTime;
+            _stepSplits.Clear();                        // cancelled runs discard their splits
             if (cancelModal != null) cancelModal.SetActive(false);
             Refresh(false);
         }
@@ -103,12 +107,17 @@ namespace DPP.UI
         {
             if (!(_done[0] && _done[1])) return;   // locked — belt & braces beside interactable=false
 
+            // Record this step's split (entry → confirm).
+            float now = Time.realtimeSinceStartup;
+            _stepSplits.Add(Mathf.RoundToInt(now - _stepStartTime));
+            _stepStartTime = now;
+
             int total = TotalSteps();
             if (_index >= total - 1)
             {
                 // Finish: stop the stopwatch, hand the session to the summary.
-                int elapsed = Mathf.RoundToInt(Time.realtimeSinceStartup - _flowStartTime);
-                if (summary != null) summary.SetSession(elapsed, total, total);
+                int elapsed = Mathf.RoundToInt(now - _flowStartTime);
+                if (summary != null) summary.SetSession(elapsed, total, total, _stepSplits.ToArray());
                 if (router != null) router.ShowCompletion();
                 else Debug.LogWarning("[StepFlowController] No router — cannot show completion summary.");
                 return;

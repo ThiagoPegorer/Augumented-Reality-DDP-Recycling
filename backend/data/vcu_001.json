@@ -25,7 +25,12 @@
       "recycling_code": "Fe",
       "disassembly_step": 1,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "estimate",
+      "material_breakdown": [
+        { "material": "steel bolts", "weight_g": 15.0 },
+        { "material": "brass inserts", "weight_g": 4.8 }
+      ],
+      "material_breakdown_basis": "assumed - validate in openLCA"
     },
     {
       "id": "connectors",
@@ -36,7 +41,13 @@
       "disassembly_step": 2,
       "hazardous": false,
       "high_value": true,
-      "basis": "datasheet pin count + estimate"
+      "basis": "datasheet pin count + estimate",
+      "material_breakdown": [
+        { "material": "brass (Cu-Zn)", "weight_g": 46.0 },
+        { "material": "polymer insert", "weight_g": 10.95 },
+        { "material": "gold plating", "weight_g": 0.8 }
+      ],
+      "material_breakdown_basis": "assumed - validate in openLCA"
     },
     {
       "id": "pcb_substrate",
@@ -117,7 +128,13 @@
       "disassembly_step": 4,
       "hazardous": false,
       "high_value": true,
-      "basis": "estimate"
+      "basis": "estimate",
+      "material_breakdown": [
+        { "material": "epoxy package", "weight_g": 10.0 },
+        { "material": "Cu leadframe", "weight_g": 5.8 },
+        { "material": "silicon die", "weight_g": 4.0 }
+      ],
+      "material_breakdown_basis": "assumed - validate in openLCA"
     },
     {
       "id": "housing",

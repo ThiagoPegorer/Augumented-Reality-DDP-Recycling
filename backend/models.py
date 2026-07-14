@@ -39,6 +39,13 @@ class Specifications(BaseModel):
     connectors: Optional[str] = None          # e.g. "3 motorsport (198 pins) + USB"
 
 
+class MaterialShare(BaseModel):
+    """One material line inside a component (2026-07-14 — summary v3 per-step
+    composition). Weights must sum to the component's weight_g."""
+    material: str
+    weight_g: float
+
+
 class Component(BaseModel):
     id: str
     name: str
@@ -49,6 +56,8 @@ class Component(BaseModel):
     hazardous: bool = False
     high_value: bool = False     # v0.3.1 — worth dedicated recovery (Recover card, step value tags)
     basis: Optional[str] = None  # "datasheet" | "estimate" — BOM transparency
+    material_breakdown: List[MaterialShare] = Field(default_factory=list)  # 2026-07-14 — optional
+    material_breakdown_basis: Optional[str] = None  # e.g. "assumed - validate in openLCA"
 
 
 class PreciousMetal(BaseModel):
@@ -143,6 +152,7 @@ class RecoveryReport(BaseModel):
     timestamp: str               # ISO 8601 UTC, client-supplied
     elapsed_s: int               # start → finish stopwatch, whole seconds
     steps_completed: int
+    step_times_s: List[int] = Field(default_factory=list)  # 2026-07-14 — per-step splits (user-test data)
     recovered_component_ids: List[str] = Field(default_factory=list)
     co2_avoided_kg: Optional[float] = None
 

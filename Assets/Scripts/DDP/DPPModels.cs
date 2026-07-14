@@ -57,6 +57,13 @@ namespace DPP.Models
     }
 
     [Serializable]
+    public class MaterialShare
+    {
+        public string material;          // e.g. "brass (Cu-Zn)"
+        public float weight_g;
+    }
+
+    [Serializable]
     public class Component
     {
         public string id;
@@ -68,6 +75,8 @@ namespace DPP.Models
         public bool hazardous;
         public bool high_value;           // v0.3.1: worth dedicated recovery
         public string basis;              // "datasheet" | "estimate" (nullable)
+        public List<MaterialShare> material_breakdown;   // 2026-07-14: optional per-material split
+        public string material_breakdown_basis;          // e.g. "assumed - validate in openLCA"
     }
 
     [Serializable]

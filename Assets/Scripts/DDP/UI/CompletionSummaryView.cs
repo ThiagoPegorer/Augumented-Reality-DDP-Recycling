@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -9,34 +10,35 @@ using DPP.Models;
 namespace DPP.UI
 {
     /// <summary>
-    /// Screen 09 — Completion summary (spec 09 v2.1). Receives the session
-    /// result from StepFlowController, binds passport data, and posts the
-    /// recovery report.
+    /// Screen 09 — Completion summary (spec 09 v3, 2026-07-14).
     ///
-    /// Single-action flow (2026-06-11 revision): only "Send recovery report"
-    /// is shown at first. On success the same button becomes "Done" (→ Main
-    /// Page) and a confirmation message appears beside it. On failure the
-    /// button offers retry. No "✓" glyphs — not covered by the SF Pro atlas.
+    /// v3: eyebrow (model · serial) and all non-button boxes removed. One big
+    /// total-time value, then a per-step table: each row = step title, a
+    /// materials-with-grams line, the step's time split, and the step's total
+    /// recovered mass. Longest step tagged gold. Masses come from components[]
+    /// grouped by disassembly_step; aggregate components use their
+    /// material_breakdown (basis: assumed — on-screen footnote).
     ///
-    /// Future (spec 09 §9): PDF report server-side; post-send options
-    /// "Close application" / "Scan a new device".
+    /// Single-action flow kept from v2.1: "Send recovery report" → "Done".
+    /// The report now includes step_times_s[] (per-step splits — user-test data).
     /// </summary>
     public class CompletionSummaryView : MonoBehaviour
     {
+        private const int MaxMaterialsShown = 3;   // top-N by weight, rest → "other"
+
         [Header("Wiring")]
         [SerializeField] private DPPClient client;
         [SerializeField] private ScreenRouter router;
 
-        [Header("Header")]
-        [SerializeField] private TMP_Text eyebrowText;       // "MS 50.4 · {serial}"
+        [Header("Total time (big value, no label)")]
+        [SerializeField] private TMP_Text timeValue;
 
-        [Header("Stat cards")]
-        [SerializeField] private TMP_Text timeValue;         // "4 min 12 s"
-        [SerializeField] private TMP_Text stepsValue;        // "5 / 5"
-
-        [Header("Recovered cards (data-bound values)")]
-        [SerializeField] private TMP_Text aluminiumTitle;    // "Aluminium housing · 363 g"
-        [SerializeField] private TMP_Text co2Title;          // "CO2 avoided · up to 6.6 kg"
+        [Header("Step table rows (index 0–4, wired by builder)")]
+        [SerializeField] private TMP_Text[] stepTitles;
+        [SerializeField] private TMP_Text[] stepMaterials;
+        [SerializeField] private TMP_Text[] stepTimes;
+        [SerializeField] private TMP_Text[] stepMasses;
+        [SerializeField] private GameObject[] longestTags;
 
         [Header("Action button (Send → Done) + confirmation message")]
         [SerializeField] private TMP_Text actionLabel;
@@ -47,7 +49,28 @@ namespace DPP.UI
         private DPPData _data;
         private int _elapsedS;
         private int _stepsCompleted;
+        private int[] _splits = System.Array.Empty<int>();
         private bool _sent;
+
+        private static readonly Color TimeNormal = Color.white;
+        private static readonly Color TimeGold = DPPTheme.Hex("#f0c879");
+
+        // Short display labels for single-material components (id → label).
+        private static readonly Dictionary<string, string> ShortLabel = new Dictionary<string, string>
+        {
+            { "pcb_substrate", "FR-4 board" },
+            { "pcb_copper",    "copper" },
+            { "solder",        "solder" },
+            { "passives",      "passives" },
+            { "tim",           "TIM" },
+            { "coating",       "coating" },
+            { "wiring",        "wiring" },
+            { "housing",       "aluminium shells" },
+            { "misc",          "labels & adhesive" },
+            { "fasteners",     "fasteners" },
+            { "connectors",    "connectors" },
+            { "actives",       "chips" },
+        };
 
         // ---- called by DPPManager on fetch ----
         public void Populate(DPPData data)
@@ -55,34 +78,90 @@ namespace DPP.UI
             _data = data;
             if (data == null) return;
 
-            if (eyebrowText != null)
+            var steps = data.disassembly?.steps;
+            int rows = RowCount();
+
+            for (int i = 0; i < rows; i++)
             {
-                string model = ShortModel(data.identity?.model);
-                string serial = data.identity?.serial_number ?? "—";
-                eyebrowText.text = $"{model} · {serial}";
+                int stepId = i + 1;
+
+                if (stepTitles != null && i < stepTitles.Length && stepTitles[i] != null)
+                {
+                    string title = steps != null && i < steps.Count ? steps[i].title : $"Step {stepId}";
+                    stepTitles[i].text = $"{stepId} · {title}";
+                }
+
+                var comps = data.components?.Where(c => c.disassembly_step == stepId).ToList();
+                if (comps == null || comps.Count == 0) continue;
+
+                if (stepMasses != null && i < stepMasses.Length && stepMasses[i] != null)
+                    stepMasses[i].text = FormatG(comps.Sum(c => c.weight_g));
+
+                if (stepMaterials != null && i < stepMaterials.Length && stepMaterials[i] != null)
+                    stepMaterials[i].text = MaterialsLine(comps);
+            }
+        }
+
+        /// <summary>Top-N materials of a step with grams; remainder → "other".</summary>
+        private static string MaterialsLine(List<DPP.Models.Component> comps)
+        {
+            var entries = new List<(string label, float w)>();
+            foreach (var c in comps)
+            {
+                if (c.material_breakdown != null && c.material_breakdown.Count > 0)
+                    foreach (var m in c.material_breakdown)
+                        entries.Add((m.material, m.weight_g));
+                else
+                    entries.Add((ShortLabel.TryGetValue(c.id, out var l) ? l : (c.name ?? c.id), c.weight_g));
             }
 
-            var housing = data.components?.FirstOrDefault(c => c.id == "housing");
-            if (aluminiumTitle != null && housing != null)
-                aluminiumTitle.text = $"Aluminium housing · {housing.weight_g:0} g";
+            entries = entries.OrderByDescending(e => e.w).ToList();
+            var shown = entries.Take(MaxMaterialsShown).ToList();
+            float rest = entries.Skip(MaxMaterialsShown).Sum(e => e.w);
+            if (rest > 0.05f) shown.Add(("other", rest));
 
-            float? co2 = data.environmental?.recovery_potential?.total_avoidable_kg;
-            if (co2Title != null && co2.HasValue)
-                co2Title.text = $"CO2 avoided · up to {co2.Value.ToString("0.0", CultureInfo.InvariantCulture)} kg";
+            return string.Join(" · ", shown.Select(e => $"{e.label} {FormatG(e.w)}"));
         }
 
         // ---- called by StepFlowController when the flow finishes ----
-        public void SetSession(int elapsedSeconds, int stepsCompleted, int totalSteps)
+        public void SetSession(int elapsedSeconds, int stepsCompleted, int totalSteps, int[] stepSplits)
         {
             _elapsedS = elapsedSeconds;
             _stepsCompleted = stepsCompleted;
+            _splits = stepSplits ?? System.Array.Empty<int>();
 
             if (timeValue != null)
                 timeValue.text = $"{elapsedSeconds / 60} min {elapsedSeconds % 60:00} s";
-            if (stepsValue != null)
-                stepsValue.text = $"{stepsCompleted} / {totalSteps}";
+
+            int longest = -1, longestVal = -1;
+            for (int i = 0; i < _splits.Length; i++)
+                if (_splits[i] > longestVal) { longestVal = _splits[i]; longest = i; }
+
+            int rows = RowCount();
+            for (int i = 0; i < rows; i++)
+            {
+                bool has = i < _splits.Length;
+                if (stepTimes != null && i < stepTimes.Length && stepTimes[i] != null)
+                {
+                    stepTimes[i].text = has ? $"{_splits[i] / 60}:{_splits[i] % 60:00}" : "—";
+                    stepTimes[i].color = i == longest ? TimeGold : TimeNormal;
+                    stepTimes[i].fontStyle = i == longest ? FontStyles.Bold : FontStyles.Normal;
+                }
+                if (longestTags != null && i < longestTags.Length && longestTags[i] != null)
+                    longestTags[i].SetActive(i == longest && _splits.Length > 1);
+            }
 
             ResetState();
+        }
+
+        private int RowCount() => stepTitles != null ? stepTitles.Length : 0;
+
+        private static string FormatG(float w)
+        {
+            string num = w >= 2f
+                ? Mathf.RoundToInt(w).ToString(CultureInfo.InvariantCulture)
+                : w.ToString("0.0", CultureInfo.InvariantCulture);
+            return $"{num} g";
         }
 
         /// <summary>Single action button: sends the report, then acts as Done.</summary>
@@ -108,6 +187,7 @@ namespace DPP.UI
             string ids = _data.components != null
                 ? string.Join(",", _data.components.Select(c => $"\"{c.id}\""))
                 : "";
+            string splits = string.Join(",", _splits.Select(s => s.ToString(CultureInfo.InvariantCulture)));
             float? co2 = _data.environmental?.recovery_potential?.total_avoidable_kg;
 
             var sb = new StringBuilder();
@@ -116,6 +196,7 @@ namespace DPP.UI
             sb.Append($"\"timestamp\":\"{System.DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}\",");
             sb.Append($"\"elapsed_s\":{_elapsedS},");
             sb.Append($"\"steps_completed\":{_stepsCompleted},");
+            sb.Append($"\"step_times_s\":[{splits}],");
             sb.Append($"\"recovered_component_ids\":[{ids}],");
             sb.Append(co2.HasValue
                 ? $"\"co2_avoided_kg\":{co2.Value.ToString("0.00", CultureInfo.InvariantCulture)}"
@@ -152,13 +233,6 @@ namespace DPP.UI
             if (actionChevron != null) actionChevron.SetActive(true);
             if (actionButton != null) actionButton.interactable = true;
             if (sentMessage != null) sentMessage.gameObject.SetActive(false);
-        }
-
-        private static string ShortModel(string model)
-        {
-            if (string.IsNullOrEmpty(model)) return "—";
-            int idx = model.IndexOf("MS", System.StringComparison.Ordinal);
-            return idx >= 0 ? model.Substring(idx) : model;
         }
     }
 }
