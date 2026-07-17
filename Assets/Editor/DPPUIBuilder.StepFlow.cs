@@ -326,6 +326,10 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
+        // Exploded ACTION ZONE (v2, 2026-07-16 — approved mock exploded_zone_v1_1.svg)
+        // Transparent frame (no fill), left-edge zoom slider, reassemble pill,
+        // runtime-cloned interactive model (ExplodedZoneInteraction).
+        // =================================================================
         private static GameObject BuildExplodedCanvas(RectTransform mainCanvasRT)
         {
             var go = new GameObject("ExplodedCanvas", typeof(Canvas), typeof(GraphicRaycaster));
@@ -334,36 +338,89 @@ namespace DPP.EditorTools
             canvas.worldCamera = Camera.main;
 
             var rt = (RectTransform)go.transform;
-            rt.sizeDelta = new Vector2(268, 430);
-            // Default: to the right of the main panel (main 0.64 m wide → half 0.32,
-            // gap 0.06, exploded half 0.134). Worker repositions via grabber bar.
-            rt.position = mainCanvasRT.position + new Vector3(0.514f, 0f, 0f);
+            // v2.1: wider + shorter (was 268×430) so the grabber bar sits right
+            // under the model and the zone hugs the device shape.
+            const float ZW = 340f, ZH = 300f;
+            rt.sizeDelta = new Vector2(ZW, ZH);
+            // Default: to the right of the main panel. Worker repositions via grabber bar.
+            rt.position = mainCanvasRT.position + new Vector3(0.55f, 0f, 0f);
             rt.localScale = Vector3.one * 0.001f;
 
-            // Panel surface (stroke-behind).
-            var stroke = AddImage(Stretch("Stroke", rt), DPPSpriteFactory.RoundedR20, DPPTheme.Hex("#1a335f"), sliced: true);
-            ((RectTransform)stroke.transform).offsetMin = new Vector2(-1, -1);
-            ((RectTransform)stroke.transform).offsetMax = new Vector2(1, 1);
-            AddImage(Stretch("Fill", rt), DPPSpriteFactory.RoundedR20, DPPTheme.NavyCanvas3D, sliced: true);
+            // ---- Gizmo rig (v2.3): the rotation arcs + zoom slider are glued
+            // to the MODEL, not the canvas — ExplodedZoneInteraction keeps this
+            // root at the model's mount point/depth and scales it with zoom, so
+            // the controls always wrap the model like an orbit gizmo.
+            var gizmoGO = new GameObject("GizmoRoot", typeof(RectTransform));
+            var gizmo = (RectTransform)gizmoGO.transform;
+            gizmo.SetParent(rt, false);
+            gizmo.anchorMin = gizmo.anchorMax = new Vector2(0.5f, 0.5f);
+            gizmo.pivot = new Vector2(0.5f, 0.5f);
+            gizmo.sizeDelta = new Vector2(10, 10);
 
-            AddText(TL("Eyebrow", rt, 18, 20, 160, 16), "EXPLORE · 3D model", 12, DPPTheme.TextCaption, bold: false);
-            var badge = TL("Badge", rt, 160, 14, 92, 20);
-            AddImage(CenterIn("BadgeStroke", badge, 94, 22), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
-            AddImage(CenterIn("BadgeFill", badge, 92, 20), DPPSpriteFactory.RoundedR13, DPPTheme.CardBlue, sliced: true);
-            AddText(Stretch("BadgeLabel", badge), "static preview", 10.5f, DPPTheme.TextSubtitleNavy, bold: false, align: TextAlignmentOptions.Center);
+            // Arc offsets are relative to the gizmo centre (= the model mount).
+            var arcTop = BuildRotateArc(gizmo, "RotArcTop", -120, -146, 240, 28, horizontal: true, bulgeUp: true);
+            var arcRight = BuildRotateArc(gizmo, "RotArcRight", 118, -100, 28, 200, horizontal: false, bulgeUp: false);
+            var arcBottom = BuildRotateArc(gizmo, "RotArcBottom", -120, 118, 240, 28, horizontal: true, bulgeUp: false);
 
-            var img = TLCenter("Teardown", rt, 134, 210, 250, 232);
-            var image = img.gameObject.AddComponent<Image>();
-            image.sprite = LoadTeardownSprite();
-            image.preserveAspect = true;
-            image.raycastTarget = false;
+            // ---- Hover label: part name, top-center of the canvas (panel UI) ----
+            var hoverLabel = AddText(TLCenter("HoverLabel", rt, ZW / 2f, 20, 260, 20), "",
+                13, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            hoverLabel.gameObject.SetActive(false);
 
-            AddText(TLCenter("Note1", rt, 134, 372, 240, 14), "rotate · zoom · part highlight", 10.5f,
-                DPPTheme.TextTip, bold: false, align: TextAlignmentOptions.Center);
-            AddText(TLCenter("Note2", rt, 134, 388, 240, 14), "planned with the CAD model", 10.5f,
-                DPPTheme.TextTip, bold: false, align: TextAlignmentOptions.Center);
+            // ---- Model anchor: clone parented here at runtime. Canvas scale is
+            // 0.001, so 1000 restores world scale; slightly in front of the plane.
+            var anchorGO = new GameObject("ModelAnchor", typeof(RectTransform));
+            var anchor = (RectTransform)anchorGO.transform;
+            anchor.SetParent(rt, false);
+            anchor.anchoredPosition3D = new Vector3(0f, 0f, -70f);   // 7 cm toward the user
+            anchor.localScale = Vector3.one * 1000f;
 
-            // Grabber bar (own transform → moves only this canvas).
+            // ---- Zoom slider, LEFT of the model (part of the gizmo rig) ----
+            var sliderRoot = TL("ZoomSlider", gizmo, -146, -98, 28, 196);
+            AddText(TLCenter("Plus", sliderRoot, 14, 8, 24, 20), "+", 15, DPPTheme.TextOnNavy,
+                bold: true, align: TextAlignmentOptions.Center);
+            var track = TLCenter("Track", sliderRoot, 14, 100, 16, 146);
+            AddImage(CenterIn("TrackStroke", track, 18, 148), DPPSpriteFactory.Pill, DPPTheme.TabActiveStroke);
+            AddImage(CenterIn("TrackFill", track, 16, 146), DPPSpriteFactory.Pill, DPPTheme.NavyPanel, raycast: true);
+            var handleRT = NewRT("Handle", track);
+            handleRT.anchorMin = handleRT.anchorMax = new Vector2(0.5f, 0.5f);
+            handleRT.pivot = new Vector2(0.5f, 0.5f);
+            handleRT.anchoredPosition = new Vector2(0f, -61f);      // floor = default zoom
+            handleRT.sizeDelta = new Vector2(22, 22);
+            AddImage(handleRT, DPPSpriteFactory.Circle64, DPPTheme.TealAccent);
+            AddText(TLCenter("Minus", sliderRoot, 14, 190, 24, 20), "−", 17, DPPTheme.TextOnNavy,
+                bold: true, align: TextAlignmentOptions.Center);
+            sliderRoot.gameObject.SetActive(false);
+
+            // ---- Reassemble pill, bottom-center ----
+            var interaction = go.AddComponent<ExplodedZoneInteraction>();
+            var reBtn = TLCenter("ReassembleButton", rt, ZW / 2f, ZH - 24, 140, 32);
+            var reOutline = AddImage(CenterIn("HoverOutline", reBtn, 148, 40), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            reOutline.gameObject.SetActive(false);
+            var reFill = AddImage(CenterIn("Fill", reBtn, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
+            AddText(Stretch("Label", reBtn), "Reassemble", 13, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            var reButton = reBtn.gameObject.AddComponent<Button>();
+            reButton.transition = Selectable.Transition.None;
+            reButton.targetGraphic = reFill;
+            WireClick(reButton, interaction, nameof(ExplodedZoneInteraction.Reassemble));
+            var reHover = reBtn.gameObject.AddComponent<HoverHighlight>();
+            SetRef(reHover, "highlightOutline", reOutline.gameObject);
+
+            // ---- Wire the interaction controller ----
+            var vcuAnimator = Object.FindFirstObjectByType<DisassemblyAnimator>();
+            if (vcuAnimator != null) SetRef(interaction, "modelSource", vcuAnimator.transform);
+            else Debug.LogWarning("[DPPUIBuilder] No DisassemblyAnimator (VCU_assembly missing?) — zone model will retry at runtime.");
+            SetRef(interaction, "modelAnchor", anchor);
+            SetRef(interaction, "gizmoRoot", gizmo);
+            SetRef(interaction, "hoverLabel", hoverLabel);
+            SetRef(interaction, "rotArcTop", arcTop);
+            SetRef(interaction, "rotArcRight", arcRight);
+            SetRef(interaction, "rotArcBottom", arcBottom);
+            SetRef(interaction, "sliderRoot", sliderRoot.gameObject);
+            SetRef(interaction, "sliderTrack", track);
+            SetRef(interaction, "sliderHandle", handleRT);
+
+            // ---- Grabber bar (own transform → moves only this canvas) ----
             var barGO = new GameObject("GrabberBar", typeof(RectTransform));
             var bar = (RectTransform)barGO.transform;
             bar.SetParent(rt, false);
@@ -379,8 +436,112 @@ namespace DPP.EditorTools
             SetRef(handle, "barFill", fill);
             SetRef(handle, "grip", grip);
 
+            // ---- Preview layer split: the ORIGINAL model renders only for the
+            // RT preview cameras; the user sees only the zone clone. ----
+            ConfigurePreviewLayer(vcuAnimator);
+
             Undo.RegisterCreatedObjectUndo(go, "Build Exploded Canvas");
             return go;
+        }
+
+        /// <summary>One curved rotation bar: a smooth arc built from short capsule
+        /// segments (bulging outward), inside an invisible drag region the
+        /// interaction script maps to rotation about one axis.</summary>
+        private static RectTransform BuildRotateArc(RectTransform rt, string name,
+            float x, float y, float w, float h, bool horizontal, bool bulgeUp)
+        {
+            var region = TL(name, rt, x, y, w, h);
+            Color c = DPPTheme.TealLight; c.a = 0.9f;
+
+            const int N = 15;
+            float len = horizontal ? w : h;
+            float bulge = 9f;
+            for (int i = 0; i < N; i++)
+            {
+                float t = i / (float)(N - 1);
+                float along = 8f + t * (len - 16f);
+                float b = Mathf.Sin(t * Mathf.PI) * bulge;
+                float tilt = -Mathf.Cos(t * Mathf.PI) * 16f;   // tangent feel
+
+                float cx, cy, rot;
+                if (horizontal)
+                {
+                    cx = along;
+                    cy = bulgeUp ? (h - 8f) - b : 8f + b;
+                    rot = bulgeUp ? tilt : -tilt;
+                }
+                else
+                {
+                    cx = 8f + b;                                // right arc bulges outward (+x)
+                    cy = along;
+                    rot = 90f + tilt;
+                }
+
+                var seg = TLCenter($"Seg{i}", region, cx, cy, 13, 3);
+                seg.localRotation = Quaternion.Euler(0, 0, rot);
+                AddImage(seg, DPPSpriteFactory.Grip, c);
+            }
+            return region;
+        }
+
+        /// <summary>Puts the original VCU_assembly on a dedicated "DPPPreview"
+        /// layer, hides that layer from the main camera, and restricts the
+        /// shared preview camera to it — so the intro/how-to RenderTextures
+        /// keep filming the original while the user only ever sees the clone.</summary>
+        private static void ConfigurePreviewLayer(DisassemblyAnimator vcuAnimator)
+        {
+            int layer = EnsureLayer("DPPPreview");
+            if (layer < 0 || vcuAnimator == null) return;
+
+            SetLayerRecursiveEditor(vcuAnimator.transform, layer);
+
+            var mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                mainCam.cullingMask &= ~(1 << layer);
+                EditorUtility.SetDirty(mainCam);
+            }
+
+            foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
+            {
+                if (root.name != PreviewCamName) continue;
+                var cam = root.GetComponent<Camera>();
+                if (cam != null) { cam.cullingMask = 1 << layer; EditorUtility.SetDirty(cam); }
+            }
+            Debug.Log($"[DPPUIBuilder] Preview layer '{"DPPPreview"}' (index {layer}) configured: original model hidden from the main camera.");
+        }
+
+        private static void SetLayerRecursiveEditor(Transform t, int layer)
+        {
+            t.gameObject.layer = layer;
+            EditorUtility.SetDirty(t.gameObject);
+            foreach (Transform c in t) SetLayerRecursiveEditor(c, layer);
+        }
+
+        /// <summary>Finds or creates a named layer in TagManager. Returns its index, or −1.</summary>
+        private static int EnsureLayer(string name)
+        {
+            var assets = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset");
+            if (assets == null || assets.Length == 0) { Debug.LogWarning("[DPPUIBuilder] TagManager not found."); return -1; }
+            var tagManager = new SerializedObject(assets[0]);
+            var layers = tagManager.FindProperty("layers");
+
+            for (int i = 8; i < 32; i++)
+                if (layers.GetArrayElementAtIndex(i).stringValue == name) return i;
+
+            for (int i = 8; i < 32; i++)
+            {
+                var slot = layers.GetArrayElementAtIndex(i);
+                if (string.IsNullOrEmpty(slot.stringValue))
+                {
+                    slot.stringValue = name;
+                    tagManager.ApplyModifiedProperties();
+                    Debug.Log($"[DPPUIBuilder] Created layer '{name}' at index {i}.");
+                    return i;
+                }
+            }
+            Debug.LogWarning("[DPPUIBuilder] No free layer slot for DPPPreview.");
+            return -1;
         }
     }
 

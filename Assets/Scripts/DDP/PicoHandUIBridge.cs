@@ -93,6 +93,29 @@ namespace DPP
         [Tooltip("If true, prints a status snapshot once per second to Logcat. Turn off after debugging.")]
         [SerializeField] private bool verboseLogging = true;
 
+        // ---- public continuous-gesture API (2026-07-16, exploded action zone) ----
+
+        /// <summary>Scene singleton so gesture consumers (ExplodedZoneInteraction)
+        /// can poll hand rays without a serialized reference.</summary>
+        public static PicoHandUIBridge Instance { get; private set; }
+
+        /// <summary>Current ray + pinch-held state for one hand. Unlike the
+        /// click path (rising edge only), this exposes the CONTINUOUS pinch so
+        /// consumers can implement drag gestures. Returns false when the hand
+        /// is unavailable (not computed / no valid ray).</summary>
+        public bool TryGetHandRay(bool leftHandSide, out Ray ray, out bool pinching)
+        {
+            ray = default;
+            pinching = false;
+            PXR_Hand hand = leftHandSide ? leftHand : rightHand;
+            if (hand == null || !hand.Computed || !hand.RayValid) return false;
+            Transform rayPose = hand.transform.Find("RayPose");
+            if (rayPose == null) return false;
+            ray = new Ray(rayPose.position, rayPose.forward);
+            pinching = hand.Pinch;
+            return true;
+        }
+
         // ---- runtime state ----
         private bool _leftWasPinching, _rightWasPinching;
         private float _nextLogTime;
@@ -103,6 +126,7 @@ namespace DPP
 
         void Awake()
         {
+            Instance = this;
             _mpb = new MaterialPropertyBlock();
             if (leftReticle != null)  _leftReticleRenderer  = leftReticle.GetComponentInChildren<Renderer>();
             if (rightReticle != null) _rightReticleRenderer = rightReticle.GetComponentInChildren<Renderer>();

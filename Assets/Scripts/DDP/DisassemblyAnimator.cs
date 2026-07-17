@@ -364,11 +364,17 @@ namespace DPP
 
         // ---------- step focus: ghost non-relevant parts ----------
 
+        /// <summary>Currently focused step (0 = no focus). Lets the zone-model
+        /// cloner clear the ghosting before Instantiate and restore it after —
+        /// otherwise the clone inherits ghost materials on most parts.</summary>
+        public int FocusStep { get; private set; }
+
         /// <summary>Fades every part NOT involved in the given step to fadedAlpha,
         /// so the how-to animation highlights only the relevant components.
         /// Parts removed in earlier steps ghost too (visible as history).</summary>
         public void SetStepFocus(int step)
         {
+            FocusStep = step;
             var keep = new HashSet<Transform>();
             switch (step)
             {
@@ -391,6 +397,7 @@ namespace DPP
         /// <summary>Restores every part's original materials.</summary>
         public void ClearFocus()
         {
+            FocusStep = 0;
             foreach (var kv in _origMats)
                 if (kv.Key != null) kv.Key.sharedMaterials = kv.Value;
         }
