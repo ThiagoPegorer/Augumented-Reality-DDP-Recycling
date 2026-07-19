@@ -371,8 +371,24 @@ namespace DPP
             }
         }
 
-        // (Mesh-tint highlight removed 2026-07-16 — selection feedback is the
-        // hover label on the zone frame; only the locked red flash tints.)
+        /// <summary>Subtle hover cue (v2.5): brightens the part ~30% — NOT the
+        /// rejected teal wash. Cleared with hover=false.</summary>
+        public void SetHover(Body b, bool on)
+        {
+            if (b == null) return;
+            for (int i = 0; i < b.renderers.Length; i++)
+            {
+                if (on)
+                {
+                    Color c = b.baseColors[i];
+                    TintRenderer(b.renderers[i], new Color(
+                        Mathf.Min(1f, c.r * 1.3f + 0.05f),
+                        Mathf.Min(1f, c.g * 1.3f + 0.05f),
+                        Mathf.Min(1f, c.b * 1.3f + 0.05f), c.a), clear: false);
+                }
+                else TintRenderer(b.renderers[i], b.baseColors[i], clear: true);
+            }
+        }
 
         private void LockedFeedback(Body b)
         {

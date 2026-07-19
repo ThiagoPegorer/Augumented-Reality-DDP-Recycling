@@ -89,6 +89,9 @@ namespace DPP
         [Tooltip("Where the reticle floats when the ray hits nothing at all (no canvas, no 3D collider), in meters along the ray.")]
         [SerializeField] private float reticleIdleDistance = 2.5f;
 
+        [Tooltip("Scale multiplier applied to both reticle transforms at startup (2026-07-19: the default dot was too fat for the action zone's knobs and screws).")]
+        [SerializeField] private float reticleScale = 0.6f;
+
         [Header("Diagnostics")]
         [Tooltip("If true, prints a status snapshot once per second to Logcat. Turn off after debugging.")]
         [SerializeField] private bool verboseLogging = true;
@@ -128,6 +131,8 @@ namespace DPP
         {
             Instance = this;
             _mpb = new MaterialPropertyBlock();
+            if (leftReticle != null)  leftReticle.localScale  *= reticleScale;
+            if (rightReticle != null) rightReticle.localScale *= reticleScale;
             if (leftReticle != null)  _leftReticleRenderer  = leftReticle.GetComponentInChildren<Renderer>();
             if (rightReticle != null) _rightReticleRenderer = rightReticle.GetComponentInChildren<Renderer>();
         }
