@@ -370,6 +370,11 @@ namespace DPP.EditorTools
             else Debug.LogWarning("[DPPUIBuilder] No DisassemblyAnimator (VCU_assembly missing?) — zone model will retry at runtime.");
             SetRef(interaction, "modelAnchor", anchor);
 
+            // Rotation v4.0: two-hand twist → yaw. Rotates the anchor, so the
+            // clone's constrained-body axes are unaffected.
+            var twist = go.AddComponent<TwoHandTwistRotate>();
+            SetRef(twist, "target", anchor);
+
             // Grab handle (v3.1): CIRCLE pinned below the model's front face —
             // black outer disc, gray inner disc (→ white on hover/drag, driven
             // by PanelGrabHandle's existing hover colors). ExplodedZoneInteraction

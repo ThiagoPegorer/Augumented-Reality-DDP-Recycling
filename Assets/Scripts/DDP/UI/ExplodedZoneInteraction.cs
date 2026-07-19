@@ -38,6 +38,11 @@ namespace DPP.UI
         private Vector3 _anchorBaseScale;
         private Renderer[] _modelRenderers;
 
+        /// <summary>The transform the clone hangs from — gesture components
+        /// (e.g. TwoHandTwistRotate) rotate/scale this, never the clone itself,
+        /// so the constrained-body engine's local axes stay untouched.</summary>
+        public Transform ModelAnchor => modelAnchor;
+
         private void OnEnable()
         {
             if (_model == null)

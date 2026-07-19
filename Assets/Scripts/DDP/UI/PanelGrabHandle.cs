@@ -66,6 +66,12 @@ namespace DPP.UI
         private RectTransform _rect;
         private bool _mouseHover;
         private bool _recentered;
+        private bool _mouseDragging;
+
+        /// <summary>True while the panel is being dragged (hand pinch or editor
+        /// mouse). Other gestures (e.g. TwoHandTwistRotate) poll this so they
+        /// never fight the panel grab for the same pinch.</summary>
+        public bool IsGrabbing { get; private set; }
 
         // Places the panel a comfortable distance ahead of the head at reading
         // height, then squares it up to the user. Yaw-only forward so it spawns
@@ -178,6 +184,7 @@ namespace DPP.UI
             if (alwaysBillboard && _grabHand == null)
                 FaceCamera();
 
+            IsGrabbing = _grabHand != null || _mouseDragging;
             ApplyHoverVisual();
         }
 
@@ -264,6 +271,8 @@ namespace DPP.UI
             }
             if (alwaysBillboard)
                 FaceCamera();
+
+            IsGrabbing = _mouseDragging;
         }
 #endif
 
@@ -275,6 +284,7 @@ namespace DPP.UI
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (panelRoot == null) return;
+            _mouseDragging = true;
             _dragPlane = new Plane(-transform.forward, transform.position);
             if (TryMousePoint(eventData, out Vector3 p))
                 _mouseGrabOffset = panelRoot.position - p;
@@ -290,7 +300,7 @@ namespace DPP.UI
                 FaceCamera();
         }
 
-        public void OnEndDrag(PointerEventData eventData) { }
+        public void OnEndDrag(PointerEventData eventData) { _mouseDragging = false; }
 
         private bool TryMousePoint(PointerEventData eventData, out Vector3 point)
         {
