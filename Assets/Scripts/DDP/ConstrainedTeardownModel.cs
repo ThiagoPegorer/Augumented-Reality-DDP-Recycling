@@ -36,6 +36,7 @@ namespace DPP
             public bool draggable = true;
             public bool referenceOnly;           // bottom shell: select for zoom only
             public readonly List<Body> dependencies = new List<Body>();
+            public readonly List<Body> dependents = new List<Body>();   // reverse edges (v4.6.1)
 
             public Vector3 homeLocalPos;
             public readonly List<Collider> colliders = new List<Collider>();  // tight, per part mesh
@@ -56,13 +57,27 @@ namespace DPP
         [SerializeField] private float spinDegrees = 720f;
         [SerializeField] private float lockedFlashSeconds = 0.35f;
 
+        [Tooltip("Opacity of the NON-selected parts while a part is selected (mechanism #4: 'make other components 50% transparent').")]
+        [SerializeField] private float isolationAlpha = 0.5f;
+
+        [Tooltip("A dependent part unlocks when its prerequisite reaches this fraction of full travel (user: 50%). The SAME threshold blocks the prerequisite from returning below it while the dependent is displaced.")]
+        [Range(0.1f, 1f)]
+        [SerializeField] private float dependencyUnlockFraction = 0.5f;
+
         private static readonly Color LockedTint = new Color(0.886f, 0.294f, 0.29f);     // #e24b4a
 
         private readonly List<Body> _bodies = new List<Body>();
         private readonly Dictionary<Collider, Body> _colliderMap = new Dictionary<Collider, Body>();
         private MaterialPropertyBlock _mpb;
 
+        // Isolation (mechanism #4): originals captured after Build, ghost
+        // copies cached per source material (same tech as step-focus ghosting).
+        private readonly Dictionary<Renderer, Material[]> _origMats = new Dictionary<Renderer, Material[]>();
+        private readonly Dictionary<Material, Material> _fadeCache = new Dictionary<Material, Material>();
+        private Body _isolated;
+
         public IReadOnlyList<Body> Bodies => _bodies;
+        public Body Isolated => _isolated;
 
         // =================================================================
         // Factory
@@ -95,6 +110,12 @@ namespace DPP
 
             var model = clone.AddComponent<ConstrainedTeardownModel>();
             model.Build();
+
+            // Capture originals AFTER Build (real-life colors included) so
+            // isolation can always restore the exact current material set.
+            foreach (var r in clone.GetComponentsInChildren<Renderer>(true))
+                model._origMats[r] = r.sharedMaterials;
+
             return model;
         }
 
@@ -175,7 +196,9 @@ namespace DPP
 
         private static void AddDep(Body body, Body dep)
         {
-            if (body != null && dep != null) body.dependencies.Add(dep);
+            if (body == null || dep == null) return;
+            body.dependencies.Add(dep);
+            dep.dependents.Add(body);
         }
 
         private static void SetDisplay(Body b, string label)
@@ -309,7 +332,22 @@ namespace DPP
             return s.x * s.y * s.z;
         }
 
-        public bool IsUnlocked(Body b) => b != null && b.dependencies.All(d => d.Extracted);
+        /// <summary>v4.6.1: a dependency counts as satisfied at
+        /// dependencyUnlockFraction of its travel, not only fully extracted.</summary>
+        public bool IsUnlocked(Body b)
+            => b != null && b.dependencies.All(d => d.travel >= d.maxTravel * dependencyUnlockFraction - 1e-5f);
+
+        /// <summary>Reverse constraint (v4.6.1): while any dependent is
+        /// displaced, this body cannot return below the unlock threshold —
+        /// you can't screw the lid screws back while the lid floats.</summary>
+        private float MinTravel(Body b)
+        {
+            float min = 0f;
+            foreach (var d in b.dependents)
+                if (d.travel > d.maxTravel * 0.02f)
+                    min = Mathf.Max(min, b.maxTravel * dependencyUnlockFraction);
+            return min;
+        }
 
         /// <summary>True if the drag may start. Locked bodies get red-flash + shake.</summary>
         public bool BeginDrag(Body b)
@@ -320,10 +358,11 @@ namespace DPP
             return true;
         }
 
-        /// <summary>Sets travel (metres, model space) and applies position + screw spin.</summary>
+        /// <summary>Sets travel (metres, model space) and applies position + screw spin.
+        /// Clamped between the reverse-constraint floor and maxTravel.</summary>
         public void SetTravel(Body b, float metres)
         {
-            b.travel = Mathf.Clamp(metres, 0f, b.maxTravel);
+            b.travel = Mathf.Clamp(metres, MinTravel(b), b.maxTravel);
             b.container.localPosition = b.homeLocalPos + b.axisLocal * b.travel;
 
             if (b.spin && b.maxTravel > 1e-5f)
@@ -349,23 +388,34 @@ namespace DPP
                    .SetTarget(b.container);
         }
 
-        /// <summary>All bodies tween home (chips first is unnecessary — pure translation).</summary>
+        /// <summary>All moved bodies tween home as a staggered cascade in
+        /// REVERSE dependency order — each prerequisite's tween must end after
+        /// its dependents', or the reverse-constraint floor (v4.6.1) freezes
+        /// screws at 50% mid-reassembly.</summary>
         public void ReassembleAll()
         {
-            foreach (var b in _bodies)
+            int n = 0;
+            for (int i = _bodies.Count - 1; i >= 0; i--)
             {
-                if (b.maxTravel <= 0f) continue;
+                var b = _bodies[i];
+                if (b.maxTravel <= 0f || b.travel <= 1e-4f) continue;   // only moved parts animate
                 DOTween.Kill(b.container);
                 DOTween.To(() => b.travel, v => SetTravel(b, v), 0f, snapDuration * 1.6f)
+                       .SetDelay(n * 0.1f)
                        .SetEase(Ease.InOutQuad)
                        .SetTarget(b.container);
+                n++;
             }
         }
 
         public void ResetInstant()
         {
-            foreach (var b in _bodies)
+            // REVERSE build order: dependents zero before their prerequisites,
+            // otherwise the reverse-constraint floor blocks the reset (screws
+            // would stop at 50% because the lid is still out).
+            for (int i = _bodies.Count - 1; i >= 0; i--)
             {
+                var b = _bodies[i];
                 DOTween.Kill(b.container);
                 SetTravel(b, 0f);
             }
@@ -416,6 +466,49 @@ namespace DPP
             _mpb.SetColor("_BaseColor", c);
             _mpb.SetColor("_Color", c);
             r.SetPropertyBlock(_mpb);
+        }
+
+        // =================================================================
+        // Isolation (mechanism #4): selected part keeps its real materials,
+        // every OTHER part drops to isolationAlpha via ghost material copies.
+        // =================================================================
+
+        public void Isolate(Body focus)
+        {
+            _isolated = focus;
+            foreach (var b in _bodies)
+            {
+                bool keep = b == focus;
+                foreach (var r in b.renderers)
+                {
+                    if (r == null || !_origMats.TryGetValue(r, out var orig)) continue;
+                    r.sharedMaterials = keep ? orig : FadedVersions(orig);
+                }
+            }
+        }
+
+        public void ClearIsolation()
+        {
+            _isolated = null;
+            foreach (var kv in _origMats)
+                if (kv.Key != null) kv.Key.sharedMaterials = kv.Value;
+        }
+
+        private Material[] FadedVersions(Material[] mats)
+        {
+            var faded = new Material[mats.Length];
+            for (int i = 0; i < mats.Length; i++)
+            {
+                var src = mats[i];
+                if (src == null) { faded[i] = null; continue; }
+                if (!_fadeCache.TryGetValue(src, out var m))
+                {
+                    m = DisassemblyAnimator.CreateFadeMaterial(src, isolationAlpha);
+                    _fadeCache[src] = m;
+                }
+                faded[i] = m;
+            }
+            return faded;
         }
 
         /// <summary>World-space centre of a body (zoom reference), or the whole model.</summary>

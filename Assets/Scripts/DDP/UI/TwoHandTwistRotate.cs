@@ -47,6 +47,11 @@ namespace DPP.UI
         /// the HUD chips but never rotates/scales the model.</summary>
         public bool Paused { get; set; }
 
+        /// <summary>Set by ZonePartInteraction while a part is selected, held
+        /// or dragged — part manipulation also uses two-pinch postures, so the
+        /// twist/zoom must stand down to avoid cross-fire.</summary>
+        public bool ExternallyBlocked { get; set; }
+
         [Header("Target")]
         [Tooltip("Transform that gets yawed/scaled. Auto-filled from ExplodedZoneInteraction.ModelAnchor on the same GameObject if empty.")]
         [SerializeField] private Transform target;
@@ -222,13 +227,13 @@ namespace DPP.UI
             LeftPinching = lPinch;
             RightPinching = rPinch;
 
-            if (!lPinch || !rPinch || panelBusy || Paused)
+            if (!lPinch || !rPinch || panelBusy || Paused || ExternallyBlocked)
             {
                 _armed = false;
                 _inZoomBand = false;
                 Separation = 0f;
                 CurrentBand = GestureBand.Idle;
-                ShowDebug($"L:{(lPinch ? "PINCH" : "open")}  R:{(rPinch ? "PINCH" : "open")}{(panelBusy ? "  [panel drag]" : "")}{(Paused ? "  [paused]" : "")}");
+                ShowDebug($"L:{(lPinch ? "PINCH" : "open")}  R:{(rPinch ? "PINCH" : "open")}{(panelBusy ? "  [panel drag]" : "")}{(Paused ? "  [paused]" : "")}{(ExternallyBlocked ? "  [part session]" : "")}");
                 return;
             }
 

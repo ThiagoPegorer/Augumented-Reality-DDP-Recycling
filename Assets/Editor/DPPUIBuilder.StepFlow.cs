@@ -401,9 +401,19 @@ namespace DPP.EditorTools
             SetBool(handle, "recenterOnStart", false);   // zone keeps its spot beside the main panel
             SetRef(interaction, "grabHandle", handleCircle);
 
+            // Spawn fix (v4.6): zone appears at the main panel's right edge.
+            SetRef(interaction, "mainPanel", mainCanvasRT);
+
+            // Mechanism #4 (v4.6): constrained part drag — two selection
+            // methods (direct + "+" list). Component on the zone root; the
+            // column builder wires its list UI refs.
+            var parts = go.AddComponent<ZonePartInteraction>();
+            SetRef(parts, "zone", interaction);
+            SetRef(parts, "twist", twist);
+
             // Gesture HUD column + help modal (v4.3, approved mock
             // zone_status_bar_v3.svg 2026-07-20).
-            BuildGestureColumn(rt, twist, interaction);
+            BuildGestureColumn(rt, twist, interaction, parts);
 
             // Preview-layer split unchanged: original films for the RT previews,
             // the user sees only the clone.
@@ -419,7 +429,7 @@ namespace DPP.EditorTools
         // ExplodedZoneInteraction; plus the centered gesture-guide modal.
         // ZoneGestureHUD binds values and wires both buttons at runtime.
         // =================================================================
-        private static void BuildGestureColumn(RectTransform zoneRT, TwoHandTwistRotate twist, ExplodedZoneInteraction interaction)
+        private static void BuildGestureColumn(RectTransform zoneRT, TwoHandTwistRotate twist, ExplodedZoneInteraction interaction, ZonePartInteraction parts)
         {
             // OWN nested world-space canvas (v4.5.3): the column orbits OFF the
             // zone plane, so as plain children its clicks were parallax-
@@ -433,7 +443,7 @@ namespace DPP.EditorTools
             col.anchorMin = col.anchorMax = new Vector2(0.5f, 0.5f);
             col.pivot = new Vector2(0.5f, 0.5f);
             col.anchoredPosition3D = new Vector3(-150f, 0f, -70f);   // placeholder — follower repositions
-            col.sizeDelta = new Vector2(52f, 236f);
+            col.sizeDelta = new Vector2(52f, 356f);                  // v4.6.2: ? + pill + "+" + regroup
 
             var hud = colGO.AddComponent<ZoneGestureHUD>();
 
@@ -447,7 +457,7 @@ namespace DPP.EditorTools
             // off-brand grey.
             var plateColor = DPPTheme.Hex("#2e5aa0");
             plateColor.a = 160f / 255f;   // opacity tuned on device by Thiago 2026-07-20
-            var backplate = AddImage(CenterIn("Backplate", col, 60, 244), DPPSpriteFactory.RoundedR13, plateColor, sliced: true, raycast: true);
+            var backplate = AddImage(CenterIn("Backplate", col, 60, 364), DPPSpriteFactory.RoundedR13, plateColor, sliced: true, raycast: true);
             backplate.transform.SetAsFirstSibling();
 
             // ---- ? help button (top of the column) ----
@@ -488,6 +498,83 @@ namespace DPP.EditorTools
 
             var zoomCap = AddText(TL("ZoomCap", pill, 0, 130, 40, 10), "ZOOM", 7.5f, DPPTheme.Hex("#5d7396"), bold: true, align: TextAlignmentOptions.Center);
             var zoomVal = AddText(TL("ZoomVal", pill, 0, 140, 40, 14), "1.00×", 11, DPPTheme.Hex("#dbe4f0"), bold: true, align: TextAlignmentOptions.Center);
+
+            // ---- "+" part-list button (mechanism #4) ----
+            // Same accessibility pattern as "?": 52px invisible hit, 30px visual.
+            var plusRT = TL("PlusButton", col, 0, 244, 52, 52);
+            var plusHit = AddImage(Stretch("HitArea", plusRT), DPPSpriteFactory.Circle64, new Color(0f, 0f, 0f, 0f), raycast: true);
+            AddImage(CenterIn("Fill", plusRT, 30, 30), DPPSpriteFactory.Circle64, DPPTheme.Hex("#0a1f44"));
+            var plusGlyph = CenterIn("Glyph", plusRT, 18, 18);
+            AddImage(CenterIn("H", plusGlyph, 16, 2.6f), DPPSpriteFactory.Grip, Color.white);
+            var plusV = CenterIn("V", plusGlyph, 16, 2.6f);
+            plusV.localRotation = Quaternion.Euler(0, 0, 90);
+            AddImage(plusV, DPPSpriteFactory.Grip, Color.white);
+            var plusBtn = plusRT.gameObject.AddComponent<Button>();
+            plusBtn.transition = Selectable.Transition.None;
+            plusBtn.targetGraphic = plusHit;
+            var plusOutline = AddImage(CenterIn("HoverOutline", plusRT, 36, 36), DPPSpriteFactory.Circle64, Color.white);
+            plusOutline.transform.SetSiblingIndex(1);
+            plusOutline.gameObject.SetActive(false);
+            var plusHover = plusRT.gameObject.AddComponent<HoverHighlight>();
+            SetRef(plusHover, "highlightOutline", plusOutline.gameObject);
+
+            // ---- part list (v4.6.1): fans to the user's RIGHT of the "+",
+            // masked 3-row window, pinch-drag anywhere inside to scroll. ----
+            var listRoot = TL("PartList", col, 26, 270, 0, 0);
+
+            // Viewport: RectMask2D window showing exactly 3 rows, vertically
+            // centered on the "+", extending right (away from the model).
+            var viewGO = new GameObject("Viewport", typeof(RectTransform), typeof(UnityEngine.UI.RectMask2D));
+            var viewport = (RectTransform)viewGO.transform;
+            viewport.SetParent(listRoot, false);
+            viewport.anchorMin = viewport.anchorMax = new Vector2(0.5f, 0.5f);
+            viewport.pivot = new Vector2(0f, 0.5f);
+            viewport.anchoredPosition = new Vector2(34f, 0f);
+            viewport.sizeDelta = new Vector2(190f, 110f);   // 3 × 36 + margin
+
+            var contentGO = new GameObject("Content", typeof(RectTransform));
+            var content = (RectTransform)contentGO.transform;
+            content.SetParent(viewport, false);
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(1f, 1f);
+            content.pivot = new Vector2(0.5f, 1f);
+            content.anchoredPosition = Vector2.zero;
+            content.sizeDelta = new Vector2(0f, 110f);      // height set at runtime (rows × step)
+
+            var rowGO = new GameObject("RowTemplate", typeof(RectTransform));
+            var rowRT = (RectTransform)rowGO.transform;
+            rowRT.SetParent(content, false);
+            rowRT.anchorMin = rowRT.anchorMax = new Vector2(0.5f, 1f);
+            rowRT.pivot = new Vector2(0.5f, 1f);
+            rowRT.sizeDelta = new Vector2(170f, 30f);
+            rowRT.anchoredPosition = Vector2.zero;          // runtime: (0, -i*rowStep)
+            var rowOutline = AddImage(CenterIn("Outline", rowRT, 176, 36), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            rowOutline.gameObject.SetActive(false);
+            AddImage(CenterIn("BG", rowRT, 170, 30), DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#0a1f44"), sliced: true, raycast: true);
+            AddText(Stretch("Label", rowRT), "Part", 11.5f, Color.white, bold: true, align: TextAlignmentOptions.Center);
+            rowGO.SetActive(false);
+
+            // ---- regroup button (v4.6.2): recycle icon → reassemble all ----
+            var regroupRT = TL("RegroupButton", col, 0, 300, 52, 52);
+            var regroupHit = AddImage(Stretch("HitArea", regroupRT), DPPSpriteFactory.Circle64, new Color(0f, 0f, 0f, 0f), raycast: true);
+            AddImage(CenterIn("Fill", regroupRT, 30, 30), DPPSpriteFactory.Circle64, DPPTheme.Hex("#0a1f44"));
+            AddImage(CenterIn("Icon", regroupRT, 16, 16), DPPSpriteFactory.Recycle, Color.white);
+            var regroupBtn = regroupRT.gameObject.AddComponent<Button>();
+            regroupBtn.transition = Selectable.Transition.None;
+            regroupBtn.targetGraphic = regroupHit;
+            var regroupOutline = AddImage(CenterIn("HoverOutline", regroupRT, 36, 36), DPPSpriteFactory.Circle64, Color.white);
+            regroupOutline.transform.SetSiblingIndex(1);
+            regroupOutline.gameObject.SetActive(false);
+            var regroupHover = regroupRT.gameObject.AddComponent<HoverHighlight>();
+            SetRef(regroupHover, "highlightOutline", regroupOutline.gameObject);
+
+            SetRef(parts, "plusButton", plusBtn);
+            SetRef(parts, "plusGlyph", plusGlyph);
+            SetRef(parts, "regroupButton", regroupBtn);
+            SetRef(parts, "listRoot", listRoot);
+            SetRef(parts, "viewport", viewport);
+            SetRef(parts, "content", content);
+            SetRef(parts, "rowTemplate", rowRT);
 
             // ---- gesture-guide modal (centered, hidden until ? is clicked) ----
             var modal = BuildZoneHelpModal(zoneRT, out Button closeBtn);

@@ -34,6 +34,12 @@ namespace DPP.UI
         [Tooltip("How far beyond the model's front face the handle sits, metres.")]
         [SerializeField] private float handleGapFront = 0.015f;   // tuned on device 2026-07-19
 
+        [Header("Spawn (v4.6 — appear at the main panel's right, not a random spot)")]
+        [Tooltip("The main 640×430 canvas. On every zone activation the zone places itself at this panel's right edge, matching its rotation.")]
+        [SerializeField] private Transform mainPanel;
+        [Tooltip("Centre-to-centre offset to the main panel's right, metres.")]
+        [SerializeField] private float spawnGapRight = 0.55f;
+
         [Header("Gesture status column (v4.3 — '?' + L/R/yaw/dist/zoom stack)")]
         [Tooltip("The vertical HUD column; pinned to the model's front-LEFT edge, orbits + billboards like the handle.")]
         [SerializeField] private RectTransform statusColumn;
@@ -48,6 +54,10 @@ namespace DPP.UI
         /// (e.g. TwoHandTwistRotate) rotate/scale this, never the clone itself,
         /// so the constrained-body engine's local axes stay untouched.</summary>
         public Transform ModelAnchor => modelAnchor;
+
+        /// <summary>The constrained-body engine on the runtime clone (null until
+        /// the first zone activation) — used by ZonePartInteraction.</summary>
+        public ConstrainedTeardownModel Model => _model;
 
         private bool _suppressed;
 
@@ -67,6 +77,17 @@ namespace DPP.UI
 
         private void OnEnable()
         {
+            // Predictable spawn (user, 2026-07-20): the main panel recenters in
+            // front of the user at startup, but the zone kept its editor-time
+            // world position — "random" from the user's point of view. Place it
+            // at the main panel's right edge on every activation; the grab
+            // circle still lets the user park it anywhere afterwards.
+            if (mainPanel != null)
+            {
+                transform.position = mainPanel.position + mainPanel.right * spawnGapRight;
+                transform.rotation = mainPanel.rotation;
+            }
+
             if (_model == null)
             {
                 if (modelSource == null)

@@ -428,8 +428,9 @@ namespace DPP
 
         /// <summary>Transparent ghost copy of a material. Tries URP Lit, falls back
         /// to built-in Standard (Fade). NOTE for device builds: whichever shader is
-        /// used must be in Always Included Shaders, or ghosts render magenta/missing.</summary>
-        private static Material CreateFadeMaterial(Material src, float alpha)
+        /// used must be in Always Included Shaders, or ghosts render magenta/missing.
+        /// PUBLIC (v4.6): ConstrainedTeardownModel reuses this for part isolation.</summary>
+        public static Material CreateFadeMaterial(Material src, float alpha)
         {
             Color baseCol = src.HasProperty("_BaseColor") ? src.GetColor("_BaseColor")
                           : src.HasProperty("_Color") ? src.color : Color.white;
