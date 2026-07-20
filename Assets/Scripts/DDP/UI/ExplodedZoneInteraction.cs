@@ -34,6 +34,12 @@ namespace DPP.UI
         [Tooltip("How far beyond the model's front face the handle sits, metres.")]
         [SerializeField] private float handleGapFront = 0.015f;   // tuned on device 2026-07-19
 
+        [Header("Gesture status column (v4.3 — '?' + L/R/yaw/dist/zoom stack)")]
+        [Tooltip("The vertical HUD column; pinned to the model's front-LEFT edge, orbits + billboards like the handle.")]
+        [SerializeField] private RectTransform statusColumn;
+        [Tooltip("Gap between the model's left edge and the column, metres.")]
+        [SerializeField] private float columnGapSide = 0.025f;
+
         private ConstrainedTeardownModel _model;
         private Vector3 _anchorBaseScale;
         private Renderer[] _modelRenderers;
@@ -42,6 +48,22 @@ namespace DPP.UI
         /// (e.g. TwoHandTwistRotate) rotate/scale this, never the clone itself,
         /// so the constrained-body engine's local axes stay untouched.</summary>
         public Transform ModelAnchor => modelAnchor;
+
+        private bool _suppressed;
+
+        /// <summary>Modal state (v4.4): while the gesture-guide modal is open,
+        /// the model, grab handle and status column hide so the modal owns the
+        /// zone — a 3D mesh always wins the depth test against world-space UI,
+        /// so hiding is the only clean way to put a panel "in front".</summary>
+        public void SetSuppressed(bool suppressed)
+        {
+            _suppressed = suppressed;
+            if (_modelRenderers != null)
+                foreach (var r in _modelRenderers)
+                    if (r != null) r.enabled = !suppressed;
+            if (grabHandle != null) grabHandle.gameObject.SetActive(!suppressed);
+            if (statusColumn != null) statusColumn.gameObject.SetActive(!suppressed);
+        }
 
         private void OnEnable()
         {
@@ -66,6 +88,7 @@ namespace DPP.UI
 
             _model.ResetInstant();
             _model.transform.localRotation = Quaternion.identity;
+            SetSuppressed(false);   // never re-enter the zone in modal state
         }
 
         private void OnDisable()
@@ -80,6 +103,7 @@ namespace DPP.UI
         /// model).</summary>
         private void LateUpdate()
         {
+            if (_suppressed) return;   // modal state — nothing to place
             if (grabHandle == null || _model == null || _modelRenderers == null || _modelRenderers.Length == 0) return;
             var head = Camera.main;
             if (head == null) return;
@@ -104,6 +128,25 @@ namespace DPP.UI
             Vector3 face = head.transform.position - pos;
             if (face.sqrMagnitude > 1e-6f)
                 grabHandle.rotation = Quaternion.LookRotation(-face.normalized, Vector3.up);
+
+            // Gesture status column: same follower, pinned to the model's
+            // front-LEFT edge (viewer's left), vertically centered. Offsets
+            // derive from the live AABB, so a 2× zoom pushes it outward
+            // instead of overlapping the model.
+            if (statusColumn != null)
+            {
+                Vector3 left = -Vector3.Cross(Vector3.up, toHead);   // viewer's left, horizontal
+                float sideExtent = Mathf.Abs(left.x) * b.extents.x + Mathf.Abs(left.z) * b.extents.z;
+                Vector3 cpos = b.center
+                             + toHead * (frontExtent + handleGapFront)
+                             + left * (sideExtent + columnGapSide);
+                cpos.y = b.center.y;
+                statusColumn.position = cpos;
+
+                Vector3 cface = head.transform.position - cpos;
+                if (cface.sqrMagnitude > 1e-6f)
+                    statusColumn.rotation = Quaternion.LookRotation(-cface.normalized, Vector3.up);
+            }
         }
     }
 }

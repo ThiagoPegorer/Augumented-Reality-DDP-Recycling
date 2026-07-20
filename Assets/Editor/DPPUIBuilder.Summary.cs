@@ -108,7 +108,7 @@ namespace DPP.EditorTools
 
             // ---- Action row (v2.1 single-button flow, unchanged) ----
             var sentMessage = AddText(TL("SentMessage", screen, 20, 372, 290, 44),
-                "Report was successfully sent", 13, DPPTheme.TealText, bold: false,
+                "Dismantling report sent", 13, DPPTheme.TealText, bold: false,
                 align: TextAlignmentOptions.MidlineRight);
             sentMessage.gameObject.SetActive(false);
 
@@ -116,7 +116,7 @@ namespace DPP.EditorTools
             var sendOutline = AddImage(CenterIn("HoverOutline", sendRT, 298, 52), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             sendOutline.gameObject.SetActive(false);
             var sendFill = AddImage(CenterIn("Fill", sendRT, 290, 44), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
-            var sendLabel = AddText(Stretch("Label", sendRT), "Send recovery report", 15f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            var sendLabel = AddText(Stretch("Label", sendRT), "Send dismantling report", 15f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
             var chevron = NewRT("Chevron", sendRT);
             chevron.anchorMin = chevron.anchorMax = new Vector2(1f, 0.5f);
             chevron.pivot = new Vector2(0.5f, 0.5f);

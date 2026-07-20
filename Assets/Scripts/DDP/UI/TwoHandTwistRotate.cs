@@ -4,61 +4,93 @@ using TMPro;
 namespace DPP.UI
 {
     /// <summary>
-    /// Zone rotation + scale v4.1 — TWO-HAND TWIST &amp; PINCH, 2026-07-19.
+    /// Zone rotation + scale v4.2 — SEPARATION BANDS, 2026-07-20.
     ///
-    /// Port of the touchscreen two-finger manipulation gestures (XRI
-    /// TwistGesture / PinchGesture) to PICO hand tracking: the two pinching
-    /// HANDS play the role of the two fingers. Both dimensions read the same
-    /// line between the two RayPose points:
-    ///   - ROTATION: how the line's horizontal heading changes → model yaw
-    ///     (signed delta, the analog of TwistGesture.CalculateDeltaRotation).
-    ///   - SCALE: how the line's length changes → model zoom. Spread hands =
-    ///     zoom in, bring together = zoom out. Clamped so the model never
-    ///     goes below its default size (floor 1×) and no larger than maxZoom.
+    /// Two-hand gesture (both hands pinching); the line between the two
+    /// RayPose points drives everything, but rotation and zoom are now
+    /// EXCLUSIVE, split by hand separation (Thiago's band design):
     ///
-    /// Both run simultaneously while both hands pinch (map-app feel); each
-    /// can be disabled independently for isolated testing. Open either pinch
-    /// → stops instantly, pose and zoom kept. Delta/ratio-based per stroke,
-    /// so ratcheting works for both: twist/spread, release, reposition,
-    /// pinch, continue.
+    ///   minHandSeparation .. zoomThreshold  →  ROTATION band
+    ///       Twist = yaw (heading delta of the hand line, world-Y).
+    ///       Zoom is frozen — no size breathing while rotating.
+    ///
+    ///   beyond zoomThreshold               →  ZOOM band
+    ///       Rotation stops. Separation is an ABSOLUTE zoom dial:
+    ///       zoomThreshold = 1× (default fit), zoomFullSeparation = maxZoom.
+    ///       Spread wider → bigger; close back toward the threshold → smaller.
+    ///       Hand distance = model size, always — fully deterministic.
+    ///
+    ///   ~1 cm hysteresis at the border so the mode doesn't flicker, and the
+    ///   model GLIDES toward the mapped zoom (zoomResponse) instead of
+    ///   snapping when the hands re-enter the zoom band at a different level.
     ///
     /// Yaw-only rotation by design; manipulates the MODEL ANCHOR, never the
     /// clone, so the constrained-body engine's local axes stay untouched.
+    /// v4.1 (simultaneous map-app mode) is preserved behind the
+    /// useSeparationBands toggle in case the band feel is rejected.
     /// </summary>
     public class TwoHandTwistRotate : MonoBehaviour
     {
+        /// <summary>Which mechanism the current hand posture drives (v4.3 —
+        /// read by ZoneGestureHUD to highlight the active row).</summary>
+        public enum GestureBand { Idle, Rotate, Zoom }
+
+        // ---- Live state for the gesture HUD (read-only from outside) ----
+        public bool LeftPinching  { get; private set; }
+        public bool RightPinching { get; private set; }
+        public float Separation   { get; private set; }          // metres; 0 when not tracked
+        public float CurrentZoom  => _zoom;
+        public float CurrentYaw   => target != null ? target.localEulerAngles.y : 0f;
+        public GestureBand CurrentBand { get; private set; } = GestureBand.Idle;
+
+        /// <summary>While true (help modal open) the gesture updates state for
+        /// the HUD chips but never rotates/scales the model.</summary>
+        public bool Paused { get; set; }
+
         [Header("Target")]
         [Tooltip("Transform that gets yawed/scaled. Auto-filled from ExplodedZoneInteraction.ModelAnchor on the same GameObject if empty.")]
         [SerializeField] private Transform target;
 
-        [Header("Rotation")]
-        [SerializeField] private bool enableRotation = true;
+        [Header("Mode")]
+        [Tooltip("ON (v4.2): rotation 5–25cm, zoom beyond 25cm, exclusive. OFF (v4.1): both run simultaneously, ratchet-based zoom.")]
+        [SerializeField] private bool useSeparationBands = true;
 
+        [SerializeField] private bool enableRotation = true;
+        [SerializeField] private bool enableScale = true;
+
+        [Header("Rotation")]
         [Tooltip("Degrees of model yaw per degree of hand twist. 1 = 1:1.")]
         [SerializeField] private float gain = 1f;
 
         [Tooltip("Per-frame deltas above this (degrees) are dropped as hand-tracking spikes, not intent.")]
         [SerializeField] private float maxDeltaPerFrame = 12f;
 
-        [Header("Scale (pinch-zoom)")]
-        [SerializeField] private bool enableScale = true;
+        [Header("Zoom bands (metres)")]
+        [Tooltip("Hands closer than this don't manipulate at all.")]
+        [SerializeField] private float minHandSeparation = 0.05f;
 
-        [Tooltip("Upper zoom limit as a multiple of the default size. Lower limit is always 1× (never smaller than default).")]
+        [Tooltip("Band border: below = rotation only, above = zoom only. Zoom is 1× exactly here.")]
+        [SerializeField] private float zoomThreshold = 0.25f;
+
+        [Tooltip("Separation at which zoom reaches maxZoom. The dial runs zoomThreshold→this.")]
+        [SerializeField] private float zoomFullSeparation = 0.55f;
+
+        [Tooltip("Border hysteresis so the mode doesn't flicker at the threshold.")]
+        [SerializeField] private float bandHysteresis = 0.01f;
+
+        [Header("Zoom feel")]
+        [Tooltip("Upper zoom limit as a multiple of the default size. Lower limit is always 1×.")]
         [SerializeField] private float maxZoom = 2f;
 
-        [Tooltip("Zoom multiplier per doubling of hand separation. 1 = separation maps 1:1 to scale ratio.")]
-        [SerializeField] private float zoomGain = 1f;
-
-        [Header("Gesture gates")]
-        [Tooltip("Hands closer than this (metres) don't manipulate — the line between near-touching hands is too noisy to be meaningful.")]
-        [SerializeField] private float minHandSeparation = 0.05f;
+        [Tooltip("How fast the model glides toward the dialed zoom (per second). Prevents snaps on band re-entry.")]
+        [SerializeField] private float zoomResponse = 5f;
 
         [Tooltip("Restore the model's default facing AND default zoom every time the zone screen opens.")]
         [SerializeField] private bool resetOnEnable = true;
 
         [Header("Debug")]
-        [Tooltip("Show a live gesture-state readout at the bottom of the zone canvas. Turn OFF once the gesture is validated.")]
-        [SerializeField] private bool debugOverlay = true;
+        [Tooltip("Raw dev readout at the bottom of the zone canvas. Superseded by the gesture HUD column (v4.3) — keep OFF unless debugging.")]
+        [SerializeField] private bool debugOverlay = false;
 
         private PanelGrabHandle _panelHandle;   // don't manipulate while the panel itself is being dragged
         private Quaternion _initialLocalRot;
@@ -71,9 +103,10 @@ namespace DPP.UI
         private float _zoom = 1f;               // current zoom, 1..maxZoom
 
         private bool _armed;
+        private bool _inZoomBand;
         private float _prevHeading;
-        private float _armSep;                  // separation at arm time
-        private float _armZoom;                 // zoom at arm time
+        private float _armSep;                  // v4.1 ratchet mode only
+        private float _armZoom;                 // v4.1 ratchet mode only
         private TextMeshProUGUI _debugText;
 
         private void Awake()
@@ -106,6 +139,7 @@ namespace DPP.UI
                 if (_baseScaleCaptured) target.localScale = _baseScale;
             }
             _armed = false;
+            _inZoomBand = false;
         }
 
         // ------------------------------------------------------------------
@@ -184,21 +218,29 @@ namespace DPP.UI
             bool rPinch = IsPinching(rightHand);
             bool panelBusy = _panelHandle != null && _panelHandle.IsGrabbing;
 
-            if (!lPinch || !rPinch || panelBusy)
+            // HUD state: chips always live, even when the gesture won't act.
+            LeftPinching = lPinch;
+            RightPinching = rPinch;
+
+            if (!lPinch || !rPinch || panelBusy || Paused)
             {
                 _armed = false;
-                ShowDebug($"L:{(lPinch ? "PINCH" : "open")}  R:{(rPinch ? "PINCH" : "open")}{(panelBusy ? "  [panel drag]" : "")}");
+                _inZoomBand = false;
+                Separation = 0f;
+                CurrentBand = GestureBand.Idle;
+                ShowDebug($"L:{(lPinch ? "PINCH" : "open")}  R:{(rPinch ? "PINCH" : "open")}{(panelBusy ? "  [panel drag]" : "")}{(Paused ? "  [paused]" : "")}");
                 return;
             }
 
-            // The "two fingers on the screen" of the original TwistGesture /
-            // PinchGesture, promoted to world space.
             Vector3 v = _rightPoint.position - _leftPoint.position;
             v.y = 0f;                                   // yaw & zoom read the horizontal line
             float sep = v.magnitude;
+            Separation = sep;
             if (sep < minHandSeparation)
             {
                 _armed = false;
+                _inZoomBand = false;
+                CurrentBand = GestureBand.Idle;
                 ShowDebug($"pinching, sep {sep:0.00}m < {minHandSeparation:0.00}m — spread hands");
                 return;
             }
@@ -207,11 +249,11 @@ namespace DPP.UI
 
             if (!_armed)
             {
-                // Stroke starts NOW — reference heading/separation captured, no jump.
                 _armed = true;
                 _prevHeading = heading;
                 _armSep = sep;
                 _armZoom = _zoom;
+                _inZoomBand = sep > zoomThreshold;      // start in whichever band the hands are in
                 if (!_baseScaleCaptured)
                 {
                     // Anchor scale is now post-fit (zone init ran) → safe base.
@@ -222,23 +264,65 @@ namespace DPP.UI
                 return;
             }
 
-            // ---- ROTATION: signed heading delta → yaw -----------------------
+            if (useSeparationBands)
+            {
+                UpdateBands(sep, heading);
+                CurrentBand = _inZoomBand ? GestureBand.Zoom : GestureBand.Rotate;
+            }
+            else
+            {
+                UpdateSimultaneous(sep, heading);       // v4.1 fallback
+                CurrentBand = GestureBand.Rotate;       // both run; HUD shows rotate as primary
+            }
+        }
+
+        // ---- v4.2: exclusive bands split at zoomThreshold -------------------
+        private void UpdateBands(float sep, float heading)
+        {
+            // Hysteresis: cross the border only when clearly past it.
+            if (_inZoomBand)  { if (sep < zoomThreshold - bandHysteresis) _inZoomBand = false; }
+            else              { if (sep > zoomThreshold + bandHysteresis) _inZoomBand = true;  }
+
+            float delta = Mathf.DeltaAngle(_prevHeading, heading);
+            _prevHeading = heading;                     // track always → no jump on band exit
+
+            if (_inZoomBand)
+            {
+                if (enableScale)
+                {
+                    // Absolute dial: threshold = 1×, zoomFullSeparation = maxZoom.
+                    float t = Mathf.InverseLerp(zoomThreshold, zoomFullSeparation, sep);
+                    float dialed = Mathf.Lerp(1f, maxZoom, t);
+                    // Glide, don't snap — matters when re-entering the band
+                    // while the model is at a different zoom level.
+                    _zoom = Mathf.MoveTowards(_zoom, dialed, zoomResponse * Time.deltaTime * Mathf.Max(0.25f, Mathf.Abs(dialed - _zoom)));
+                    target.localScale = _baseScale * _zoom;
+                }
+                ShowDebug($"ZOOM band  sep {sep:0.00}m  zoom {_zoom:0.00}×");
+            }
+            else
+            {
+                if (enableRotation && Mathf.Abs(delta) <= maxDeltaPerFrame)
+                    target.Rotate(0f, delta * gain, 0f, Space.World);   // world yaw = turntable
+                ShowDebug($"ROTATE band  sep {sep:0.00}m  yaw {target.localEulerAngles.y:0}°  zoom {_zoom:0.00}× (held)");
+            }
+        }
+
+        // ---- v4.1 fallback: both dimensions at once, ratchet zoom -----------
+        private void UpdateSimultaneous(float sep, float heading)
+        {
             if (enableRotation)
             {
                 float delta = Mathf.DeltaAngle(_prevHeading, heading);
                 _prevHeading = heading;
                 if (Mathf.Abs(delta) <= maxDeltaPerFrame)
-                    target.Rotate(0f, delta * gain, 0f, Space.World);   // world yaw = turntable
+                    target.Rotate(0f, delta * gain, 0f, Space.World);
             }
-
-            // ---- SCALE: separation ratio vs arm point → zoom ----------------
             if (enableScale)
             {
-                float ratio = Mathf.Pow(sep / _armSep, zoomGain);
-                _zoom = Mathf.Clamp(_armZoom * ratio, 1f, maxZoom);
+                _zoom = Mathf.Clamp(_armZoom * (sep / _armSep), 1f, maxZoom);
                 target.localScale = _baseScale * _zoom;
             }
-
             ShowDebug($"ACTIVE  yaw {target.localEulerAngles.y:0}°  zoom {_zoom:0.00}×  sep {sep:0.00}m");
         }
 

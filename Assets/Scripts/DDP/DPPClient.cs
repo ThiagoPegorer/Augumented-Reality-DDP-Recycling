@@ -14,6 +14,10 @@ namespace DPP
         [Tooltip("Backend base URL. Use http://localhost:8000 for editor testing, LAN IP or ngrok URL for PICO 4.")]
         private string baseUrl = "http://localhost:8000";
 
+        [SerializeField]
+        [Tooltip("Request timeout in seconds. Unity's default is 0 = wait FOREVER, which froze the summary screen when the backend was unreachable (2026-07-20). Never leave this at 0.")]
+        private int timeoutSeconds = 10;
+
         public string BaseUrl
         {
             get => baseUrl;
@@ -33,6 +37,7 @@ namespace DPP
                 request.uploadHandler = new UploadHandlerRaw(body);
                 request.downloadHandler = new DownloadHandlerBuffer();
                 request.SetRequestHeader("Content-Type", "application/json");
+                request.timeout = Mathf.Max(1, timeoutSeconds);
 
                 yield return request.SendWebRequest();
 
@@ -53,6 +58,8 @@ namespace DPP
 
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
+                request.timeout = Mathf.Max(1, timeoutSeconds);
+
                 yield return request.SendWebRequest();
 
                 if (request.result == UnityWebRequest.Result.Success)

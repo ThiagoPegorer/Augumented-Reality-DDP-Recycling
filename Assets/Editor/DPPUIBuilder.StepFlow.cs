@@ -363,6 +363,11 @@ namespace DPP.EditorTools
             anchor.SetParent(rt, false);
             anchor.anchoredPosition3D = new Vector3(0f, 0f, -70f);
             anchor.localScale = Vector3.one * 1000f;
+            // Initial view (user, 2026-07-20, corrected same day): glTF default
+            // showed the model's BACK — start at 180° yaw so the front faces
+            // the user. Twist gesture resets back to this on every screen
+            // entry. Tweak ModelAnchor's Y in the Inspector if it drifts.
+            anchor.localRotation = Quaternion.Euler(0f, 180f, 0f);
 
             var interaction = go.AddComponent<ExplodedZoneInteraction>();
             var vcuAnimator = Object.FindFirstObjectByType<DisassemblyAnimator>();
@@ -396,12 +401,201 @@ namespace DPP.EditorTools
             SetBool(handle, "recenterOnStart", false);   // zone keeps its spot beside the main panel
             SetRef(interaction, "grabHandle", handleCircle);
 
+            // Gesture HUD column + help modal (v4.3, approved mock
+            // zone_status_bar_v3.svg 2026-07-20).
+            BuildGestureColumn(rt, twist, interaction);
+
             // Preview-layer split unchanged: original films for the RT previews,
             // the user sees only the clone.
             ConfigurePreviewLayer(vcuAnimator);
 
             Undo.RegisterCreatedObjectUndo(go, "Build Exploded Canvas");
             return go;
+        }
+
+        // =================================================================
+        // Gesture HUD (v4.3): vertical column — [?] help, L/R hand lights,
+        // YAW / DIST / ZOOM rows — pinned to the model's front-left by
+        // ExplodedZoneInteraction; plus the centered gesture-guide modal.
+        // ZoneGestureHUD binds values and wires both buttons at runtime.
+        // =================================================================
+        private static void BuildGestureColumn(RectTransform zoneRT, TwoHandTwistRotate twist, ExplodedZoneInteraction interaction)
+        {
+            // OWN nested world-space canvas (v4.5.3): the column orbits OFF the
+            // zone plane, so as plain children its clicks were parallax-
+            // displaced (same root cause as the modal ×). As its own canvas
+            // the bridge raycasts the column's billboarded plane — accurate
+            // wherever it orbits.
+            var colGO = new GameObject("GestureColumn", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster));
+            var col = (RectTransform)colGO.transform;
+            col.SetParent(zoneRT, false);
+            colGO.GetComponent<Canvas>().worldCamera = Camera.main;
+            col.anchorMin = col.anchorMax = new Vector2(0.5f, 0.5f);
+            col.pivot = new Vector2(0.5f, 0.5f);
+            col.anchoredPosition3D = new Vector3(-150f, 0f, -70f);   // placeholder — follower repositions
+            col.sizeDelta = new Vector2(52f, 236f);
+
+            var hud = colGO.AddComponent<ZoneGestureHUD>();
+
+            // ---- backing plate (user, 2026-07-20) ----
+            // Sits behind the ? and the pill: visually grounds the column and
+            // gives the reticle a big raycast surface to land on, so aiming at
+            // the ? starts from a stable snap instead of free space.
+            // v4.5.3 (UI standards, user): backplate = brand blue #2e5aa0
+            // (tab/active-stroke), pill/buttons = navy/panel #0a1f44. Earlier
+            // passes: #d3d9e0 camouflaged the white reticle; #333d4d was
+            // off-brand grey.
+            var plateColor = DPPTheme.Hex("#2e5aa0");
+            plateColor.a = 160f / 255f;   // opacity tuned on device by Thiago 2026-07-20
+            var backplate = AddImage(CenterIn("Backplate", col, 60, 244), DPPSpriteFactory.RoundedR13, plateColor, sliced: true, raycast: true);
+            backplate.transform.SetAsFirstSibling();
+
+            // ---- ? help button (top of the column) ----
+            // Grab-handle trick (user feedback 2026-07-20: 26px was un-hittable
+            // with the hand ray): 52×52 INVISIBLE hit area, small 30px visual.
+            var helpRT = TL("HelpButton", col, 0, 0, 52, 52);
+            var helpHit = AddImage(Stretch("HitArea", helpRT), DPPSpriteFactory.Circle64, new Color(0f, 0f, 0f, 0f), raycast: true);
+            AddImage(CenterIn("Fill", helpRT, 30, 30), DPPSpriteFactory.Circle64, DPPTheme.Hex("#0a1f44"));
+            AddText(Stretch("Glyph", helpRT), "?", 16, DPPTheme.Hex("#8fa3c0"), bold: true, align: TextAlignmentOptions.Center);
+            var helpBtn = helpRT.gameObject.AddComponent<Button>();
+            helpBtn.transition = Selectable.Transition.None;
+            helpBtn.targetGraphic = helpHit;
+            // Global hover rule: white outline ring while the ray is over the
+            // hit area — makes the enlarged target visible while aiming.
+            var helpOutline = AddImage(CenterIn("HoverOutline", helpRT, 36, 36), DPPSpriteFactory.Circle64, Color.white);
+            helpOutline.transform.SetSiblingIndex(1);   // behind Fill + Glyph
+            helpOutline.gameObject.SetActive(false);
+            var helpHover = helpRT.gameObject.AddComponent<HoverHighlight>();
+            SetRef(helpHover, "highlightOutline", helpOutline.gameObject);
+
+            // ---- vertical pill ----
+            var pill = TL("Pill", col, 6, 58, 40, 178);
+            AddImage(pill, DPPSpriteFactory.RoundedR20, DPPTheme.Hex("#0a1f44"), sliced: true);
+
+            // ---- hand chips ----
+            var leftChip = MakeHandChip(pill, "ChipL", "L", 12, 10, out GameObject lOn, out GameObject lOff);
+            var rightChip = MakeHandChip(pill, "ChipR", "R", 12, 30, out GameObject rOn, out GameObject rOff);
+            AddImage(TL("Div1", pill, 10, 52, 20, 2), DPPSpriteFactory.Grip, DPPTheme.Hex("#1a2740"));
+
+            // ---- value rows: caption over value, both centered ----
+            var yawCap = AddText(TL("YawCap", pill, 0, 58, 40, 10), "YAW", 7.5f, DPPTheme.Hex("#5d7396"), bold: true, align: TextAlignmentOptions.Center);
+            var yawVal = AddText(TL("YawVal", pill, 0, 68, 40, 14), "0°", 11, DPPTheme.Hex("#dbe4f0"), bold: true, align: TextAlignmentOptions.Center);
+            AddImage(TL("Div2", pill, 10, 88, 20, 2), DPPSpriteFactory.Grip, DPPTheme.Hex("#1a2740"));
+
+            var distCap = AddText(TL("DistCap", pill, 0, 94, 40, 10), "DIST", 7.5f, DPPTheme.Hex("#5d7396"), bold: true, align: TextAlignmentOptions.Center);
+            var distVal = AddText(TL("DistVal", pill, 0, 104, 40, 14), "—", 11, DPPTheme.Hex("#dbe4f0"), bold: true, align: TextAlignmentOptions.Center);
+            AddImage(TL("Div3", pill, 10, 124, 20, 2), DPPSpriteFactory.Grip, DPPTheme.Hex("#1a2740"));
+
+            var zoomCap = AddText(TL("ZoomCap", pill, 0, 130, 40, 10), "ZOOM", 7.5f, DPPTheme.Hex("#5d7396"), bold: true, align: TextAlignmentOptions.Center);
+            var zoomVal = AddText(TL("ZoomVal", pill, 0, 140, 40, 14), "1.00×", 11, DPPTheme.Hex("#dbe4f0"), bold: true, align: TextAlignmentOptions.Center);
+
+            // ---- gesture-guide modal (centered, hidden until ? is clicked) ----
+            var modal = BuildZoneHelpModal(zoneRT, out Button closeBtn);
+
+            // ---- wiring ----
+            SetRef(hud, "twist", twist);
+            SetRef(hud, "zone", interaction);
+            SetRef(hud, "leftOn", lOn); SetRef(hud, "leftOff", lOff);
+            SetRef(hud, "rightOn", rOn); SetRef(hud, "rightOff", rOff);
+            SetRef(hud, "yawCap", yawCap); SetRef(hud, "yawValue", yawVal);
+            SetRef(hud, "distCap", distCap); SetRef(hud, "distValue", distVal);
+            SetRef(hud, "zoomCap", zoomCap); SetRef(hud, "zoomValue", zoomVal);
+            SetRef(hud, "helpButton", helpBtn);
+            SetRef(hud, "helpModal", modal);
+            SetRef(hud, "modalCloseButton", closeBtn);
+            SetRef(interaction, "statusColumn", col);
+        }
+
+        /// <summary>Hand light: 16×16 chip with an "On" stack (solid green +
+        /// dark letter) and an "Off" stack (dim ring + gray letter). The HUD
+        /// toggles the stacks; only one is visible at a time.</summary>
+        private static RectTransform MakeHandChip(RectTransform parent, string name, string letter,
+            float x, float y, out GameObject on, out GameObject off)
+        {
+            var chip = TL(name, parent, x, y, 16, 16);
+
+            var onRT = TL("On", chip, 0, 0, 16, 16);
+            AddImage(CenterIn("Fill", onRT, 16, 16), DPPSpriteFactory.Circle64, DPPTheme.Hex("#27c46c"));
+            AddText(Stretch("Letter", onRT), letter, 9, DPPTheme.Hex("#06240f"), bold: true, align: TextAlignmentOptions.Center);
+            on = onRT.gameObject;
+
+            var offRT = TL("Off", chip, 0, 0, 16, 16);
+            AddImage(CenterIn("Ring", offRT, 16, 16), DPPSpriteFactory.Circle64, DPPTheme.Hex("#5d7396"));
+            AddImage(CenterIn("Inner", offRT, 13, 13), DPPSpriteFactory.Circle64, DPPTheme.Hex("#0a1f44"));   // matches pill bg → reads as a hollow ring
+            AddText(Stretch("Letter", offRT), letter, 9, DPPTheme.Hex("#5d7396"), bold: true, align: TextAlignmentOptions.Center);
+            off = offRT.gameObject;
+            off.SetActive(false);
+
+            return chip;
+        }
+
+        /// <summary>The "How to control the model" modal: solid navy panel
+        /// centered in the zone; everything around it stays transparent.
+        /// Starts inactive; ZoneGestureHUD opens/closes it and pauses the
+        /// twist gesture while it is visible.</summary>
+        private static GameObject BuildZoneHelpModal(RectTransform zoneRT, out Button closeBtn)
+        {
+            // OWN nested world-space canvas (v4.5.2): the modal is draggable
+            // via a standard grabber bar, and PicoHandUIBridge raycasts per
+            // CANVAS plane — as its own canvas, the modal's clicks stay
+            // pixel-accurate wherever the user drags/billboards it. (As plain
+            // zone-canvas children they'd go parallax-displaced the moment it
+            // left the zone plane — the original un-clickable-× bug.)
+            var modalGO = new GameObject("HelpModal", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster));
+            var modal = (RectTransform)modalGO.transform;
+            modal.SetParent(zoneRT, false);
+            var modalCanvas = modalGO.GetComponent<Canvas>();
+            modalCanvas.worldCamera = Camera.main;
+            modal.anchorMin = modal.anchorMax = new Vector2(0.5f, 0.5f);
+            modal.pivot = new Vector2(0.5f, 0.5f);
+            // Starts ON the zone plane, centered; once the user drags it, its
+            // position persists until the screen is rebuilt.
+            modal.anchoredPosition3D = new Vector3(0f, 0f, 0f);
+            modal.sizeDelta = new Vector2(300f, 250f);
+
+            AddImage(Stretch("BG", modal), DPPSpriteFactory.RoundedR22, DPPTheme.Hex("#0d1526"), sliced: true, raycast: true);
+            AddText(TL("Title", modal, 18, 14, 230, 20), "How to control the model", 14, DPPTheme.TextOnNavy, bold: true);
+
+            // close ×
+            var closeRT = TL("Close", modal, 260, 10, 28, 28);
+            var closeFill = AddImage(CenterIn("Fill", closeRT, 24, 24), DPPSpriteFactory.Circle64, DPPTheme.Hex("#1a2740"), raycast: true);
+            var xa = CenterIn("Xa", closeRT, 12, 2.2f); xa.localRotation = Quaternion.Euler(0, 0, 45);
+            AddImage(xa, DPPSpriteFactory.Grip, DPPTheme.Hex("#8fa3c0"));
+            var xb = CenterIn("Xb", closeRT, 12, 2.2f); xb.localRotation = Quaternion.Euler(0, 0, -45);
+            AddImage(xb, DPPSpriteFactory.Grip, DPPTheme.Hex("#8fa3c0"));
+            closeBtn = closeRT.gameObject.AddComponent<Button>();
+            closeBtn.transition = Selectable.Transition.None;
+            closeBtn.targetGraphic = closeFill;
+            // Global hover rule (spec 00 §4): white contour while the ray is
+            // over the button.
+            var closeOutline = AddImage(CenterIn("HoverOutline", closeRT, 28, 28), DPPSpriteFactory.Circle64, Color.white);
+            closeOutline.transform.SetAsFirstSibling();   // ring behind the fill
+            closeOutline.gameObject.SetActive(false);
+            var closeHover = closeRT.gameObject.AddComponent<HoverHighlight>();
+            SetRef(closeHover, "highlightOutline", closeOutline.gameObject);
+
+            // rows: key + description
+            MakeModalRow(modal, 48, "Move the panel", "Pinch the circle below the model and drag.");
+            MakeModalRow(modal, 92, "Rotate", "Pinch BOTH hands 5–25 cm apart and twist them like a steering wheel — the model spins.");
+            MakeModalRow(modal, 146, "Zoom", "Spread wider than 25 cm: the distance sets the size. 25 cm = normal · 55 cm = maximum.");
+            MakeModalRow(modal, 200, "Hand lights", "Green = hand pinching · ring = hand open.");
+
+            // Standard grabber bar (00 §5) docked below the modal — the user
+            // can carry the guide anywhere in AR space, like any panel. No
+            // startup recenter: it appears centered on the zone.
+            BuildGrabberBar(modal);
+            var modalHandle = modal.GetComponentInChildren<PanelGrabHandle>(true);
+            if (modalHandle != null) SetBool(modalHandle, "recenterOnStart", false);
+
+            modalGO.SetActive(false);
+            return modalGO;
+        }
+
+        private static void MakeModalRow(RectTransform modal, float y, string key, string desc)
+        {
+            AddText(TL(key.Replace(" ", "") + "Key", modal, 18, y, 264, 16), key, 12, DPPTheme.TextOnNavy, bold: true);
+            var d = AddText(TL(key.Replace(" ", "") + "Desc", modal, 18, y + 16, 264, 30), desc, 10.5f, DPPTheme.Hex("#aebdd6"), bold: false);
+            d.textWrappingMode = TextWrappingModes.Normal;
         }
 
         /// <summary>Puts the original VCU_assembly on a dedicated "DPPPreview"

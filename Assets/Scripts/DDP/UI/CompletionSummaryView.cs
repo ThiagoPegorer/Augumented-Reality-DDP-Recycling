@@ -179,7 +179,10 @@ namespace DPP.UI
         {
             if (client == null || _data == null)
             {
+                // Visible failure — a silent return here looked like a frozen
+                // button on device (2026-07-20). Button stays enabled for retry.
                 Debug.LogWarning("[CompletionSummaryView] Missing client or data — cannot send report.");
+                if (actionLabel != null) actionLabel.text = "No data — retry";
                 return;
             }
 
@@ -229,7 +232,7 @@ namespace DPP.UI
         private void ResetState()
         {
             _sent = false;
-            if (actionLabel != null) actionLabel.text = "Send recovery report";
+            if (actionLabel != null) actionLabel.text = "Send dismantling report";
             if (actionChevron != null) actionChevron.SetActive(true);
             if (actionButton != null) actionButton.interactable = true;
             if (sentMessage != null) sentMessage.gameObject.SetActive(false);
