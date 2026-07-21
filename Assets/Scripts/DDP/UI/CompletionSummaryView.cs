@@ -44,7 +44,12 @@ namespace DPP.UI
         [SerializeField] private TMP_Text actionLabel;
         [SerializeField] private Button actionButton;
         [SerializeField] private GameObject actionChevron;
-        [SerializeField] private TMP_Text sentMessage;       // "Report was successfully sent"
+        [SerializeField] private TMP_Text sentMessage;       // "Dismantling report sent"
+
+        [Header("Post-report modal (v4.7): scan new product / main menu")]
+        [SerializeField] private GameObject nextModal;
+
+        private QRScanController _scanController;
 
         private DPPData _data;
         private int _elapsedS;
@@ -219,7 +224,26 @@ namespace DPP.UI
             if (actionChevron != null) actionChevron.SetActive(false);
             if (actionButton != null) actionButton.interactable = true;
             if (sentMessage != null) sentMessage.gameObject.SetActive(true);
+            // Loop routine (2026-07-21): report stored → offer the next cycle.
+            if (nextModal != null) nextModal.SetActive(true);
             Debug.Log("[CompletionSummaryView] Recovery report stored by backend.");
+        }
+
+        /// <summary>Post-report modal: start a fresh scan cycle.</summary>
+        public void OnScanNewProduct()
+        {
+            if (nextModal != null) nextModal.SetActive(false);
+            if (_scanController == null)
+                _scanController = FindFirstObjectByType<QRScanController>(FindObjectsInactive.Include);
+            if (_scanController != null) _scanController.BeginNewScan();
+            else if (router != null) router.ShowMainPage();   // QR entry not built — degrade gracefully
+        }
+
+        /// <summary>Post-report modal: back to the main menu with the current unit.</summary>
+        public void OnMainMenu()
+        {
+            if (nextModal != null) nextModal.SetActive(false);
+            if (router != null) router.ShowMainPage();
         }
 
         private void OnSendError(string error)
@@ -236,6 +260,7 @@ namespace DPP.UI
             if (actionChevron != null) actionChevron.SetActive(true);
             if (actionButton != null) actionButton.interactable = true;
             if (sentMessage != null) sentMessage.gameObject.SetActive(false);
+            if (nextModal != null) nextModal.SetActive(false);
         }
     }
 }

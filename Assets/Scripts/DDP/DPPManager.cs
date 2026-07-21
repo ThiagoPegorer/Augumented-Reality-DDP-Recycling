@@ -41,9 +41,14 @@ namespace DPP
         [SerializeField] private DPP.UI.CompletionSummaryView completionSummary;
 
         [Header("Editor test")]
-        [Tooltip("On Start, fetch this product_id without waiting for a QR scan. Useful in Editor.")]
+        [Tooltip("On Start, fetch this product_id without waiting for a QR scan. LEAVE OFF when QR entry (QRScanController) is active — the scanner owns the fetch.")]
         [SerializeField] private bool fetchOnStart = true;
         [SerializeField] private string testProductId = "vcu_001";
+
+        /// <summary>Raised after every fetch attempt: true = data parsed and
+        /// screens populated; false = network or parse failure. Used by the
+        /// QR scan flow (spec 11 stage 3) to advance or show the error state.</summary>
+        public event System.Action<bool> FetchCompleted;
 
         void Start()
         {
@@ -80,6 +85,7 @@ namespace DPP
                 if (data == null)
                 {
                     Debug.LogError("[DPPManager] Deserialized DPP is null.");
+                    FetchCompleted?.Invoke(false);
                     return;
                 }
                 if (dashboard != null)        dashboard.Populate(data);
@@ -89,16 +95,19 @@ namespace DPP
                 if (stepFlow != null)          stepFlow.Populate(data);
                 if (completionSummary != null) completionSummary.Populate(data);
                 Debug.Log($"[DPPManager] Populated UI for product_id={data.product_id}");
+                FetchCompleted?.Invoke(true);
             }
             catch (System.Exception ex)
             {
                 Debug.LogError($"[DPPManager] Failed to parse DPP JSON: {ex.Message}");
+                FetchCompleted?.Invoke(false);
             }
         }
 
         private void OnDPPError(string error)
         {
             Debug.LogError($"[DPPManager] {error}");
+            FetchCompleted?.Invoke(false);
         }
     }
 }

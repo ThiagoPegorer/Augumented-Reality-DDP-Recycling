@@ -135,6 +135,9 @@ namespace DPP.EditorTools
             var sendHover = sendRT.gameObject.AddComponent<HoverHighlight>();
             SetRef(sendHover, "highlightOutline", sendOutline.gameObject);
 
+            // ---- Post-report modal (v4.7): scan new product / main menu ----
+            var nextModal = BuildNextModal(screen, view);
+
             // ---- Wiring ----
             var manager = Object.FindFirstObjectByType<DPPManager>();
             var client = Object.FindFirstObjectByType<DPPClient>();
@@ -150,6 +153,7 @@ namespace DPP.EditorTools
             SetRef(view, "actionButton", sendBtn);
             SetRef(view, "actionChevron", chevron.gameObject);
             SetRef(view, "sentMessage", sentMessage);
+            SetRef(view, "nextModal", nextModal);
 
             if (router != null) SetRef(router, "completionSummary", screen.gameObject);
             if (manager != null) SetRef(manager, "completionSummary", view);
@@ -164,6 +168,48 @@ namespace DPP.EditorTools
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             Debug.Log("[DPPUIBuilder] Phase 5 — Completion Summary v3 built. Save the scene.");
+        }
+
+        /// <summary>Post-report modal (loop routine 2026-07-21): after the
+        /// dismantling report is stored, offer the next cycle — scan another
+        /// product or return to the main menu. Same chrome as the cancel modal.</summary>
+        private static GameObject BuildNextModal(RectTransform screen, CompletionSummaryView view)
+        {
+            var modal = Stretch("NextModal", screen);
+
+            AddImage(Stretch("Dim", modal), DPPSpriteFactory.RoundedR22,
+                new Color(0f, 0f, 0f, 0.55f), sliced: true, raycast: true);
+
+            var card = CenterIn("Card", modal, 400, 190);
+            AddImage(CenterIn("Stroke", card, 404, 194), DPPSpriteFactory.RoundedR20, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", card, 400, 190), DPPSpriteFactory.RoundedR20, DPPTheme.Hex("#0d2a57"), sliced: true);
+
+            AddText(TL("Title", card, 20, 32, 360, 26), "Report sent — what's next?",
+                17, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+
+            MakeNextModalButton(card, "ScanNewButton", 33, 170, DPPTheme.TealAccent, "Scan new product",
+                view, nameof(CompletionSummaryView.OnScanNewProduct));
+            MakeNextModalButton(card, "MainMenuButton", 217, 150, DPPTheme.Hex("#1a2740"), "Main menu",
+                view, nameof(CompletionSummaryView.OnMainMenu));
+
+            modal.gameObject.SetActive(false);
+            return modal.gameObject;
+        }
+
+        private static void MakeNextModalButton(RectTransform card, string name, float x, float w,
+            Color fill, string label, CompletionSummaryView view, string method)
+        {
+            var btn = TL(name, card, x, 96, w, 46);
+            var outline = AddImage(CenterIn("HoverOutline", btn, w + 8, 54), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            var fillImg = AddImage(CenterIn("Fill", btn, w, 46), DPPSpriteFactory.RoundedR13, fill, sliced: true, raycast: true);
+            AddText(Stretch("Label", btn), label, 14, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            var b = btn.gameObject.AddComponent<Button>();
+            b.transition = Selectable.Transition.None;
+            b.targetGraphic = fillImg;
+            WireClick(b, view, method);
+            var hover = btn.gameObject.AddComponent<HoverHighlight>();
+            SetRef(hover, "highlightOutline", outline.gameObject);
         }
     }
 }
