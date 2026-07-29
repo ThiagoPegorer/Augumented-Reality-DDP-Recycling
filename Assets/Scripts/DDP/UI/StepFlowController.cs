@@ -142,12 +142,23 @@ namespace DPP.UI
             Refresh(true);
         }
 
-        /// <summary>Modal "Yes" — abandon the run, back to the main page.</summary>
+        /// <summary>
+        /// Modal "Yes" — abandon the run.
+        ///
+        /// RBv1.0 returned to the Main Page. RBv2.0 (Miro journey v4) returns to
+        /// the DISASSEMBLY INTRO instead: every Back edge moves exactly one level,
+        /// and the participant who cancels almost always wants to restart the run,
+        /// not leave the product. The cancel modal itself stays — it is what stops
+        /// an accidental Back from silently discarding a timed run.
+        ///
+        /// The run's splits and stopwatch reset in ResetState() when the flow is
+        /// re-entered, so a cancelled attempt contributes nothing to step_times_s.
+        /// </summary>
         public void CancelYes()
         {
             if (cancelModal != null) cancelModal.SetActive(false);
-            if (router != null) router.ShowMainPage();
-            else Debug.LogWarning("[StepFlowController] No router — cannot return to the main page.");
+            if (router != null) router.ShowDisassembly();
+            else Debug.LogWarning("[StepFlowController] No router — cannot return to the disassembly intro.");
         }
 
         /// <summary>Modal "No" — dismiss, keep working.</summary>

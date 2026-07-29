@@ -11,11 +11,15 @@ namespace DPP.EditorTools
     /// Phase 6 builder — QR scan entry screen (spec 11 stages 3+4, approved
     /// mock qr_scan_screen_v1.svg 2026-07-21).
     ///
-    /// Own world-space canvas "QRScanCanvas" (440×300 + grabber bar) that
-    /// spawns in front of the user at launch (PanelGrabHandle recenterOnStart)
-    /// and hides the main canvas until a passport is loaded. Three state
-    /// groups (scan / found / error) driven by QRScanController.
+    /// Own world-space canvas "QRScanCanvas" (440×300 + grabber bar). Three
+    /// state groups (scan / found / error) driven by QRScanController.
     /// Safe to re-run (destroys and rebuilds QRScanCanvas).
+    ///
+    /// RBv2.0 (2026-07-29): the 10 s "Continue with demo unit" fallback button
+    /// is REMOVED — entry is QR-only. The operator-level kill-switch is
+    /// QRScanController.scanOnStart. The screen is no longer shown at launch
+    /// either: the Welcome canvas (Phase 7) owns entry and calls BeginNewScan().
+    /// Re-run Phase 7 after Phase 6 so the wiring is restored.
     /// </summary>
     public static partial class DPPUIBuilder
     {
@@ -49,8 +53,8 @@ namespace DPP.EditorTools
 
             // v3 MINIMAL (user, 2026-07-21): NO background at all — fully
             // transparent canvas showing only the teal scanner brackets +
-            // sweep, the texts, and the fallback button. The user fits the
-            // physical QR inside the brackets through open passthrough.
+            // sweep and the texts. The user fits the physical QR inside the
+            // brackets through open passthrough.
             var controller = go.AddComponent<QRScanController>();
 
             // ================= scan group =================
@@ -71,17 +75,7 @@ namespace DPP.EditorTools
 
             var searching = AddText(TL("Searching", scan, 20, 232, 400, 16), "Searching…", 12.5f, DPPTheme.TealMuted, bold: false, align: TextAlignmentOptions.Center);
 
-            // demo fallback (hidden until the controller fades it in)
-            var demoRT = TLCenter("DemoButton", scan, 220, 271, 220, 30);
-            var demoFill = AddImage(CenterIn("Fill", demoRT, 220, 30), DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#1a2740"), sliced: true, raycast: true);
-            AddText(Stretch("Label", demoRT), "Continue with demo unit", 12.5f, DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Center);
-            var demoBtn = demoRT.gameObject.AddComponent<Button>();
-            demoBtn.transition = Selectable.Transition.None;
-            demoBtn.targetGraphic = demoFill;
-            var demoGroup = demoRT.gameObject.AddComponent<CanvasGroup>();
-            demoGroup.alpha = 0f;
-            demoGroup.interactable = false;
-            demoGroup.blocksRaycasts = false;
+            // RBv2.0: demo-fallback button removed (QR-only entry).
 
             // ================= found group =================
             var found = Stretch("FoundGroup", rt);
@@ -126,8 +120,6 @@ namespace DPP.EditorTools
             SetRef(controller, "errorGroup", error.gameObject);
             SetRef(controller, "sweepLine", sweep);
             SetRef(controller, "searchingLabel", searching);
-            SetRef(controller, "demoButton", demoBtn);
-            SetRef(controller, "demoButtonGroup", demoGroup);
             SetRef(controller, "retryButton", retryBtn);
             SetRef(controller, "scanAgainButton", againBtn);
 
@@ -135,7 +127,8 @@ namespace DPP.EditorTools
             if (manager != null) SetBool(manager, "fetchOnStart", false);
 
             Undo.RegisterCreatedObjectUndo(go, "Build QR Scan Screen");
-            Debug.Log("[DPPUIBuilder] Phase 6 — QR scan screen built. DPPManager.fetchOnStart disabled (QRScanController owns entry; its scanOnStart flag is the kill-switch).");
+            Debug.Log("[DPPUIBuilder] Phase 6 — QR scan screen built (RBv2.0: no demo fallback). " +
+                      "Re-run Phase 7 to restore the Welcome wiring (waitForWelcome + firstRunPrompt).");
         }
 
         /// <summary>One L-corner of the scan frame: horizontal + vertical bar

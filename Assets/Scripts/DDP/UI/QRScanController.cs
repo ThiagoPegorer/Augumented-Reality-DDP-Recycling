@@ -11,23 +11,31 @@ using ZXing;
 namespace DPP.UI
 {
     /// <summary>
-    /// QR entry — stages 3+4 (spec 11, mock qr_scan_screen_v1 approved
-    /// 2026-07-21). Owns the app's entry flow:
+    /// QR entry — spec 11, updated for ReBuilt v2.0 (spec 12, 2026-07-29).
     ///
-    ///   launch → scan screen (camera + ZXing, proven in QRCameraProbe)
-    ///          → "dpp:&lt;id&gt;" decoded → camera stops → Found beat (~1 s)
-    ///          → DPPManager.FetchAndPopulate(id) → main canvas + main page.
+    /// RBv1.0 flow (superseded): launch → scan screen → decode → main page.
+    /// RBv2.0 flow:
     ///
-    /// States: Scanning (sweep line + Searching…, demo-fallback button fades
-    /// in after fallbackSeconds) · Found (check + loading) · BackendError
-    /// (Retry / Scan again — backend unreachable is a DIFFERENT failure from
-    /// scan failure and says so). One-scan-per-launch: after success the
-    /// camera is destroyed for the session.
+    ///   LAUNCH APP → WELCOME (WelcomeController)
+    ///              → CONTINUE BUTTON → BeginNewScan()
+    ///              → "dpp:&lt;id&gt;" decoded → camera stops → Found beat (~1 s)
+    ///              → DPPManager.FetchAndPopulate(id)
+    ///              → FIRST TIME USING THE APP? prompt → main canvas + main page.
     ///
-    /// Editor: no camera — after a short beat the demo path runs automatically
-    /// so Play Mode still reaches the main page. scanOnStart=false disables QR
-    /// entirely (study kill-switch): main canvas stays up, DPPManager's
-    /// fetchOnStart applies as before.
+    /// Three changes vs RBv1.0:
+    ///   1. waitForWelcome — the controller no longer starts scanning at launch;
+    ///      WelcomeController owns entry and calls BeginNewScan().
+    ///   2. The user-facing 10 s "Continue with demo unit" fallback is REMOVED
+    ///      (Thiago, 2026-07-29: entry must be QR-only). The scanOnStart flag
+    ///      remains as the operator-level study-day kill-switch, and the
+    ///      Editor-only auto-continue below is a dev convenience that cannot
+    ///      exist on device.
+    ///   3. On a successful fetch the first-run prompt is shown instead of
+    ///      opening the main canvas directly.
+    ///
+    /// States: Scanning (sweep line + Searching…) · Found (check + loading) ·
+    /// BackendError (Retry / Scan again — backend unreachable is a DIFFERENT
+    /// failure from scan failure and says so).
     /// </summary>
     public class QRScanController : MonoBehaviour
     {
@@ -36,6 +44,8 @@ namespace DPP.UI
         [SerializeField] private ScreenRouter router;
         [Tooltip("Root of the main 640×430 canvas — hidden until a passport is loaded.")]
         [SerializeField] private GameObject mainCanvasRoot;
+        [Tooltip("RBv2.0: asked after every successful scan, before the main canvas opens. Null = open the main canvas directly (RBv1.0 behaviour).")]
+        [SerializeField] private FirstRunPrompt firstRunPrompt;
 
         [Header("Scan screen groups")]
         [SerializeField] private GameObject scanGroup;
@@ -43,8 +53,6 @@ namespace DPP.UI
         [SerializeField] private GameObject errorGroup;
         [SerializeField] private RectTransform sweepLine;
         [SerializeField] private TMP_Text searchingLabel;
-        [SerializeField] private Button demoButton;
-        [SerializeField] private CanvasGroup demoButtonGroup;
         [SerializeField] private Button retryButton;
         [SerializeField] private Button scanAgainButton;
 
@@ -57,11 +65,11 @@ namespace DPP.UI
         [SerializeField] private float followLerp = 4f;
 
         [Header("Behaviour")]
-        [Tooltip("Master switch: OFF = no QR entry, app behaves as before (DPPManager.fetchOnStart).")]
+        [Tooltip("Master switch: OFF = no QR entry, app behaves as before (DPPManager.fetchOnStart). Operator-level study-day kill-switch.")]
         [SerializeField] private bool scanOnStart = true;
+        [Tooltip("RBv2.0: ON = the Welcome canvas owns launch; this screen stays down until BeginNewScan(). OFF = RBv1.0 behaviour (scan at launch).")]
+        [SerializeField] private bool waitForWelcome = true;
         [SerializeField] private string demoProductId = "vcu_001";
-        [Tooltip("Seconds without a decode before the demo fallback fades in.")]
-        [SerializeField] private float fallbackSeconds = 10f;
         [Tooltip("Confirmation beat between decode and page open, seconds.")]
         [SerializeField] private float foundBeatSeconds = 1.0f;
         [SerializeField] private XrCameraIdPICO cameraId = XrCameraIdPICO.XR_CAMERA_ID_RGB_LEFT_PICO;
@@ -97,7 +105,6 @@ namespace DPP.UI
 
         private void Start()
         {
-            if (demoButton != null) demoButton.onClick.AddListener(UseDemoUnit);
             if (retryButton != null) retryButton.onClick.AddListener(RetryFetch);
             if (scanAgainButton != null) scanAgainButton.onClick.AddListener(RestartScan);
             if (manager != null) manager.FetchCompleted += OnFetchCompleted;
@@ -109,11 +116,22 @@ namespace DPP.UI
             }
 
             if (mainCanvasRoot != null) mainCanvasRoot.SetActive(false);
+
+            // RBv2.0: the Welcome canvas is the app's first screen. Stay down
+            // until its Continue button calls BeginNewScan(). Listeners above
+            // are already registered, so re-activation is safe.
+            if (waitForWelcome)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
             EnterState(State.Scanning);
 
 #if UNITY_EDITOR
             // No camera in the Editor — auto-continue with the demo unit so
-            // Play Mode still reaches the main page.
+            // Play Mode still reaches the main page. Editor-only: this path
+            // cannot exist on device, so entry stays QR-only for participants.
             Invoke(nameof(UseDemoUnit), 1.5f);
 #else
             StartCameraWhenPermitted();
@@ -126,9 +144,10 @@ namespace DPP.UI
             StopCamera();
         }
 
-        /// <summary>Re-enter the scan flow mid-session (post-report popup:
-        /// "Scan new QR code"). Reactivates the scan screen where the user
-        /// parked it, hides the main canvas, and rebuilds the camera session.</summary>
+        /// <summary>Enter the scan flow: from the Welcome canvas' Continue
+        /// button, and mid-session from the post-report "Scan new QR code" loop.
+        /// Reactivates the scan screen, hides the main canvas, and rebuilds the
+        /// camera session.</summary>
         public void BeginNewScan()
         {
             gameObject.SetActive(true);
@@ -149,12 +168,6 @@ namespace DPP.UI
             if (scanGroup != null) scanGroup.SetActive(s == State.Scanning);
             if (foundGroup != null) foundGroup.SetActive(s == State.Found || s == State.Fetching);
             if (errorGroup != null) errorGroup.SetActive(s == State.BackendError);
-            if (s == State.Scanning && demoButtonGroup != null)
-            {
-                demoButtonGroup.alpha = 0f;
-                demoButtonGroup.interactable = false;
-                demoButtonGroup.blocksRaycasts = false;
-            }
         }
 
         private void LateUpdate()
@@ -216,13 +229,6 @@ namespace DPP.UI
                 c.a = 0.55f + 0.45f * Mathf.Sin(_stateTime * 2.5f).Remap();
                 searchingLabel.color = c;
             }
-            if (demoButtonGroup != null && _stateTime > fallbackSeconds && demoButtonGroup.alpha < 1f)
-            {
-                demoButtonGroup.alpha = Mathf.MoveTowards(demoButtonGroup.alpha, 1f, Time.deltaTime * 2f);
-                bool on = demoButtonGroup.alpha > 0.5f;
-                demoButtonGroup.interactable = on;
-                demoButtonGroup.blocksRaycasts = on;
-            }
         }
 
         // ---- decode consumption -----------------------------------------
@@ -238,10 +244,13 @@ namespace DPP.UI
             if (id.Length == 0) return;
 
             _pendingProductId = id;
-            StopCamera();                              // one-scan-per-launch
+            StopCamera();                              // one scan per cycle
             EnterState(State.Found);
         }
 
+        /// <summary>Editor-only entry so Play Mode reaches the main page without
+        /// a camera. Never reachable on device — the user-facing fallback button
+        /// was removed in RBv2.0.</summary>
         private void UseDemoUnit()
         {
             _pendingProductId = demoProductId;
@@ -269,17 +278,25 @@ namespace DPP.UI
         private void OnFetchCompleted(bool ok)
         {
             if (_state != State.Fetching) return;
-            if (ok)
-            {
-                EnterState(State.Done);
-                if (mainCanvasRoot != null) mainCanvasRoot.SetActive(true);
-                if (router != null) router.ShowMainPage();
-                gameObject.SetActive(false);           // scan screen retires for this session
-            }
-            else
+            if (!ok)
             {
                 EnterState(State.BackendError);
+                return;
             }
+
+            EnterState(State.Done);
+            gameObject.SetActive(false);               // scan screen retires for this cycle
+
+            // RBv2.0: ask the first-run question before opening the passport.
+            if (firstRunPrompt != null)
+            {
+                firstRunPrompt.Show();
+                return;
+            }
+
+            // RBv1.0 fallback (prompt not wired).
+            if (mainCanvasRoot != null) mainCanvasRoot.SetActive(true);
+            if (router != null) router.ShowMainPage();
         }
 
         // ---- camera pipeline (as proven by QRCameraProbe) ----------------
