@@ -6,9 +6,6 @@ namespace DPP.UI
     /// Switches between the DPP screens that live under the instruction panel
     /// canvas. Exactly one screen is active at a time.
     ///
-    /// RBv1.0 (tab bar): Main Page → Informations | Disassembly, both reachable
-    /// from the tab pills at any time.
-    ///
     /// RBv2.0 (Miro journey v4, tab bar removed): a single linear path with a
     /// one-step-back hierarchy —
     ///
@@ -20,19 +17,15 @@ namespace DPP.UI
     ///                                                        ├─Quit→ Welcome
     ///                                                        └─Continue→ intro → steps → summary
     ///
-    /// The RBv1.0 screens (mainPage, informationTab) are kept as fields so an
-    /// existing scene still deactivates them correctly, but nothing routes to
-    /// them once <see cref="dppCanva"/> is assigned.
+    /// CLEANUP 2026-07-30: the two RBv1.0 screen fields and the tab-pill entry
+    /// point were removed. Their only callers were the two-card Main Page and the
+    /// tab pills, neither of which exists any more. If the console ever reports a
+    /// missing method on this class, some serialized UnityEvent still points at
+    /// the old API — run RBv2_0/Tools/Clean RBv1.0 leftovers.
     /// </summary>
     public class ScreenRouter : MonoBehaviour
     {
-        [Header("Screen roots (assign as phases are built)")]
-        [Tooltip("RBv1.0 two-card main page. Superseded by dppCanva in RBv2.0 — kept so it still gets deactivated.")]
-        [SerializeField] private GameObject mainPage;
-        [Tooltip("RBv1.0 Information tab. Superseded by dppCanva + modelExploration in RBv2.0.")]
-        [SerializeField] private GameObject informationTab;
-
-        [Header("RBv2.0 screens (Phase 8)")]
+        [Header("Passport screens (built by RBv2_0/7)")]
         [Tooltip("Product info — the app's main screen in RBv2.0. Back goes to the Welcome canvas.")]
         [SerializeField] private GameObject dppCanva;
         [Tooltip("Life cycle overview + the exploded action zone. Back goes to the DPP Canva.")]
@@ -59,22 +52,18 @@ namespace DPP.UI
         // =================================================================
 
         /// <summary>
-        /// The app's main screen after a scan. RBv2.0 → DPP Canva; falls back to
-        /// the RBv1.0 Main Page when Phase 8 has not been run. Kept under this
-        /// name because FirstRunPrompt and the RBv1.0 buttons call it by name.
+        /// The app's main screen after a scan — the DPP Canva. Kept under this
+        /// name because FirstRunPrompt calls it by name; identical to
+        /// <see cref="ShowDppCanva"/>.
         /// </summary>
-        public void ShowMainPage()
-        {
-            if (dppCanva != null) { Show(dppCanva, "DPP Canva"); return; }
-            Show(mainPage, "Main page");
-        }
+        public void ShowMainPage() => ShowDppCanva();
 
-        /// <summary>DPP Canva — product info (RBv2.0). Explicit alias of ShowMainPage.</summary>
+        /// <summary>DPP Canva — product info. The app's main screen.</summary>
         public void ShowDppCanva()
         {
             if (dppCanva == null)
             {
-                Debug.Log("[ScreenRouter] DPP Canva not built yet (phase 8).");
+                Debug.LogWarning("[ScreenRouter] DPP Canva not assigned — run RBv2_0/7.");
                 return;
             }
             Show(dppCanva, "DPP Canva");
@@ -85,29 +74,17 @@ namespace DPP.UI
         {
             if (modelExploration == null)
             {
-                Debug.Log("[ScreenRouter] Model exploration not built yet (phase 8).");
+                Debug.LogWarning("[ScreenRouter] Model exploration not assigned — run RBv2_0/7.");
                 return;
             }
             Show(modelExploration, "Model exploration");
-        }
-
-        /// <summary>RBv1.0 Information tab. In RBv2.0 this resolves to the DPP Canva.</summary>
-        public void ShowInformations()
-        {
-            if (dppCanva != null) { Show(dppCanva, "DPP Canva"); return; }
-            if (informationTab == null)
-            {
-                Debug.Log("[ScreenRouter] Information tab not built yet (phase 2).");
-                return;
-            }
-            Show(informationTab, "Information tab");
         }
 
         public void ShowDisassembly()
         {
             if (disassemblyIntro == null)
             {
-                Debug.Log("[ScreenRouter] Disassembly intro not built yet (phase 3).");
+                Debug.LogWarning("[ScreenRouter] Disassembly intro not assigned — run RBv2_0/4.");
                 return;
             }
             Show(disassemblyIntro, "Disassembly intro");
@@ -122,7 +99,7 @@ namespace DPP.UI
         {
             if (stepFlow == null)
             {
-                Debug.Log("[ScreenRouter] Step flow not built yet (phase 4).");
+                Debug.LogWarning("[ScreenRouter] Step flow not assigned — run RBv2_0/5.");
                 return;
             }
             Show(stepFlow, "Step flow");
@@ -133,7 +110,7 @@ namespace DPP.UI
         {
             if (completionSummary == null)
             {
-                Debug.Log("[ScreenRouter] Completion summary not built yet (phase 5).");
+                Debug.LogWarning("[ScreenRouter] Completion summary not assigned — run RBv2_0/6.");
                 return;
             }
             Show(completionSummary, "Completion summary");
@@ -155,8 +132,6 @@ namespace DPP.UI
             // before that (old behaviour) let e.g. the intro's loop claim the
             // camera and then the step flow's OnDisable switched it back off —
             // the intro animation appeared dead after Back from step 1.
-            DeactivateUnless(mainPage,          target);
-            DeactivateUnless(informationTab,    target);
             DeactivateUnless(dppCanva,          target);
             DeactivateUnless(modelExploration,  target);
             DeactivateUnless(disassemblyIntro,  target);

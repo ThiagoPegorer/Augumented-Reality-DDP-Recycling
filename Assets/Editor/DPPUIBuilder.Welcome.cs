@@ -10,12 +10,15 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Phase 7 builder — ReBuilt v2.0 Open App routine (spec 12, mocks
+    /// RBv2_0/3 builder — ReBuilt v2.0 Open App routine (spec 12, mocks
     /// drafts/12_welcome_canvas.svg + drafts/12b_first_run_modal.svg).
     ///
     /// Builds TWO independent world-space canvases:
-    ///   "WelcomeCanvas"  640x430 — OPEN APP: brand mark, title, subtitle,
-    ///                    Close app (secondary) + Continue to scan (primary).
+    ///   "WelcomeCanvas"  640x430 — OPEN APP: brand logo, title, subtitle,
+    ///                    Close app (secondary) + Scan to start (primary).
+    ///                    Rev 2 (2026-07-30): generated teal-disc mark replaced by
+    ///                    Assets/Textures/Brand/rebuilt_logo.png at 96 px, no disc;
+    ///                    primary label "Continue to scan" -> "Scan to start".
     ///   "FirstRunCanvas" 440x210 — FIRST TIME USING THE APP? modal, shown
     ///                    after a successful scan, before the main canvas.
     ///
@@ -24,12 +27,12 @@ namespace DPP.EditorTools
     /// (00 §4 global hover rule) via HoverHighlight.
     ///
     /// Does NOT touch DPPPanelCanvas — safe to re-run at any time; it only
-    /// destroys and rebuilds its own two canvases. Run Phase 1 first.
+    /// destroys and rebuilds its own two canvases. Run RBv2_0/1 first.
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        [MenuItem("DPP/Build Phase 7 — Welcome + First Run", false, 7)]
-        public static void BuildPhase7()
+        [MenuItem("RBv2_0/3 — Welcome + first run", false, 3)]
+        public static void Build3_WelcomeFirstRun()
         {
             DPPSpriteFactory.GenerateAll();
             ResolveFonts();
@@ -37,13 +40,13 @@ namespace DPP.EditorTools
             var mainGO = GameObject.Find("DPPPanelCanvas");
             if (mainGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run Phase 1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_0/1 first.");
                 return;
             }
             var router = mainGO.GetComponent<ScreenRouter>();
             var scanner = Object.FindFirstObjectByType<QRScanController>();
             if (scanner == null)
-                Debug.LogWarning("[DPPUIBuilder] No QRScanController in the scene — run Phase 6 first, then re-run Phase 7 to wire Continue.");
+                Debug.LogWarning("[DPPUIBuilder] No QRScanController in the scene — run RBv2_0/2 first, then re-run RBv2_0/3 to wire Continue.");
 
             RemoveByName("WelcomeCanvas");
             RemoveByName("FirstRunCanvas");
@@ -76,7 +79,7 @@ namespace DPP.EditorTools
             Undo.RegisterCreatedObjectUndo(welcomeGO, "Build Welcome Canvas");
             Undo.RegisterCreatedObjectUndo(firstRunGO, "Build First Run Canvas");
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 7 — Welcome + First Run built. " +
+            Debug.Log("[DPPUIBuilder] RBv2_0/3 — Welcome + First Run built. " +
                       "QRScanController.waitForWelcome enabled (entry is now Welcome → Continue → scan). Save the scene.");
         }
 
@@ -101,10 +104,31 @@ namespace DPP.EditorTools
             var page = Stretch("Welcome", rt);
             AddImage(Stretch("PanelBG", page), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
-            // Brand mark — teal circle + the recycling glyph from spec 01.
-            var circle = TLCenter("BrandCircle", page, 320, 132, 72, 72);
-            AddImage(circle, DPPSpriteFactory.Circle64, DPPTheme.TealAccent);
-            AddImage(CenterIn("RecycleIcon", circle, 40, 40), DPPSpriteFactory.Recycle, Color.white);
+            // Brand mark (rev 2, 2026-07-30) — the ReBuilt logo at 96 px, sitting
+            // DIRECTLY on the navy. No backing disc: the mark carries its own circle
+            // and its own blue-green gradient, which fought the teal disc the RBv1.0
+            // recycling glyph sat on. 96 rather than the old 72 because the interior
+            // infinity curve is thin-stroked and closes up at that size.
+            var brand = TLCenter("BrandLogo", page, 320, 124, 96, 96);
+            var brandImg = brand.gameObject.AddComponent<Image>();
+            brandImg.raycastTarget = false;
+            brandImg.preserveAspect = true;              // asset is square; never distort a logo
+
+            var logo = LoadBrandLogo();
+            if (logo != null)
+            {
+                brandImg.sprite = logo;
+            }
+            else
+            {
+                // The entry screen must never render blank, so fall back to the
+                // generated RBv1.0 mark and say loudly why.
+                Debug.LogWarning($"[DPPUIBuilder] Brand logo not found at {BrandLogoPath} — " +
+                                 "falling back to the generated recycling mark. Is the PNG imported?");
+                brandImg.sprite = DPPSpriteFactory.Load(DPPSpriteFactory.Circle64);
+                brandImg.color = DPPTheme.TealAccent;
+                AddImage(CenterIn("RecycleIcon", brand, 52, 52), DPPSpriteFactory.Recycle, Color.white);
+            }
 
             AddText(TLCenter("Title", page, 320, 206, 600, 42),
                 "Welcome to ReBuilt", 32, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
@@ -115,7 +139,7 @@ namespace DPP.EditorTools
             closeBtn = BuildPillButton(page, "CloseButton", cx: 114, cy: 376, w: 180, h: 52,
                 label: "Close app", labelSize: 16, primary: false, chevron: false);
             continueBtn = BuildPillButton(page, "ContinueButton", cx: 422, cy: 376, w: 388, h: 52,
-                label: "Continue to scan", labelSize: 16, primary: true, chevron: true);
+                label: "Scan to start", labelSize: 16, primary: true, chevron: true);
 
             BuildGrabberBar(rt);                                  // 00 §5 — draggable panel
             return go;
@@ -208,6 +232,38 @@ namespace DPP.EditorTools
             SetRef(hover, "lift", root);
 
             return button;
+        }
+
+        private const string BrandLogoPath = "Assets/Textures/Brand/rebuilt_logo.png";
+
+        /// <summary>Loads the ReBuilt logo, fixing its import settings on first use so
+        /// the PNG does not have to be configured by hand after a fresh clone.
+        ///
+        /// mipmaps stay OFF to match every other UI sprite: the panel renders at
+        /// Dynamic Pixels Per Unit 4, so a 512 px source drawn at 96 px is already
+        /// oversampled and a lower mip would only soften it.</summary>
+        private static Sprite LoadBrandLogo()
+        {
+            var importer = AssetImporter.GetAtPath(BrandLogoPath) as TextureImporter;
+            if (importer == null)
+            {
+                AssetDatabase.Refresh();                 // file may exist but not be imported yet
+                importer = AssetImporter.GetAtPath(BrandLogoPath) as TextureImporter;
+            }
+            if (importer == null) return null;
+
+            if (importer.textureType != TextureImporterType.Sprite)
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.alphaIsTransparency = true;
+                importer.mipmapEnabled = false;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.maxTextureSize = 512;
+                importer.SaveAndReimport();
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(BrandLogoPath);
         }
 
         /// <summary>One capsule bar of a chevron, offset from the parent's centre.</summary>

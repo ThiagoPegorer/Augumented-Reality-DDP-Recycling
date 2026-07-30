@@ -8,7 +8,14 @@ using DPP.Models;
 namespace DPP.UI
 {
     /// <summary>
-    /// Data bindings for Screen 02 — Information tab (spec 02 v2 §11).
+    /// Data bindings for the RBv2.0 passport screens (specs 13 + 14).
+    ///
+    /// ONE instance serves BOTH screens: it lives on DppCanva and its LCA fields
+    /// point at objects inside ModelExploration. Every field is null-guarded, so
+    /// a screen that is not built simply does not update.
+    ///
+    /// CLEANUP 2026-07-30: removed the retired full-width LCA card summary field
+    /// and an LCA caption field that was never wired.
     /// The builder creates the visual hierarchy with sensible demo defaults;
     /// Populate(DPPData) overwrites every bound element from the payload,
     /// including the hazard row's conditional neutral/red styling and the
@@ -54,12 +61,8 @@ namespace DPP.UI
         [SerializeField] private TMP_Text weeeValue;
         [SerializeField] private TMP_Text routeValue;
 
-        [Header("LCA — landing card summary (v3)")]
-        [SerializeField] private TMP_Text lcaCardSubtitle;    // "63.9 kg CO2e lifecycle · up to 6.6 recoverable"
-
-        [Header("LCA — headline")]
+        [Header("LCA — headline (lives on the Model Exploration screen)")]
         [SerializeField] private TMP_Text lcaHeadlineValue;   // big number
-        [SerializeField] private TMP_Text lcaCaption;
 
         [Header("LCA — recovery potential")]
         [SerializeField] private TMP_Text recoveryTitle;
@@ -212,15 +215,6 @@ namespace DPP.UI
 
             if (lcaHeadlineValue != null && env.co2_footprint_kg.HasValue)
                 lcaHeadlineValue.text = env.co2_footprint_kg.Value.ToString("0.0", CultureInfo.InvariantCulture);
-
-            // Landing card live summary (spec 02 v3 §4).
-            if (lcaCardSubtitle != null && env.co2_footprint_kg.HasValue)
-            {
-                string summary = $"{env.co2_footprint_kg.Value.ToString("0.0", CultureInfo.InvariantCulture)} kg CO2e lifecycle";
-                if (env.recovery_potential != null)
-                    summary += $" · up to {env.recovery_potential.total_avoidable_kg.ToString("0.0", CultureInfo.InvariantCulture)} recoverable";
-                lcaCardSubtitle.text = summary;
-            }
 
             // Recovery potential
             var rp = env.recovery_potential;

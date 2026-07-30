@@ -12,19 +12,20 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Builds the Canva-design DPP screens in MainScene, one menu item per
-    /// phase. Source of truth: DPP_UI_Specs/00_design_standards.md plus the
-    /// per-screen spec (01_main_page.md for Phase 1).
+    /// Builds the ReBuilt v2.0 DPP screens in MainScene, one menu item per
+    /// step, numbered in RUN ORDER under the "RBv2_0" menu. Source of truth:
+    /// DPP_UI_Specs/00_design_standards.md plus the per-screen spec.
     ///
-    /// Phase 1 (DPP → Build Phase 1 — Main Page):
+    /// RBv2_0/1 — Panel canvas + router:
     ///   - generates the procedural UI sprites,
     ///   - deletes the legacy "DashboardCanvas" (XR rig, hands, reticles,
     ///     DDPManager and EventSystem are untouched),
     ///   - creates "DPPPanelCanvas" (world space, 640×430 @ 0.001 scale) with
-    ///     ScreenRouter + grabber bar (PanelGrabHandle),
-    ///   - builds the Main Page per spec 01 and wires DPPManager.mainPage.
+    ///     ScreenRouter + grabber bar (PanelGrabHandle). No screens.
     ///
-    /// Safe to re-run: an existing DPPPanelCanvas is deleted and rebuilt.
+    /// ⚠ DESTRUCTIVE: re-running this DELETES DPPPanelCanvas and every screen
+    /// under it — you must then re-run RBv2_0/2 through RBv2_0/7. For removing
+    /// RBv1.0 leftovers from an existing scene use RBv2_0/Tools instead.
     /// </summary>
     public static partial class DPPUIBuilder
     {
@@ -38,8 +39,8 @@ namespace DPP.EditorTools
 
         private static TMP_FontAsset _fontRegular, _fontBold;
 
-        [MenuItem("DPP/Build Phase 1 — Main Page", false, 1)]
-        public static void BuildPhase1()
+        [MenuItem("RBv2_0/1 — Panel canvas + router", false, 1)]
+        public static void Build1_PanelCanvas()
         {
             DPPSpriteFactory.GenerateAll();
             ResolveFonts();
@@ -49,7 +50,7 @@ namespace DPP.EditorTools
 
             // ---- Canvas root ----
             var canvasGO = new GameObject("DPPPanelCanvas", typeof(Canvas), typeof(GraphicRaycaster));
-            Undo.RegisterCreatedObjectUndo(canvasGO, "Build DPP Main Page");
+            Undo.RegisterCreatedObjectUndo(canvasGO, "Build DPP panel canvas");
 
             var canvas = canvasGO.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
@@ -60,120 +61,19 @@ namespace DPP.EditorTools
             canvasRT.position = CanvasPos;
             canvasRT.localScale = Vector3.one * CanvasScale;
 
-            var router = canvasGO.AddComponent<ScreenRouter>();
-
-            // ---- Screen 01: Main Page ----
-            var mainPage = BuildMainPage(canvasRT, router);
+            canvasGO.AddComponent<ScreenRouter>();
 
             // ---- Grabber bar (00 §5) ----
             BuildGrabberBar(canvasRT);
 
-            // ---- Wiring ----
-            SetRef(router, "mainPage", mainPage.gameObject);
-
-            var manager = Object.FindFirstObjectByType<DPPManager>();
-            if (manager != null) SetRef(manager, "mainPage", mainPage.GetComponent<MainPageView>());
-            else Debug.LogWarning("[DPPUIBuilder] No DPPManager found in the scene — serial/step bindings not wired.");
+            // RBv2.0 (2026-07-30): NO Main Page. The RBv1.0 two-card page
+            // (Informations | Disassembly) went with the tab bar — the passport
+            // canvas built by RBv2_0/7 is the app's main screen and the Welcome
+            // canvas (RBv2_0/3) is the entry point. Nothing routes to a main page.
 
             Selection.activeGameObject = canvasGO;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 1 — Main Page built. Save the scene to persist it.");
-        }
-
-        // =================================================================
-        // Screen 01 — Main Page (spec 01_main_page.md §2, v2 2026-07-10:
-        // serial hero removed, cards re-centered, static subtitles)
-        // =================================================================
-        private static RectTransform BuildMainPage(RectTransform canvasRT, ScreenRouter router)
-        {
-            var page = Stretch("MainPage", canvasRT);
-            page.gameObject.AddComponent<MainPageView>(); // kept as future-bindings hook (no live data since v2)
-
-            // Panel surface — navy, r22.
-            AddImage(Stretch("PanelBG", page), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
-
-            // ---- Informations card (left choice) ----
-            // 2026-06-10: switched from the light-grey mockup style to the same
-            // blue card style as Disassembly (user feedback from Editor testing —
-            // grey read as white and drowned the hover outline).
-            var infoCard = BuildChoiceCard(page, "InformationsCard", x: 30,
-                fill: DPPTheme.CardBlue, stroke: DPPTheme.TabActiveStroke, strokeWidth: 2,
-                circleColor: DPPTheme.NavyPanel,
-                title: "Informations", titleColor: DPPTheme.TextOnNavy,
-                subtitle: "Digital Product Passport", subtitleColor: DPPTheme.TextSubtitleNavy);
-            AddText(Stretch("iGlyph", infoCard.iconCircle), "i", 21, DPPTheme.TextOnNavy,
-                bold: false, align: TextAlignmentOptions.Center);
-            WireClick(infoCard.button, router, nameof(ScreenRouter.ShowInformations));
-
-            // ---- Disassembly card (right choice, primary path) ----
-            var disCard = BuildChoiceCard(page, "DisassemblyCard", x: 330,
-                fill: DPPTheme.CardBlue, stroke: DPPTheme.TabActiveStroke, strokeWidth: 2,
-                circleColor: DPPTheme.TealAccent,
-                title: "Disassembly", titleColor: DPPTheme.TextOnNavy,
-                subtitle: "Guided recycling", subtitleColor: DPPTheme.TextSubtitleNavy);
-            AddImage(CenterIn("RecycleIcon", disCard.iconCircle, 30, 30),
-                DPPSpriteFactory.Recycle, Color.white);
-            // Chevron › built from two capsule bars (font-independent).
-            ChevronBar(disCard.card, "ChevronTop", cy: 46, zRot: -45f);
-            ChevronBar(disCard.card, "ChevronBottom", cy: 54, zRot: 45f);
-            WireClick(disCard.button, router, nameof(ScreenRouter.ShowDisassembly));
-
-            // v2: no view bindings — serial removed, subtitles are static copy.
-            return page;
-        }
-
-        private struct ChoiceCard
-        {
-            public RectTransform card;
-            public RectTransform iconCircle;
-            public Button button;
-        }
-
-        /// <summary>One 280×100 r20 choice card at panel y165 (v2: vertically centered, no serial above): hover outline + stroke + fill + icon circle + title + subtitle.</summary>
-        private static ChoiceCard BuildChoiceCard(RectTransform page, string name, float x,
-            Color fill, Color stroke, int strokeWidth, Color circleColor,
-            string title, Color titleColor, string subtitle, Color subtitleColor)
-        {
-            const float W = 280f, H = 100f;
-            var card = TL(name, page, x, 165, W, H);
-
-            // Hover-only white outline (00 §4), behind everything, disabled at rest.
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
-                DPPSpriteFactory.RoundedR22, Color.white, sliced: true);
-            outline.gameObject.SetActive(false);
-
-            // Resting stroke ring (fill-behind-fill technique).
-            AddImage(CenterIn("Stroke", card, W + 2 * strokeWidth, H + 2 * strokeWidth),
-                DPPSpriteFactory.RoundedR20, stroke, sliced: true);
-
-            // Card fill — the click/raycast surface.
-            var fillImg = AddImage(CenterIn("Fill", card, W, H),
-                DPPSpriteFactory.RoundedR20, fill, sliced: true, raycast: true);
-
-            // Icon circle at card-local (46,50), r22.
-            var circle = TLCenter("IconCircle", card, 46, 50, 44, 44);
-            AddImage(circle, DPPSpriteFactory.Circle64, circleColor);
-
-            AddText(TL("Title", card, 82, 26, 170, 24), title, 18, titleColor, bold: true);
-            AddText(TL("Subtitle", card, 82, 53, 190, 18), subtitle, 13, subtitleColor, bold: false);
-
-            // Interaction: Button (pinch/click) + HoverHighlight (outline + lift).
-            var button = card.gameObject.AddComponent<Button>();
-            button.transition = Selectable.Transition.None;
-            button.targetGraphic = fillImg;
-
-            var hover = card.gameObject.AddComponent<HoverHighlight>();
-            SetRef(hover, "highlightOutline", outline.gameObject);
-            SetRef(hover, "lift", card);
-
-            return new ChoiceCard { card = card, iconCircle = circle, button = button };
-        }
-
-        private static void ChevronBar(RectTransform card, string name, float cy, float zRot)
-        {
-            var bar = TLCenter(name, card, 256, cy, 13, 2.5f);
-            bar.localRotation = Quaternion.Euler(0, 0, zRot);
-            AddImage(bar, DPPSpriteFactory.Grip, DPPTheme.TextSubtitleNavy);
+            Debug.Log("[DPPUIBuilder] RBv2_0/1 — panel canvas + router built (no screens). Now run RBv2_0/2 → RBv2_0/7 in order, then save the scene.");
         }
 
         // =================================================================

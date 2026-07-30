@@ -36,7 +36,7 @@ namespace DPP.EditorTools
         private const string GreenHex  = "#2e7d4f";   // connectors + PCB
         private const string MatFolder = "Assets/Materials/DPPRealColors";
 
-        [MenuItem("DPP/Apply Real-Life Colors", false, 30)]
+        [MenuItem("RBv2_0/Tools/Apply real-life colors", false, 30)]
         public static void ApplyRealLifeColors()
         {
             var animator = Object.FindFirstObjectByType<DisassemblyAnimator>();

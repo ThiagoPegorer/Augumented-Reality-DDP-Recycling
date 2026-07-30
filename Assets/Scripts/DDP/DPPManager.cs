@@ -28,8 +28,12 @@ namespace DPP
         [Tooltip("Screen 01 — Main Page view (Canva design). Populated with serial + step count.")]
         [SerializeField] private DPP.UI.MainPageView mainPage;
 
-        [Tooltip("Screen 02 — Information tab view (Canva design). Populated with full v0.3 passport data.")]
+        [Tooltip("Screen 02 — Information tab view (RBv1.0 label/value modals). Optional in RBv2.0.")]
         [SerializeField] private DPP.UI.InfoTabView infoTab;
+
+        [Tooltip("RBv2.0 — DPP Canva + Composition & impact chart bindings (specs 13 v2 / 14 v2). " +
+                 "One instance drives BOTH screens.")]
+        [SerializeField] private DPP.UI.PassportView passport;
 
         [Tooltip("Screen 03 — Disassembly intro view (Canva design). Populated with tools/time/scope/recover stats.")]
         [SerializeField] private DPP.UI.DisassemblyIntroView disassemblyIntro;
@@ -69,9 +73,9 @@ namespace DPP
                 Debug.LogError("[DPPManager] DPPClient reference is missing in the Inspector.");
                 return;
             }
-            if (dashboard == null && mainPage == null)
+            if (dashboard == null && mainPage == null && infoTab == null && passport == null)
             {
-                Debug.LogWarning("[DPPManager] No UI assigned (dashboard/mainPage) — fetch will run but nothing will display.");
+                Debug.LogWarning("[DPPManager] No UI assigned — fetch will run but nothing will display.");
             }
 
             StartCoroutine(client.GetDPP(productId, OnDPPSuccess, OnDPPError));
@@ -91,6 +95,7 @@ namespace DPP
                 if (dashboard != null)        dashboard.Populate(data);
                 if (mainPage != null)         mainPage.Populate(data);
                 if (infoTab != null)          infoTab.Populate(data);
+                if (passport != null)         passport.Populate(data);
                 if (disassemblyIntro != null) disassemblyIntro.Populate(data);
                 if (stepFlow != null)          stepFlow.Populate(data);
                 if (completionSummary != null) completionSummary.Populate(data);

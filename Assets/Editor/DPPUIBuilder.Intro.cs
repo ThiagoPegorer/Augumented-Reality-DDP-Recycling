@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Phase 3 builder — Screen 03: Disassembly intro (spec 03 v3, 2026-07-10).
+    /// RBv2_0/4 builder — Screen 03: Disassembly intro (spec 03 v3, 2026-07-10).
     ///
     /// v3 changes (approved mock 03_intro_v3.svg):
     ///   - 2×2 stat-card matrix REMOVED (boxes read as buttons). Left half is
@@ -22,13 +22,16 @@ namespace DPP.EditorTools
     ///     TeardownPreviewLoop) into a RenderTexture shown by a RawImage in
     ///     the same slot. Caption: "Teardown preview · live 3D".
     ///
+    /// RBv2.0 (2026-07-30): header rebuilt in place of the tab bar — back arrow
+    /// → DPP Canva, eyebrow + title. `Patch v2.0 — Intro header` is now redundant
+    /// and was deleted; this builder produces the v2.0 header directly.
+    ///
     /// Safety banner (spec 03 §4) is still intentionally NOT built.
     /// Safe to re-run (rebuilds DisassemblyIntro + TeardownPreviewCamera only —
     /// never the canvas).
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        private const string TeardownTexPath = "Assets/Textures/Intro/vcu_teardown.png"; // legacy PNG (kept on disk, no longer used)
         private const string PreviewCamName = "TeardownPreviewCamera";
 
         // Demo content baked at build time; Populate() overwrites from backend.
@@ -43,8 +46,8 @@ namespace DPP.EditorTools
             "14 screws",
         };
 
-        [MenuItem("DPP/Build Phase 3 — Disassembly Intro", false, 3)]
-        public static void BuildPhase3()
+        [MenuItem("RBv2_0/4 — Disassembly intro", false, 4)]
+        public static void Build4_DisassemblyIntro()
         {
             DPPSpriteFactory.GenerateAll();
             ResolveFonts();
@@ -52,7 +55,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run 'DPP → Build Phase 1 — Main Page' first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run 'RBv2_0 → 1 — Panel canvas + router' first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -68,10 +71,14 @@ namespace DPP.EditorTools
             AddImage(Stretch("PanelBG", screen), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
             // ---- Header (shared with 02; Disassembly active) ----
-            MakeTabHeader(screen, router, disassemblyActive: true);
+            // RBv2.0: tab bar removed. Back goes ONE level, to the DPP Canva.
+            // (Was MakeTabHeader(..., disassemblyActive: true) — re-running that
+            // is what used to resurrect the v1.0 tab bar + Home→ShowMainPage.)
+            MakeScreenHeader(screen, "Digital Product Passport", "Disassembly",
+                rightCaption: null, backTarget: router, backMethod: nameof(ScreenRouter.ShowDppCanva));
 
             // ---- Left half: unboxed job overview (spec 03 v3) ----
-            AddText(TL("Eyebrow", screen, 24, 96, 200, 16), "Job overview", 12.5f, DPPTheme.TextCaption, bold: false);
+            AddText(TL("JobOverviewEyebrow", screen, 24, 96, 200, 16), "Job overview", 12.5f, DPPTheme.TextCaption, bold: false);
 
             SetRef(view, "toolsValue", MakeOverviewRow(screen, "ToolsRow", 124, "Tools", "Allen key (hex 2.5 mm)"));
             SetRef(view, "timeValue",  MakeOverviewRow(screen, "TimeRow",  152, "Est. time", "~5 min"));
@@ -138,7 +145,7 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 3 — Disassembly Intro v3 built. Save the scene.");
+            Debug.Log("[DPPUIBuilder] RBv2_0/4 — Disassembly Intro v3 built. Save the scene.");
         }
 
         /// <summary>One unboxed overview row: grey label at x24, bold white value at x112.</summary>
@@ -164,71 +171,6 @@ namespace DPP.EditorTools
             for (int i = 0; i < values.Length; i++)
                 prop.GetArrayElementAtIndex(i).objectReferenceValue = values[i];
             so.ApplyModifiedPropertiesWithoutUndo();
-        }
-
-        // =================================================================
-        // Legacy helpers kept for other partials / reference
-        // =================================================================
-        private struct StatCard
-        {
-            public TMP_Text value, sub;
-        }
-
-        /// <summary>140×80 stat card (spec 03 v2 §6 — RETIRED on this screen, kept for reuse).</summary>
-        private static StatCard MakeStatCard(RectTransform screen, string name, float x, float y,
-            string label, string demoValue, string demoSub, bool accent, float valueSize = 15)
-        {
-            var card = TL(name, screen, x, y, 140, 80);
-
-            AddImage(CenterIn("Stroke", card, 142, 82), DPPSpriteFactory.RoundedR13,
-                accent ? DPPTheme.TealAccent : DPPTheme.RowStroke, sliced: true);
-            AddImage(CenterIn("Fill", card, 140, 80), DPPSpriteFactory.RoundedR13,
-                accent ? DPPTheme.Hex("#0e2335") : DPPTheme.RowFill, sliced: true);
-
-            Color labelColor = accent ? DPPTheme.TealMuted : DPPTheme.TextLabel;
-            Color valueColor = accent ? DPPTheme.TealText : DPPTheme.TextOnNavy;
-            Color subColor   = accent ? DPPTheme.TealMuted : DPPTheme.TextCaption;
-
-            AddText(TL("Label", card, 0, 12, 140, 16), label, 12, labelColor, bold: false,
-                align: TextAlignmentOptions.Center);
-
-            bool hasSub = demoSub != null;
-            var value = AddText(TL("Value", card, 0, hasSub ? 32 : 30, 140, hasSub ? 22 : 26),
-                demoValue, valueSize, valueColor, bold: true, align: TextAlignmentOptions.Center);
-
-            TMP_Text sub = null;
-            if (hasSub)
-                sub = AddText(TL("Sub", card, 0, 56, 140, 16), demoSub, 11, subColor, bold: false,
-                    align: TextAlignmentOptions.Center);
-
-            return new StatCard { value = value, sub = sub };
-        }
-
-        /// <summary>Loads the legacy teardown PNG, fixing import settings on first
-        /// use. No longer used on screen 03 (live 3D loop since v3) but still
-        /// called by the Phase 4 builder (DPPUIBuilder.StepFlow.cs) for the
-        /// static exploded-canvas preview.</summary>
-        private static Sprite LoadTeardownSprite()
-        {
-            var importer = AssetImporter.GetAtPath(TeardownTexPath) as TextureImporter;
-            if (importer == null)
-            {
-                AssetDatabase.Refresh(); // file may exist but not yet imported
-                importer = AssetImporter.GetAtPath(TeardownTexPath) as TextureImporter;
-            }
-            if (importer == null) return null;
-
-            if (importer.textureType != TextureImporterType.Sprite)
-            {
-                importer.textureType = TextureImporterType.Sprite;
-                importer.spriteImportMode = SpriteImportMode.Single;
-                importer.alphaIsTransparency = true;
-                importer.mipmapEnabled = false;
-                importer.wrapMode = TextureWrapMode.Clamp;
-                importer.maxTextureSize = 1024;
-                importer.SaveAndReimport();
-            }
-            return AssetDatabase.LoadAssetAtPath<Sprite>(TeardownTexPath);
         }
 
         private static void BuildStartButton(RectTransform screen, ScreenRouter router)

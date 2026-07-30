@@ -6,12 +6,16 @@ namespace DPP.UI
     /// Single source of truth for the DPP UI color tokens and type scale.
     /// Mirrors DPP_UI_Specs/00_design_standards.md §2–§3. When the spec
     /// changes, change it here — every screen builder reads these values.
+    ///
+    /// CLEANUP 2026-07-30: removed three tokens spec 00 §2 already listed as
+    /// retired and which nothing referenced — the light Informations card pair
+    /// (switched to blue 2026-06-10) and the 3D canvas navy (the action zone has
+    /// been transparent since v3).
     /// </summary>
     public static class DPPTheme
     {
         // ---- Surfaces ----
         public static readonly Color NavyPanel      = Hex("#0a1f44");
-        public static readonly Color NavyCanvas3D   = Hex("#081830");
         public static readonly Color RowFill        = Hex("#0e2950");
         public static readonly Color CardBlue       = Hex("#13366b");
         public static readonly Color RowStroke      = Hex("#21407a");
@@ -21,10 +25,6 @@ namespace DPP.UI
         public static readonly Color TabActiveStroke = Hex("#2e5aa0");
         public static readonly Color TabInactiveFill = Hex("#324a6d");
         public static readonly Color TabInactiveText = Hex("#c2cee0");
-
-        // ---- Light card (Informations) ----
-        public static readonly Color GreyCard       = Hex("#e9edf3");
-        public static readonly Color GreyCardStroke = Hex("#c7d2e0");
 
         // ---- Teal accents ----
         public static readonly Color TealAccent = Hex("#1d9e75");

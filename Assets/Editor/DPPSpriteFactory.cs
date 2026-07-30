@@ -25,6 +25,7 @@ namespace DPP.EditorTools
         public const string Pill       = "ui_pill";        // capsule — grabber bar, tab pills
         public const string Grip       = "ui_grip";        // capsule — grip + chevron bars
         public const string Circle64   = "ui_circle_64";   // icon circles
+        public const string CircleRing = "ui_circle_ring";  // RING — the "not provided" status dot
         public const string Recycle    = "ui_icon_recycle";// recycling glyph
         public const string FadeV      = "ui_fade_v";      // vertical fade (alpha 1 top → 0 bottom)
 
@@ -37,6 +38,7 @@ namespace DPP.EditorTools
         public const string IcLeaf    = "ui_ic_leaf";
         public const string IcChevron = "ui_ic_chevron";   // points DOWN; rotate 180 for up, +90 for right
         public const string IcBack    = "ui_ic_back";      // ← arrow (modal back button)
+        public const string IcWrench  = "ui_ic_wrench";    // Service & repair tile (spec 13 v2)
 
         // Step action icons (v0.4 keywords, spec 04 §8). "recycle" maps to Recycle.
         public const string IcCross   = "ui_ic_cross";
@@ -52,7 +54,7 @@ namespace DPP.EditorTools
         public const string IcStar    = "ui_ic_star";     // gold recovery cards
         public const string IcCheck   = "ui_ic_check";    // done header
 
-        [MenuItem("DPP/Generate UI Sprites", false, 100)]
+        [MenuItem("RBv2_0/Tools/Generate UI sprites", false, 50)]
         public static void GenerateAll()
         {
             Directory.CreateDirectory(SpriteDir);
@@ -86,6 +88,13 @@ namespace DPP.EditorTools
                 Poly(-7,-3.5f, 0,3.5f, 7,-3.5f));
             MakeStrokeIcon(IcBack, 2.0f,
                 Poly(3,-6, -4,0, 3,6), Poly(-4,0, 8,0));
+            // Spanner: diagonal handle + open C head. The gap faces the +x side so the
+            // head still reads as open at the 22 px the tiles draw it at.
+            MakeStrokeIcon(IcWrench, 2.0f,
+                Poly(-7.5f,7, 0.5f,-1), ArcPts(3.5f,-4, 4.4f,4.4f, 55, 325));
+            // Hollow status dot. A ring must be its own sprite: Circle64 is a plain
+            // disc with no 9-slice border, so Image.fillCenter=false renders nothing.
+            MakeStrokeIcon(CircleRing, 2.6f, CirclePts(0,0,7.2f));
 
             // Step action icons (scaled to read inside r15 card circles).
             MakeStrokeIcon(IcCross, 2.2f,

@@ -10,40 +10,41 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// Phase 8 builder — ReBuilt v2.0 DPP routine (specs 13 + 14, mocks
-    /// drafts/13_dpp_canva.svg · 14_model_exploration.svg · 14b_continue_gate_modal.svg).
+    /// RBv2_0/7 — the two passport screens (specs 13 v2 + 14 v2, mocks
+    /// drafts/13_v2_C_dpp_canva.svg and drafts/14_v4_composition_impact.svg).
     ///
-    /// Splits the RBv1.0 Information tab into the two screens of the Miro
-    /// journey v4, and removes the tab bar:
-    ///
-    ///   DppCanva          — product info. Back → Welcome. Continue → exploration.
-    ///                       Landing grid of FOUR category cards (the LCA card is
-    ///                       gone — LCA is now the next screen's main panel) plus
-    ///                       the four full-page category modals, unchanged.
-    ///   ModelExploration  — the LCA overview promoted from modal to main panel,
-    ///                       shown alongside the exploded action zone.
-    ///                       Back → DppCanva. Continue → the gate.
+    ///   DppCanva          — Identity hero + four declaration tiles. Back → Welcome.
+    ///                       Continue → Composition &amp; impact.
+    ///   ModelExploration  — three blocks: composition by material, climate across the
+    ///                       four EoL scenarios, recovery rate per impact category.
+    ///                       Shown beside the exploded action zone. Back → DppCanva.
     ///   ContinueGateCanvas — "Continue to disassembly?" · Quit / Continue.
     ///
-    /// DATA: ONE InfoTabView instance lives on DppCanva and owns the bindings
-    /// for BOTH screens — SetRef happily points it at objects inside
-    /// ModelExploration, and InfoTabView null-guards every field, so the retired
-    /// lcaCardSubtitle simply stays unassigned. DPPManager.infoTab is re-pointed
-    /// at it. No new view class, no second Populate path to drift.
+    /// DATA: one <see cref="PassportView"/> on DppCanva owns the bindings for BOTH
+    /// screens; SetRef happily points it at objects inside ModelExploration. Element
+    /// counts are data-driven, so this builder creates POOLS (composition segments,
+    /// legend entries, spec chips) and the view shows/sizes only what the payload has.
+    /// DPPManager.passport is re-pointed at it.
     ///
-    /// ZONE: the exploded canvas itself is NOT rebuilt here. Phase 4 still
-    /// builds it; this phase only flips ScreenRouter.zoneFollowsExploration so
-    /// it is raised with the exploration screen instead of the step flow.
+    /// PLACEHOLDER STRINGS: every literal in this file is an Editor placeholder that
+    /// Populate() overwrites. Spec 13 v2 §4 — no hardcoded data survives a fetch.
+    /// RBv1.0 shipped three static subtitles and two of them disagreed with the payload.
     ///
-    /// Run Phase 1 first (needs DPPPanelCanvas), then Phase 4 (the zone) and
-    /// Phase 7 (Welcome). Safe to re-run: it rebuilds only its own objects.
-    /// ⚠ It DELETES the RBv1.0 "InformationTab" screen — that is the split.
-    /// Re-run Phase 2 to get it back.
+    /// Run RBv2_0/1 first (needs DPPPanelCanvas), then RBv2_0/2 → /6, then this.
+    /// Safe to re-run. ⚠ It deletes any leftover RBv1.0 "InformationTab".
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        [MenuItem("DPP/Build Phase 8 — DPP Canva + Model Exploration", false, 8)]
-        public static void BuildPhase8()
+        // Geometry — MUST match the constants in PassportView.
+        private const float CompBarW = 548f;
+        private const int   CompSegmentPool = 12;
+        private const int   CompLegendPool = 5;
+        private const int   SpecChipPool = 6;
+        private const float ScenarioBarH = 52f;
+        private const float RecoveryTrackW = 240f;
+
+        [MenuItem("RBv2_0/7 — DPP Canva + Model Exploration", false, 7)]
+        public static void Build7_DppCanvaAndExploration()
         {
             DPPSpriteFactory.GenerateAll();
             ResolveFonts();
@@ -51,131 +52,137 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run 'DPP → Build Phase 1 — Main Page' first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_0/1 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
             var router = canvasGO.GetComponent<ScreenRouter>();
             if (router == null)
             {
-                Debug.LogError("[DPPUIBuilder] No ScreenRouter on DPPPanelCanvas — re-run Phase 1.");
+                Debug.LogError("[DPPUIBuilder] No ScreenRouter on DPPPanelCanvas — re-run RBv2_0/1.");
                 return;
             }
 
             var welcome = FindAnyIncludingInactive<WelcomeController>();
             if (welcome == null)
-                Debug.LogWarning("[DPPUIBuilder] No WelcomeController in the scene — run Phase 7 first, then re-run Phase 8 to wire the Back and Quit edges.");
+                Debug.LogWarning("[DPPUIBuilder] No WelcomeController — run RBv2_0/3, then re-run this to wire Back and Quit.");
 
-            // ---- clear previous builds of this phase ----
             DestroyChild(canvasRT, "DppCanva");
             DestroyChild(canvasRT, "ModelExploration");
             RemoveByName("ContinueGateCanvas");
 
-            // ---- the split: the RBv1.0 Information tab is superseded ----
             var oldInfoTab = canvasRT.Find("InformationTab");
             if (oldInfoTab != null)
             {
                 Undo.DestroyObjectImmediate(oldInfoTab.gameObject);
-                Debug.Log("[DPPUIBuilder] Removed the RBv1.0 'InformationTab' — split into DppCanva + ModelExploration. Re-run Phase 2 to restore it.");
+                Debug.Log("[DPPUIBuilder] Removed the leftover RBv1.0 'InformationTab'.");
             }
+
+            var dotFilled = DPPSpriteFactory.Load(DPPSpriteFactory.Circle64);
+            var dotRing   = DPPSpriteFactory.Load(DPPSpriteFactory.CircleRing);
 
             // =================================================================
             // Screen A — DPP CANVA
             // =================================================================
             var canva = Stretch("DppCanva", canvasRT);
             Undo.RegisterCreatedObjectUndo(canva.gameObject, "Build DPP Canva");
-            var view = canva.gameObject.AddComponent<InfoTabView>();
-            var modalRouter = canva.gameObject.AddComponent<InfoTabRouter>();
-
+            var view = canva.gameObject.AddComponent<PassportView>();
+            var canvaRouter = canva.gameObject.AddComponent<PassportRouter>();
             AddImage(Stretch("PanelBG", canva), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
             var landing = Stretch("Landing", canva);
             MakeScreenHeader(landing, "Digital Product Passport", "Vehicle Control Unit",
-                rightCaption: "scanned · vcu_001",
+                rightCaption: null,
                 backTarget: welcome, backMethod: welcome != null ? nameof(WelcomeController.ShowWelcome) : null);
 
-            BuildDppCards(landing, view, modalRouter);
+            BuildIdentityHero(landing, view, canvaRouter);
 
-            AddText(TL("HintLine1", landing, 24, 362, 250, 16),
-                "Tap a card to read that part of", 12.5f, DPPTheme.TextTip, bold: false);
-            AddText(TL("HintLine2", landing, 24, 378, 250, 16),
-                "the passport.", 12.5f, DPPTheme.TextTip, bold: false);
+            // Four declaration tiles. statusDots/statusTexts are ONE flat array of 8
+            // (2 rows per tile) so the view can address them by index; the compliance
+            // tile spends its first row on tri-state badges, so index 3 stays null.
+            var dots = new Image[8];
+            var texts = new TMP_Text[8];
 
-            var toModel = BuildWideCta(landing, "ContinueToModelButton", x: 288, y: 352, w: 328,
-                label: "Continue to 3D model");
+            var tSub = MakeTileCard(landing, 24, 192, "SubstancesCard", DPPSpriteFactory.IcWarning,
+                "Substances & safety", canvaRouter, nameof(PassportRouter.Open2), rows: 2);
+            dots[0] = tSub.dots[0]; texts[0] = tSub.texts[0];
+            dots[1] = tSub.dots[1]; texts[1] = tSub.texts[1];
+
+            var tCom = MakeTileCard(landing, 326, 192, "ComplianceCard", DPPSpriteFactory.IcShield,
+                "Compliance & certification", canvaRouter, nameof(PassportRouter.Open3), rows: 1, firstRowY: 48);
+            dots[2] = tCom.dots[0]; texts[2] = tCom.texts[0];
+            dots[3] = null; texts[3] = null;                      // no slot on the face
+            BuildComplianceBadges(tCom.card, view);
+
+            var tSvc = MakeTileCard(landing, 24, 272, "ServiceCard", DPPSpriteFactory.IcWrench,
+                "Service & repair", canvaRouter, nameof(PassportRouter.Open4), rows: 2);
+            dots[4] = tSvc.dots[0]; texts[4] = tSvc.texts[0];
+            dots[5] = tSvc.dots[1]; texts[5] = tSvc.texts[1];
+
+            var tUse = MakeTileCard(landing, 326, 272, "UsageCard", DPPSpriteFactory.IcClock,
+                "Usage & repair history", canvaRouter, nameof(PassportRouter.Open5), rows: 2);
+            dots[6] = tUse.dots[0]; texts[6] = tUse.texts[0];
+            dots[7] = tUse.dots[1]; texts[7] = tUse.texts[1];
+
+            SetRefArray(view, "statusDots", dots);
+            SetRefArray(view, "statusTexts", texts);
+
+            // Legend + forward CTA. No ●/○ glyphs — 00 §3 keeps to the SF Pro atlas.
+            AddText(TL("LegendLine1", landing, 24, 366, 250, 16),
+                "Filled dot = declared,", 11, DPPTheme.TextTip, bold: false);
+            AddText(TL("LegendLine2", landing, 24, 382, 250, 16),
+                "ring = not provided", 11, DPPTheme.TextTip, bold: false);
+            var toModel = BuildWideCta(landing, "ContinueButton", x: 288, y: 354, w: 328, label: "Continue");
             WireClick(toModel, router, nameof(ScreenRouter.ShowModelExploration));
 
-            // ---- the four category modals (unchanged content, spec 02 §5.1) ----
-            var identity = BuildFieldModal(canva, modalRouter, "IdentityModal", "Identity & manufacturer",
-                DPPSpriteFactory.IcPerson, DPPTheme.Hex("#7fd3b6"), new[]
-                {
-                    ("Manufacturer", "Bosch Motorsport", "manufacturerValue"),
-                    ("Model", "Vehicle Control Unit MS 50.4", "modelValue"),
-                    ("Type number", "F02U.V02.965-02", "typeNumberValue"),
-                    ("Production", "2026-03 · DE", "productionValue"),
-                    ("Specifications", "166 x 121 x 41 mm · 660 g · IP67", "specsValue"),
-                    ("Service life (design)", "15 y · 225,000 km", "serviceLifeValue"),
-                }, view);
-
-            var materials = BuildFieldModal(canva, modalRouter, "MaterialsModal", "Materials & substances",
-                DPPSpriteFactory.IcLayers, DPPTheme.Hex("#7fd3b6"), new[]
-                {
-                    ("Housing", "Die-cast aluminium (AlSi) · 363 g", "housingValue"),
-                    ("Connectors", "Brass (Cu-Zn) + Au/Ni plating · 58 g", "connectorsValue"),
-                    ("PCB assembly", "FR-4 · Cu · ≈185 g", "pcbValue"),
-                    ("Active components", "Silicon · 20 g", "activesValue"),
-                    ("Precious metals", "Au 63 · Ag 251 · Pd 28 mg", "preciousValue"),
-                    ("Recycled content", "—", "recycledValue"),
-                }, view, tealValueField: "preciousValue");
-
-            var hazard = BuildFieldModal(canva, modalRouter, "HazardModal", "Hazardous & safety",
-                DPPSpriteFactory.IcWarning, DPPTheme.Hex("#7fd3b6"), new[]
-                {
-                    ("Contains battery", "No", "hazardBatteryValue"),
-                    ("Hazardous substances", "None documented", "hazardSubstancesValue"),
-                    ("Solder", "Lead-free SnAgCu (SAC305)", "hazardSolderValue"),
-                    ("WEEE treatment", "Selective treatment recommended", "hazardTreatmentValue"),
-                }, view);
-
-            var compliance = BuildFieldModal(canva, modalRouter, "ComplianceModal", "Compliance & end-of-life",
-                DPPSpriteFactory.IcShield, DPPTheme.Hex("#7fd3b6"), new[]
-                {
-                    ("CE marking", "—", "ceValue"),
-                    ("RoHS", "—", "rohsValue"),
-                    ("REACH", "—", "reachValue"),
-                    ("WEEE category", "Cat. 5 (small equipment) - to verify", "weeeValue"),
-                    ("Recycling route", "WEEE - selective treatment recommended", "routeValue"),
-                }, view);
-
-            SetRef(modalRouter, "landing", landing.gameObject);
-            SetRef(modalRouter, "identityModal", identity.gameObject);
-            SetRef(modalRouter, "materialsModal", materials.gameObject);
-            SetRef(modalRouter, "hazardModal", hazard.gameObject);
-            SetRef(modalRouter, "complianceModal", compliance.gameObject);
-            // lcaModal intentionally left unassigned — the LCA is a screen now.
+            // Detail shells — chrome only, bodies deliberately unbuilt.
+            var dIdentity   = MakeShellPage(canva, canvaRouter, "IdentityDetail",   "Identity & specifications", DPPSpriteFactory.IcPerson);
+            var dSubstances = MakeShellPage(canva, canvaRouter, "SubstancesDetail", "Substances & safety",       DPPSpriteFactory.IcWarning);
+            var dCompliance = MakeShellPage(canva, canvaRouter, "ComplianceDetail", "Compliance & certification",DPPSpriteFactory.IcShield);
+            var dService    = MakeShellPage(canva, canvaRouter, "ServiceDetail",    "Service & repair",          DPPSpriteFactory.IcWrench);
+            var dUsage      = MakeShellPage(canva, canvaRouter, "UsageDetail",      "Usage & repair history",    DPPSpriteFactory.IcClock);
+            SetRef(canvaRouter, "landing", landing.gameObject);
+            SetRef(canvaRouter, "detail1", dIdentity.gameObject);
+            SetRef(canvaRouter, "detail2", dSubstances.gameObject);
+            SetRef(canvaRouter, "detail3", dCompliance.gameObject);
+            SetRef(canvaRouter, "detail4", dService.gameObject);
+            SetRef(canvaRouter, "detail5", dUsage.gameObject);
 
             // =================================================================
-            // Screen B — DIGITAL MODEL EXPLORATION
+            // Screen B — COMPOSITION & IMPACT
             // =================================================================
             var explore = Stretch("ModelExploration", canvasRT);
-            Undo.RegisterCreatedObjectUndo(explore.gameObject, "Build Model Exploration");
+            Undo.RegisterCreatedObjectUndo(explore.gameObject, "Build Composition and Impact");
+            var exploreRouter = explore.gameObject.AddComponent<PassportRouter>();
             AddImage(Stretch("PanelBG", explore), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
-            MakeScreenHeader(explore, "Digital Product Passport", "Life cycle & 3D model",
-                rightCaption: null,
-                backTarget: router, backMethod: nameof(ScreenRouter.ShowDppCanva));
+            var exLanding = Stretch("Landing", explore);
+            MakeScreenHeader(exLanding, "Digital Product Passport", "Composition & impact",
+                rightCaption: null, backTarget: router, backMethod: nameof(ScreenRouter.ShowDppCanva));
+            var countCaption = AddText(TL("CountCaption", exLanding, 316, 36, 300, 16),
+                "660 g", 12.5f, DPPTheme.TextCaption, bold: false, align: TextAlignmentOptions.MidlineRight);
+            SetRef(view, "componentCountCaption", countCaption);
 
-            BuildLcaMainPanel(explore, view);
+            BuildCompositionBlock(exLanding, view, exploreRouter);
+            BuildScenarioBlock(exLanding, view, exploreRouter);
+            BuildRecoveryBlock(exLanding, view, exploreRouter);
 
-            AddText(TL("HintLine1", explore, 24, 356, 300, 16),
-                "Both hands pinching: twist to rotate,", 12.5f, DPPTheme.TextTip, bold: false);
-            AddText(TL("HintLine2", explore, 24, 372, 300, 16),
-                "pull apart to zoom. No timer yet.", 12.5f, DPPTheme.TextTip, bold: false);
+            AddText(TL("HintLine1", exLanding, 24, 366, 330, 16),
+                "Both hands pinching: twist to rotate, pull apart", 11, DPPTheme.TextTip, bold: false);
+            AddText(TL("HintLine2", exLanding, 24, 380, 330, 16),
+                "to zoom. No timer yet.", 11, DPPTheme.TextTip, bold: false);
+            var toGate = BuildWideCta(exLanding, "ContinueButton", x: 288, y: 354, w: 328, label: "Continue");
 
-            var toGate = BuildWideCta(explore, "ContinueButton", x: 328, y: 352, w: 288, label: "Continue");
+            var xMaterial = MakeShellPage(explore, exploreRouter, "MaterialLocationDetail", "Material location per component", DPPSpriteFactory.IcLayers);
+            var xLifecycle = MakeShellPage(explore, exploreRouter, "LifecycleDetail", "Life-cycle process detail", DPPSpriteFactory.IcLeaf);
+            var xRecovery = MakeShellPage(explore, exploreRouter, "RecoveryDetail", "Recovery detail", DPPSpriteFactory.IcLeaf);
+            SetRef(exploreRouter, "landing", exLanding.gameObject);
+            SetRef(exploreRouter, "detail1", xMaterial.gameObject);
+            SetRef(exploreRouter, "detail2", xLifecycle.gameObject);
+            SetRef(exploreRouter, "detail3", xRecovery.gameObject);
 
             // =================================================================
-            // Gate modal — "Continue to disassembly?" (own root canvas)
+            // Gate + wiring
             // =================================================================
             var gateGO = BuildContinueGateCanvas(out var gate, out var quitBtn, out var continueBtn);
             SetRef(gate, "router", router);
@@ -184,20 +191,19 @@ namespace DPP.EditorTools
             WireClick(continueBtn, gate, nameof(ContinueGate.Continue));
             WireClick(toGate, gate, nameof(ContinueGate.Show));
 
-            // =================================================================
-            // Wiring
-            // =================================================================
+            SetRef(view, "dotFilledSprite", dotFilled);
+            SetRef(view, "dotRingSprite", dotRing);
+
             SetRef(router, "dppCanva", canva.gameObject);
             SetRef(router, "modelExploration", explore.gameObject);
             SetBool(router, "zoneFollowsExploration", true);
 
             var manager = Object.FindFirstObjectByType<DPPManager>();
-            if (manager != null) SetRef(manager, "infoTab", view);
+            if (manager != null) SetRef(manager, "passport", view);
             else Debug.LogWarning("[DPPUIBuilder] No DPPManager in scene — the passport screens are not bound to backend data.");
 
-            var zone = FindAnyIncludingInactive<ExplodedZoneInteraction>();
-            if (zone == null)
-                Debug.LogWarning("[DPPUIBuilder] No ExplodedZoneInteraction found — run Phase 4 so the exploration screen has a model to show.");
+            if (FindAnyIncludingInactive<ExplodedZoneInteraction>() == null)
+                Debug.LogWarning("[DPPUIBuilder] No ExplodedZoneInteraction — run RBv2_0/5 so the exploration screen has a model beside it.");
 
             canva.gameObject.SetActive(false);
             explore.gameObject.SetActive(false);
@@ -205,15 +211,322 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = canva.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] Phase 8 — DPP Canva + Model Exploration + gate built. " +
-                      "Tab bar removed; the exploded zone now follows the exploration screen. Save the scene.");
+            Debug.Log("[DPPUIBuilder] RBv2_0/7 — DPP Canva + Composition & impact + gate built. " +
+                      "Detail shells are chrome-only by design. Save the scene.");
         }
 
         // =================================================================
-        // Screen header (RBv2.0): back circle + eyebrow + title + right caption.
-        // Replaces MakeTabHeader — the tab pills are gone (scope decision
-        // 2026-07-29). The back circle sits where Home used to, so the hand
-        // already knows the spot.
+        // Identity hero (spec 13 v2 §2) — 592 × 96, full width
+        // =================================================================
+        private static void BuildIdentityHero(RectTransform landing, PassportView view, PassportRouter r)
+        {
+            var card = TL("IdentityHero", landing, 24, 88, 592, 96);
+            const float W = 592f, H = 96f;
+
+            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
+            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+
+            AddImage(TLCenter("Icon", card, 26, 24, 22, 22), DPPSpriteFactory.IcPerson, DPPTheme.Hex("#7fd3b6"));
+            AddText(TL("Title", card, 48, 12, 300, 20), "Identity & specifications", 15, DPPTheme.TextOnNavy, bold: true);
+            var cat = AddText(TL("Category", card, 300, 12, 250, 20), "EEE", 11, DPPTheme.TextSecondary,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+            SetRef(view, "categoryCaption", cat);
+
+            var line = AddText(TL("IdentityLine", card, 26, 34, 540, 18), "manufacturer", 13, DPPTheme.TextOnNavy, bold: false);
+            SetRef(view, "identityLine", line);
+
+            // Spec chip pool — the view sizes each chip to its text and hides the rest.
+            var chipRow = TL("SpecChips", card, 26, 56, 540, 20);
+            var chipRoots = new RectTransform[SpecChipPool];
+            var chipLabels = new TMP_Text[SpecChipPool];
+            for (int i = 0; i < SpecChipPool; i++)
+            {
+                chipRoots[i] = TL($"Chip{i}", chipRow, 0, 0, 80, 20);
+                AddImage(Stretch("Fill", chipRoots[i]), DPPSpriteFactory.Pill, DPPTheme.CardBlue, sliced: true);
+                chipLabels[i] = AddText(Stretch("Label", chipRoots[i]), "—", 10.5f, DPPTheme.Hex("#dbe4f0"),
+                    bold: false, align: TextAlignmentOptions.Center);
+                chipRoots[i].gameObject.SetActive(false);
+            }
+            SetRefArray(view, "specChipRoots", chipRoots);
+            SetRefArray(view, "specChipLabels", chipLabels);
+
+            var dot = AddImage(TLCenter("DocDot", card, 31, 87, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TextTip);
+            SetRef(view, "docStatusDot", dot);
+            var docLine = AddText(TL("DocStatus", card, 40, 80, 530, 14),
+                "documents", 10.5f, DPPTheme.TextTip, bold: false);
+            SetRef(view, "docStatusLine", docLine);
+
+            AddChevron(card, 566, 22);
+            MakeTappable(card, fill, outline, r, nameof(PassportRouter.Open1));
+        }
+
+        // =================================================================
+        // Declaration tile — 290 × 72 (spec 13 v2 §2)
+        // =================================================================
+        private struct TileParts
+        {
+            public RectTransform card;
+            public Image[] dots;
+            public TMP_Text[] texts;
+        }
+
+        private static TileParts MakeTileCard(RectTransform landing, float x, float y, string name,
+            string iconSprite, string title, PassportRouter r, string openMethod,
+            int rows, float firstRowY = 32f)
+        {
+            const float W = 290f, H = 72f;
+            var card = TL(name, landing, x, y, W, H);
+
+            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
+            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+
+            AddImage(TLCenter("Icon", card, 26, 36, 22, 22), iconSprite, DPPTheme.Hex("#7fd3b6"));
+            AddText(TL("Title", card, 48, 10, 224, 20), title, 14, DPPTheme.TextOnNavy, bold: true);
+
+            var dots = new Image[rows];
+            var texts = new TMP_Text[rows];
+            for (int i = 0; i < rows; i++)
+            {
+                float ry = firstRowY + i * 16f;
+                dots[i] = AddImage(TLCenter($"Dot{i}", card, 53, ry + 8, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TextTip);
+                texts[i] = AddText(TL($"Row{i}", card, 62, ry, 200, 16), "—", 11, DPPTheme.TextSecondary, bold: false);
+            }
+
+            AddChevron(card, 266, 36);
+            MakeTappable(card, fill, outline, r, openMethod);
+            return new TileParts { card = card, dots = dots, texts = texts };
+        }
+
+        /// <summary>Tri-state CE / RoHS / REACH badges on the compliance tile's first row.</summary>
+        private static void BuildComplianceBadges(RectTransform card, PassportView view)
+        {
+            string[] labels = { "CE", "RoHS", "REACH" };
+            float[] xs = { 48f, 86f, 136f };
+            float[] ws = { 34f, 46f, 52f };
+            var strokes = new Image[3];
+            var texts = new TMP_Text[3];
+            for (int i = 0; i < 3; i++)
+            {
+                var b = TL($"Badge{i}", card, xs[i], 30, ws[i], 16);
+                strokes[i] = AddImage(Stretch("Stroke", b), DPPSpriteFactory.Pill, DPPTheme.TextTip, sliced: true);
+                AddImage(CenterIn("Fill", b, ws[i] - 2f, 14f), DPPSpriteFactory.Pill, DPPTheme.RowFill, sliced: true);
+                texts[i] = AddText(Stretch("Label", b), labels[i], 9.5f, DPPTheme.TextTip,
+                    bold: false, align: TextAlignmentOptions.Center);
+            }
+            SetRefArray(view, "complianceBadgeStrokes", strokes);
+            SetRefArray(view, "complianceBadgeLabels", texts);
+        }
+
+        // =================================================================
+        // Block 1 — composition by material (spec 14 v2 §3), 592 × 100
+        // =================================================================
+        private static void BuildCompositionBlock(RectTransform page, PassportView view, PassportRouter r)
+        {
+            var card = TL("CompositionBlock", page, 24, 88, 592, 100);
+            const float W = 592f, H = 100f;
+
+            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true);
+            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+
+            AddImage(TLCenter("Icon", card, 26, 24, 22, 22), DPPSpriteFactory.IcLayers, DPPTheme.Hex("#7fd3b6"));
+            AddText(TL("Title", card, 48, 12, 300, 20), "Materials & composition", 15, DPPTheme.TextOnNavy, bold: true);
+            var trace = AddText(TL("TraceMetals", card, 300, 12, 250, 20), "—", 11, DPPTheme.TealText,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+            SetRef(view, "traceMetalsLine", trace);
+
+            // Segment pool. Left-anchored children of a 548-wide track; the view sets
+            // each x and width from the derived material totals.
+            var bar = TL("Bar", card, 26, 32, CompBarW, 24);
+            var segs = new RectTransform[CompSegmentPool];
+            var segImgs = new Image[CompSegmentPool];
+            for (int i = 0; i < CompSegmentPool; i++)
+            {
+                segs[i] = LeftAnchored($"Seg{i}", bar, 10f, 24f);
+                segImgs[i] = AddImage(segs[i], DPPSpriteFactory.RoundedR3, DPPTheme.TabActiveStroke, sliced: true);
+                segs[i].gameObject.SetActive(false);
+            }
+            SetRefArray(view, "compositionSegments", segs);
+            SetRefArray(view, "compositionSegmentImages", segImgs);
+
+            var inline = AddText(TL("InlineLabel", card, 32, 36, 220, 16), "—", 11, DPPTheme.TextOnNavy, bold: true);
+            SetRef(view, "compositionInlineLabel", inline);
+
+            var swatches = new Image[CompLegendPool];
+            var labels = new TMP_Text[CompLegendPool];
+            for (int i = 0; i < CompLegendPool; i++)
+            {
+                float lx = 26f + i * 116f;
+                swatches[i] = AddImage(TL($"Swatch{i}", card, lx, 66, 8, 8), null, DPPTheme.TabActiveStroke);
+                labels[i] = AddText(TL($"LegendLabel{i}", card, lx + 14, 60, 100, 14), "—", 11, DPPTheme.TextLabel, bold: false);
+            }
+            SetRefArray(view, "legendSwatches", swatches);
+            SetRefArray(view, "legendLabels", labels);
+
+            var footer = AddText(TL("Footer", card, 26, 82, 540, 14), "—", 10.5f, DPPTheme.TextTip, bold: false);
+            SetRef(view, "compositionFooter", footer);
+
+            AddChevron(card, 566, 22);
+            MakeTappable(card, fill, outline, r, nameof(PassportRouter.Open1));
+        }
+
+        // =================================================================
+        // Block 2 — climate across the four EoL scenarios (spec 14 v2 §4), 290 × 138
+        // =================================================================
+        private static void BuildScenarioBlock(RectTransform page, PassportView view, PassportRouter r)
+        {
+            var card = TL("ScenarioBlock", page, 24, 196, 290, 138);
+            const float W = 290f, H = 138f;
+
+            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
+            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+
+            AddText(TL("Title", card, 26, 14, 224, 20), "Climate · EoL scenarios", 13.5f, DPPTheme.TextOnNavy, bold: true);
+            var caption = AddText(TL("Caption", card, 26, 34, 240, 16), "—", 11, DPPTheme.TextLabel, bold: false);
+            SetRef(view, "scenarioCaption", caption);
+
+            AddImage(TL("Axis", card, 26, 106, 248, 1), null, DPPTheme.RowStroke);
+
+            // Each column is a 52-high slot whose BOTTOM sits on the axis. Bars are
+            // bottom-anchored inside it, so the view grows them upward: total height
+            // always = the baseline scenario, and the teal cap IS the saving. Four
+            // zero-based bars would look near-identical (73.4 / 69.1 / 65.2 / 58.0).
+            var nets = new RectTransform[4];
+            var savings = new RectTransform[4];
+            var values = new TMP_Text[4];
+            var axis = new TMP_Text[4];
+            for (int i = 0; i < 4; i++)
+            {
+                float cx = 38f + i * 58f;
+                var slot = TL($"Slot{i}", card, cx, 106f - ScenarioBarH, 34f, ScenarioBarH);
+                nets[i] = BottomAnchored($"Net{i}", slot, 34f, ScenarioBarH);
+                AddImage(nets[i], null, DPPTheme.TabInactiveFill);
+                savings[i] = BottomAnchored($"Saving{i}", slot, 34f, 0f);
+                AddImage(savings[i], null, DPPTheme.TealLight);
+                savings[i].gameObject.SetActive(false);
+
+                values[i] = AddText(TLCenter($"Value{i}", card, cx + 17, 46, 44, 14), "—", 10,
+                    DPPTheme.Hex("#dbe4f0"), bold: false, align: TextAlignmentOptions.Center);
+                axis[i] = AddText(TLCenter($"Axis{i}", card, cx + 17, 116, 44, 14), "—", 10,
+                    DPPTheme.TextLabel, bold: false, align: TextAlignmentOptions.Center);
+            }
+            SetRefArray(view, "scenarioNetBars", nets);
+            SetRefArray(view, "scenarioSavingBars", savings);
+            SetRefArray(view, "scenarioValues", values);
+            SetRefArray(view, "scenarioAxisLabels", axis);
+
+            AddText(TL("Footer", card, 26, 124, 248, 12),
+                "use phase caps what EoL can do for carbon", 9.5f, DPPTheme.TextTip, bold: false);
+
+            AddChevron(card, 266, 22);
+            MakeTappable(card, fill, outline, r, nameof(PassportRouter.Open2));
+        }
+
+        // =================================================================
+        // Block 3 — recovery rate per impact category (spec 14 v2 §5), 290 × 138
+        // =================================================================
+        private static void BuildRecoveryBlock(RectTransform page, PassportView view, PassportRouter r)
+        {
+            var card = TL("RecoveryBlock", page, 326, 196, 290, 138);
+            const float W = 290f, H = 138f;
+
+            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true);
+            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+
+            AddText(TL("Title", card, 26, 14, 200, 20), "Recovery rate", 13.5f, DPPTheme.TextOnNavy, bold: true);
+
+            var catLabels = new TMP_Text[3];
+            var totals = new TMP_Text[3];
+            var s2 = new RectTransform[3];
+            var s3 = new RectTransform[3];
+            var s4 = new RectTransform[3];
+            Color[] shade = { DPPTheme.TealText, DPPTheme.TealLight, DPPTheme.TealAccent };
+            for (int i = 0; i < 3; i++)
+            {
+                float ry = 34f + i * 30f;
+                catLabels[i] = AddText(TL($"Cat{i}", card, 26, ry, 150, 14), "—", 10.5f, DPPTheme.TextLabel, bold: false);
+                totals[i] = AddText(TL($"Total{i}", card, 176, ry, 90, 14), "—", 10.5f, DPPTheme.TextSecondary,
+                    bold: true, align: TextAlignmentOptions.MidlineRight);
+
+                var track = TL($"Track{i}", card, 26, ry + 14, RecoveryTrackW, 9);
+                AddImage(track, DPPSpriteFactory.RoundedR3, DPPTheme.ScrollTrack, sliced: true);
+                var segs = new RectTransform[3];
+                for (int s = 0; s < 3; s++)
+                {
+                    segs[s] = LeftAnchored($"Seg{s + 2}", track, 0f, 9f);
+                    AddImage(segs[s], DPPSpriteFactory.RoundedR3, shade[s], sliced: true);
+                    segs[s].gameObject.SetActive(false);
+                }
+                s2[i] = segs[0]; s3[i] = segs[1]; s4[i] = segs[2];
+            }
+            SetRefArray(view, "recoveryCategoryLabels", catLabels);
+            SetRefArray(view, "recoveryTotals", totals);
+            SetRefArray(view, "recoverySeg2", s2);
+            SetRefArray(view, "recoverySeg3", s3);
+            SetRefArray(view, "recoverySeg4", s4);
+
+            // Scenario legend — the labels are copy, the scenario ids come from data.
+            string[] legend = { "Sc2 usual", "Sc3 dismantle", "Sc4 + reuse*" };
+            float[] lx = { 26f, 96f, 184f };
+            for (int i = 0; i < 3; i++)
+            {
+                AddImage(TL($"LegSwatch{i}", card, lx[i], 122, 8, 8), null, shade[i]);
+                AddText(TL($"LegLabel{i}", card, lx[i] + 12, 116, 90, 14), legend[i], 9.5f, DPPTheme.TextTip, bold: false);
+            }
+
+            AddChevron(card, 266, 22);
+            MakeTappable(card, fill, outline, r, nameof(PassportRouter.Open3));
+        }
+
+        // =================================================================
+        // Detail shell — back arrow + icon + title + "not built yet" line.
+        // Bodies come with the modal build round.
+        // =================================================================
+        private static RectTransform MakeShellPage(RectTransform screen, PassportRouter router,
+            string name, string title, string iconSprite)
+        {
+            var page = Stretch(name, screen);
+
+            var back = TLCenter("BackButton", page, 42, 44, 40, 40);
+            var outline = AddImage(CenterIn("HoverOutline", back, 50, 50), DPPSpriteFactory.Circle64, Color.white);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Ring", back, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
+            var fill = AddImage(CenterIn("Fill", back, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);
+            AddImage(CenterIn("Icon", back, 22, 22), DPPSpriteFactory.IcBack, Color.white);
+
+            var btn = back.gameObject.AddComponent<Button>();
+            btn.transition = Selectable.Transition.None;
+            btn.targetGraphic = fill;
+            WireClick(btn, router, nameof(PassportRouter.Back));
+            var hover = back.gameObject.AddComponent<HoverHighlight>();
+            SetRef(hover, "highlightOutline", outline.gameObject);
+
+            AddImage(TLCenter("TitleIcon", page, 88, 44, 20, 20), iconSprite, DPPTheme.Hex("#7fd3b6"));
+            AddText(TL("Title", page, 102, 31, 480, 26), title, 19, DPPTheme.TextOnNavy, bold: true);
+            AddImage(TL("Separator", page, 24, 76, 592, 1), null, DPPTheme.Hex("#1a335f"));
+            AddText(TL("Placeholder", page, 24, 110, 592, 20),
+                "Full entry is not built yet.", 13, DPPTheme.TextTip, bold: false);
+
+            page.gameObject.SetActive(false);
+            return page;
+        }
+
+        // =================================================================
+        // Screen header (RBv2.0) — also used by RBv2_0/4 (disassembly intro).
         // =================================================================
         private static void MakeScreenHeader(RectTransform parent, string eyebrow, string title,
             string rightCaption, Object backTarget, string backMethod)
@@ -245,163 +558,7 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // Four category cards, 290 × 110 (spec 13 §3). Taller than the RBv1.0
-        // 92 px card: the retired LCA card freed the bottom row, and a bigger
-        // pinch target is the right thing to spend it on (00 §4 hit-area rule).
-        // =================================================================
-        private static void BuildDppCards(RectTransform landing, InfoTabView view, InfoTabRouter modalRouter)
-        {
-            MakeDppCard(landing, modalRouter, nameof(InfoTabRouter.OpenIdentity), "IdentityCard",
-                24, 90, DPPSpriteFactory.IcPerson, DPPTheme.Hex("#7fd3b6"),
-                "Identity &", "manufacturer", "Bosch Motorsport · MS 50.4", DPPTheme.TextSecondary);
-
-            MakeDppCard(landing, modalRouter, nameof(InfoTabRouter.OpenMaterials), "MaterialsCard",
-                326, 90, DPPSpriteFactory.IcLayers, DPPTheme.Hex("#7fd3b6"),
-                "Materials &", "substances", "Al housing · Au 63 · Ag 251 · Pd 28 mg", DPPTheme.TealText);
-
-            var hz = MakeDppCard(landing, modalRouter, nameof(InfoTabRouter.OpenHazard), "HazardCard",
-                24, 212, DPPSpriteFactory.IcWarning, DPPTheme.Hex("#7fd3b6"),
-                "Hazardous &", "safety", "no battery · lead-free", DPPTheme.TextSecondary);
-
-            // Red icon variant (hidden; toggled by data — spec 02 §5.4).
-            var redIcon = TLCenter("IconRed", hz.card, 28, 55, 24, 24);
-            AddImage(CenterIn("Circle", redIcon, 22, 22), DPPSpriteFactory.Circle64, DPPTheme.SafetyStroke);
-            AddText(Stretch("Mark", redIcon), "!", 14, Color.white, bold: true, align: TextAlignmentOptions.Center);
-            redIcon.gameObject.SetActive(false);
-
-            SetRef(view, "hazardFill", hz.fill);
-            SetRef(view, "hazardStroke", hz.stroke);
-            SetRef(view, "hazardIconNeutral", hz.icon.gameObject);
-            SetRef(view, "hazardIconRed", redIcon.gameObject);
-            SetRef(view, "hazardTitle", hz.title);
-            SetRef(view, "hazardBadge", hz.subtitle);
-            SetRef(view, "hazardChevron", hz.chevron);
-
-            MakeDppCard(landing, modalRouter, nameof(InfoTabRouter.OpenCompliance), "ComplianceCard",
-                326, 212, DPPSpriteFactory.IcShield, DPPTheme.Hex("#7fd3b6"),
-                "Compliance &", "end-of-life", "WEEE cat. 5 · to verify", DPPTheme.TextSecondary);
-        }
-
-        private struct DppCardParts
-        {
-            public RectTransform card;
-            public Image fill, stroke, icon, chevron;
-            public TMP_Text title, subtitle;
-        }
-
-        private static DppCardParts MakeDppCard(RectTransform landing, InfoTabRouter modalRouter,
-            string openMethod, string name, float x, float y,
-            string iconSprite, Color iconColor,
-            string titleLine1, string titleLine2, string subtitleText, Color subtitleColor)
-        {
-            const float W = 290f, H = 110f;
-            var card = TL(name, landing, x, y, W, H);
-
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
-                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
-            outline.gameObject.SetActive(false);
-
-            var stroke = AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13,
-                DPPTheme.RowStroke, sliced: true);
-            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13,
-                DPPTheme.RowFill, sliced: true, raycast: true);
-
-            var icon = AddImage(TLCenter("Icon", card, 28, 55, 24, 24), iconSprite, iconColor);
-
-            var title = AddText(TL("Title", card, 52, 28, 220, 22), titleLine1, 16, DPPTheme.TextOnNavy, bold: true);
-            AddText(TL("Title2", card, 52, 50, 220, 22), titleLine2, 16, DPPTheme.TextOnNavy, bold: true);
-            var subtitle = AddText(TL("Subtitle", card, 52, 74, W - 70, 18), subtitleText, 12f, subtitleColor, bold: false);
-
-            var chevron = AddImage(TLCenter("Chevron", card, W - 26, 55, 16, 10), DPPSpriteFactory.IcChevron, DPPTheme.TextSecondary);
-            chevron.rectTransform.localEulerAngles = new Vector3(0, 0, 90); // point right (navigate)
-
-            var btn = card.gameObject.AddComponent<Button>();
-            btn.transition = Selectable.Transition.None;
-            btn.targetGraphic = fill;
-            WireClick(btn, modalRouter, openMethod);
-
-            var hover = card.gameObject.AddComponent<HoverHighlight>();
-            SetRef(hover, "highlightOutline", outline.gameObject);
-            SetRef(hover, "lift", card);
-
-            return new DppCardParts { card = card, fill = fill, stroke = stroke, icon = icon, chevron = chevron, title = title, subtitle = subtitle };
-        }
-
-        // =================================================================
-        // LCA as the exploration screen's MAIN PANEL (spec 14 §3).
-        // Geometry carried over from the retired spec 02 §5.2 modal, rhythm
-        // tightened by ~10 px to free the CTA row. Bindings are the same
-        // InfoTabView fields, so PopulateLca keeps working untouched.
-        // =================================================================
-        private static void BuildLcaMainPanel(RectTransform page, InfoTabView view)
-        {
-            AddText(TL("HeadLabel", page, 24, 94, 280, 18), "Lifecycle CO2 footprint", 13, DPPTheme.TextLabel, bold: false);
-            var headline = AddText(TL("HeadValue", page, 24, 112, 120, 46), "63.9", 36, DPPTheme.TextOnNavy, bold: true);
-            AddText(TL("HeadUnit", page, 114, 130, 110, 22), "kg CO2e", 16, DPPTheme.TextSecondary, bold: false);
-            AddText(TL("HeadCaption", page, 24, 160, 280, 16), "per unit · cradle-to-grave", 12, DPPTheme.TextTip, bold: false);
-            SetRef(view, "lcaHeadlineValue", headline);
-
-            // Recovery potential panel (right column).
-            var panel = TL("RecoveryPanel", page, 330, 88, 286, 104);
-            AddImage(Stretch("BG", panel), DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#0a2344"), sliced: true);
-            var rTitle = AddText(TL("Title", panel, 16, 8, 262, 16),
-                "Recovery potential — up to 6.6 kg CO2e", 12.5f, DPPTheme.TealText, bold: false);
-            SetRef(view, "recoveryTitle", rTitle);
-
-            float[] demoW = { 134f, 113f, 17f, 18f };
-            string[] demoLabel = { "Aluminium · 3.2", "Gold · 2.7", "Palladium · 0.4", "Other metals · 0.4" };
-            for (int i = 0; i < 4; i++)
-            {
-                var bar = TL($"Bar{i}", panel, 16, 28 + i * 17, demoW[i], 11);
-                AddImage(bar, DPPSpriteFactory.RoundedR3, i == 0 ? DPPTheme.TealLight : DPPTheme.TealAccent, sliced: true);
-                var lbl = AddText(TL($"BarLabel{i}", panel, 156, 26 + i * 17, 124, 15),
-                    demoLabel[i], 11.5f, DPPTheme.Hex("#bbccdd"), bold: false);
-                SetRef(view, $"recoveryBar{i}", bar);
-                SetRef(view, $"recoveryLabel{i}", lbl);
-            }
-
-            // Stage contribution strip (full width).
-            AddText(TL("StripCaption", page, 24, 204, 200, 14), "Stage contribution", 11.5f, DPPTheme.TextTip, bold: false);
-            var strip = TL("StageStrip", page, 24, 218, 592, 12);
-            Color[] segColors = { DPPTheme.TabActiveStroke, DPPTheme.TealAccent, DPPTheme.TealLight, DPPTheme.TabInactiveFill };
-            float[] segW = { 83f, 8f, 2f, 499f };
-            float segX = 0f;
-            for (int i = 0; i < 4; i++)
-            {
-                var seg = TL($"Seg{i}", strip, segX, 0, segW[i], 12);
-                AddImage(seg, null, segColors[i]);
-                SetRef(view, $"stageSeg{i}", seg);
-                segX += segW[i];
-            }
-
-            // 2×2 stage grid.
-            string[] gridLabels = { "S1 Raw materials", "S2 Manufacturing", "S3 Distribution", "S4 Use phase*" };
-            string[] gridValues = { "8.9", "0.9", "0.1", "54.0" };
-            for (int i = 0; i < 4; i++)
-            {
-                float gx = (i % 2 == 0) ? 24f : 346f;
-                float gy = (i < 2) ? 242f : 266f;
-                AddImage(TL($"Swatch{i}", page, gx, gy + 4, 8, 8), null, segColors[i]);
-                var lbl = AddText(TL($"StageLabel{i}", page, gx + 14, gy, 170, 16), gridLabels[i], 12.5f, DPPTheme.TextLabel, bold: false);
-                var val = AddText(TL($"StageValue{i}", page, gx + 14, gy, (i % 2 == 0) ? 252f : 256f, 16),
-                    gridValues[i], 13, DPPTheme.TextOnNavy, bold: false, align: TextAlignmentOptions.MidlineRight);
-                SetRef(view, $"stageLabel{i}", lbl);
-                SetRef(view, $"stageValue{i}", val);
-            }
-
-            // Method + footnote.
-            AddImage(TL("MethodDivider", page, 24, 298, 592, 1), null, DPPTheme.RowStroke);
-            AddText(TL("MethodLabel", page, 24, 312, 100, 16), "Method", 12.5f, DPPTheme.TextLabel, bold: false);
-            var method = AddText(TL("MethodValue", page, 24, 312, 592, 16),
-                "ISO 14040 · GWP100 (AR6) · estimated BOM", 12.5f, DPPTheme.TextOnNavy, bold: false,
-                align: TextAlignmentOptions.MidlineRight);
-            SetRef(view, "methodValue", method);
-            AddText(TL("Footnote", page, 24, 330, 540, 14),
-                "*modelled use profile · recovery net of process emissions", 11.5f, DPPTheme.TextTip, bold: false);
-        }
-
-        // =================================================================
-        // Gate modal — own root canvas, 440 × 210 (spec 14 §4)
+        // Gate modal — own root canvas, 440 × 210 (spec 14 §6)
         // =================================================================
         private static GameObject BuildContinueGateCanvas(out ContinueGate gate,
             out Button quitBtn, out Button continueBtn)
@@ -434,9 +591,8 @@ namespace DPP.EditorTools
                 "Timing starts when you press Start disassembly.", 13, DPPTheme.TextSecondary,
                 bold: false, align: TextAlignmentOptions.Center);
 
-            // "Quit", not "Back": this edge leaves the product session entirely
-            // (Thiago, 2026-07-29 — the one deliberate break in the one-step-back
-            // hierarchy, kept from the Miro diagram but relabelled).
+            // "Quit", not "Back": this edge leaves the product session entirely — the one
+            // deliberate break in the one-step-back hierarchy (Thiago, 2026-07-29).
             quitBtn = BuildPillButton(card, "QuitButton", cx: 119, cy: 156, w: 190, h: 52,
                 label: "Quit", labelSize: 15, primary: false, chevron: false);
             continueBtn = BuildPillButton(card, "ContinueButton", cx: 329, cy: 156, w: 190, h: 52,
@@ -444,15 +600,17 @@ namespace DPP.EditorTools
 
             BuildGrabberBar(rt);
             var handle = go.GetComponentInChildren<PanelGrabHandle>(true);
-            if (handle != null) SetBool(handle, "recenterOnStart", false); // ContinueGate.Show does the placing
+            if (handle != null) SetBool(handle, "recenterOnStart", false); // ContinueGate.Show places it
 
             Undo.RegisterCreatedObjectUndo(go, "Build Continue Gate");
             return go;
         }
 
         // =================================================================
-        // Wide primary CTA (teal pill + chevron) anchored top-left in spec coords.
+        // Shared bits
         // =================================================================
+
+        /// <summary>Wide primary CTA (teal pill + chevron) anchored top-left in spec coords.</summary>
         private static Button BuildWideCta(RectTransform parent, string name,
             float x, float y, float w, string label)
         {
@@ -469,8 +627,8 @@ namespace DPP.EditorTools
             AddText(Stretch("Label", root), label, 16, DPPTheme.TextOnNavy,
                 bold: true, align: TextAlignmentOptions.Center);
 
-            // Chevron "›" from two capsule bars — the SF Pro SDF atlas has no glyph
-            // (00 §3). anchoredPosition.y is UP, so the UPPER bar tilts -45.
+            // Chevron from two capsule bars — the SF Pro SDF atlas has no glyph (00 §3).
+            // anchoredPosition.y is UP, so the UPPER bar tilts -45.
             float cx = w * 0.5f - 26f;
             CtaChevronBar(root, "ChevronTop", cx, 4f, -45f);
             CtaChevronBar(root, "ChevronBottom", cx, -4f, 45f);
@@ -494,12 +652,53 @@ namespace DPP.EditorTools
             AddImage(bar, DPPSpriteFactory.Grip, Color.white);
         }
 
-        // =================================================================
-        // Small helpers
-        // =================================================================
+        /// <summary>Right-pointing chevron at card-local (cx, cy).</summary>
+        private static void AddChevron(RectTransform card, float cx, float cy)
+        {
+            var ch = AddImage(TLCenter("Chevron", card, cx, cy, 16, 10), DPPSpriteFactory.IcChevron, DPPTheme.TextSecondary);
+            ch.rectTransform.localEulerAngles = new Vector3(0, 0, 90); // point right (navigate)
+        }
 
-        /// <summary>FindFirstObjectByType misses inactive objects — Welcome and the
-        /// zone are both inactive most of the time, so always include them.</summary>
+        private static void MakeTappable(RectTransform card, Image fill, Image outline,
+            PassportRouter router, string method)
+        {
+            var btn = card.gameObject.AddComponent<Button>();
+            btn.transition = Selectable.Transition.None;
+            btn.targetGraphic = fill;
+            WireClick(btn, router, method);
+
+            var hover = card.gameObject.AddComponent<HoverHighlight>();
+            SetRef(hover, "highlightOutline", outline.gameObject);
+            SetRef(hover, "lift", card);
+        }
+
+        /// <summary>Child anchored to its parent's LEFT edge, vertically centred, growing
+        /// rightwards. The view sets anchoredPosition.x and sizeDelta.x — used by every
+        /// horizontal bar segment.</summary>
+        private static RectTransform LeftAnchored(string name, Transform parent, float w, float h)
+        {
+            var rt = NewRT(name, parent);
+            rt.anchorMin = rt.anchorMax = new Vector2(0f, 0.5f);
+            rt.pivot = new Vector2(0f, 0.5f);
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = new Vector2(w, h);
+            return rt;
+        }
+
+        /// <summary>Child anchored to its parent's BOTTOM edge, growing upwards. Used by
+        /// the scenario columns so a height change reads as growth from the axis.</summary>
+        private static RectTransform BottomAnchored(string name, Transform parent, float w, float h)
+        {
+            var rt = NewRT(name, parent);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0f);
+            rt.pivot = new Vector2(0.5f, 0f);
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = new Vector2(w, h);
+            return rt;
+        }
+
+        /// <summary>FindFirstObjectByType misses inactive objects — Welcome and the zone
+        /// are both inactive most of the time, so always include them.</summary>
         private static T FindAnyIncludingInactive<T>() where T : Component
             => Object.FindFirstObjectByType<T>(FindObjectsInactive.Include);
 

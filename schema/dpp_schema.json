@@ -1,179 +1,1944 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://thesis.local/schemas/dpp.json",
-  "title": "Digital Product Passport (VCU)",
-  "description": "DPP schema for Vehicle Control Unit. Aligned with EU DPP draft direction (CIRPASS). v0.3 (2026-06-10): Bosch MS 50.4 model - specifications, 12-line BOM with step mapping, precious metals, lifecycle stages S1-S4, recovery potential, usage profile, compliance. EoL scenario comparison lives in the thesis LCA model, not here.",
-  "type": "object",
-  "required": ["product_id", "identity", "components", "environmental", "disassembly", "end_of_life"],
-  "properties": {
-    "product_id": {
-      "type": "string",
-      "description": "Unique product identifier, also encoded in the QR code."
-    },
-    "identity": {
-      "type": "object",
-      "required": ["manufacturer", "model", "serial_number", "production_date", "country_of_origin"],
+  "$defs": {
+    "Certification": {
+      "description": "v0.6 - Table 6 #22 responsibility / supply-chain certifications.",
       "properties": {
-        "manufacturer": { "type": "string" },
-        "model": { "type": "string" },
-        "type_number": { "type": ["string", "null"], "description": "Manufacturer order/type number." },
-        "serial_number": { "type": "string" },
-        "production_date": { "type": "string", "format": "date" },
-        "country_of_origin": { "type": "string", "minLength": 2, "maxLength": 2 }
-      }
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
+        },
+        "issuer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issuer"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        },
+        "doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Doc Id"
+        },
+        "status": {
+          "default": "not_provided",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Certification",
+      "type": "object"
     },
-    "specifications": {
-      "type": ["object", "null"],
-      "description": "Datasheet facts shown in the Identity category.",
+    "CircularityIndicator": {
+      "description": "v0.6 - Table 6 #21. One index, with its scale and method stated.\nA score without a scale and a method is not defensible; all three or none.",
       "properties": {
-        "size_mm": { "type": ["string", "null"] },
-        "weight_g": { "type": ["number", "null"] },
-        "protection_class": { "type": ["string", "null"] },
-        "supply_voltage": { "type": ["string", "null"] },
-        "operating_temp_c": { "type": ["string", "null"] },
-        "connectors": { "type": ["string", "null"] }
-      }
-    },
-    "components": {
-      "type": "array",
-      "description": "Mirrors the 12-line LCA BOM (VCU_LCA_Model_v3.xlsx).",
-      "items": {
-        "type": "object",
-        "required": ["id", "name", "material", "weight_g", "recycling_code", "disassembly_step", "hazardous"],
-        "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "material": { "type": "string" },
-          "weight_g": { "type": "number", "minimum": 0 },
-          "recycling_code": { "type": "string" },
-          "disassembly_step": { "type": "integer", "minimum": 1, "description": "Guided disassembly step (1-5) that handles this part." },
-          "hazardous": { "type": "boolean" },
-          "high_value": { "type": "boolean", "default": false, "description": "v0.3.1: worth dedicated recovery (intro Recover card, step value tags)." },
-          "basis": { "type": ["string", "null"], "description": "BOM transparency: datasheet | estimate." }
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Score"
+        },
+        "scale_max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scale Max"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
         }
-      }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "CircularityIndicator",
+      "type": "object"
     },
-    "precious_metals": {
-      "type": "array",
-      "description": "Precious & critical metals sub-inventory (from LCA BOM).",
-      "items": {
-        "type": "object",
-        "required": ["metal", "location", "mass_mg"],
-        "properties": {
-          "metal": { "type": "string" },
-          "location": { "type": "string" },
-          "mass_mg": { "type": "number", "minimum": 0 }
+    "CollectionScheme": {
+      "description": "v0.6 - Table 6 #4 disposal, return and collection scheme information (M).",
+      "properties": {
+        "scheme_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scheme Name"
+        },
+        "take_back": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Take Back"
+        },
+        "scheme_operator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scheme Operator"
+        },
+        "contact": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Contact"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "instructions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Instructions",
+          "type": "array"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
         }
-      }
+      },
+      "title": "CollectionScheme",
+      "type": "object"
     },
-    "environmental": {
-      "type": "object",
+    "Compliance": {
+      "description": "Nullable until verified - UI shows an em-dash for None.",
+      "properties": {
+        "ce": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ce"
+        },
+        "rohs": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rohs"
+        },
+        "reach": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reach"
+        },
+        "weee_category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weee Category"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basis"
+        },
+        "declaration_of_conformity_doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declaration Of Conformity Doc Id"
+        }
+      },
+      "title": "Compliance",
+      "type": "object"
+    },
+    "Component": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "material": {
+          "title": "Material",
+          "type": "string"
+        },
+        "weight_g": {
+          "title": "Weight G",
+          "type": "number"
+        },
+        "recycling_code": {
+          "title": "Recycling Code",
+          "type": "string"
+        },
+        "disassembly_step": {
+          "title": "Disassembly Step",
+          "type": "integer"
+        },
+        "hazardous": {
+          "default": false,
+          "title": "Hazardous",
+          "type": "boolean"
+        },
+        "high_value": {
+          "default": false,
+          "title": "High Value",
+          "type": "boolean"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basis"
+        },
+        "material_breakdown": {
+          "items": {
+            "$ref": "#/$defs/MaterialShare"
+          },
+          "title": "Material Breakdown",
+          "type": "array"
+        },
+        "material_breakdown_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Material Breakdown Basis"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "material",
+        "weight_g",
+        "recycling_code",
+        "disassembly_step"
+      ],
+      "title": "Component",
+      "type": "object"
+    },
+    "Disassembly": {
+      "properties": {
+        "total_steps": {
+          "title": "Total Steps",
+          "type": "integer"
+        },
+        "estimated_time_min": {
+          "title": "Estimated Time Min",
+          "type": "integer"
+        },
+        "tools": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tools",
+          "type": "array"
+        },
+        "parts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parts",
+          "type": "array"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/Step"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "safety_warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Safety Warnings",
+          "type": "array"
+        },
+        "safe_use_doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Safe Use Doc Id"
+        }
+      },
+      "required": [
+        "total_steps",
+        "estimated_time_min"
+      ],
+      "title": "Disassembly",
+      "type": "object"
+    },
+    "DocumentRef": {
+      "description": "v0.6 - one document the passport must reference (Table 6 #1 #2 #12 #16 #17 #22).\n\nThese are PDFs in the real world. The passport's job on a headset is to say\nWHETHER they exist and where, not to render them. `status` makes an absent\nmandatory document visible instead of silently missing.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "cirpass_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cirpass Ref"
+        },
+        "mandatory": {
+          "default": false,
+          "title": "Mandatory",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "not_provided",
+          "title": "Status",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "kind"
+      ],
+      "title": "DocumentRef",
+      "type": "object"
+    },
+    "DppMeta": {
+      "description": "v0.6 - provenance of the record itself, so a reader can tell how much of\nthis passport is real. `attributes_not_provided` is filled by hand for now;\nit is what the UI reads to render the honest 'not provided' states.",
+      "properties": {
+        "schema_version": {
+          "default": "0.6",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "reference_framework": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Framework"
+        },
+        "last_updated": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Updated"
+        },
+        "completeness_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completeness Note"
+        }
+      },
+      "title": "DppMeta",
+      "type": "object"
+    },
+    "EndOfLife": {
+      "properties": {
+        "recycling_route": {
+          "title": "Recycling Route",
+          "type": "string"
+        },
+        "contains_battery": {
+          "default": false,
+          "title": "Contains Battery",
+          "type": "boolean"
+        },
+        "hazardous_warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Hazardous Warnings",
+          "type": "array"
+        },
+        "substances_basis": {
+          "default": "not_provided",
+          "title": "Substances Basis",
+          "type": "string"
+        },
+        "recycling_instructions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Recycling Instructions",
+          "type": "array"
+        },
+        "collection_scheme": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CollectionScheme"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "recycling_route"
+      ],
+      "title": "EndOfLife",
+      "type": "object"
+    },
+    "Environmental": {
       "properties": {
         "co2_footprint_kg": {
-          "type": ["number", "null"],
-          "description": "Headline: lifecycle total (S1+S2+S3+S4), kg CO2-eq."
-        },
-        "method": { "type": ["string", "null"] },
-        "recycled_content_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
-        "lifecycle_stages": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["id", "name", "co2_kg"],
-            "properties": {
-              "id": { "type": "string", "description": "S1..S4" },
-              "name": { "type": "string" },
-              "co2_kg": { "type": "number" },
-              "note": { "type": ["string", "null"] }
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
             }
-          }
+          ],
+          "default": null,
+          "title": "Co2 Footprint Kg"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "recycled_content_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recycled Content Pct"
+        },
+        "recycled_content_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recycled Content Basis"
+        },
+        "lifecycle_stages": {
+          "items": {
+            "$ref": "#/$defs/LifecycleStage"
+          },
+          "title": "Lifecycle Stages",
+          "type": "array"
+        },
+        "lifecycle_stages_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lifecycle Stages Basis"
+        },
+        "lifecycle_stages_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lifecycle Stages Note"
         },
         "recovery_potential": {
-          "type": ["object", "null"],
-          "description": "Forward-looking: avoidable CO2 through proper recycling (net Sc2 vs Sc1).",
-          "properties": {
-            "total_avoidable_kg": { "type": "number" },
-            "note": { "type": ["string", "null"] },
-            "credits": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "required": ["material", "avoided_kg"],
-                "properties": {
-                  "material": { "type": "string" },
-                  "avoided_kg": { "type": "number" }
-                }
-              }
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RecoveryPotential"
+            },
+            {
+              "type": "null"
             }
-          }
+          ],
+          "default": null
+        },
+        "impact_recovery": {
+          "items": {
+            "$ref": "#/$defs/ImpactRecovery"
+          },
+          "title": "Impact Recovery",
+          "type": "array"
         },
         "usage_profile": {
-          "type": ["object", "null"],
-          "description": "Design service-life assumptions (telemetry in a production DPP).",
-          "properties": {
-            "service_life_years": { "type": ["integer", "null"] },
-            "lifetime_distance_km": { "type": ["integer", "null"] },
-            "operating_hours": { "type": ["integer", "null"] },
-            "lifetime_energy_kwh": { "type": ["number", "null"] },
-            "note": { "type": ["string", "null"] }
-          }
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UsageProfile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "lca_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lca Basis"
+        },
+        "lca_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lca Source"
         }
-      }
+      },
+      "title": "Environmental",
+      "type": "object"
+    },
+    "Identity": {
+      "properties": {
+        "manufacturer": {
+          "title": "Manufacturer",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "type_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type Number"
+        },
+        "serial_number": {
+          "title": "Serial Number",
+          "type": "string"
+        },
+        "production_date": {
+          "title": "Production Date",
+          "type": "string"
+        },
+        "country_of_origin": {
+          "title": "Country Of Origin",
+          "type": "string"
+        },
+        "product_category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Product Category"
+        },
+        "economic_operator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Economic Operator"
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brand"
+        }
+      },
+      "required": [
+        "manufacturer",
+        "model",
+        "serial_number",
+        "production_date",
+        "country_of_origin"
+      ],
+      "title": "Identity",
+      "type": "object"
+    },
+    "ImpactRecovery": {
+      "description": "v0.7 - Table 6 #21, the quantitative half: how much of one impact category\nthe end-of-life route can avoid.\n\nWHY THIS EXISTS: `RecoveryPotential.credits` is per MATERIAL and single-category\n(climate). The AR client needs per IMPACT CATEGORY across scenarios, because the\nthesis result is that the scenarios answer different environmental questions -\nreuse pays in carbon, dismantling-for-smelting pays in minerals. A single\n\"recovery rate\" without a named scenario and category is not interpretable.\n\nPopulate from LCA_Analysis/Outputs/3_impact_assessment/impact_EF31.csv\n(`sc1`, `sc*_net`, `sc*_saving`) - never from mc_net.csv, whose independent\nsampling understates the scenario gaps.",
+      "properties": {
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "screening_share_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Screening Share Pct"
+        },
+        "baseline": {
+          "title": "Baseline",
+          "type": "number"
+        },
+        "baseline_scenario": {
+          "default": "Sc1",
+          "title": "Baseline Scenario",
+          "type": "string"
+        },
+        "scenarios": {
+          "items": {
+            "$ref": "#/$defs/ImpactRecoveryScenario"
+          },
+          "title": "Scenarios",
+          "type": "array"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "category",
+        "unit",
+        "baseline"
+      ],
+      "title": "ImpactRecovery",
+      "type": "object"
+    },
+    "ImpactRecoveryScenario": {
+      "description": "v0.7 - one end-of-life scenario's outcome for one impact category.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "net": {
+          "title": "Net",
+          "type": "number"
+        },
+        "saving": {
+          "title": "Saving",
+          "type": "number"
+        },
+        "reduction_pct": {
+          "title": "Reduction Pct",
+          "type": "number"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "net",
+        "saving",
+        "reduction_pct"
+      ],
+      "title": "ImpactRecoveryScenario",
+      "type": "object"
+    },
+    "Indicators": {
+      "description": "v0.6 - Table 6 #21. The LCA itself stays in `environmental`; this block is\nthe index layer (repairability / recyclability / reusability).",
+      "properties": {
+        "circularity": {
+          "items": {
+            "$ref": "#/$defs/CircularityIndicator"
+          },
+          "title": "Circularity",
+          "type": "array"
+        },
+        "recyclability_pct_by_mass": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recyclability Pct By Mass"
+        },
+        "recyclability_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recyclability Basis"
+        },
+        "social_impact_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Social Impact Note"
+        },
+        "pef_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pef Note"
+        }
+      },
+      "title": "Indicators",
+      "type": "object"
+    },
+    "LifecycleStage": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "co2_kg": {
+          "title": "Co2 Kg",
+          "type": "number"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "co2_kg"
+      ],
+      "title": "LifecycleStage",
+      "type": "object"
+    },
+    "MaterialShare": {
+      "description": "One material line inside a component. Weights must sum to weight_g.",
+      "properties": {
+        "material": {
+          "title": "Material",
+          "type": "string"
+        },
+        "weight_g": {
+          "title": "Weight G",
+          "type": "number"
+        }
+      },
+      "required": [
+        "material",
+        "weight_g"
+      ],
+      "title": "MaterialShare",
+      "type": "object"
+    },
+    "PreciousMetal": {
+      "properties": {
+        "metal": {
+          "title": "Metal",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "mass_mg": {
+          "title": "Mass Mg",
+          "type": "number"
+        }
+      },
+      "required": [
+        "metal",
+        "location",
+        "mass_mg"
+      ],
+      "title": "PreciousMetal",
+      "type": "object"
+    },
+    "RecoveryCredit": {
+      "properties": {
+        "material": {
+          "title": "Material",
+          "type": "string"
+        },
+        "avoided_kg": {
+          "title": "Avoided Kg",
+          "type": "number"
+        }
+      },
+      "required": [
+        "material",
+        "avoided_kg"
+      ],
+      "title": "RecoveryCredit",
+      "type": "object"
+    },
+    "RecoveryPotential": {
+      "description": "Forward-looking: what proper recycling can avoid, as a single climate figure.",
+      "properties": {
+        "total_avoidable_kg": {
+          "title": "Total Avoidable Kg",
+          "type": "number"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "credits": {
+          "items": {
+            "$ref": "#/$defs/RecoveryCredit"
+          },
+          "title": "Credits",
+          "type": "array"
+        },
+        "scenario": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scenario"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basis"
+        }
+      },
+      "required": [
+        "total_avoidable_kg"
+      ],
+      "title": "RecoveryPotential",
+      "type": "object"
+    },
+    "RepairEvent": {
+      "properties": {
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "exchanged_component_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Exchanged Component Ids",
+          "type": "array"
+        },
+        "cost_eur": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Eur"
+        },
+        "image_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Url"
+        }
+      },
+      "title": "RepairEvent",
+      "type": "object"
+    },
+    "RepairHistory": {
+      "description": "v0.6 - Table 6 #20 repair data (date, exchanged parts, costs, images).",
+      "properties": {
+        "events": {
+          "items": {
+            "$ref": "#/$defs/RepairEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "title": "RepairHistory",
+      "type": "object"
+    },
+    "Service": {
+      "description": "v0.6 - Table 6 #12 (use / repair / maintenance / updates) and\n#15 (resale, end-of-life options, waste-handling service availability).",
+      "properties": {
+        "spare_parts": {
+          "items": {
+            "$ref": "#/$defs/SparePart"
+          },
+          "title": "Spare Parts",
+          "type": "array"
+        },
+        "maintenance_interval": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maintenance Interval"
+        },
+        "software_update_policy": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Software Update Policy"
+        },
+        "repair_doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repair Doc Id"
+        },
+        "resale_options": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Resale Options",
+          "type": "array"
+        },
+        "eol_options": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Eol Options",
+          "type": "array"
+        },
+        "waste_handling_services": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Waste Handling Services",
+          "type": "array"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "title": "Service",
+      "type": "object"
+    },
+    "SparePart": {
+      "description": "v0.6 - Table 6 #12 spare parts.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "order_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Order Ref"
+        },
+        "availability_years": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Availability Years"
+        },
+        "component_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Component Id"
+        },
+        "status": {
+          "default": "not_provided",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "SparePart",
+      "type": "object"
+    },
+    "Specifications": {
+      "description": "Datasheet facts shown in the Identity category.",
+      "properties": {
+        "size_mm": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size Mm"
+        },
+        "weight_g": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weight G"
+        },
+        "protection_class": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Protection Class"
+        },
+        "supply_voltage": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supply Voltage"
+        },
+        "operating_temp_c": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operating Temp C"
+        },
+        "connectors": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Connectors"
+        },
+        "power_consumption_w": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Power Consumption W"
+        },
+        "performance_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Performance Note"
+        },
+        "energy_label_applicable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Energy Label Applicable"
+        },
+        "energy_label_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Energy Label Note"
+        }
+      },
+      "title": "Specifications",
+      "type": "object"
+    },
+    "Step": {
+      "description": "One guided disassembly step. Content per DPP_UI_Specs 04-08.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "tool": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool"
+        },
+        "component_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Component Ids",
+          "type": "array"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/StepAction"
+          },
+          "title": "Actions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "title": "Step",
+      "type": "object"
+    },
+    "StepAction": {
+      "description": "One action card inside a guided step.",
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "subtitle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subtitle"
+        },
+        "icon": {
+          "default": "cross",
+          "title": "Icon",
+          "type": "string"
+        },
+        "value": {
+          "default": false,
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "StepAction",
+      "type": "object"
+    },
+    "SubstanceOfConcern": {
+      "description": "v0.6 - Table 6 #5 and #6, the two hardest mandatory attributes.\n\n#6 requires the substance NAME, its LOCATION WITHIN THE PRODUCT and its\nCONCENTRATION at product / main-component / spare-part level. `component_id`\nis the location and links straight into components[], which is what lets the\nAR client highlight the physical part that carries the substance — the\ncapability a paper WEEE sheet cannot offer (CIRPASS Table 8 p.56, UC4).\n\nAn EMPTY list means \"none declared\", which is different from \"none present\".\nSay which one in end_of_life.substances_basis.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "cas_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cas Number"
+        },
+        "regulation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Regulation"
+        },
+        "component_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Component Id"
+        },
+        "location_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Note"
+        },
+        "concentration_pct_w_w": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Concentration Pct W W"
+        },
+        "threshold_pct_w_w": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Threshold Pct W W"
+        },
+        "above_threshold": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Above Threshold"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "SubstanceOfConcern",
+      "type": "object"
+    },
+    "UsageHistory": {
+      "description": "v0.6 - Table 6 #19. MEASURED use data. In a real DPP this comes from\ntelemetry or the service record; in this prototype it is not_provided, and\nthe passport says so rather than reusing the designed usage_profile.",
+      "properties": {
+        "purchase_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Purchase Date"
+        },
+        "in_service_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "In Service Date"
+        },
+        "use_cycles": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Use Cycles"
+        },
+        "operating_hours": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operating Hours"
+        },
+        "distance_km": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance Km"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "title": "UsageHistory",
+      "type": "object"
+    },
+    "UsageProfile": {
+      "description": "DESIGNED service-life assumptions (a specification, not a measurement).\nMeasured use data belongs in usage_history - keep the two apart.",
+      "properties": {
+        "service_life_years": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Life Years"
+        },
+        "lifetime_distance_km": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lifetime Distance Km"
+        },
+        "operating_hours": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operating Hours"
+        },
+        "lifetime_energy_kwh": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lifetime Energy Kwh"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "UsageProfile",
+      "type": "object"
+    }
+  },
+  "description": "Generated from backend/models.py — DO NOT EDIT BY HAND. Run `python export_schema.py` after changing the models. Coverage vs CIRPASS D2.2 Table 6 (pp.41-42): DPP_UI_Specs/13b_information_model.md.",
+  "properties": {
+    "product_id": {
+      "title": "Product Id",
+      "type": "string"
+    },
+    "identity": {
+      "$ref": "#/$defs/Identity"
+    },
+    "specifications": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Specifications"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/Component"
+      },
+      "title": "Components",
+      "type": "array"
+    },
+    "precious_metals": {
+      "items": {
+        "$ref": "#/$defs/PreciousMetal"
+      },
+      "title": "Precious Metals",
+      "type": "array"
+    },
+    "environmental": {
+      "$ref": "#/$defs/Environmental"
     },
     "compliance": {
-      "type": ["object", "null"],
-      "description": "Nullable until verified - UI shows an em-dash for null.",
-      "properties": {
-        "ce": { "type": ["boolean", "null"] },
-        "rohs": { "type": ["boolean", "null"] },
-        "reach": { "type": ["boolean", "null"] },
-        "weee_category": { "type": ["string", "null"] }
-      }
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Compliance"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "disassembly": {
-      "type": "object",
-      "required": ["total_steps", "estimated_time_min"],
-      "properties": {
-        "total_steps": { "type": "integer", "minimum": 1 },
-        "estimated_time_min": { "type": "integer", "minimum": 0 },
-        "tools": { "type": "array", "items": { "type": "string" }, "description": "v0.3.1: required tools, first = primary (basis: estimate)." },
-        "steps": {
-          "type": "array",
-          "description": "v0.4: guided step content (DPP_UI_Specs 04-08).",
-          "items": {
-            "type": "object",
-            "required": ["id", "title", "actions"],
-            "properties": {
-              "id": { "type": "integer", "minimum": 1, "description": "Matches Component.disassembly_step." },
-              "title": { "type": "string" },
-              "tool": { "type": ["string", "null"] },
-              "component_ids": { "type": "array", "items": { "type": "string" } },
-              "actions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "required": ["title"],
-                  "properties": {
-                    "title": { "type": "string" },
-                    "subtitle": { "type": ["string", "null"] },
-                    "icon": { "type": "string", "description": "cross|up|pins|usb|lever|board|magnify|chip|recycle|label" },
-                    "value": { "type": "boolean", "description": "true = gold high-value accent" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      "$ref": "#/$defs/Disassembly"
     },
     "end_of_life": {
-      "type": "object",
-      "required": ["recycling_route"],
-      "properties": {
-        "recycling_route": { "type": "string" },
-        "contains_battery": { "type": "boolean" },
-        "hazardous_warnings": { "type": "array", "items": { "type": "string" } }
-      }
+      "$ref": "#/$defs/EndOfLife"
+    },
+    "dpp_meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DppMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "documents": {
+      "items": {
+        "$ref": "#/$defs/DocumentRef"
+      },
+      "title": "Documents",
+      "type": "array"
+    },
+    "substances_of_concern": {
+      "items": {
+        "$ref": "#/$defs/SubstanceOfConcern"
+      },
+      "title": "Substances Of Concern",
+      "type": "array"
+    },
+    "service": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Service"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "usage_history": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UsageHistory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "repair_history": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RepairHistory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "indicators": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Indicators"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "certifications": {
+      "items": {
+        "$ref": "#/$defs/Certification"
+      },
+      "title": "Certifications",
+      "type": "array"
     }
-  }
+  },
+  "required": [
+    "product_id",
+    "identity",
+    "components",
+    "environmental",
+    "disassembly",
+    "end_of_life"
+  ],
+  "title": "Digital Product Passport (VCU)",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }

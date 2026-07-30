@@ -1,12 +1,21 @@
 {
   "product_id": "vcu_001",
+  "dpp_meta": {
+    "schema_version": "0.6",
+    "reference_framework": "CIRPASS D2.2 Table 6 (pp. 41-42)",
+    "last_updated": "2026-07-30",
+    "completeness_note": "Prototype passport for a Master's thesis user study. Impact figures are the openLCA v4 / EF 3.1 deterministic centrals; material splits remain assumed pending VCU_BOM_v4 reconciliation. Attributes with basis/status 'not_provided' have no source yet - coverage against CIRPASS Table 6 is in DPP_UI_Specs/13b_information_model.md."
+  },
   "identity": {
     "manufacturer": "Bosch Motorsport",
     "model": "VCU Bosch MS 50.4 (model)",
     "type_number": null,
     "serial_number": "VCU-2026-001",
     "production_date": "2026-03-27",
-    "country_of_origin": "DE"
+    "country_of_origin": "DE",
+    "product_category": "EEE - electronic control unit (WEEE cat. 5, small equipment)",
+    "economic_operator": null,
+    "brand": null
   },
   "specifications": {
     "size_mm": "200 x 150 x 60",
@@ -14,175 +23,390 @@
     "protection_class": "IP67 (representative)",
     "supply_voltage": "5-18 V",
     "operating_temp_c": "-20 to 80",
-    "connectors": "3 round connectors (LIFE, SENS-A, SENS-B), screw-fixed"
+    "connectors": "3 round connectors (LIFE, SENS-A, SENS-B), screw-fixed",
+    "power_consumption_w": null,
+    "performance_note": null,
+    "energy_label_applicable": false,
+    "energy_label_note": "Energy Labelling Regulation (EU) 2017/1369 covers labelled product groups only; an automotive control unit is not one. Table 6 #1 and #2 are therefore not_applicable rather than missing."
   },
+  "documents": [
+    {
+      "id": "energy_sheet",
+      "title": "Product information sheet (energy consumption & performance)",
+      "kind": "sheet",
+      "cirpass_ref": "T6 #1",
+      "mandatory": true,
+      "status": "not_applicable",
+      "url": null,
+      "note": "Not an energy-labelled product group - see specifications.energy_label_note."
+    },
+    {
+      "id": "technical_doc",
+      "title": "Technical documentation (test results, measurement method)",
+      "kind": "documentation",
+      "cirpass_ref": "T6 #2",
+      "mandatory": true,
+      "status": "not_applicable",
+      "url": null,
+      "note": "Required by the Energy Labelling Regulation, which does not cover this product group."
+    },
+    {
+      "id": "declaration_of_conformity",
+      "title": "EU Declaration of Conformity",
+      "kind": "declaration",
+      "cirpass_ref": "T6 #3",
+      "mandatory": true,
+      "status": "not_provided",
+      "url": null,
+      "note": "CE marking not verified for the as-built prototype unit."
+    },
+    {
+      "id": "user_manual",
+      "title": "User manual / operating instructions",
+      "kind": "manual",
+      "cirpass_ref": "T6 #17",
+      "mandatory": true,
+      "status": "not_provided",
+      "url": null,
+      "note": null
+    },
+    {
+      "id": "safe_use",
+      "title": "Instructions for safe use",
+      "kind": "instructions",
+      "cirpass_ref": "T6 #16",
+      "mandatory": true,
+      "status": "not_provided",
+      "url": null,
+      "note": "No standalone document. Step-level warnings would live in disassembly.safety_warnings, which is currently empty."
+    },
+    {
+      "id": "repair_manual",
+      "title": "Repair and maintenance information (spare parts, updates)",
+      "kind": "manual",
+      "cirpass_ref": "T6 #12",
+      "mandatory": true,
+      "status": "not_provided",
+      "url": null,
+      "note": null
+    },
+    {
+      "id": "disassembly_guide",
+      "title": "Disassembly instructions",
+      "kind": "instructions",
+      "cirpass_ref": "T6 #13 #14 #18",
+      "mandatory": true,
+      "status": "available",
+      "url": null,
+      "note": "Delivered interactively by the AR guided step flow instead of as a document."
+    }
+  ],
   "components": [
     {
       "id": "fasteners",
       "name": "Fasteners (14 M3 Allen bolts + 14 heat-set inserts)",
-      "material": "Steel bolts + brass inserts",
-      "weight_g": 19.8,
+      "material": "Steel/Fe",
+      "weight_g": 12.0,
       "recycling_code": "Fe",
       "disassembly_step": 1,
       "hazardous": false,
-      "basis": "estimate",
+      "basis": "assumed",
       "material_breakdown": [
-        { "material": "steel bolts", "weight_g": 15.0 },
-        { "material": "brass inserts", "weight_g": 4.8 }
+        {
+          "material": "Steel/Fe",
+          "weight_g": 12.0
+        }
       ],
-      "material_breakdown_basis": "assumed - validate in openLCA"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "connectors",
       "name": "Connectors & pins (LIFE, SENS-A, SENS-B)",
-      "material": "Brass (Cu-Zn) + Au/Ni plating",
-      "weight_g": 57.75,
+      "material": "Aluminium shell + Cu contacts, Au/Ni plated",
+      "weight_g": 150.1,
       "recycling_code": "Cu",
       "disassembly_step": 2,
       "hazardous": false,
       "high_value": true,
-      "basis": "datasheet pin count + estimate",
+      "basis": "assumed",
       "material_breakdown": [
-        { "material": "brass (Cu-Zn)", "weight_g": 46.0 },
-        { "material": "polymer insert", "weight_g": 10.95 },
-        { "material": "gold plating", "weight_g": 0.8 }
+        {
+          "material": "Aluminium",
+          "weight_g": 95.0
+        },
+        {
+          "material": "Copper",
+          "weight_g": 35.0
+        },
+        {
+          "material": "Polymers/epoxy",
+          "weight_g": 15.0
+        },
+        {
+          "material": "Silicone",
+          "weight_g": 4.5
+        },
+        {
+          "material": "Nickel",
+          "weight_g": 0.5
+        },
+        {
+          "material": "Gold",
+          "weight_g": 0.06
+        }
       ],
-      "material_breakdown_basis": "assumed - validate in openLCA"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "pcb_substrate",
       "name": "PCB substrate (4-layer)",
-      "material": "FR-4 (epoxy + E-glass)",
-      "weight_g": 90.75,
+      "material": "FR-4 (glass fibre + epoxy)",
+      "weight_g": 49.0,
       "recycling_code": "WEEE",
       "disassembly_step": 3,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Glass fibre",
+          "weight_g": 29.0
+        },
+        {
+          "material": "Polymers/epoxy",
+          "weight_g": 20.0
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "pcb_copper",
       "name": "PCB copper (traces, planes, pads)",
       "material": "Copper (Cu)",
-      "weight_g": 41.25,
+      "weight_g": 14.0,
       "recycling_code": "Cu",
       "disassembly_step": 3,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Copper",
+          "weight_g": 14.0
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "solder",
       "name": "Solder",
       "material": "Lead-free SnAgCu (SAC305)",
-      "weight_g": 6.6,
+      "weight_g": 3.9,
       "recycling_code": "WEEE",
       "disassembly_step": 3,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Tin (solder)",
+          "weight_g": 3.9
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "passives",
       "name": "Passive components (R, C, L)",
-      "material": "Ceramic + metal oxide",
-      "weight_g": 29.7,
+      "material": "Ceramics + mixed terminations + Ta",
+      "weight_g": 47.5,
       "recycling_code": "WEEE",
       "disassembly_step": 3,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Ceramics",
+          "weight_g": 25.0
+        },
+        {
+          "material": "Mixed terminations",
+          "weight_g": 10.0
+        },
+        {
+          "material": "Steel/Fe",
+          "weight_g": 5.0
+        },
+        {
+          "material": "Aluminium",
+          "weight_g": 3.3
+        },
+        {
+          "material": "Polymers/epoxy",
+          "weight_g": 3.2
+        },
+        {
+          "material": "Tantalum",
+          "weight_g": 0.9
+        },
+        {
+          "material": "Silver",
+          "weight_g": 0.0593
+        },
+        {
+          "material": "Gold",
+          "weight_g": 0.0317
+        },
+        {
+          "material": "Palladium",
+          "weight_g": 0.0055
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "tim",
       "name": "Thermal interface material",
       "material": "Silicone-based TIM",
-      "weight_g": 8.25,
+      "weight_g": 8.0,
       "recycling_code": "Other",
       "disassembly_step": 3,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Silicone",
+          "weight_g": 8.0
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "coating",
       "name": "Conformal coating",
-      "material": "Acrylic / silicone",
-      "weight_g": 3.3,
+      "material": "Polymer conformal coating",
+      "weight_g": 3.0,
       "recycling_code": "Other",
       "disassembly_step": 3,
       "hazardous": false,
-      "basis": "estimate"
-    },
-    {
-      "id": "wiring",
-      "name": "Wire bonds & internal wiring",
-      "material": "Copper (+ minor gold)",
-      "weight_g": 4.95,
-      "recycling_code": "Cu",
-      "disassembly_step": 3,
-      "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Polymers/epoxy",
+          "weight_g": 3.0
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "actives",
       "name": "Active components (processors, ICs, MOSFETs)",
-      "material": "Silicon die + epoxy + Cu leadframe",
-      "weight_g": 19.8,
+      "material": "Semiconductor packages (Si + epoxy + Cu)",
+      "weight_g": 23.7,
       "recycling_code": "WEEE",
       "disassembly_step": 4,
       "hazardous": false,
       "high_value": true,
-      "basis": "estimate",
+      "basis": "assumed",
       "material_breakdown": [
-        { "material": "epoxy package", "weight_g": 10.0 },
-        { "material": "Cu leadframe", "weight_g": 5.8 },
-        { "material": "silicon die", "weight_g": 4.0 }
+        {
+          "material": "Polymers/epoxy",
+          "weight_g": 10.65
+        },
+        {
+          "material": "Copper",
+          "weight_g": 8.75
+        },
+        {
+          "material": "Silicon",
+          "weight_g": 2.7
+        },
+        {
+          "material": "Tin (solder)",
+          "weight_g": 0.7
+        },
+        {
+          "material": "Ceramics",
+          "weight_g": 0.6
+        },
+        {
+          "material": "Other",
+          "weight_g": 0.3
+        }
       ],
-      "material_breakdown_basis": "assumed - validate in openLCA"
-    },
-    {
-      "id": "housing",
-      "name": "Housing (top + bottom shells)",
-      "material": "Die-cast aluminium (AlSi)",
-      "weight_g": 363.0,
-      "recycling_code": "Al",
-      "disassembly_step": 5,
-      "hazardous": false,
-      "basis": "datasheet"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     },
     {
       "id": "misc",
       "name": "Labels, adhesives, misc.",
       "material": "Mixed polymer",
-      "weight_g": 14.85,
+      "weight_g": 5.0,
       "recycling_code": "Other",
       "disassembly_step": 5,
       "hazardous": false,
-      "basis": "estimate"
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Polymers/epoxy",
+          "weight_g": 5.0
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
+    },
+    {
+      "id": "housing",
+      "name": "Housing (top + bottom shells)",
+      "material": "Die-cast aluminium (AlSi)",
+      "weight_g": 344.0,
+      "recycling_code": "Al",
+      "disassembly_step": 5,
+      "hazardous": false,
+      "basis": "assumed",
+      "material_breakdown": [
+        {
+          "material": "Aluminium",
+          "weight_g": 344.0
+        }
+      ],
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     }
   ],
+  "substances_of_concern": [],
   "precious_metals": [
-    { "metal": "Gold (Au)", "location": "Connector plating, wire bonds, IC pads", "mass_mg": 62.7 },
-    { "metal": "Silver (Ag)", "location": "Solder paste, capacitor terminations", "mass_mg": 250.8 },
-    { "metal": "Palladium (Pd)", "location": "MLCC capacitor terminations", "mass_mg": 27.6 },
-    { "metal": "Tantalum (Ta)", "location": "Ta capacitors", "mass_mg": 82.5 },
-    { "metal": "Nickel (Ni)", "location": "Connector underplating, leadframes", "mass_mg": 2475.0 }
+    {
+      "metal": "Gold (Au)",
+      "location": "Board (230 ppm [L]) + connector plating [A]",
+      "mass_mg": 91.7
+    },
+    {
+      "metal": "Silver (Ag)",
+      "location": "Solder / terminations (430 ppm [L])",
+      "mass_mg": 59.3
+    },
+    {
+      "metal": "Palladium (Pd)",
+      "location": "MLCC terminations (40 ppm [L])",
+      "mass_mg": 5.5
+    },
+    {
+      "metal": "Tantalum (Ta)",
+      "location": "Ta capacitors",
+      "mass_mg": 900.0
+    },
+    {
+      "metal": "Nickel (Ni)",
+      "location": "Connector underplating; board",
+      "mass_mg": 500.0
+    }
   ],
   "environmental": {
-    "co2_footprint_kg": 63.92,
-    "method": "ISO 14040 LCA - GWP100 (IPCC AR6) - estimated BOM",
+    "co2_footprint_kg": 73.4326,
+    "method": "EF 3.1 (EN 15804+A2) · climate change · ecoinvent 3.8 APOS",
     "recycled_content_pct": null,
-    "lifecycle_stages": [
-      { "id": "S1", "name": "Raw material extraction", "co2_kg": 8.94, "note": null },
-      { "id": "S2", "name": "Manufacturing", "co2_kg": 0.88, "note": null },
-      { "id": "S3", "name": "Distribution", "co2_kg": 0.1, "note": null },
-      { "id": "S4", "name": "Use phase", "co2_kg": 54.0, "note": "modelled use profile, not telemetry" }
-    ],
+    "lifecycle_stages": [],
     "recovery_potential": {
-      "total_avoidable_kg": 6.57,
-      "note": "net of recycling process emissions, vs no-recycling baseline",
-      "credits": [
-        { "material": "Aluminium", "avoided_kg": 3.2 },
-        { "material": "Gold", "avoided_kg": 2.7 },
-        { "material": "Palladium", "avoided_kg": 0.4 },
-        { "material": "Other metals", "avoided_kg": 0.43 }
-      ]
+      "total_avoidable_kg": 15.4315,
+      "note": "EF 3.1 climate saving of Sc4 vs Sc1, net of recycling process emissions. Per-material credit attribution is not exported by the openLCA runs.",
+      "credits": [],
+      "basis": "modelled",
+      "scenario": "Sc4"
     },
     "usage_profile": {
       "service_life_years": 15,
@@ -190,18 +414,189 @@
       "operating_hours": 4500,
       "lifetime_energy_kwh": 216,
       "note": "design assumptions; a production DPP would carry vehicle telemetry"
-    }
+    },
+    "recycled_content_basis": "not_provided",
+    "lca_basis": "modelled",
+    "lca_source": "openLCA v4 model, ecoinvent 3.8 APOS, EF 3.1. Deterministic centrals from LCA_Analysis/Outputs/3_impact_assessment/impact_EF31.csv (2026-07-25).",
+    "lifecycle_stages_basis": "not_provided",
+    "lifecycle_stages_note": "Per-stage (S1-S4) contribution is not among the openLCA exports; it needs one GUI contribution-tree export (Sc1, EF 3.1, climate change). The previous S1-S4 split belonged to the superseded assumed-BOM model and summed to 63.9 kg, contradicting this headline.",
+    "impact_recovery": [
+      {
+        "category": "Resource use minerals and metals",
+        "unit": "kg Sb eq",
+        "screening_share_pct": 72.4524,
+        "baseline": 0.0187391,
+        "baseline_scenario": "Sc1",
+        "scenarios": [
+          {
+            "id": "Sc2",
+            "label": "Recycling as usual",
+            "net": 0.0168679,
+            "saving": 0.00187177,
+            "reduction_pct": 9.98581,
+            "note": null
+          },
+          {
+            "id": "Sc3",
+            "label": "Guided dismantling",
+            "net": 0.0127136,
+            "saving": 0.00602588,
+            "reduction_pct": 32.1547,
+            "note": null
+          },
+          {
+            "id": "Sc4",
+            "label": "Dismantling + reuse",
+            "net": 0.00986934,
+            "saving": 0.00887018,
+            "reduction_pct": 47.3329,
+            "note": "exploratory - functional reuse yield declared [A] (0.5-0.9), not quantified in literature"
+          }
+        ],
+        "method": "EF 3.1",
+        "basis": "modelled"
+      },
+      {
+        "category": "Climate change",
+        "unit": "kg CO2 eq",
+        "screening_share_pct": 6.671,
+        "baseline": 73.4326,
+        "baseline_scenario": "Sc1",
+        "scenarios": [
+          {
+            "id": "Sc2",
+            "label": "Recycling as usual",
+            "net": 69.0605,
+            "saving": 4.41898,
+            "reduction_pct": 5.95394,
+            "note": null
+          },
+          {
+            "id": "Sc3",
+            "label": "Guided dismantling",
+            "net": 65.2466,
+            "saving": 8.16273,
+            "reduction_pct": 11.1476,
+            "note": null
+          },
+          {
+            "id": "Sc4",
+            "label": "Dismantling + reuse",
+            "net": 57.9788,
+            "saving": 15.4315,
+            "reduction_pct": 21.0449,
+            "note": "exploratory - functional reuse yield declared [A] (0.5-0.9), not quantified in literature"
+          }
+        ],
+        "method": "EF 3.1",
+        "basis": "modelled"
+      },
+      {
+        "category": "Eutrophication freshwater",
+        "unit": "kg P eq",
+        "screening_share_pct": 6.58123,
+        "baseline": 0.11592,
+        "baseline_scenario": "Sc1",
+        "scenarios": [
+          {
+            "id": "Sc2",
+            "label": "Recycling as usual",
+            "net": 0.109036,
+            "saving": 0.00689894,
+            "reduction_pct": 5.93795,
+            "note": null
+          },
+          {
+            "id": "Sc3",
+            "label": "Guided dismantling",
+            "net": 0.0967866,
+            "saving": 0.0191428,
+            "reduction_pct": 16.5054,
+            "note": null
+          },
+          {
+            "id": "Sc4",
+            "label": "Dismantling + reuse",
+            "net": 0.0861762,
+            "saving": 0.0297611,
+            "reduction_pct": 25.6586,
+            "note": "exploratory - functional reuse yield declared [A] (0.5-0.9), not quantified in literature"
+          }
+        ],
+        "method": "EF 3.1",
+        "basis": "modelled"
+      }
+    ]
+  },
+  "indicators": {
+    "circularity": [
+      {
+        "id": "repairability",
+        "label": "Repairability",
+        "score": null,
+        "scale_max": null,
+        "method": "EN 45554",
+        "basis": "not_provided"
+      },
+      {
+        "id": "recyclability",
+        "label": "Recyclability",
+        "score": null,
+        "scale_max": null,
+        "method": "EN 45555",
+        "basis": "not_provided"
+      },
+      {
+        "id": "reusability",
+        "label": "Reusability",
+        "score": null,
+        "scale_max": null,
+        "method": "EN 45556",
+        "basis": "not_provided"
+      }
+    ],
+    "recyclability_pct_by_mass": null,
+    "recyclability_basis": "not_provided",
+    "social_impact_note": null,
+    "pef_note": null
   },
   "compliance": {
     "ce": null,
     "rohs": null,
     "reach": null,
-    "weee_category": "Cat. 5 (small equipment) - to verify"
+    "weee_category": "Cat. 5 (small equipment) - to verify",
+    "basis": "not_provided",
+    "declaration_of_conformity_doc_id": "declaration_of_conformity"
+  },
+  "certifications": [],
+  "service": {
+    "spare_parts": [],
+    "maintenance_interval": null,
+    "software_update_policy": null,
+    "repair_doc_id": "repair_manual",
+    "resale_options": [],
+    "eol_options": [],
+    "waste_handling_services": [],
+    "basis": "not_provided"
+  },
+  "usage_history": {
+    "purchase_date": null,
+    "in_service_date": null,
+    "use_cycles": null,
+    "operating_hours": null,
+    "distance_km": null,
+    "basis": "not_provided"
+  },
+  "repair_history": {
+    "events": [],
+    "basis": "not_provided"
   },
   "disassembly": {
     "total_steps": 5,
     "estimated_time_min": 5,
-    "tools": ["Allen key (hex 2.5 mm)"],
+    "tools": [
+      "Allen key (hex 2.5 mm)"
+    ],
     "parts": [
       "VCU case",
       "PCB board",
@@ -215,57 +610,136 @@
         "id": 1,
         "title": "Open the housing",
         "tool": "Allen key (hex 2.5 mm)",
-        "component_ids": ["fasteners"],
+        "component_ids": [
+          "fasteners"
+        ],
         "actions": [
-          { "title": "Remove the 4 lid screws", "subtitle": "Allen key · M3 · keep them aside", "icon": "cross", "value": false },
-          { "title": "Lift off the top cover", "subtitle": "Locating lip disengages · exposes the PCB", "icon": "up", "value": false }
+          {
+            "title": "Remove the 4 lid screws",
+            "subtitle": "Allen key · M3 · keep them aside",
+            "icon": "cross",
+            "value": false
+          },
+          {
+            "title": "Lift off the top cover",
+            "subtitle": "Locating lip disengages · exposes the PCB",
+            "icon": "up",
+            "value": false
+          }
         ]
       },
       {
         "id": 2,
         "title": "Remove the connectors",
         "tool": "Allen key (hex 2.5 mm)",
-        "component_ids": ["connectors"],
+        "component_ids": [
+          "connectors"
+        ],
         "actions": [
-          { "title": "Unscrew the 3 round connectors", "subtitle": "2 screws each · gold-plated contacts · recover", "icon": "pins", "value": true },
-          { "title": "Pull each connector out of its bore", "subtitle": "Set aside · reusable parts", "icon": "up", "value": false }
+          {
+            "title": "Unscrew the 3 round connectors",
+            "subtitle": "2 screws each · gold-plated contacts · recover",
+            "icon": "pins",
+            "value": true
+          },
+          {
+            "title": "Pull each connector out of its bore",
+            "subtitle": "Set aside · reusable parts",
+            "icon": "up",
+            "value": false
+          }
         ]
       },
       {
         "id": 3,
         "title": "Lift out the main PCB",
         "tool": "Allen key (hex 2.5 mm)",
-        "component_ids": ["pcb_substrate", "pcb_copper", "solder", "passives", "tim", "coating", "wiring"],
+        "component_ids": [
+          "pcb_substrate",
+          "pcb_copper",
+          "solder",
+          "passives",
+          "tim",
+          "coating"
+        ],
         "actions": [
-          { "title": "Unscrew the 4 board screws", "subtitle": "Allen key · M3 · into the floor mounts", "icon": "cross", "value": false },
-          { "title": "Lift the PCB out flat", "subtitle": "Carries the processors & passives", "icon": "board", "value": false }
+          {
+            "title": "Unscrew the 4 board screws",
+            "subtitle": "Allen key · M3 · into the floor mounts",
+            "icon": "cross",
+            "value": false
+          },
+          {
+            "title": "Lift the PCB out flat",
+            "subtitle": "Carries the processors & passives",
+            "icon": "board",
+            "value": false
+          }
         ]
       },
       {
         "id": 4,
         "title": "Recover the silicon",
         "tool": null,
-        "component_ids": ["actives"],
+        "component_ids": [
+          "actives"
+        ],
         "actions": [
-          { "title": "Locate the processors & ICs", "subtitle": "3 processors + 3 chips in the board pockets", "icon": "magnify", "value": false },
-          { "title": "Pop the chips out of their pockets", "subtitle": "High-value silicon · reuse stream", "icon": "chip", "value": true }
+          {
+            "title": "Locate the processors & ICs",
+            "subtitle": "3 processors + 3 chips in the board pockets",
+            "icon": "magnify",
+            "value": false
+          },
+          {
+            "title": "Pop the chips out of their pockets",
+            "subtitle": "High-value silicon · reuse stream",
+            "icon": "chip",
+            "value": true
+          }
         ]
       },
       {
         "id": 5,
         "title": "Sort the housing",
         "tool": null,
-        "component_ids": ["housing", "misc"],
+        "component_ids": [
+          "housing",
+          "misc"
+        ],
         "actions": [
-          { "title": "Shells into the aluminium stream", "subtitle": "Die-cast AlSi · 363 g · highest CO2 credit", "icon": "recycle", "value": false },
-          { "title": "Peel labels & adhesive residue", "subtitle": "Mixed polymer · separate bin", "icon": "label", "value": false }
+          {
+            "title": "Shells into the aluminium stream",
+            "subtitle": "Die-cast AlSi · 363 g · highest CO2 credit",
+            "icon": "recycle",
+            "value": false
+          },
+          {
+            "title": "Peel labels & adhesive residue",
+            "subtitle": "Mixed polymer · separate bin",
+            "icon": "label",
+            "value": false
+          }
         ]
       }
-    ]
+    ],
+    "safety_warnings": [],
+    "safe_use_doc_id": "safe_use"
   },
   "end_of_life": {
     "recycling_route": "WEEE - selective treatment recommended",
     "contains_battery": false,
-    "hazardous_warnings": []
+    "hazardous_warnings": [],
+    "substances_basis": "not_provided",
+    "recycling_instructions": [],
+    "collection_scheme": {
+      "scheme_name": null,
+      "take_back": null,
+      "scheme_operator": null,
+      "contact": null,
+      "url": null,
+      "instructions": [],
+      "basis": "not_provided"
+    }
   }
 }
