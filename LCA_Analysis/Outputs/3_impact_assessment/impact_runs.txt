@@ -1,0 +1,93 @@
+All 7 product systems resolved.
+
+=== EF31: 'EF 3.1 Method (adapted)' ===
+  calculating Sc1 ...
+  calculating Sc2g ...
+  calculating Sc2s ...
+  calculating Sc3g ...
+  calculating Sc3s ...
+  calculating Sc4g ...
+  calculating Sc4s ...
+  -> impact_EF31.csv (25 categories)
+    Climate change                                   Sc1 73.43 | net 69.06 / 65.25 / 57.98 kg CO2 eq
+    Resource use fossils                             Sc1 1019 | net 961.1 / 910 / 813.4 MJ (net calorific)
+    Resource use minerals and metals                 Sc1 0.01874 | net 0.01687 / 0.01271 / 0.009869 kg Sb eq
+
+  EF screening (NW set 'EF 3.1 normalization and weighting set', Sc1 baseline, PEF >=80% rule):
+    Resource use minerals and metals                  72.5%  cum  72.5%  << reporting set [PINNED]
+    Climate change                                     6.7%  cum  79.1%  << reporting set [PINNED]
+    Eutrophication freshwater                          6.6%  cum  85.7%
+    Resource use fossils                               4.3%  cum  90.0%
+    Acidification                                      2.1%  cum  92.0%
+    Ecotoxicity freshwater                             1.6%  cum  93.6%
+    Particulate matter                                 1.4%  cum  95.1%
+    Human toxicity non-cancer                          1.2%  cum  96.2%
+    Photochemical ozone formation (human health)       1.0%  cum  97.2%
+    Water use                                          0.9%  cum  98.1%
+    Eutrophication terrestrial                         0.6%  cum  98.7%
+    Eutrophication marine                              0.4%  cum  99.2%
+    Ionising radiation (human health)                  0.4%  cum  99.6%
+    Human toxicity cancer                              0.2%  cum  99.9%
+    Land use                                           0.1%  cum 100.0%
+    Ozone depletion                                    0.0%  cum 100.0%
+  !! screening via IPC failed ([Errno 13] Permission denied: 'C:\\Claude\\Projects\\AR_DPP\\LCA_Analysis\\Outputs\\impact_screening.csv').
+     GUI fallback: open the EF 3.1 result in openLCA -> tab 'Impact analysis'
+     -> enable normalization & weighting -> export; the >=80% ranking can
+     then be read directly. Raw totals in impact_EF31.csv are unaffected.
+
+=== RMid: 'ReCiPe 2016 Midpoint (H)' ===
+  calculating Sc1 ...
+  calculating Sc2g ...
+  calculating Sc2s ...
+  calculating Sc3g ...
+  calculating Sc3s ...
+  calculating Sc4g ...
+  calculating Sc4s ...
+  -> impact_ReCiPe_mid.csv (18 categories)
+    Fossil resource scarcity                         Sc1 18.97 | net 17.83 / 16.81 / 14.92 kg oil eq
+    Mineral resource scarcity                        Sc1 2.203 | net 1.957 / 1.597 / 1.345 kg Cu eq
+    Ozone formation, Human health                    Sc1 0.1903 | net 0.1744 / 0.1537 / 0.1297 kg NOx eq
+    Ozone formation, Terrestrial ecosystems          Sc1 0.1942 | net 0.1782 / 0.1572 / 0.1326 kg NOx eq
+!! method not found for ['ReCiPe 2016 Endpoint (H,A)'] - SKIPPED. Check LCIA pack names:
+    - Crustal Scarcity Indicator
+    - IPCC 2013 GWP 100a (incl. CO2 uptake)
+    - USEtox 2 (recommended only)
+    - USEtox 2 (recommended + interim)
+    - TRACI 2.1
+    - Selected LCI results, additional
+    - Selected LCI results
+    - ReCiPe 2016 Midpoint (I)
+    - ReCiPe 2016 Midpoint (H)
+    - ReCiPe 2016 Midpoint (E)
+    - ReCiPe 2016 Endpoint (I)
+    - ReCiPe 2016 Endpoint (H)
+    - ReCiPe 2016 Endpoint (E)
+    - Pfister et al 2010 (ReCiPe)
+    - Pfister et al 2009 (Water Scarcity)
+    - Pfister et al 2009 (Eco-indicator 99)
+    - Motoshita et al 2010 (Human Health)
+    - IPCC 2013 GWP 20a
+    - IPCC 2013 GWP 100a
+    - IMPACT 2002+
+    - Hoekstra et al 2012 (Water Scarcity)
+    - EPS 2015dx
+    - EPS 2015d
+    - EPD 2018
+    - Environmental Prices
+    - EN 15804 +A2 Method
+    - EF 2.0 Method (adapted)
+    - EF 3.0 Method (adapted)
+    - EDIP 2003
+    - Ecosystem Damage Potential
+    - Ecological Scarcity 2006 (Water Scarcity)
+    - Cumulative Exergy Demand
+    - Cumulative Energy Demand (LHV)
+    - Cumulative Energy Demand (HHV)
+    - Berger et al 2014 (Water Scarcity)
+    - BEES+
+    - CML-IA non-baseline
+    - CML-IA baseline
+    - Boulay et al 2011 (Water Scarcity)
+    - Boulay et al 2011 (Human Health)
+
+DONE - three methods across seven systems. Send impact_runs.txt + CSVs.

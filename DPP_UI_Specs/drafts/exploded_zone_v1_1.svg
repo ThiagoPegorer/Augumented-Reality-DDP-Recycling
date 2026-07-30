@@ -1,0 +1,100 @@
+<svg width="100%" viewBox="0 0 380 600" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Exploded action zone v1 — transparent frame, free-grab 3D model with constrained part dragging</title>
+<desc>Passthrough background with a dashed transparent action-zone frame. Inside, the VCU model: the lid is being pinch-dragged upward along a dashed constraint track with an end stop; screws move as one grouped body; connectors show their outward slide axis. Bottom row has zoom minus, zoom plus and reassemble buttons. Grabber bar below the frame.</desc>
+
+<!-- Passthrough (real world) suggestion -->
+<defs>
+<linearGradient id="room" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#4a4640"/>
+<stop offset="0.6" stop-color="#37342f"/>
+<stop offset="1" stop-color="#2b2926"/>
+</linearGradient>
+</defs>
+<rect width="380" height="600" fill="url(#room)"/>
+<!-- faint workbench line to sell passthrough -->
+<line x1="0" y1="470" x2="380" y2="470" stroke="#57524a" stroke-width="2" opacity="0.6"/>
+<rect x="285" y="380" width="70" height="90" rx="4" fill="#403c36" opacity="0.55"/>
+
+<!-- Action-zone frame: NO fill (transparent), dashed delimiter + corner ticks -->
+<rect x="40" y="40" width="300" height="480" rx="20" fill="none" stroke="#2e5aa0" stroke-width="2" stroke-dasharray="10 8" opacity="0.9"/>
+<g stroke="#5dcaa5" stroke-width="3" stroke-linecap="round" opacity="0.9">
+<path d="M 52 40 L 40 40 L 40 52" fill="none"/>
+<path d="M 328 40 L 340 40 L 340 52" fill="none"/>
+<path d="M 52 520 L 40 520 L 40 508" fill="none"/>
+<path d="M 328 520 L 340 520 L 340 508" fill="none"/>
+</g>
+
+<!-- ===== The model (trimetric stand-in) ===== -->
+<!-- Lid: grabbed, dragged up along its constraint track -->
+<g transform="translate(190,120)">
+<rect x="-85" y="-30" width="170" height="34" rx="7" fill="#8e8880" stroke="#a8a29a" stroke-width="1.5"/>
+</g>
+<!-- constraint track for the lid: dashed guide + end stop -->
+<line x1="190" y1="80" x2="190" y2="255" stroke="#5dcaa5" stroke-width="1.6" stroke-dasharray="4 5" opacity="0.85"/>
+<line x1="176" y1="80" x2="204" y2="80" stroke="#5dcaa5" stroke-width="2.4" stroke-linecap="round"/>
+<!-- pinch cursor on the lid -->
+<circle cx="238" cy="108" r="11" fill="none" stroke="#ffffff" stroke-width="2.2"/>
+<circle cx="238" cy="108" r="3" fill="#ffffff"/>
+
+<!-- Lid screws: ONE grouped body, slightly raised above the lid -->
+<g fill="#c8c2ba" stroke="#8e8880" stroke-width="1">
+<rect x="118" y="58" width="7" height="16" rx="2.5"/>
+<rect x="168" y="52" width="7" height="16" rx="2.5"/>
+<rect x="218" y="52" width="7" height="16" rx="2.5"/>
+<rect x="256" y="58" width="7" height="16" rx="2.5"/>
+</g>
+<rect x="110" y="46" width="162" height="34" rx="8" fill="none" stroke="#f0c879" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.9"/>
+<text x="284" y="66" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="9.5" fill="#f0c879">1 body</text>
+
+<!-- PCB with chips (still seated in the housing) -->
+<g transform="translate(190,300)">
+<rect x="-78" y="-38" width="156" height="34" rx="4" fill="#1f5c33" stroke="#2f7a46" stroke-width="1.5"/>
+<rect x="-62" y="-32" width="38" height="20" rx="2" fill="#c9a227"/>
+<rect x="-16" y="-30" width="28" height="16" rx="2" fill="#1f4fa0"/>
+<rect x="20" y="-32" width="10" height="20" rx="2" fill="#c0392b"/>
+<rect x="34" y="-32" width="10" height="20" rx="2" fill="#c0392b"/>
+<rect x="48" y="-32" width="10" height="20" rx="2" fill="#c0392b"/>
+<!-- bottom housing -->
+<rect x="-88" y="0" width="176" height="64" rx="9" fill="#7c766e" stroke="#96908a" stroke-width="1.5"/>
+<!-- connectors on the front-left wall with their outward constraint axis -->
+<circle cx="-102" cy="22" r="12" fill="#15181d" stroke="#2a3340" stroke-width="1.5"/>
+<circle cx="-102" cy="48" r="12" fill="#15181d" stroke="#2a3340" stroke-width="1.5"/>
+<line x1="-120" y1="35" x2="-160" y2="35" stroke="#5dcaa5" stroke-width="1.4" stroke-dasharray="4 5" opacity="0.8"/>
+<line x1="-160" y1="26" x2="-160" y2="44" stroke="#5dcaa5" stroke-width="2" stroke-linecap="round"/>
+</g>
+
+<!-- Rotate hint: circular arrow around the model -->
+<path d="M 96 392 A 96 30 0 0 0 286 396" fill="none" stroke="#aac4e6" stroke-width="1.6" stroke-dasharray="5 6" opacity="0.75"/>
+<path d="M 286 396 l -9 -6 M 286 396 l -10 4" stroke="#aac4e6" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.9"/>
+
+<!-- Zoom slider: docked to the RIGHT edge of the frame, appears while a part is selected -->
+<g>
+<rect x="316" y="150" width="16" height="220" rx="8" fill="#0a1f44" opacity="0.85" stroke="#2e5aa0" stroke-width="1.2"/>
+<text x="324" y="142" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">+</text>
+<text x="324" y="386" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">−</text>
+<!-- handle at min position (default size = zoom floor) -->
+<circle cx="324" cy="352" r="11" fill="#1d9e75" stroke="#ffffff" stroke-width="1.5"/>
+</g>
+
+<!-- Selected part highlight: lid outlined teal (sticky selection drives the zoom reference) -->
+<rect x="103" y="88" width="174" height="38" rx="8" fill="none" stroke="#5dcaa5" stroke-width="2.2" opacity="0.95"/>
+
+<!-- Reassemble (the only button besides the slider) -->
+<g>
+<circle cx="176" cy="488" r="17" fill="#1d9e75"/>
+<g transform="translate(176,488)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -6 2 a 6.5 6.5 0 1 1 2 4"/>
+<path d="M -8 -1 L -6 2 L -3 0"/>
+</g>
+<text x="224" y="492" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="10.5" fill="#aac4e6">reassemble</text>
+</g>
+
+<!-- Annotations (mock only, not UI) -->
+<text x="58" y="152" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fe1cb">drag limited to the</text>
+<text x="58" y="164" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fe1cb">animation distance</text>
+<text x="52" y="558" font-family="-apple-system,'SF Pro Display',Helvetica,Arial,sans-serif" font-size="10" fill="#8a9ab5">transparent zone · passthrough visible · frame = action limit</text>
+
+<!-- Grabber bar below the frame -->
+<rect x="90" y="528" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1"/>
+<rect x="168" y="537" width="44" height="4" rx="2" fill="#6b7686"/>
+</svg>

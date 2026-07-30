@@ -1,0 +1,23 @@
+S5 Sc2 v4 build - gross + credits
+Deleted prior 'VCU S5 EoL Sc2 (bulk recycling)'.
+Deleted prior 'VCU S5 EoL Sc2 credits (avoided virgin)'.
+  OK chain: 0.66 kg <- VCU S4 Use Phase
+  ?? WEEE shredding: runtime-resolved, top candidates:
+       - treatment of waste electric and electronic equipment, shredding | waste electric and electronic equipment | APOS, U [a6106197-b196-31a0-9721-9afd29353b9d]
+  OK shredding: 0.66 kg -> treatment of waste electric and electronic equipment, shredding | waste electric and electronic equipment | APOS, U [Global]
+     -> linked; CONFIRM choice + UUID at checkpoint
+  OK Residual combustible -> waste plastic market: 0.073 kg -> market for waste plastic, mixture | waste plastic, mixture | APOS, U [Switzerland]
+  OK Residual inert -> sanitary landfill: 0.1526 kg -> treatment of inert waste, sanitary landfill | inert waste | APOS, U [Europe without Switzerland]
+  OK Cu-stream fragments -> Cu smelter [SE, asymmetry fix]: 0.038 kg -> treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U [Sweden]
+  -- mass ledger (Bigum 2026-07-26): 0.660 = 0.3964 scrap-out + 0.038 smelter feed + 0.073 combustible + 0.1526 inert (OK)
+  OK Avoided Al primary ingot (300.3 g, 86%x79% [L Bigum T8]): 0.3003 kg -> market for aluminium, primary, ingot | aluminium, primary, ingot | APOS, U [Aluminium producing area, EU27 and EFTA countries]
+  OK Avoided Cu cathode (36.1 g, 60x95% [L][L]): 0.0361 kg -> market for copper, cathode | copper, cathode | APOS, U [Global]
+  OK Avoided chromium steel (16.3 g, 96x100% [L Bigum]): 0.0163 kg -> market for steel, chromium steel 18/8 | steel, chromium steel 18/8 | APOS, U [Global]
+  OK Avoided gold (23.1 mg, 25.6x98% [L]): 2.31e-05 kg -> market for gold | gold | APOS, U [Global]
+  OK Avoided silver (6.6 mg, 11.5x97% [L]): 6.6e-06 kg -> market for silver | silver | APOS, U [Global]
+  OK Avoided palladium (1.38 mg, 25.6x98% [L]): 1.4e-06 kg -> market for palladium | palladium | APOS, U [Global]
+  -- credits: 6/6 linked, total 352.7 g vs ref 352.7 g
+
+DONE - 'VCU S5 EoL Sc2 (bulk recycling)' + 'VCU S5 EoL Sc2 credits (avoided virgin)' built. F5 in openLCA.
+CHECKPOINT: confirm shredding dataset (?? candidates above) + residual split [A].
+Calc plan: gross = target A | saving = target B | net = A - B (results script).

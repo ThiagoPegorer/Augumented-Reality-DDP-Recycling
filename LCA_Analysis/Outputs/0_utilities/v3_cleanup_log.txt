@@ -1,0 +1,12 @@
+v3 cleanup - product systems -> processes -> flows
+  no product systems found.
+
+Surviving VCU objects (expect exactly the 6 v4 names):
+  process: VCU S1 Materials & Construction   [OK v4]
+  process: VCU S2 Hardware Assembly   [OK v4]
+  process: VCU S3 Distribution   [OK v4]
+  flow:    VCU materials (S1)   [OK v4]
+  flow:    VCU assembled (S2)   [OK v4]
+  flow:    VCU delivered (S3)   [OK v4]
+
+DONE. F5 in openLCA; close/reopen any editor tab that still shows the null error.

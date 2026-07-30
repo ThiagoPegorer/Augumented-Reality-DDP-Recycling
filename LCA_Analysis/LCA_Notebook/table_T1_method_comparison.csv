@@ -1,0 +1,16 @@
+EF 3.1 category,unit,Sc4 red.,ReCiPe 2016 category,unit,Sc4 red.,difference
+Resource use minerals and metals,kg Sb eq,-47.3 %,Mineral resource scarcity,kg Cu eq,-38.9 %,8.4 pp
+Ecotoxicity freshwater,CTUe,-43.1 %,Freshwater ecotoxicity,"kg 1,4-DCB",-45.1 %,-2.0 pp
+Human toxicity non-cancer,CTUh,-39.5 %,Human non-carcinogenic toxicity,"kg 1,4-DCB",-42.2 %,-2.7 pp
+Particulate matter,disease incidence,-34.8 %,Fine particulate matter formation,kg PM2.5 eq,-29.7 %,5.1 pp
+Human toxicity cancer, CTUh ,-34.4 %,Human carcinogenic toxicity,"kg 1,4-DCB",-26.1 %,8.3 pp
+Photochemical ozone formation (human health),kg NMVOC eq,-30.7 %,"Ozone formation, Human health",kg NOx eq,-31.9 %,-1.1 pp
+Eutrophication marine,kg N eq,-28.5 %,Marine eutrophication,kg N eq,-15.3 %,13.2 pp
+Acidification,mol H+ eq,-28.4 %,Terrestrial acidification,kg SO2 eq,-28.0 %,0.4 pp
+Eutrophication freshwater,kg P eq,-25.7 %,Freshwater eutrophication,kg P eq,-25.7 %,0.0 pp
+Land use,dimensionless (pt),-25.3 %,Land use,m2a crop eq,-24.4 %,0.9 pp
+Water use,m3 world eq,-24.1 %,Water consumption,m3,-24.1 %,-0.0 pp
+Ozone depletion,kg CFC11 eq,-22.7 %,Stratospheric ozone depletion,kg CFC11 eq,-19.4 %,3.3 pp
+Climate change,kg CO2 eq,-21.0 %,Global warming,kg CO2 eq,-21.1 %,-0.0 pp
+Resource use fossils,MJ (net calorific),-20.2 %,Fossil resource scarcity,kg oil eq,-21.4 %,-1.1 pp
+Ionising radiation (human health),kBq U235 eq,-17.7 %,Ionizing radiation,kBq Co-60 eq,-15.7 %,2.1 pp

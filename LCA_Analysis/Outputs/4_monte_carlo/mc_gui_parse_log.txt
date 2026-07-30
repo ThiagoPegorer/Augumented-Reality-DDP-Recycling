@@ -1,0 +1,14 @@
+Parsing GUI Monte Carlo exports ...
+  Sc1: 1000 draws x 25 categories -> mc_raw_Sc1.csv
+  Sc2g: 1000 draws x 25 categories -> mc_raw_Sc2g.csv
+  Sc2s: 1000 draws x 25 categories -> mc_raw_Sc2s.csv
+  Sc3g: 1000 draws x 25 categories -> mc_raw_Sc3g.csv
+  Sc3s: 1000 draws x 25 categories -> mc_raw_Sc3s.csv
+  Sc4g: 1000 draws x 25 categories -> mc_raw_Sc4g.csv
+  Sc4s: 1000 draws x 25 categories -> mc_raw_Sc4s.csv
+
+Writing mc_summary.csv ...
+Writing mc_net.csv (net = gross - saving, run-paired, independent-sampling approximation) ...
+
+DONE. Parsed: Sc1, Sc2g, Sc2s, Sc3g, Sc3s, Sc4g, Sc4s. All 7 complete.
+Send mc_gui_parse_log.txt + mc_summary.csv + mc_net.csv.

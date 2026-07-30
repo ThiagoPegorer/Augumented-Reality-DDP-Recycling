@@ -1,0 +1,38 @@
+ReCiPe screening tables — counterparts of impact_screening.csv
+Baseline: sc1 (PEF practice: screen on the reference footprint)
+
+
+=== ReCiPe ENDPOINT (H,A) — already normalised + weighted ===
+  consistency check: leaves sum 11.249197 vs single score 11.249197 (diff -9.36e-13) -> OK, points are additive
+  screening = share of the 11.249-point single score, sc1 basis:
+    resources - metal depletion                           22.1%  cum  22.1%  << reporting set  [PINNED]
+    resources - fossil depletion                          22.0%  cum  44.1%  << reporting set
+    human health - climate change, human health           17.9%  cum  62.1%  << reporting set  [PINNED]
+    human health - human toxicity                         15.7%  cum  77.8%  << reporting set
+    ecosystem quality - climate change, ecosystems        11.3%  cum  89.2%  << reporting set  [PINNED]
+    human health - particulate matter formation            7.6%  cum  96.8%
+    ecosystem quality - agricultural land occupation       1.7%  cum  98.4%
+    ecosystem quality - urban land occupation              0.8%  cum  99.2%
+    ecosystem quality - natural land transformation        0.4%  cum  99.6%
+    human health - photochemical oxidant formation         0.1%  cum  99.7%
+    ecosystem quality - freshwater eutrophication          0.1%  cum  99.8%
+    ecosystem quality - freshwater ecotoxicity             0.1%  cum  99.9%
+    ecosystem quality - terrestrial acidification          0.0%  cum  99.9%
+    human health - ionising radiation                      0.0%  cum 100.0%
+    ecosystem quality - terrestrial ecotoxicity            0.0%  cum 100.0%
+    ecosystem quality - marine ecotoxicity                 0.0%  cum 100.0%
+    human health - ozone depletion                         0.0%  cum 100.0%
+  -> impact_screening_ReCiPe_end.csv (17 categories)
+
+=== ReCiPe MIDPOINT (H) — normalisation only (ReCiPe defines no midpoint weights) ===
+  method: 'ei -  ReCiPe Midpoint (H)'
+  !! this pack carries NO normalisation/weighting set.
+     NOT inventing factors (framework §0). Options, in order of preference:
+       (a) import the openLCA-pack 'ReCiPe 2016 Midpoint (H)' method, which ships
+           the World (2010) H normalisation set, and re-run this script against it;
+       (b) enter the published ReCiPe 2016 World-2010 normalisation factors by hand
+           as a [L] literature input, documented in the framework;
+       (c) skip the midpoint screening and use the ENDPOINT single-score shares as
+           the weighted view — defensible, since ReCiPe's own weighting lives there.
+
+DONE.

@@ -1,0 +1,145 @@
+Sc3 candidate inspection - reference flows, units, descriptions, exchanges
+
+====================================================================================================
+[A1] treatment of electronics scrap from control units (loc 1)
+    uuid: 6205b74b-39cf-3631-a6a4-c93c2e9c1135
+    name:     treatment of electronics scrap from control units | electronics scrap from control units | APOS, U
+    location: Europe
+    description (1443 chars, first 1200):
+      | The dismantled control unit has a composition of 46% steel (housing), 32% plastics, 14% printed wiring boards and 8% cables (various types).;[This dataset was already contained in the ecoinvent database version 2. It was not individually updated during the transfer to ecoinvent version 3. Life Cycle Impact Assessment results may still have changed, as they are affected by changes in the supply chain, i.e. in other datasets. This dataset was generated following the ecoinvent quality guidelines for version 2. It may have been subject to central changes described in the ecoinvent version 3 change report (http://www.ecoinvent.org/database/ecoinvent-version-3/reports-of-changes/), and the results of the central updates were reviewed extensively. The changes added e.g. consistent water flows and other information throughout the database. The documentation of this dataset can be found in the ecoinvent reports of version 2, which are still available via the ecoinvent website. The change report linked above covers all central changes that were made during the conversion process.]  This module includes the dismantling of the electronic control equipment. The included processes are: transport
+    REFERENCE: INPUT 1.0 kg  'electronics scrap from control units'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 6 total (0 elementary suppressed)
+      OUT       0.459418 kg       scrap steel  <- market for scrap steel | scrap steel | APOS, U
+      OUT           0.14 kg       used printed wiring boards  <- market for used printed wiring boards | used printed wiring boards | APOS, U
+      OUT    0.000582066 kg       scrap steel  <- market for scrap steel | scrap steel | APOS, U
+      OUT           0.08 kg       used cable  <- market for used cable | used cable | APOS, U
+      OUT           0.32 kg       waste plastic, industrial electronics  <- market for waste plastic, industrial electronics | waste plastic, industrial electronics | APOS, U
+
+====================================================================================================
+[A2] treatment of electronics scrap from control units (loc 2)
+    uuid: 51ff0c91-d103-3e02-8424-cdab1b06b2bc
+    name:     treatment of electronics scrap from control units | electronics scrap from control units | APOS, U
+    location: Rest-of-World
+    description (1443 chars, first 1200):
+      | The dismantled control unit has a composition of 46% steel (housing), 32% plastics, 14% printed wiring boards and 8% cables (various types).;[This dataset was already contained in the ecoinvent database version 2. It was not individually updated during the transfer to ecoinvent version 3. Life Cycle Impact Assessment results may still have changed, as they are affected by changes in the supply chain, i.e. in other datasets. This dataset was generated following the ecoinvent quality guidelines for version 2. It may have been subject to central changes described in the ecoinvent version 3 change report (http://www.ecoinvent.org/database/ecoinvent-version-3/reports-of-changes/), and the results of the central updates were reviewed extensively. The changes added e.g. consistent water flows and other information throughout the database. The documentation of this dataset can be found in the ecoinvent reports of version 2, which are still available via the ecoinvent website. The change report linked above covers all central changes that were made during the conversion process.]  This module includes the dismantling of the electronic control equipment. The included processes are: transport
+    REFERENCE: INPUT 1.0 kg  'electronics scrap from control units'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 5 total (0 elementary suppressed)
+      OUT           0.46 kg       scrap steel  <- market for scrap steel | scrap steel | APOS, U
+      OUT           0.14 kg       used printed wiring boards  <- market for used printed wiring boards | used printed wiring boards | APOS, U
+      OUT           0.32 kg       waste plastic, industrial electronics  <- market for waste plastic, industrial electronics | waste plastic, industrial electronics | APOS, U
+      OUT           0.08 kg       used cable  <- market for used cable | used cable | APOS, U
+
+====================================================================================================
+[B1] treatment of electronics scrap, metals recovery in copper smelter (ref: electronics scrap, loc 1)
+    uuid: 82c2ca40-3537-3588-bb73-5d3e9c8c6e05
+    name:     treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U
+    location: Rest-of-World
+    description (1725 chars, first 1200):
+      | The multi-output-process "secondary copper conversion" delivers the co-products "metal values from electric waste, in blister-copper, at converter" and "lead, secondary, from electronic and electric scrap recycling, at plant". The product "metal values from electric waste, …" is an intermediary in the production of secondary gold from electric scrap and is not to be used by the LCA practitioner.  The flow "lead, …" is a by-product of this process that receives part of the burdens allocated. It must not be used to reflect lead.;[This dataset was already contained in the ecoinvent database version 2. It was not individually updated during the transfer to ecoinvent version 3. Life Cycle Impact Assessment results may still have changed, as they are affected by changes in the supply chain, i.e. in other datasets. This dataset was generated following the ecoinvent quality guidelines for version 2. It may have been subject to central changes described in the ecoinvent version 3 change report (http://www.ecoinvent.org/database/ecoinvent-version-3/reports-of-changes/), and the results of the central updates were reviewed extensively. The changes added e.g. consistent water flows and other i
+    REFERENCE: INPUT 1.0 kg  'electronics scrap'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 47 total (20 elementary suppressed)
+      IN     4.20583e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN      0.00347767 kWh      electricity, high voltage  <- market group for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     2.62922e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      OUT       0.367053 kg       metal part of electronics scrap, in copper, anode  <- market for metal part of electronics scrap, in copper, anode | metal part of electronics scrap, in copper, anode | APOS, U
+      IN      0.00206883 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     4.90591e-06 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     1.74386e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      OUT        0.61709 kg       copper slag  <- market for copper slag | copper slag | APOS, U
+      IN     1.78523e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     0.000285009 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN      0.00492651 kWh      electricity, high voltage  <- market group for electricity, high voltage | electricity, high voltage | APOS, U
+      IN        0.375055 kg       quicklime, milled, loose  <- market for quicklime, milled, loose | quicklime, milled, loose | APOS, U
+      IN     0.000302673 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN      0.00152286 kWh      electricity, high voltage  <- market group for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     3.06445e-11 Item(s)  copper smelting facility  <- market for copper smelting facility | copper smelting facility | APOS, U
+      IN     6.75281e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     6.79032e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN      0.00016844 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     0.000602484 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     1.48825e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     1.26716e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN       0.0100252 kWh      electricity, high voltage  <- market group for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     0.000468509 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     8.98177e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      IN       0.0219286 kWh      electricity, high voltage  <- market group for electricity, high voltage | electricity, high voltage | APOS, U
+      IN     5.92748e-05 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+
+====================================================================================================
+[B2] treatment of electronics scrap, metals recovery in copper smelter (ref: electronics scrap, loc 2)
+    uuid: 01e00045-86d0-373b-890b-da147da7ab66
+    name:     treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U
+    location: Sweden
+    description (1725 chars, first 1200):
+      | The multi-output-process "secondary copper conversion" delivers the co-products "metal values from electric waste, in blister-copper, at converter" and "lead, secondary, from electronic and electric scrap recycling, at plant". The product "metal values from electric waste, …" is an intermediary in the production of secondary gold from electric scrap and is not to be used by the LCA practitioner.  The flow "lead, …" is a by-product of this process that receives part of the burdens allocated. It must not be used to reflect lead.;[This dataset was already contained in the ecoinvent database version 2. It was not individually updated during the transfer to ecoinvent version 3. Life Cycle Impact Assessment results may still have changed, as they are affected by changes in the supply chain, i.e. in other datasets. This dataset was generated following the ecoinvent quality guidelines for version 2. It may have been subject to central changes described in the ecoinvent version 3 change report (http://www.ecoinvent.org/database/ecoinvent-version-3/reports-of-changes/), and the results of the central updates were reviewed extensively. The changes added e.g. consistent water flows and other i
+    REFERENCE: INPUT 1.0 kg  'electronics scrap'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 26 total (20 elementary suppressed)
+      IN     3.06445e-11 Item(s)  copper smelting facility  <- copper smelting facility construction | copper smelting facility | APOS, U
+      IN       0.0461973 kWh      electricity, high voltage  <- market for electricity, high voltage | electricity, high voltage | APOS, U
+      OUT        0.61709 kg       copper slag  <- market for copper slag | copper slag | APOS, U
+      IN        0.375055 kg       quicklime, milled, loose  <- market for quicklime, milled, loose | quicklime, milled, loose | APOS, U
+      OUT       0.367053 kg       metal part of electronics scrap, in copper, anode  <- treatment of metal part of electronics scrap, in copper, anode, by electrolytic refining | metal part of electronics scrap, in copper, anode | APOS, U
+
+====================================================================================================
+[C1] treatment of used laptop computer, manual dismantling
+    uuid: db7889d7-cd6b-3ad8-abdb-8bc3de90e3d4
+    name:     treatment of used laptop computer, manual dismantling | used laptop computer | APOS, U
+    location: Switzerland
+    description (1273 chars, first 1200):
+      | manual dismantling in various fractions based on calculations in accordance with the composition data;[This dataset was already contained in the ecoinvent database version 2. It was not individually updated during the transfer to ecoinvent version 3. Life Cycle Impact Assessment results may still have changed, as they are affected by changes in the supply chain, i.e. in other datasets. This dataset was generated following the ecoinvent quality guidelines for version 2. It may have been subject to central changes described in the ecoinvent version 3 change report (http://www.ecoinvent.org/database/ecoinvent-version-3/reports-of-changes/), and the results of the central updates were reviewed extensively. The changes added e.g. consistent water flows and other information throughout the database. The documentation of this dataset can be found in the ecoinvent reports of version 2, which are still available via the ecoinvent website. The change report linked above covers all central changes that were made during the conversion process.]  This dataset represents the manual dismantling of a WEEE devices in Switzerland. Dataset documentation https://v38.ecoquery.ecoinvent.org/Details/PDF/
+    REFERENCE: INPUT 1.0 kg  'used laptop computer'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 7 total (0 elementary suppressed)
+      OUT         0.1648 kg       used Li-ion battery  <- market for used Li-ion battery | used Li-ion battery | APOS, U
+      OUT         0.2116 kg       used liquid crystal display module  <- market for used liquid crystal display module | used liquid crystal display module | APOS, U
+      OUT         0.2292 kg       waste plastic, consumer electronics  <- market for waste plastic, consumer electronics | waste plastic, consumer electronics | APOS, U
+      OUT         0.3113 kg       shredder fraction after manual dismantling of used electronic product  <- market for shredder fraction after manual dismantling of used electronic product | shredder fraction after manual dismantling of used electronic product | APOS, U
+      IN         1.6e-08 Item(s)  manual treatment facility, waste electric and electronic equipment  <- market for manual treatment facility, waste electric and electronic equipment | manual treatment facility, waste electric and electronic equipment | APOS, U
+      OUT         0.0831 kg       used printed wiring boards  <- market for used printed wiring boards | used printed wiring boards | APOS, U
+
+====================================================================================================
+[D1] market for used printed wiring boards
+    uuid: bedea540-5447-3b99-b423-afe33b1d1da1
+    name:     market for used printed wiring boards | used printed wiring boards | APOS, U
+    location: Global
+    description (1083 chars, first 1200):
+      | This is a market activity, representing a treatment mix. In the case of products needing treatment, market mixes are supplied by the activities treating the product in the geography defined by the market, and they supply the activities needing to treat the product, as they have generated it as a by-product in the Undefined processes (present as a negative input in system models). Transport to the treating facility or losses are also accounted in this type of markets, when relevant.;This is the market for  'used printed wiring boards', in the Global geography.;In this market, expert judgement was used to develop product specific transport distance estimations. The activity starts with the input from the treatment processes. A market for a material for treatment (wastes or recyclables) ends with the provision of treatment, i.e. a mix of treatment providers, to activities that generate the reference product as a waste/by-product. Dataset documentation https://v38.ecoquery.ecoinvent.org/Details/PDF/B9C146E8-3DA1-4410-A86E-68B5FCAAB1CF/06590A66-662A-4885-8494-AD0CF410F956
+    REFERENCE: INPUT 1.0 kg  'used printed wiring boards'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 5 total (0 elementary suppressed)
+      IN         0.01932 t*km     transport, freight, lorry, unspecified  <- market group for transport, freight, lorry, unspecified | transport, freight, lorry, unspecified | APOS, U
+      OUT       0.995557 kg       used printed wiring boards  <- treatment of scrap printed wiring boards, shredding and separation | used printed wiring boards | APOS, U
+      IN          0.0112 t*km     transport, freight train  <- market group for transport, freight train | transport, freight train | APOS, U
+      OUT     0.00444286 kg       used printed wiring boards  <- treatment of scrap printed wiring boards, shredding and separation | used printed wiring boards | APOS, U
+
+====================================================================================================
+[E1] market for electronics scrap from control units
+    uuid: fda221b3-9efd-3cdb-a01a-b7ff1dde5974
+    name:     market for electronics scrap from control units | electronics scrap from control units | APOS, U
+    location: Global
+    description (1097 chars, first 1200):
+      | This is a market activity, representing a treatment mix. In the case of products needing treatment, market mixes are supplied by the activities treating the product in the geography defined by the market, and they supply the activities needing to treat the product, as they have generated it as a by-product in the Undefined processes (present as a negative input in system models). Transport to the treating facility or losses are also accounted in this type of markets, when relevant.;This is the market for  'electronics scrap from control units', in the Global geography.;Transport from producers to consumers of this product in the geography covered by the market is included. The activity starts with the input from the treatment processes. A market for a material for treatment (wastes or recyclables) ends with the provision of treatment, i.e. a mix of treatment providers, to activities that generate the reference product as a waste/by-product. Dataset documentation https://v38.ecoquery.ecoinvent.org/Details/PDF/DA50E7F5-7939-4A74-BFAB-581F7AF27E16/06590A66-662A-4885-8494-AD0CF410F956
+    REFERENCE: INPUT 1.0 kg  'electronics scrap from control units'
+      (waste-treatment convention if reference is an INPUT waste flow)
+    exchanges: 7 total (0 elementary suppressed)
+      IN          0.0199 t*km     transport, freight, inland waterways, barge  <- market group for transport, freight, inland waterways, barge | transport, freight, inland waterways, barge | APOS, U
+      IN          0.2115 t*km     transport, freight, sea, container ship  <- market for transport, freight, sea, container ship | transport, freight, sea, container ship | APOS, U
+      OUT       0.669408 kg       electronics scrap from control units  <- treatment of electronics scrap from control units | electronics scrap from control units | APOS, U
+      IN          0.1932 t*km     transport, freight, lorry, unspecified  <- market group for transport, freight, lorry, unspecified | transport, freight, lorry, unspecified | APOS, U
+      OUT       0.330592 kg       electronics scrap from control units  <- treatment of electronics scrap from control units | electronics scrap from control units | APOS, U
+      IN           0.112 t*km     transport, freight train  <- market group for transport, freight train | transport, freight train | APOS, U
+
+Reading guide:
+- A1/A2: does the control-units treatment model the WHOLE current EoL route (shredder-
+  based?) or a smelter feed? Check description wording + what it consumes/produces.
+- B1/B2: reference should be INPUT 'electronics scrap' (waste convention). Check which
+  co-product outputs exist (Cu anode, Pb, PM in slime) - APOS allocation question:
+  if metals appear as OUTPUTS here, our explicit credits must NOT also be applied
+  without declaring the overlap.
+- C1: unit basis (per kg or per unit laptop?) and what burdens it carries (electricity,
+  facility, transport) - decides proxy use vs declared ~0 dismantling burden.
+- D1/E1: where do these markets route the board/scrap - which treatments consume them?

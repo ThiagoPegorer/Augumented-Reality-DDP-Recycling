@@ -1,0 +1,25 @@
+MC setup - writing uncertainty distributions onto key exchanges
+  OK VCU S2 Hardware Assembly :: heat, district or industrial, natural gas = 1.03 -> tri(0.85, 1.03, 1.18)  [D&G 2004 total 6.5-9 MJ/kg scaled to gas share [L]]
+  OK VCU S2 Hardware Assembly :: electricity, medium voltage = 0.47 -> tri(0.385, 0.47, 0.533)  [D&G 2004 total 6.5-9 MJ/kg scaled to elec share [L]]
+  OK VCU S2 Hardware Assembly :: mounting, surface mount technology, Pb-free s = 0.0158 -> uni(0.0158, 0.0315)  [board-area vs per-side + density mismatch [A]]
+  -> saved 'VCU S2 Hardware Assembly'
+  OK VCU S3 Distribution :: transport, freight, lorry >32 metric ton, EUR = 0.323 -> tri(0.297, 0.323, 0.363)  [distance 450-550 km [A]]
+  -> saved 'VCU S3 Distribution'
+  OK VCU S4 Use Phase :: electricity, low voltage = 66.2 -> tri(54, 66.2, 189)  [P 9-20 W x speed 35-45 km/h x eta 0.68-0.83 [L+A]]
+  -> saved 'VCU S4 Use Phase'
+  OK VCU S5 EoL Sc3 (guided disassembly) :: electricity, low voltage = 0.01 -> tri(0.002, 0.01, 0.03)  [tools + AR headset [A]]
+  -> saved 'VCU S5 EoL Sc3 (guided disassembly)'
+  OK VCU S5 EoL Sc4 (disassembly + reuse) :: electricity, low voltage = 0.02 -> tri(0.005, 0.02, 0.05)  [tools + headset + test bench [A]]
+  -> saved 'VCU S5 EoL Sc4 (disassembly + reuse)'
+  OK VCU S5 EoL Sc2 credits (avoided virgin) :: aluminium, primary, ingot = 0.3003 -> tri(0.3003, 0.3003, 0.3611)  [Al remelt 79-95% [L Bigum / clean-scrap upside]]
+  -> saved 'VCU S5 EoL Sc2 credits (avoided virgin)'
+  OK VCU S5 EoL Sc3 credits (avoided virgin) :: aluminium, primary, ingot = 0.3399 -> tri(0.3399, 0.3399, 0.4087)  [Al remelt 79-95%]
+  OK VCU S5 EoL Sc3 credits (avoided virgin) :: gold = 8.7e-05 -> tri(8.11e-05, 8.66e-05, 8.84e-05)  [Lee arrival 90-98% [L]]  ?? amount/mode mismatch - REVIEW
+  -> saved 'VCU S5 EoL Sc3 credits (avoided virgin)'
+  OK VCU S5 EoL Sc4 credits (avoided virgin + components) :: aluminium, primary, ingot = 0.3399 -> tri(0.3399, 0.3399, 0.4087)  [Al remelt 79-95%]
+  OK VCU S5 EoL Sc4 credits (avoided virgin + components) :: integrated circuit, logic type = 0.0042 -> tri(0.003, 0.0042, 0.0054)  [functional yield 0.5-0.9 [A] - Sc4's widest lever]
+  OK VCU S5 EoL Sc4 credits (avoided virgin + components) :: transistor, surface-mounted = 0.0047 -> tri(0.0034, 0.0047, 0.0061)  [functional yield 0.5-0.9 [A]]
+  -> saved 'VCU S5 EoL Sc4 credits (avoided virgin + components)'
+
+DONE - 13/13 distributions set. F5 in openLCA; spot-check one.
+Declared: per-exchange independent sampling (no parameter correlation) - thesis caveat.

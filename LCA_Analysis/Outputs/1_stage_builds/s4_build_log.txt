@@ -1,0 +1,6 @@
+S4 v4 build - 'VCU S4 Use Phase'
+  OK chain: 0.66 kg <- VCU S3 Distribution
+  OK use-phase electricity: 66.2 kWh -> market for electricity, low voltage | electricity, low voltage | APOS, U [Germany]
+
+DONE - 'VCU S4 Use Phase' built (chain S3 + 66.2 kWh DE low-voltage). F5 in openLCA.
+CHECKPOINT: confirm Germany location + low-voltage choice (home AC charging [A]).

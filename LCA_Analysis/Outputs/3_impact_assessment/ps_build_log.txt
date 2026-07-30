@@ -1,0 +1,11 @@
+Product-system build - 7 persistent systems, default-provider linking
+  OK product system created for 'VCU S5 EoL Sc1 (no recycling)' [10cb26e1-f258-4fd8-a053-bfda145d8fb6]
+  OK product system created for 'VCU S5 EoL Sc2 (bulk recycling)' [e82d6879-6704-4ca4-a24e-cc2a0902181d]
+  OK product system created for 'VCU S5 EoL Sc2 credits (avoided virgin)' [c7b958e3-4c1d-4365-bea4-e7f6830e9af7]
+  OK product system created for 'VCU S5 EoL Sc3 (guided disassembly)' [9e5a3316-93a7-4712-a591-8eb7a1abc84b]
+  OK product system created for 'VCU S5 EoL Sc3 credits (avoided virgin)' [97b88af8-cf66-4b87-93b4-954cc511a8d7]
+  OK product system created for 'VCU S5 EoL Sc4 (disassembly + reuse)' [a3a6ec7c-a2a4-4c18-ae21-aad3f343487e]
+  OK product system created for 'VCU S5 EoL Sc4 credits (avoided virgin + components)' [9c8bda7d-38e3-4715-9705-570d7f223860]
+
+DONE - 7/7 product systems created. F5 in openLCA;
+they appear under 'Product systems'. Open one -> Model graph to sanity-check links.

@@ -1,0 +1,8 @@
+S3 v4 build - 'VCU S3 Distribution'
+Deleted prior process 'VCU S3 Distribution' (v3 or earlier run).
+  OK chain: 0.66 kg <- VCU S2 Hardware Assembly
+  OK truck Abstatt->Wolfsburg (~490 km): 0.323 t*km -> market for transport, freight, lorry >32 metric ton, EURO6 | transport, freight, lorry >32 metric ton, EURO6 | APOS, U [Europe]
+  -- alternate class candidate (not linked): market for transport, freight, lorry 16-32 metric ton, EURO6 | transport, freight, lorry 16-32 metric ton, EURO6 | APOS, U [Europe] id=6ae5685d-d3cd-33ca-9997-f664babd5f88
+
+DONE - 'VCU S3 Distribution' built (chain S2 + 1 outbound leg). F5 in openLCA.
+CHECKPOINT: confirm truck class (>32 t vs 16-32 t) and RER location.

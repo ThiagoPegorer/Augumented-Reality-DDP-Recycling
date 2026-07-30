@@ -1,0 +1,18 @@
+S2 v4 build - 'VCU S2 Hardware Assembly'
+Deleted prior process 'VCU S2 Hardware Assembly'.
+  OK chain: 0.66 kg <- VCU S1 Materials & Construction
+  OK die-cast heat (natural gas) [D&G 2004]: 1.03 MJ -> market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | APOS, U [Europe without Switzerland]
+  OK die-cast electricity DE [D&G 2004]: 0.47 kWh -> market for electricity, medium voltage | electricity, medium voltage | APOS, U [Germany]
+  ?? SMT mounting: runtime-resolved, top candidates:
+       - market for mounting, surface mount technology, Pb-free solder | mounting, surface mount technology, Pb-free solder | APOS, U [33c6bb4d-7e0e-3e2f-a175-1eb4b1122e16]
+       - market for mounting, surface mount technology, Pb-containing solder | mounting, surface mount technology, Pb-containing solder | APOS, U [75449f5d-b33a-371c-a8ea-301c73a581da]
+       - mounting, surface mount technology, Pb-free solder | mounting, surface mount technology, Pb-free solder | APOS, U [e8776fd7-d5c9-3dd6-9bff-663c454c2d4c]
+       - mounting, surface mount technology, Pb-containing solder | mounting, surface mount technology, Pb-containing solder | APOS, U [7fd50c8a-9553-3130-88eb-2289be0de19a]
+  OK SMT mounting (paste+placement+reflow): 0.0158 m2 -> market for mounting, surface mount technology, Pb-free solder | mounting, surface mount technology, Pb-free solder | APOS, U [Global]
+     -> linked; CONFIRM name/unit + m2-per-side question at checkpoint
+  -- overlap check (exchanges x 0.0158 m2):
+       electricity, medium voltage: 4.32239642731318 kWh/m2 -> 0.0682939 kWh
+       solder, paste, Sn95.5Ag3.9Cu0.6, for electronics industry: 0.0806412020267134 kg/m2 -> 0.00127413 kg
+
+DONE - 4/4 inputs linked (+S1 chain counted). F5 in openLCA.
+CHECKPOINT: review '??' lines, dataset doc (m2 per side?), and overlap figures above.

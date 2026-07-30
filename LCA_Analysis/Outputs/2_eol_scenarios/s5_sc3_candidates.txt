@@ -1,0 +1,125 @@
+Loaded 19734 process descriptors.
+
+=== Manual dismantling (does an electronics/WEEE manual-dismantling activity exist?) ===
+  market for manual dismantling of electric scooter | manual dismantling of electric scooter | APOS, U
+      id=3720204d-68f3-335e-a663-663343ec7562
+  market for manual dismantling of used electric passenger car | manual dismantling of used electric passenger car | APOS, U
+      id=c563995f-2310-37a7-abee-b90281ad7971
+  market for residue from shredder fraction from manual dismantling | residue from shredder fraction from manual dismantling | APOS, U
+      id=c0754fd4-7440-3734-99fd-1b815a9cb5eb
+  market for residue from shredder fraction from manual dismantling | residue from shredder fraction from manual dismantling | APOS, U
+      id=4fe616c0-3bf5-30fd-be0d-1dd0cff4f7ba
+  market for used powertrain from electric passenger car, manual dismantling | used powertrain from electric passenger car, manual dismantling | APOS, U
+      id=8f28d725-071c-3511-b54f-fd07dcb06018
+  market for manual treatment facility, waste electric and electronic equipment | manual treatment facility, waste electric and electronic equipment | APOS, U
+      id=58807b1b-e827-3079-8669-b30f89939974
+  market for shredder fraction after manual dismantling of used electronic product | shredder fraction after manual dismantling of used electronic product | APOS, U
+      id=02a929b9-d6d6-3518-889f-25172579e7fe
+  market for manual dismantling of used passenger car with internal combustion engine | manual dismantling of used passenger car with internal combustion engine | APOS, U
+      id=5a90c2e5-b8b3-3d16-84e0-e1d437b51189
+  treatment of used printer, laser, manual dismantling | used printer, laser | APOS, U
+      id=b12a4703-5401-37b5-867a-2636032018d6
+  treatment of used printer, laser, manual dismantling | used printer, laser | APOS, U
+      id=c4c62b1f-11be-3bf0-885c-35293472ac4c
+  treatment of used laptop computer, manual dismantling | used laptop computer | APOS, U
+      id=db7889d7-cd6b-3ad8-abdb-8bc3de90e3d4
+  treatment of used desktop computer, manual dismantling | used desktop computer | APOS, U
+      id=52a7d1af-d748-34e7-bc67-4c50f4f5b8fd
+  treatment of used desktop computer, manual dismantling | used desktop computer | APOS, U
+      id=f971a39e-6b24-3d8e-bcfa-2434a8851582
+  manual dismantling of used electric scooter | manual dismantling of electric scooter | APOS, U
+      id=07477135-3bb3-3988-bb96-e462d941b019
+  treatment of used powertrain, electric scooter, manual dismantling | iron scrap, unsorted | APOS, U
+      id=5e6d8ba4-1cd4-3a43-9db4-4ec4942849e5
+
+=== Used/waste printed wiring board treatment (clean-board smelter-feed families) ===
+  market for used printed wiring boards | used printed wiring boards | APOS, U
+      id=bedea540-5447-3b99-b423-afe33b1d1da1
+  treatment of scrap printed wiring boards, shredding and separation | used printed wiring boards | APOS, U
+      id=8719a559-6941-3e4f-a9eb-cc3854188c6b
+  treatment of scrap printed wiring boards, shredding and separation | used printed wiring boards | APOS, U
+      id=95878a84-5763-3dd4-98e2-1100a1de97f6
+
+=== Electronics scrap / metals recovery routes ===
+  market for electronics scrap | electronics scrap | APOS, U
+      id=a403fe7d-b558-301c-872b-64f09999f8c5
+  market for precious metal refinery | precious metal refinery | APOS, U
+      id=11297812-e6f3-3e1e-b54c-4b81cd508e92
+  market for electronics scrap from control units | electronics scrap from control units | APOS, U
+      id=fda221b3-9efd-3cdb-a01a-b7ff1dde5974
+  market for metal part of electronics scrap, in copper, anode | metal part of electronics scrap, in copper, anode | APOS, U
+      id=7e90d080-a53e-36c5-9452-11b80c8362d8
+  market for precious metal from electronics scrap, in anode slime | precious metal from electronics scrap, in anode slime | APOS, U
+      id=761ed7eb-3e53-3dac-9995-a32b196a0b90
+  precious metal refinery construction | precious metal refinery | APOS, U
+      id=5596e9ec-3024-3f5a-a040-0efa2ddda3c0
+  precious metal refinery construction | precious metal refinery | APOS, U
+      id=0ea08ad7-1c32-32a4-9c46-ad5d3005b984
+  treatment of electronics scrap, metals recovery in copper smelter | lead | APOS, U
+      id=8b8ceafa-9246-370f-8b22-2c02cb9b6016
+  treatment of electronics scrap, metals recovery in copper smelter | lead | APOS, U
+      id=eebd4da4-09a1-3475-b168-81758560a8ba
+  treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U
+      id=82c2ca40-3537-3588-bb73-5d3e9c8c6e05
+  treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U
+      id=01e00045-86d0-373b-890b-da147da7ab66
+  treatment of electronics scrap from control units | electronics scrap from control units | APOS, U
+      id=6205b74b-39cf-3631-a6a4-c93c2e9c1135
+  treatment of electronics scrap from control units | electronics scrap from control units | APOS, U
+      id=51ff0c91-d103-3e02-8424-cdab1b06b2bc
+  treatment of precious metal from electronics scrap, in anode slime, precious metal extraction | gold | APOS, U
+      id=16f013c0-6a21-3445-a756-e1745556381a
+  treatment of precious metal from electronics scrap, in anode slime, precious metal extraction | gold | APOS, U
+      id=51361e48-f80d-3463-a397-5310b41e2802
+
+=== Aluminium scrap remelt (secondary-Al burden question) ===
+  market for aluminium scrap, new | aluminium scrap, new | APOS, U
+      id=67f6523d-1efe-3c0e-8de6-e7224b8e45d6
+  market for aluminium scrap, new | aluminium scrap, new | APOS, U
+      id=d0bd233d-2fc3-3bc8-b613-97be75f43ab5
+  market for aluminium scrap, post-consumer | aluminium scrap, post-consumer | APOS, U
+      id=3ed0c277-99f0-3b01-aa6d-f1bc83928673
+  market for aluminium scrap, post-consumer, prepared for melting | aluminium scrap, post-consumer, prepared for melting | APOS, U
+      id=7aeaa0d0-e0a0-345c-8c63-ee1bad88b9ac
+  aluminium alloy production, AlLi | aluminium scrap, new | APOS, U
+      id=d13052b1-abf0-386a-a03c-9fff49aa2eae
+  aluminium alloy production, AlLi | aluminium scrap, new | APOS, U
+      id=f65a2cdd-344d-3c1c-86ef-cb815877f34b
+  treatment of aluminium scrap, new, at refiner | iron scrap, unsorted | APOS, U
+      id=9a63ede0-195c-321c-b52e-c386f20a97bb
+  treatment of aluminium scrap, new, at refiner | aluminium scrap, new | APOS, U
+      id=8f201e98-1d47-31f9-a7af-8a45d87a0133
+  treatment of aluminium scrap, new, at refiner | iron scrap, unsorted | APOS, U
+      id=3410b201-d7e5-33c1-91ce-59196f8a7f62
+  treatment of aluminium scrap, new, at refiner | aluminium scrap, new | APOS, U
+      id=b04cc5e9-98f6-3172-bf75-0a324766999f
+  treatment of aluminium scrap, new, at remelter | aluminium scrap, new | APOS, U
+      id=afbe71ea-ccca-3bc4-ab0e-56b01373364a
+  treatment of aluminium scrap, new, at remelter | aluminium scrap, new | APOS, U
+      id=66c43614-a0e6-3d2f-b736-b1d2646f9a37
+  treatment of aluminium scrap, new, at refiner | aluminium, cast alloy | APOS, U
+      id=2e9303bd-bfda-3ac6-8a5d-c818decf2820
+  treatment of aluminium scrap, new, at refiner | aluminium, cast alloy | APOS, U
+      id=200d4aa0-c73e-3a58-9f1c-ec2c4cf3ce2f
+  treatment of aluminium scrap, new, at remelter | aluminium, wrought alloy | APOS, U
+      id=bbeabbb3-fd3e-341b-ac9b-d68a1ad72f01
+
+=== Copper scrap routes (contacts fraction) ===
+  market for copper scrap, sorted, pressed | copper scrap, sorted, pressed | APOS, U
+      id=26421e8f-3fb7-30a2-b8d7-159225acefad
+  treatment of scrap copper, municipal incineration | scrap copper | APOS, U
+      id=2d1f9f00-8d7b-3b3a-b8ab-8f36146f57fd
+  treatment of scrap copper, municipal incineration | scrap copper | APOS, U
+      id=9ec3b692-932b-320c-b082-15305a51b795
+  treatment of scrap copper, municipal incineration | scrap copper | APOS, U
+      id=1480e67b-072f-3033-b3ba-b88b63cd4e2e
+  treatment of copper scrap by electrolytic refining | copper, cathode | APOS, U
+      id=891862fc-7deb-3f8a-957a-cb2a94b0943c
+  treatment of copper scrap by electrolytic refining | copper, cathode | APOS, U
+      id=4a391c3f-053a-3f5e-977e-da3ee2618ffd
+  treatment of copper scrap by electrolytic refining | copper scrap, sorted, pressed | APOS, U
+      id=3cd678f7-fc7d-3335-a7e8-07ecbdd4e66c
+  treatment of copper scrap by electrolytic refining | copper scrap, sorted, pressed | APOS, U
+      id=addfa596-2253-34df-bc62-8495233f9577
+  treatment of scrap copper, municipal incineration with fly ash extraction | scrap copper | APOS, U
+      id=8f7b5f1c-4ff9-3df9-84be-cc3cd94277da

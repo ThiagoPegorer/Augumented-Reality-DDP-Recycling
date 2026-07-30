@@ -1,0 +1,21 @@
+S5 Sc3 v4 build - gross + credits
+Deleted prior 'VCU S5 EoL Sc3 (guided disassembly)'.
+Deleted prior 'VCU S5 EoL Sc3 credits (avoided virgin)'.
+  OK chain: 0.66 kg <- VCU S4 Use Phase
+  OK Dismantling facility share [C1 intensity: 1.6e-8/kg x 0.66]: 1.06e-08 Item(s) -> market for manual treatment facility, waste electric and electronic equipment | manual treatment facility, waste electric and electronic equipment | APOS, U [Global]
+  OK dismantling electricity (tools+AR headset [A]): 0.01 kWh -> market for electricity, low voltage | electricity, low voltage | APOS, U [Germany]
+  OK Intact board+coating -> Cu smelter [SE, Boliden-type]: 0.141 kg -> treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U [Sweden]
+  OK Residual combustible (insert+TIM+labels+fluorosilicone) -> waste plastic market: 0.0325 kg -> market for waste plastic, mixture | waste plastic, mixture | APOS, U [Switzerland]
+  OK Residual inert (ON-SITE sorting losses only; remelt losses live inside [L] yields) -> sanitary landfill: 0.0111 kg -> treatment of inert waste, sanitary landfill | inert waste | APOS, U [Europe without Switzerland]
+  -- mass ledger (Bigum 2026-07-26): 0.4749 scrap-out + 0.0111 sorting losses(inert) + 0.141 smelter + 0.0325 combustible = 0.6595 kg vs 0.66 kg (OK)
+  OK Avoided Al primary ingot (339.9 g, 98%[L Lee] x 79%[L Bigum]): 0.3399 kg -> market for aluminium, primary, ingot | aluminium, primary, ingot | APOS, U [Aluminium producing area, EU27 and EFTA countries]
+  OK Avoided Cu cathode (56.8 g: contacts 31.3 + board 25.5, x95%[L]): 0.0568 kg -> market for copper, cathode | copper, cathode | APOS, U [Global]
+  OK Avoided chromium steel (11.8 g, 98%[L Lee] x 100%[L Bigum]): 0.0118 kg -> market for steel, chromium steel 18/8 | steel, chromium steel 18/8 | APOS, U [Global]
+  OK Avoided gold (86.6 mg, 96x98%[L]): 8.7e-05 kg -> market for gold | gold | APOS, U [Global]
+  OK Avoided silver (54.9 mg, 96x97%[L]): 5.5e-05 kg -> market for silver | silver | APOS, U [Global]
+  OK Avoided palladium (5.2 mg, 96x98%[L]): 5.2e-06 kg -> market for palladium | palladium | APOS, U [Global]
+  -- credits: 6/6 linked, total 408.6 g vs ref 408.6 g
+
+DONE - 'VCU S5 EoL Sc3 (guided disassembly)' + 'VCU S5 EoL Sc3 credits (avoided virgin)' built. F5 in openLCA.
+CHECKPOINT: confirm smelter link [SE] + amounts vs framework §3/S5 Sc3 tables.
+Reminder: run the patched s5_sc2_build.py to add Sc2's 0.038 kg smelter feed (asymmetry fix).

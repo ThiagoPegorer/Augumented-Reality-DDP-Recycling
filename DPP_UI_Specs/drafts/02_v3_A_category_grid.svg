@@ -1,0 +1,52 @@
+<svg width="100%" viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Information tab v3 A — category card grid, no scrolling</title>
+<desc>Navy DPP panel with home button and tabs, then five category cards in a grid: Identity, Materials, Hazardous, Compliance, and a full-width Life cycle analysis card. Tapping a card opens a modal detail page.</desc>
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="62" cy="64" r="20" fill="#13366b" stroke="#2e5aa0" stroke-width="1.5"/>
+<g transform="translate(62,64)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-7 1 L0 -6 L7 1"/><path d="M-5 0 L-5 7 L5 7 L5 0"/>
+</g>
+<rect x="150" y="46" width="180" height="38" rx="19" fill="#0d2a57" stroke="#2e5aa0" stroke-width="1.5"/>
+<text x="240" y="70" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">Informations</text>
+<rect x="342" y="46" width="180" height="38" rx="19" fill="#324a6d"/>
+<text x="432" y="70" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#c2cee0" text-anchor="middle">Disassembly</text>
+<line x1="44" y1="96" x2="636" y2="96" stroke="#1a335f" stroke-width="1"/>
+
+<rect x="44" y="106" width="290" height="92" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(72,152)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="0" cy="-4" r="4"/><path d="M-6 9 a6 7 0 0 1 12 0"/></g>
+<text x="96" y="146" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Identity &amp;</text>
+<text x="96" y="166" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">manufacturer</text>
+<polyline points="306,144 314,152 306,160" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="346" y="106" width="290" height="92" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(374,152)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-5 -5 L5 -5 L5 5 L-5 5 Z"/><path d="M-2 -1 L2 -1 M-2 2 L2 2"/></g>
+<text x="398" y="146" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Materials &amp;</text>
+<text x="398" y="166" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">substances</text>
+<polyline points="608,144 616,152 608,160" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="44" y="210" width="290" height="92" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(72,250)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M0 -8 L8 6 L-8 6 Z"/><path d="M0 -2 L0 1.5"/><path d="M0 4 L0 4.01"/></g>
+<text x="96" y="248" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Hazardous &amp; safety</text>
+<text x="96" y="270" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#9fb3d1">no battery · lead-free</text>
+<polyline points="306,248 314,256 306,264" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="346" y="210" width="290" height="92" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(374,250)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-5 -6 L5 -6 L5 6 L-5 6 Z"/><path d="M-2 0 L0 2 L3 -3"/></g>
+<text x="398" y="248" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Compliance &amp;</text>
+<text x="398" y="268" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">end-of-life</text>
+<polyline points="608,248 616,256 608,264" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="44" y="314" width="592" height="92" rx="13" fill="#0e2950" stroke="#1d9e75" stroke-width="1.4"/>
+<g transform="translate(72,358)" fill="none" stroke="#5dcaa5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-6 0 a6 6 0 1 1 6 6"/><path d="M0 6 L0 -2 M0 6 L-4 3 M0 6 L4 3" stroke-width="1.6"/></g>
+<text x="96" y="352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Life cycle analysis</text>
+<text x="96" y="374" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fe1cb">63.9 kg CO2e lifecycle · up to 6.6 recoverable</text>
+<polyline points="608,352 616,360 608,368" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1"/>
+<rect x="318" y="471" width="44" height="4" rx="2" fill="#6b7686"/>
+</svg>

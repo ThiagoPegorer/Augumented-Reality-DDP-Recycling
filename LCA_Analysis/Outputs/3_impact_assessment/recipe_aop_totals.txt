@@ -1,0 +1,13 @@
+Read 22 endpoint categories; units present: ['DALY', 'USD2013', 'species.yr']
+-> impact_ReCiPe_end_aop.csv
+
+Area-of-protection damage totals (per 1 VCU, cradle-to-grave, characterised only):
+  human health       (8 categories)  Sc1 0.00033178 DALY
+    net: 0.00030069 / 0.00026172 / 0.00022405   (-9.4 % / -21.1 % / -32.5 %)
+  ecosystem quality  (12 categories)  Sc1 4.6573e-07 species.yr
+    net: 4.3104e-07 / 3.9148e-07 / 3.4564e-07   (-7.4 % / -15.9 % / -25.8 %)
+  resources          (2 categories)  Sc1 3.7135 USD2013
+    net: 3.374 / 3.0735 / 2.6292   (-9.1 % / -17.2 % / -29.2 %)
+
+No normalisation, no weighting, no single score — by design (see the docstring).
+Prioritisation of impact categories remains with EF 3.1 (impact_screening.csv).

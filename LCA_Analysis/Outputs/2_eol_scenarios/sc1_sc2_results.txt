@@ -1,0 +1,47 @@
+Calculating: VCU S5 EoL Sc1 (no recycling) ...
+Calculating: VCU S5 EoL Sc2 (bulk recycling) ...
+Calculating: VCU S5 EoL Sc2 credits (avoided virgin) ...
+
+=== Sc1 vs Sc2, EF 3.1, 1 VCU cradle-to-grave (25 categories) ===
+
+Category                                                      Sc1    Sc2 gross       saving      Sc2 net      net-Sc1  unit
+---------------------------------------------------------------------------------------------------------------------------
+Acidification                                              0.5083       0.5084      0.05846       0.4499     -0.05833  mol H+ eq
+Climate change                                              48.61         48.5        4.716        43.78       -4.826  kg CO2 eq
+Climate change (biogenic)                                  0.1221       0.1221      0.01637       0.1058     -0.01631  kg CO2 eq
+Climate change (fossil)                                     48.33        48.22        4.638        43.58       -4.748  kg CO2 eq
+Climate change (land use)                                  0.1622       0.1623      0.06163       0.1007     -0.06157  kg CO2 eq
+Ecotoxicity freshwater                                       1358         1358        126.3         1232       -126.5  CTUe
+Ecotoxicity freshwater (inorganics)                          1342         1342        124.2         1218       -124.3  CTUe
+Ecotoxicity freshwater (organics)                           15.85        15.85        2.119        13.73       -2.118  CTUe
+Eutrophication freshwater                                 0.07748      0.07749     0.006925      0.07057     -0.00691  kg P eq
+Eutrophication marine                                     0.07085      0.07085     0.007109      0.06374    -0.007105  kg N eq
+Eutrophication terrestrial                                 0.7701       0.7702      0.07977       0.6904     -0.07968  mol N eq
+Human toxicity cancer                                    5.23e-08    5.231e-08    1.263e-08    3.968e-08   -1.262e-08   CTUh 
+Human toxicity cancer (inorganics)                      4.074e-08    4.074e-08    8.567e-09    3.218e-08   -8.562e-09   CTUh 
+Human toxicity cancer (organics)                        1.156e-08    1.156e-08     4.06e-09    7.502e-09   -4.058e-09   CTUh 
+Human toxicity non-cancer                               2.175e-06    2.176e-06    4.209e-07    1.755e-06   -4.201e-07  CTUh
+Human toxicity non-cancer (inorganics)                  2.132e-06    2.133e-06    4.077e-07    1.725e-06   -4.069e-07  CTUh
+Human toxicity non-cancer (organics)                    4.306e-08    4.307e-08    1.322e-08    2.985e-08   -1.321e-08  CTUh
+Ionising radiation (human health)                           6.777        6.781       0.6499        6.131      -0.6456  kBq U235 eq
+Land use                                                    273.4        273.3        23.84        249.5       -23.91  dimensionless (pt)
+Ozone depletion                                         4.216e-06    4.215e-06    3.718e-07    3.844e-06    -3.72e-07  kg CFC11 eq
+Particulate matter                                      2.593e-06    2.594e-06    3.858e-07    2.208e-06   -3.852e-07  disease incidence
+Photochemical ozone formation (human health)                0.215       0.2151      0.02245       0.1926     -0.02243  kg NMVOC eq
+Resource use fossils                                        659.7          660        62.54        597.5       -62.21  MJ (net calorific)
+Resource use minerals and metals                          0.01851      0.01851     0.001829      0.01668    -0.001829  kg Sb eq
+Water use                                                   25.74        25.74        4.428        21.31       -4.427  m3 world eq
+
+Spotlight (thesis-relevant):
+  * Climate change: Sc1 48.61 -> Sc2 net 43.78 kg CO2 eq  (+9.9% vs Sc1)
+  * Resource use minerals and metals: Sc1 0.01851 -> Sc2 net 0.01668 kg Sb eq  (+9.9% vs Sc1)
+
+Reading guide (APOS in practice):
+- 'Sc2 gross' includes shredding + residues on TOP of the shared S1-S4 chain.
+- 'saving' is the credits process alone (avoided virgin production).
+- APOS background: some datasets already allocate recycled content upstream, so the
+  explicit credit carries a mild double-count risk - declared in framework §4.
+- Sanity checks: saving should NOT exceed gross-of-S1-materials for any category;
+  Sc2 net should sit BETWEEN Sc1 and (Sc1 - full-credit) expectations. Flag anomalies.
+
+DONE.

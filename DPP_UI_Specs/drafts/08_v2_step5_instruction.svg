@@ -1,0 +1,41 @@
+<svg width="100%" viewBox="0 0 680 500" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Step 5 instruction canvas — Sort the housing</title>
+<desc>Instruction canvas, progress 5 of 5, two action cards, static how-to preview, navigation buttons.</desc>
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+<rect x="42" y="46" width="8" height="378" rx="4" fill="#16335f"/>
+<rect x="42" y="46" width="8" height="378" rx="4" fill="#5dcaa5"/>
+<text x="46" y="440" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7fb89e" text-anchor="middle">5/5</text>
+<circle cx="90" cy="66" r="18" fill="#13366b" stroke="#2e5aa0" stroke-width="1.5"/>
+<g transform="translate(90,66)" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-6 1 L0 -5 L6 1"/><path d="M-4 0 L-4 6 L4 6 L4 0"/></g>
+<text x="120" y="60" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#7f9bc4">DISASSEMBLY · MS 50.4</text>
+<text x="120" y="78" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14.5" font-weight="bold" fill="#ffffff">Step 5 of 5</text>
+<text x="72" y="130" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" font-weight="bold" fill="#ffffff">Sort the housing</text>
+<rect x="72" y="150" width="300" height="60" rx="12" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<circle cx="100" cy="180" r="15" fill="#13366b" stroke="#5dcaa5" stroke-width="1.4"/>
+<g transform="translate(100,180)"><g fill="#5dcaa5"><g><path d="M -1.2 -6 L 1.2 -6 L 3.5 -2 L 5.6 -3.3 L 4.7 1.3 L 0.3 0.3 L 2.5 -0.9 L 0 -5 Z"/></g><g transform="rotate(120)"><path d="M -1.2 -6 L 1.2 -6 L 3.5 -2 L 5.6 -3.3 L 4.7 1.3 L 0.3 0.3 L 2.5 -0.9 L 0 -5 Z"/></g><g transform="rotate(240)"><path d="M -1.2 -6 L 1.2 -6 L 3.5 -2 L 5.6 -3.3 L 4.7 1.3 L 0.3 0.3 L 2.5 -0.9 L 0 -5 Z"/></g></g></g>
+<text x="128" y="175" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14.5" font-weight="bold" fill="#ffffff">Shells into the aluminium stream</text>
+<text x="128" y="195" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#9fb3d1">Die-cast AlSi · 363 g · highest CO2 credit</text>
+<rect x="72" y="218" width="300" height="60" rx="12" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<circle cx="100" cy="248" r="15" fill="#13366b" stroke="#5dcaa5" stroke-width="1.4"/>
+<g transform="translate(100,248)"><g fill="none" stroke="#5dcaa5" stroke-width="1.6" stroke-linejoin="round"><path d="M-5 -5 L5 -5 L5 2 L2 5 L-5 5 Z"/><path d="M5 2 L2 2 L2 5"/></g></g>
+<text x="128" y="243" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14.5" font-weight="bold" fill="#ffffff">Peel labels &amp; adhesive residue</text>
+<text x="128" y="263" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#9fb3d1">Mixed polymer · separate bin</text>
+<rect x="388" y="150" width="244" height="200" rx="13" fill="#08152b" stroke="#21407a" stroke-width="1"/>
+<text x="404" y="170" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4">HOW TO · this step</text>
+<rect x="560" y="156" width="60" height="18" rx="9" fill="#13366b"/>
+<text x="590" y="169" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#aac4e6" text-anchor="middle">static</text>
+<g transform="translate(510,252) scale(0.62)">
+<rect x="-95" y="-100" width="190" height="52" rx="8" fill="#3c434d" stroke="#555e6a" stroke-width="1.5"/>
+<rect x="-85" y="-26" width="170" height="40" rx="4" fill="#1f5c33" stroke="#2f7a46" stroke-width="1.5"/>
+<rect x="-95" y="48" width="190" height="50" rx="8" fill="#454c56" stroke="#5a636f" stroke-width="1.5"/>
+</g>
+<text x="510" y="336" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle" font-style="italic">static preview · animates when the CAD model lands</text>
+<rect x="72" y="370" width="150" height="52" rx="13" fill="#1a2740" stroke="#324a6d" stroke-width="1"/>
+<text x="147" y="402" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#9fb3d1" text-anchor="middle">‹ Back</text>
+<rect x="234" y="370" width="398" height="52" rx="13" fill="#1d9e75"/>
+<text x="433" y="402" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Finish &amp; see summary</text>
+<polyline points="540,393 548,401 540,409" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1"/>
+<rect x="318" y="471" width="44" height="4" rx="2" fill="#6b7686"/>
+</svg>

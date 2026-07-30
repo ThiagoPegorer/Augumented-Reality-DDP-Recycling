@@ -1,0 +1,28 @@
+S1 v4 build - 'VCU S1 Materials & Construction'
+Deleted prior process.
+  OK ICs (proc+flash+xcvr+AFE+reg+IMU) [A proxy]: 0.0147 kg -> market for integrated circuit, logic type | integrated circuit, logic type | APOS, U [Global]
+  ?? Power stages 6x — RESOLVED AT RUNTIME: runtime-resolved, top candidates:
+       - market for transistor, surface-mounted | transistor, surface-mounted | APOS, U [ba609a3d-8496-3fb2-bed7-599f9a3637bf]
+       - market for transistor, surface-mounted | transistor, surface-mounted | APOS, U [ba609a3d-8496-3fb2-bed7-599f9a3637bf]
+       - market for transistor, auxilliaries and energy use | transistor, auxilliaries and energy use | APOS, U [c9fcfedd-7a68-343b-a865-f90df9a5d596]
+       - market for transistor, wired, big size, through-hole mounting | transistor, wired, big size, through-hole mounting | APOS, U [314a9446-f5fc-36a2-8af7-e472d98dfc46]
+       - market for transistor, wired, small size, through-hole mounting | transistor, wired, small size, through-hole mounting | APOS, U [1f003aa6-0b35-33bb-adda-171dcf3a50fd]
+     -> linked [0]; REVIEW at checkpoint
+  OK Power stages 6x — RESOLVED AT RUNTIME: 0.009 kg -> market for transistor, surface-mounted | transistor, surface-mounted | APOS, U [Global]
+  OK Ta capacitors: 0.0025 kg -> market for capacitor, tantalum-, for through-hole mounting | capacitor, tantalum-, for through-hole mounting | APOS, U [Global]
+  OK MLCCs/passives [A proxy incl. R/L]: 0.0449 kg -> market for capacitor, for surface-mounting | capacitor, for surface-mounting | APOS, U [Global]
+  OK Solder SAC (Sn95.5Ag3.9Cu0.6, Pb-free [R]): 0.0032 kg -> market for solder, bar, Sn95.5Ag3.9Cu0.6, for electronics industry | solder, bar, Sn95.5Ag3.9Cu0.6, for electronics industry | APOS, U [Global]
+  OK Aluminium (housing+conn shells): 0.439 kg -> market for aluminium, primary, ingot | aluminium, primary, ingot | APOS, U [Aluminium producing area, EU27 and EFTA countries]
+  OK Copper (foils+contacts): 0.049 kg -> market for copper, cathode | copper, cathode | APOS, U [Global]
+  OK Stainless steel (fasteners): 0.012 kg -> market for steel, chromium steel 18/8 | steel, chromium steel 18/8 | APOS, U [Global]
+  OK Epoxy resin (FR-4 resin+coating): 0.023 kg -> market for epoxy resin, liquid | epoxy resin, liquid | APOS, U [Europe]
+  OK Thermoplastic+labels [A proxy PE-HD]: 0.02 kg -> market for polyethylene, high density, granulate | polyethylene, high density, granulate | APOS, U [Global]
+  OK Glass fibre (GFRP proxy, Cu-free): 0.029 kg -> market for glass fibre reinforced plastic, polyester resin, hand lay-up | glass fibre reinforced plastic, polyester resin, hand lay-up | APOS, U [Global]
+  OK Silicone (TIM+seals): 0.0125 kg -> market for silicone product | silicone product | APOS, U [Rest-of-World]
+  OK Gold (board+conn plating): 9.2e-05 kg -> market for gold | gold | APOS, U [Global]
+  OK Silver: 5.9e-05 kg -> market for silver | silver | APOS, U [Global]
+  OK Palladium: 5.5e-06 kg -> market for palladium | palladium | APOS, U [Global]
+  OK Tantalum (in caps, explicit): 0.0009 kg -> market for tantalum powder, capacitor-grade | tantalum powder, capacitor-grade | APOS, U [Global]
+  OK Nickel (connector underplating): 0.0005 kg -> market for nickel, class 1 | nickel, class 1 | APOS, U [Global]
+
+DONE - 17/17 inputs linked. F5 in openLCA; review '??' lines before S2.

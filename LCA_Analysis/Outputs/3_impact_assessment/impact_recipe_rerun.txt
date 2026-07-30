@@ -1,0 +1,63 @@
+All 7 product systems resolved.
+
+=== RMid: 'ei -  ReCiPe Midpoint (H)' ===
+  calculating Sc1 ...
+  calculating Sc2g ...
+  calculating Sc2s ...
+  calculating Sc3g ...
+  calculating Sc3s ...
+  calculating Sc4g ...
+  calculating Sc4s ...
+  -> impact_ReCiPe_mid.csv (18 categories)
+
+=== REnd: 'ei -  ReCiPe Endpoint (H,A)' ===
+  calculating Sc1 ...
+  calculating Sc2g ...
+  calculating Sc2s ...
+  calculating Sc3g ...
+  calculating Sc3s ...
+  calculating Sc4g ...
+  calculating Sc4s ...
+  -> impact_ReCiPe_end.csv (21 categories)
+    ecosystem quality - agricultural land occupation     Sc1 0.1874 | net 0.1821 / 0.1766 / 0.1669 points
+    ecosystem quality - climate change, ecosystems       Sc1 1.276 | net 1.2 / 1.133 / 1.008 points
+    ecosystem quality - freshwater ecotoxicity           Sc1 0.00646 | net 0.005874 / 0.004809 / 0.004014 points
+    ecosystem quality - freshwater eutrophication        Sc1 0.01167 | net 0.01098 / 0.009747 / 0.008679 points
+    ecosystem quality - marine ecotoxicity               Sc1 0.001337 | net 0.001212 / 0.0009935 / 0.000833 points
+    ecosystem quality - natural land transformation      Sc1 0.04331 | net 0.03924 / 0.03497 / 0.02979 points
+    ecosystem quality - terrestrial acidification        Sc1 0.005551 | net 0.005004 / 0.004475 / 0.003982 points
+    ecosystem quality - terrestrial ecotoxicity          Sc1 0.003246 | net 0.00294 / 0.002631 / 0.002345 points
+    ecosystem quality - total                            Sc1 1.622 | net 1.527 / 1.435 / 1.281 points
+    ecosystem quality - urban land occupation            Sc1 0.08751 | net 0.08005 / 0.06698 / 0.05672 points
+    human health - climate change, human health          Sc1 2.018 | net 1.898 / 1.793 / 1.594 points
+    human health - human toxicity                        Sc1 1.769 | net 1.606 / 1.344 / 1.144 points
+    human health - ionising radiation                    Sc1 0.003741 | net 0.003544 / 0.003388 / 0.003077 points
+    human health - ozone depletion                       Sc1 0.0002847 | net 0.0002685 / 0.000256 / 0.0002209 points
+    human health - particulate matter formation          Sc1 0.8549 | net 0.7753 / 0.6961 / 0.5897 points
+    human health - photochemical oxidant formation       Sc1 0.01461 | net 0.01241 / 0.01147 / 0.009312 points
+    human health - total                                 Sc1 4.661 | net 4.295 / 3.849 / 3.34 points
+    resources - fossil depletion                         Sc1 2.478 | net 2.33 / 2.197 / 1.948 points
+    resources - metal depletion                          Sc1 2.488 | net 2.317 / 2.044 / 1.627 points
+    resources - total                                    Sc1 4.966 | net 4.647 / 4.241 / 3.574 points
+    total - total                                        Sc1 11.25 | net 10.47 / 9.524 / 8.196 points
+
+Corrected EF screening (smallest set reaching >=80 %; crossing category INCLUDED):
+    Resource use minerals and metals                  72.5%  cum  72.5%  << reporting set  [PINNED]
+    Climate change                                     6.7%  cum  79.1%  << reporting set  [PINNED]
+    Eutrophication freshwater                          6.6%  cum  85.7%  << reporting set
+    Resource use fossils                               4.3%  cum  90.0%
+    Acidification                                      2.1%  cum  92.0%
+    Ecotoxicity freshwater                             1.6%  cum  93.6%
+    Particulate matter                                 1.4%  cum  95.1%
+    Human toxicity non-cancer                          1.2%  cum  96.2%
+    Photochemical ozone formation (human health)       1.0%  cum  97.2%
+    Water use                                          0.9%  cum  98.1%
+    Eutrophication terrestrial                         0.6%  cum  98.7%
+    Eutrophication marine                              0.4%  cum  99.2%
+    Ionising radiation (human health)                  0.4%  cum  99.6%
+    Human toxicity cancer                              0.2%  cum  99.9%
+    Land use                                           0.1%  cum 100.0%
+    Ozone depletion                                    0.0%  cum 100.0%
+  -> impact_screening.csv regenerated (corrected rule)
+
+DONE.

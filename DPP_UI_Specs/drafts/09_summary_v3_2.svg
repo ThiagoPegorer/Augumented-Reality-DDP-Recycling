@@ -1,0 +1,68 @@
+<svg width="100%" viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Completion summary v3.2 — per-step table with material composition in grams</title>
+<desc>Navy panel: check icon and title, totals for time and recovered mass, five step rows each with a materials-and-grams line, time and grams columns, assumed-splits footnote, send report button.</desc>
+<rect width="680" height="520" fill="#000000"/>
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+
+<!-- Header -->
+<circle cx="60" cy="68" r="20" fill="#10241e" stroke="#1d9e75" stroke-width="2"/>
+<g transform="translate(60,68)" fill="none" stroke="#5dcaa5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-7 0 l5 5 l9 -10"/></g>
+<text x="92" y="76" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="22" font-weight="bold" fill="#ffffff">Nice work — unit fully dismantled</text>
+
+<!-- Totals row -->
+<text x="40" y="120" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#8ba3c4">Total time · start → finish</text>
+<text x="40" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="27" font-weight="bold" fill="#ffffff">4 min 12 s</text>
+
+<text x="360" y="120" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#8ba3c4">Total recovered</text>
+<text x="360" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="27" font-weight="bold" fill="#9fe1cb">660 g</text>
+<text x="472" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#7fb89e">5 material streams</text>
+
+<line x1="40" y1="168" x2="640" y2="168" stroke="#1a335f" stroke-width="1"/>
+
+<!-- Column headers -->
+<text x="524" y="186" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4" text-anchor="end">TIME</text>
+<text x="636" y="186" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4" text-anchor="end">RECOVERED</text>
+
+<!-- Step 1 -->
+<text x="40" y="208" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff">1 · Open the housing</text>
+<text x="40" y="224" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4">steel bolts 15 g · brass inserts 5 g</text>
+<text x="524" y="208" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#ffffff" text-anchor="end">0:38</text>
+<text x="636" y="208" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff" text-anchor="end">20 g</text>
+
+<!-- Step 2 -->
+<text x="40" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff">2 · Remove the connectors</text>
+<text x="40" y="262" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4">brass (Cu-Zn) 46 g · polymer 11 g · gold plating 0.8 g</text>
+<text x="466" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#f0c879" text-anchor="end">longest</text>
+<text x="524" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#f0c879" text-anchor="end">1:44</text>
+<text x="636" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff" text-anchor="end">58 g</text>
+
+<!-- Step 3 -->
+<text x="40" y="284" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff">3 · Lift out the main PCB</text>
+<text x="40" y="300" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4">FR-4 board 91 g · copper 46 g · passives 30 g · solder/TIM 18 g</text>
+<text x="524" y="284" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#ffffff" text-anchor="end">0:51</text>
+<text x="636" y="284" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff" text-anchor="end">185 g</text>
+
+<!-- Step 4 -->
+<text x="40" y="322" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff">4 · Recover the silicon</text>
+<text x="40" y="338" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4">epoxy package 10 g · Cu leadframe 6 g · silicon die 4 g</text>
+<text x="524" y="322" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#ffffff" text-anchor="end">0:29</text>
+<text x="636" y="322" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff" text-anchor="end">20 g</text>
+
+<!-- Step 5 -->
+<text x="40" y="360" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff">5 · Sort the housing</text>
+<text x="40" y="376" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4">aluminium shells 363 g · labels &amp; adhesive 15 g</text>
+<text x="524" y="360" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#ffffff" text-anchor="end">0:30</text>
+<text x="636" y="360" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="bold" fill="#ffffff" text-anchor="end">378 g</text>
+
+<!-- Assumed-splits footnote -->
+<text x="40" y="400" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" font-style="italic" fill="#6f86a8">material splits: assumed · to be validated in openLCA</text>
+
+<!-- Actions (single-button flow, unchanged) -->
+<rect x="346" y="392" width="290" height="44" rx="13" fill="#1d9e75"/>
+<text x="481" y="420" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">Send recovery report</text>
+<polyline points="590,412 598,420 590,428" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- Grabber bar -->
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1"/>
+<rect x="318" y="471" width="44" height="4" rx="2" fill="#6b7686"/>
+</svg>

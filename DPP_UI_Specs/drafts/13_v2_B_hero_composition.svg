@@ -1,0 +1,97 @@
+<svg width="100%" viewBox="0 0 680 500" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>DPP Canva v2 — variant B: composition hero (CIRPASS Figure 13 convention) + five compact category cards</title>
+<desc>Navy 640x430 panel. The richest data gets the most space: a full-width composition-by-mass bar with a labelled legend acts as the Materials card. Five compact cards below carry the other Table 6 categories with one line of live data each. The continue button moves into the header so the content area is not squeezed.</desc>
+
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+
+<!-- header, with the forward action moved up here to free vertical space -->
+<circle cx="62" cy="64" r="20" fill="#13366b" stroke="#2e5aa0" stroke-width="1.5"/>
+<g transform="translate(62,64)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M3 -6 L-4 0 L3 6"/><path d="M-4 0 L8 0"/></g>
+<text x="96" y="58" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#7f9bc4">Digital Product Passport · vcu_001</text>
+<text x="96" y="78" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Vehicle Control Unit</text>
+<rect x="450" y="46" width="186" height="40" rx="13" fill="#1d9e75"/>
+<text x="533" y="72" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">3D model</text>
+<polyline points="608,60 615,66 608,72" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="44" y1="96" x2="636" y2="96" stroke="#1a335f" stroke-width="1"/>
+
+<!-- ===== HERO: composition by mass = the Materials category (tappable) ===== -->
+<rect x="44" y="108" width="592" height="96" rx="13" fill="#0e2950" stroke="#1d9e75" stroke-width="1.4"/>
+<text x="66" y="130" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Materials &amp; composition</text>
+<text x="470" y="130" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fe1cb">660 g · 12 material lines</text>
+<polyline points="606,124 613,130 606,136" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- stacked bar, real masses: Al 363 / PCB assy 184.8 / brass 57.8 / steel 19.8 / Si 19.8 / misc 14.8 = 660 g -->
+<rect x="66" y="140" width="303" height="24" rx="3" fill="#2e5aa0"/>
+<rect x="369" y="140" width="154" height="24" fill="#2e7d4f"/>
+<rect x="523" y="140" width="48"  height="24" fill="#f0c879"/>
+<rect x="571" y="140" width="17"  height="24" fill="#5d7396"/>
+<rect x="588" y="140" width="17"  height="24" fill="#5dcaa5"/>
+<rect x="605" y="140" width="9"   height="24" rx="3" fill="#324a6d"/>
+<text x="72"  y="157" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff">55 %</text>
+<text x="375" y="157" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff">28 %</text>
+
+<!-- legend -->
+<rect x="66" y="176" width="8" height="8" fill="#2e5aa0"/>
+<text x="80" y="184" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#8ba3c4">Aluminium 363 g</text>
+<rect x="186" y="176" width="8" height="8" fill="#2e7d4f"/>
+<text x="200" y="184" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#8ba3c4">PCB assembly 185 g</text>
+<rect x="330" y="176" width="8" height="8" fill="#f0c879"/>
+<text x="344" y="184" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#8ba3c4">Brass 58 g</text>
+<rect x="424" y="176" width="8" height="8" fill="#5dcaa5"/>
+<text x="438" y="184" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#8ba3c4">Silicon 20 g</text>
+<rect x="516" y="176" width="8" height="8" fill="#5d7396"/>
+<text x="530" y="184" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#8ba3c4">Steel 20 g</text>
+<text x="66" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">splits assumed — pending openLCA validation</text>
+<text x="470" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fe1cb">Au 63 · Ag 251 · Pd 28 mg</text>
+
+<!-- ===== five compact cards, one line of live data each ===== -->
+<!-- Identity -->
+<rect x="44" y="216" width="290" height="60" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(70,246)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="0" cy="-4" r="4"/><path d="M-6 8 a6 6 0 0 1 12 0"/></g>
+<text x="92" y="240" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Identity &amp; specs</text>
+<text x="92" y="258" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Bosch Motorsport · 200×150×60 · IP67</text>
+<polyline points="308,239 315,246 308,253" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- Substances & safety -->
+<rect x="346" y="216" width="290" height="60" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(372,246)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M0 -7 L7 5 L-7 5 Z"/><path d="M0 -2 L0 1"/><path d="M0 3 L0 3.01"/></g>
+<text x="394" y="240" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Substances &amp; safety</text>
+<circle cx="399" cy="254" r="3.5" fill="none" stroke="#6f86a8" stroke-width="1.4"/>
+<text x="408" y="258" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8">no battery · no declaration made</text>
+<polyline points="610,239 617,246 610,253" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- Compliance -->
+<rect x="44" y="282" width="290" height="60" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(70,312)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-5 -6 L5 -6 L5 6 L-5 6 Z"/><path d="M-2 0 L0 2 L3 -3"/></g>
+<text x="92" y="306" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Compliance</text>
+<circle cx="97" cy="320" r="3.5" fill="none" stroke="#6f86a8" stroke-width="1.4"/>
+<text x="106" y="324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8">CE / RoHS / REACH — to verify</text>
+<polyline points="308,305 315,312 308,319" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- Service & repair -->
+<rect x="346" y="282" width="290" height="60" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(372,312)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-7 6 L1 -2"/><path d="M2 -7 a5 5 0 1 0 5 5 L3 -3 Z"/></g>
+<text x="394" y="306" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Service &amp; repair</text>
+<circle cx="399" cy="320" r="3.5" fill="none" stroke="#6f86a8" stroke-width="1.4"/>
+<text x="408" y="324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8">spare parts / history not declared</text>
+<polyline points="610,305 617,312 610,319" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- Usage & circularity — full width -->
+<rect x="44" y="348" width="592" height="60" rx="13" fill="#0e2950" stroke="#21407a" stroke-width="1"/>
+<g transform="translate(70,378)" fill="none" stroke="#7fd3b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-7 0 a7 7 0 1 1 3 5.7"/><path d="M-7 -4 L-7 0 L-3 0"/></g>
+<text x="92" y="372" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Usage &amp; circularity</text>
+<circle cx="97" cy="386" r="3.5" fill="#5dcaa5"/>
+<text x="106" y="390" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">design life 15 y · 225,000 km · 4,500 h</text>
+<circle cx="352" cy="386" r="3.5" fill="none" stroke="#6f86a8" stroke-width="1.4"/>
+<text x="361" y="390" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8">repairability / recyclability index not provided</text>
+<polyline points="610,371 617,378 610,385" fill="none" stroke="#9fb3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1.5"/>
+<line x1="305" y1="473" x2="375" y2="473" stroke="#6b7686" stroke-width="3" stroke-linecap="round"/>
+</svg>

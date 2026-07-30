@@ -1,0 +1,125 @@
+ReCiPe 2016 re-run — replacing the ecoinvent ReCiPe 2008 cross-check
+Canonical CSVs are overwritten in place (no superseded twins).
+
+All 7 product systems resolved.
+
+=== RMid2016: looking for 'ReCiPe 2016 Midpoint (H)' ===
+  method: 'ReCiPe 2016 Midpoint (H)'
+  NW sets: ['World (2010) H']
+    - 'World (2010) H': 18 factors, weighting absent
+  calculating Sc1 ...
+  calculating Sc2g ...
+  calculating Sc2s ...
+  calculating Sc3g ...
+  calculating Sc3s ...
+  calculating Sc4g ...
+  calculating Sc4s ...
+  -> impact_ReCiPe_mid.csv (18 categories)
+  Sc1 values (sanity check against the old 2008 numbers):
+    Fine particulate matter formation                  0.1565 -> net 0.1419 / 0.1276 / 0.11 kg PM2.5 eq   (Sc4 -29.7 %)
+    Fossil resource scarcity                           18.97 -> net 17.83 / 16.81 / 14.92 kg oil eq   (Sc4 -21.4 %)
+    Freshwater ecotoxicity                             35.11 -> net 31.37 / 24.15 / 19.29 kg 1,4-DCB   (Sc4 -45.1 %)
+    Freshwater eutrophication                          0.1159 -> net 0.109 / 0.09679 / 0.08618 kg P eq   (Sc4 -25.7 %)
+    Global warming                                     74.4 -> net 69.97 / 66.1 / 58.71 kg CO2 eq   (Sc4 -21.1 %)
+    Human carcinogenic toxicity                        9.323 -> net 7.964 / 7.441 / 6.888 kg 1,4-DCB   (Sc4 -26.1 %)
+    Human non-carcinogenic toxicity                    575.3 -> net 518 / 410.4 / 332.8 kg 1,4-DCB   (Sc4 -42.2 %)
+    Ionizing radiation                                 10.66 -> net 10.16 / 9.773 / 8.988 kBq Co-60 eq   (Sc4 -15.7 %)
+    Land use                                           2.689 -> net 2.527 / 2.274 / 2.032 m2a crop eq   (Sc4 -24.4 %)
+    Marine ecotoxicity                                 46.57 -> net 41.68 / 32.18 / 25.77 kg 1,4-DCB   (Sc4 -44.7 %)
+    Marine eutrophication                              0.006125 -> net 0.005888 / 0.005626 / 0.005185 kg N eq   (Sc4 -15.3 %)
+    Mineral resource scarcity                          2.203 -> net 1.957 / 1.597 / 1.345 kg Cu eq   (Sc4 -38.9 %)
+    Ozone formation, Human health                      0.1903 -> net 0.1744 / 0.1537 / 0.1297 kg NOx eq   (Sc4 -31.9 %)
+    Ozone formation, Terrestrial ecosystems            0.1942 -> net 0.1782 / 0.1572 / 0.1326 kg NOx eq   (Sc4 -31.7 %)
+    Stratospheric ozone depletion                      4.703e-05 -> net 4.476e-05 / 4.195e-05 / 3.79e-05 kg CFC11 eq   (Sc4 -19.4 %)
+    Terrestrial acidification                          0.3972 -> net 0.3577 / 0.3199 / 0.2859 kg SO2 eq   (Sc4 -28.0 %)
+    Terrestrial ecotoxicity                            466.4 -> net 343.1 / 261.1 / 221.1 kg 1,4-DCB   (Sc4 -52.6 %)
+    Water consumption                                  0.8957 -> net 0.801 / 0.7542 / 0.6799 m3   (Sc4 -24.1 %)
+  screening (Sc1 basis):
+  distinct units across leaf categories: ['kBq Co-60 eq', 'kg 1,4-DCB', 'kg CFC11 eq', 'kg CO2 eq', 'kg Cu eq', 'kg N eq', 'kg NOx eq', 'kg P eq', 'kg PM2.5 eq', 'kg SO2 eq', 'kg oil eq', 'm2a crop eq', 'm3']
+  ranking by person-equivalents, NORMALISED ONLY (no weighting factors in the set):
+    Freshwater ecotoxicity                                37.8%  cum  37.8%  << reporting set
+    Marine ecotoxicity                                    29.0%  cum  66.8%  << reporting set
+    Human carcinogenic toxicity                           24.5%  cum  91.3%  << reporting set
+    Freshwater eutrophication                              4.8%  cum  96.2%
+    Terrestrial ecotoxicity                                0.8%  cum  97.0%
+    Ionizing radiation                                     0.6%  cum  97.6%
+    Fossil resource scarcity                               0.5%  cum  98.1%
+    Human non-carcinogenic toxicity                        0.5%  cum  98.6%
+    Ozone formation, Terrestrial ecosystems                0.3%  cum  98.9%
+    Terrestrial acidification                              0.3%  cum  99.2%
+    Global warming                                         0.3%  cum  99.4%  [PINNED]
+    Ozone formation, Human health                          0.3%  cum  99.7%
+    Fine particulate matter formation                      0.2%  cum  99.8%
+    Water consumption                                      0.1%  cum  99.9%
+    Marine eutrophication                                  0.0%  cum 100.0%
+    Stratospheric ozone depletion                          0.0%  cum 100.0%
+    Land use                                               0.0%  cum 100.0%
+    Mineral resource scarcity                              0.0%  cum 100.0%  [PINNED]
+  -> impact_screening_ReCiPe_mid.csv (18 categories)
+  NOTE: normalised, not weighted -> cite the cumulative column as 'cumulative
+        share of normalised impact', never as 'weighted footprint'.
+
+=== REnd2016: looking for 'ReCiPe 2016 Endpoint (H)' ===
+  method: 'ReCiPe 2016 Endpoint (H)'
+  NW sets: ['World (2010) H/H', 'World (2010) H/A']
+    - 'World (2010) H/H': 22 factors, weighting PRESENT
+    - 'World (2010) H/A': 22 factors, weighting PRESENT
+  calculating Sc1 ...
+  calculating Sc2g ...
+  calculating Sc2s ...
+  calculating Sc3g ...
+  calculating Sc3s ...
+  calculating Sc4g ...
+  calculating Sc4s ...
+  -> impact_ReCiPe_end.csv (22 categories)
+  Sc1 values (sanity check against the old 2008 numbers):
+    Fine particulate matter formation                  9.829e-05 -> net 8.911e-05 / 8.015e-05 / 6.908e-05 DALY   (Sc4 -29.7 %)
+    Fossil resource scarcity                           3.204 -> net 2.921 / 2.704 / 2.318 USD2013   (Sc4 -27.7 %)
+    Freshwater ecotoxicity                             2.429e-08 -> net 2.17e-08 / 1.671e-08 / 1.334e-08 species.yr   (Sc4 -45.1 %)
+    Freshwater eutrophication                          7.763e-08 -> net 7.302e-08 / 6.482e-08 / 5.771e-08 species.yr   (Sc4 -25.7 %)
+    Global warming, Freshwater ecosystems              5.691e-12 -> net 5.353e-12 / 5.057e-12 / 4.491e-12 species.yr   (Sc4 -21.1 %)
+    Global warming, Human health                       6.905e-05 -> net 6.494e-05 / 6.135e-05 / 5.449e-05 DALY   (Sc4 -21.1 %)
+    Global warming, Terrestrial ecosystems             2.083e-07 -> net 1.96e-07 / 1.851e-07 / 1.644e-07 species.yr   (Sc4 -21.1 %)
+    Human carcinogenic toxicity                        3.095e-05 -> net 2.644e-05 / 2.47e-05 / 2.287e-05 DALY   (Sc4 -26.1 %)
+    Human non-carcinogenic toxicity                    0.0001312 -> net 0.0001182 / 9.36e-05 / 7.589e-05 DALY   (Sc4 -42.2 %)
+    Ionizing radiation                                 9.042e-08 -> net 8.62e-08 / 8.291e-08 / 7.625e-08 DALY   (Sc4 -15.7 %)
+    Land use                                           2.386e-08 -> net 2.243e-08 / 2.018e-08 / 1.803e-08 species.yr   (Sc4 -24.4 %)
+    Marine ecotoxicity                                 4.895e-09 -> net 4.381e-09 / 3.382e-09 / 2.709e-09 species.yr   (Sc4 -44.7 %)
+    Marine eutrophication                              1.041e-11 -> net 1.001e-11 / 9.561e-12 / 8.811e-12 species.yr   (Sc4 -15.3 %)
+    Mineral resource scarcity                          0.5094 -> net 0.4526 / 0.3693 / 0.311 USD2013   (Sc4 -38.9 %)
+    Ozone formation, Human health                      1.732e-07 -> net 1.587e-07 / 1.399e-07 / 1.18e-07 DALY   (Sc4 -31.9 %)
+    Ozone formation, Terrestrial ecosystems            2.506e-08 -> net 2.298e-08 / 2.027e-08 / 1.711e-08 species.yr   (Sc4 -31.7 %)
+    Stratospheric ozone depletion                      2.497e-08 -> net 2.376e-08 / 2.227e-08 / 2.012e-08 DALY   (Sc4 -19.4 %)
+    Terrestrial acidification                          8.421e-08 -> net 7.582e-08 / 6.782e-08 / 6.061e-08 species.yr   (Sc4 -28.0 %)
+    Terrestrial ecotoxicity                            5.324e-09 -> net 3.916e-09 / 2.98e-09 / 2.523e-09 species.yr   (Sc4 -52.6 %)
+    Water consumption, Aquatic ecosystems              5.41e-13 -> net 4.838e-13 / 4.556e-13 / 4.107e-13 species.yr   (Sc4 -24.1 %)
+    Water consumption, Human health                    1.988e-06 -> net 1.778e-06 / 1.674e-06 / 1.509e-06 DALY   (Sc4 -24.1 %)
+    Water consumption, Terrestrial ecosystem           1.209e-08 -> net 1.081e-08 / 1.018e-08 / 9.179e-09 species.yr   (Sc4 -24.1 %)
+  screening (Sc1 basis):
+  distinct units across leaf categories: ['DALY', 'USD2013', 'species.yr']
+  ranking by normalised + weighted (person-equivalents × weighting):
+    Freshwater ecotoxicity                                35.9%  cum  35.9%  << reporting set
+    Marine ecotoxicity                                    27.7%  cum  63.6%  << reporting set
+    Human carcinogenic toxicity                           17.5%  cum  81.1%  << reporting set
+    Human non-carcinogenic toxicity                       12.2%  cum  93.4%
+    Freshwater eutrophication                              4.1%  cum  97.5%
+    Ionizing radiation                                     0.4%  cum  97.9%
+    Ozone formation, Terrestrial ecosystems                0.3%  cum  98.2%
+    Terrestrial acidification                              0.3%  cum  98.5%
+    Global warming, Terrestrial ecosystems                 0.2%  cum  98.7%  [PINNED]
+    Global warming, Freshwater ecosystems                  0.2%  cum  98.9%  [PINNED]
+    Fossil resource scarcity                               0.2%  cum  99.1%
+    Water consumption, Human health                        0.2%  cum  99.3%
+    Ozone formation, Human health                          0.2%  cum  99.5%
+    Global warming, Human health                           0.2%  cum  99.7%  [PINNED]
+    Fine particulate matter formation                      0.1%  cum  99.8%
+    Water consumption, Terrestrial ecosystem               0.1%  cum  99.9%
+    Marine eutrophication                                  0.0%  cum 100.0%
+    Water consumption, Aquatic ecosystems                  0.0%  cum 100.0%
+    Stratospheric ozone depletion                          0.0%  cum 100.0%
+    Land use                                               0.0%  cum 100.0%
+    Mineral resource scarcity                              0.0%  cum 100.0%  [PINNED]
+    Terrestrial ecotoxicity                                0.0%  cum 100.0%
+  -> impact_screening_ReCiPe_end.csv (22 categories)
+
+DONE. Send recipe2016_rerun.txt + the four CSVs.

@@ -1,0 +1,22 @@
+S5 Sc4 v4 build - gross + credits (exploratory upper-bound)
+Deleted prior 'VCU S5 EoL Sc4 (disassembly + reuse)'.
+Deleted prior 'VCU S5 EoL Sc4 credits (avoided virgin + components)'.
+  OK chain: 0.66 kg <- VCU S4 Use Phase
+  OK Dismantling facility share [C1 intensity]: 1.06e-08 Item(s) -> market for manual treatment facility, waste electric and electronic equipment | manual treatment facility, waste electric and electronic equipment | APOS, U [Global]
+  OK dismantle+test electricity [A]: 0.02 kWh -> market for electricity, low voltage | electricity, low voltage | APOS, U [Germany]
+  OK Board minus reused components -> Cu smelter [SE]: 0.132 kg -> treatment of electronics scrap, metals recovery in copper smelter | electronics scrap | APOS, U [Sweden]
+  OK Residual combustible -> waste plastic market: 0.0325 kg -> market for waste plastic, mixture | waste plastic, mixture | APOS, U [Switzerland]
+  OK Residual inert (ON-SITE sorting losses only) -> sanitary landfill: 0.0111 kg -> treatment of inert waste, sanitary landfill | inert waste | APOS, U [Europe without Switzerland]
+  -- mass ledger (Bigum): 0.4749 scrap-out + 0.0111 sorting losses + 0.132 smelter + 0.0325 combustible + 0.009 REUSED = 0.6595 kg vs 0.66 (OK)
+  OK NEW Avoided IC production (4.2 g reused processors+flash): 0.0042 kg -> market for integrated circuit, logic type | integrated circuit, logic type | APOS, U [Global]
+  OK NEW Avoided transistor production (4.7 g reused power stages): 0.0047 kg -> market for transistor, surface-mounted | transistor, surface-mounted | APOS, U [Global]
+  OK Avoided Al primary ingot (339.9 g [L Lee x L Bigum]): 0.3399 kg -> market for aluminium, primary, ingot | aluminium, primary, ingot | APOS, U [Aluminium producing area, EU27 and EFTA countries]
+  OK Avoided Cu cathode (53.3 g = 56.8 - 3.5 in reused parts): 0.0533 kg -> market for copper, cathode | copper, cathode | APOS, U [Global]
+  OK Avoided chromium steel (11.8 g [L]): 0.0118 kg -> market for steel, chromium steel 18/8 | steel, chromium steel 18/8 | APOS, U [Global]
+  OK Avoided gold (84.5 mg = 86.6 - haircut): 8.5e-05 kg -> market for gold | gold | APOS, U [Global]
+  OK Avoided silver (51.1 mg = 54.9 - haircut): 5.1e-05 kg -> market for silver | silver | APOS, U [Global]
+  OK Avoided palladium (4.8 mg = 5.2 - haircut): 4.8e-06 kg -> market for palladium | palladium | APOS, U [Global]
+  -- credits: 8/8 linked, total 414.0 g vs ref 414.1 g
+
+DONE - 'VCU S5 EoL Sc4 (disassembly + reuse)' + 'VCU S5 EoL Sc4 credits (avoided virgin + components)' built. F5 in openLCA.
+CHECKPOINT: confirm the two NEW component credits (IC, transistor) + haircut amounts.

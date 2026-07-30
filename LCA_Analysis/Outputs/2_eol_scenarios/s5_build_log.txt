@@ -1,0 +1,9 @@
+S5 v4 build - 'VCU S5 EoL Sc1 (no recycling)' (Sc1)
+  OK chain: 0.66 kg <- VCU S4 Use Phase
+  OK Inert 0.528 kg -> sanitary landfill: 0.528 kg -> treatment of inert waste, sanitary landfill | inert waste | APOS, U [Europe without Switzerland]
+  OK Combustible 0.132 kg -> waste plastic market (CH proxy): 0.132 kg -> market for waste plastic, mixture | waste plastic, mixture | APOS, U [Switzerland]
+  -- waste mass closure: 0.660 kg vs device 0.66 kg (OK)
+  -- checkpoint alternative: BOM v4.1 implies inert 0.5875 / combustible 0.0725 (polymers 60 g + silicone 12.5 g) - decide at checkpoint.
+
+DONE - 'VCU S5 EoL Sc1 (no recycling)' built (chain S4 + 2 waste outputs). F5 in openLCA.
+This process is the cradle-to-grave calculation target for the Sc1 product system.

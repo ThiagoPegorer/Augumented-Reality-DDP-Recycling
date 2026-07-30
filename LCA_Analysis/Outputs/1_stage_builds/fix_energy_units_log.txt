@@ -1,0 +1,9 @@
+kWh unit repair - in place
+  FIX VCU S2 Hardware Assembly: 'electricity, medium voltage' 0.47 MJ -> 0.47 kWh
+  -> saved 'VCU S2 Hardware Assembly'
+  FIX VCU S4 Use Phase: 'electricity, low voltage' 66.2 MJ -> 66.2 kWh
+  -> saved 'VCU S4 Use Phase'
+  FIX VCU S5 EoL Sc3 (guided disassembly): 'electricity, low voltage' 0.01 MJ -> 0.01 kWh
+  -> saved 'VCU S5 EoL Sc3 (guided disassembly)'
+
+DONE. F5 in openLCA; verify units; RE-RUN scenarios_calc.py (old results invalid).
