@@ -1034,6 +1034,138 @@
       "title": "MaterialShare",
       "type": "object"
     },
+    "PhysicalPart": {
+      "description": "v0.8 - one part of the PHYSICAL DEMONSTRATOR the participant handles.\n\nThis is NOT product data. The 3D-printed study unit stands in for a Bosch\nMS 50.4; its parts are printed blocks distinguished by colour. Keeping them\nin their own block stops replica facts leaking into `specifications`, where\na reader would take them for the product's declared values.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "count": {
+          "default": 1,
+          "title": "Count",
+          "type": "integer"
+        },
+        "colour": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Colour"
+        },
+        "swatch_hex": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Swatch Hex"
+        },
+        "photo_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Photo Id"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "PhysicalPart",
+      "type": "object"
+    },
+    "PhysicalUnit": {
+      "description": "v0.8 - facts about the demonstrator itself, kept apart from product data.",
+      "properties": {
+        "is_replica": {
+          "default": true,
+          "title": "Is Replica",
+          "type": "boolean"
+        },
+        "replica_of": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Replica Of"
+        },
+        "size_mm": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size Mm"
+        },
+        "parts": {
+          "items": {
+            "$ref": "#/$defs/PhysicalPart"
+          },
+          "title": "Parts",
+          "type": "array"
+        },
+        "basis": {
+          "default": "measured",
+          "title": "Basis",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "PhysicalUnit",
+      "type": "object"
+    },
     "PreciousMetal": {
       "properties": {
         "metal": {
@@ -1283,9 +1415,69 @@
           "default": "not_provided",
           "title": "Basis",
           "type": "string"
+        },
+        "software_updates": {
+          "items": {
+            "$ref": "#/$defs/SoftwareUpdate"
+          },
+          "title": "Software Updates",
+          "type": "array"
+        },
+        "software_update_basis": {
+          "default": "not_provided",
+          "title": "Software Update Basis",
+          "type": "string"
         }
       },
       "title": "Service",
+      "type": "object"
+    },
+    "SoftwareUpdate": {
+      "description": "v0.9 - one entry in the software update log (Table 6 #12, updates).",
+      "properties": {
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        },
+        "channel": {
+          "default": "automatic",
+          "title": "Channel",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "SoftwareUpdate",
       "type": "object"
     },
     "SparePart": {
@@ -1799,7 +1991,7 @@
       "type": "object"
     }
   },
-  "description": "Generated from backend/models.py — DO NOT EDIT BY HAND. Run `python export_schema.py` after changing the models. Coverage vs CIRPASS D2.2 Table 6 (pp.41-42): DPP_UI_Specs/13b_information_model.md.",
+  "description": "Generated from backend/models.py — DO NOT EDIT BY HAND. Run `python export_schema.py` after changing the models. Attribute coverage against CIRPASS D2.2 Table 6 (pp.41-42) is documented in DPP_UI_Specs/13b_information_model.md.",
   "properties": {
     "product_id": {
       "title": "Product Id",
@@ -1857,6 +2049,17 @@
       "anyOf": [
         {
           "$ref": "#/$defs/DppMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "physical_unit": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PhysicalUnit"
         },
         {
           "type": "null"

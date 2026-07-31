@@ -47,6 +47,10 @@ namespace DPP.Models
         public const string Measured    = "measured";
         public const string Assumed     = "assumed";
         public const string Modelled    = "modelled";
+        /// <summary>v0.9 — INVENTED for the study demonstrator. Not a weak measurement:
+        /// not a measurement at all. Deliberately excluded from IsFirmSource so every dot
+        /// bound to it renders dim.</summary>
+        public const string Simulated   = "simulated";
         public const string NotProvided = "not_provided";
 
         /// <summary>True when a value may be shown as fact rather than as an estimate.</summary>
@@ -81,6 +85,35 @@ namespace DPP.Models
         public RepairHistory repair_history;                  // v0.6 — T6 #20
         public Disassembly disassembly;
         public EndOfLife end_of_life;
+        public PhysicalUnit physical_unit;                    // v0.8 - the demonstrator, not the product
+    }
+
+    /// <summary>v0.8 — one part of the PHYSICAL DEMONSTRATOR the participant handles.
+    /// NOT product data: the printed study unit stands in for a Bosch MS 50.4 and its
+    /// parts are coloured blocks. Kept out of Specifications so replica facts can never
+    /// be read as the product's declared values.</summary>
+    [Serializable]
+    public class PhysicalPart
+    {
+        public string id;
+        public string name;
+        public int count = 1;
+        public string colour;
+        public string swatch_hex;
+        public string photo_id;
+        public string note;
+    }
+
+    /// <summary>v0.8 — facts about the demonstrator itself.</summary>
+    [Serializable]
+    public class PhysicalUnit
+    {
+        public bool is_replica = true;
+        public string replica_of;
+        public string size_mm;
+        public List<PhysicalPart> parts;
+        public string basis;
+        public string note;
     }
 
     /// <summary>v0.6 — provenance of the record itself, so a reader can tell how
@@ -348,6 +381,16 @@ namespace DPP.Models
         public string status;             // DppStatus
     }
 
+    /// <summary>v0.9 — one entry in the software update log (Table 6 #12).</summary>
+    [Serializable]
+    public class SoftwareUpdate
+    {
+        public string date;               // ISO yyyy-MM-dd
+        public string version;
+        public string channel;            // automatic | manual
+        public string note;
+    }
+
     /// <summary>v0.6 — T6 #12 (use / repair / maintenance / updates) and #15
     /// (resale, end-of-life options, waste-handling service availability).</summary>
     [Serializable]
@@ -360,6 +403,8 @@ namespace DPP.Models
         public List<string> resale_options;
         public List<string> eol_options;
         public List<string> waste_handling_services;
+        public List<SoftwareUpdate> software_updates;   // v0.9
+        public string software_update_basis;            // v0.9 — DppBasis
         public string basis;              // DppBasis
     }
 

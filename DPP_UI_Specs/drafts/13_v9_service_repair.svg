@@ -1,0 +1,99 @@
+<svg width="100%" viewBox="0 0 680 620" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Service &amp; repair — simulated update and repair history</title>
+<desc>The Service and repair detail page: two counters for eleven automatic software updates and one manual repair, a timeline from March to August 2026 with a tick per fortnightly update and an amber diamond for the repair, and a list of the most recent entries. An inset shows the landing tile face carrying the two totals.</desc>
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="62" cy="64" r="21.5" fill="#2e5aa0"/><circle cx="62" cy="64" r="20" fill="#13366b"/>
+<g stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M65 58 L58 64 L65 70"/><path d="M58 64 L70 64"/></g>
+<text x="96" y="71" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Service &amp; repair</text>
+<text x="636" y="68" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#e2a44a" text-anchor="end">Mar – Jul 2026 · simulated</text>
+<rect x="44" y="96" width="592" height="1" fill="#1a335f"/>
+<rect x="43" y="107" width="292" height="72" rx="13" fill="#21407a"/><rect x="44" y="108" width="290" height="70" rx="13" fill="#0e2950"/>
+<text x="66" y="152" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="30" fill="#ffffff" font-weight="bold">11</text>
+<text x="106" y="142" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff" font-weight="bold">Software updates</text>
+<text x="106" y="160" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">automatic · every 2 weeks</text>
+<rect x="345" y="107" width="292" height="72" rx="13" fill="#21407a"/><rect x="346" y="108" width="290" height="70" rx="13" fill="#0e2950"/>
+<text x="368" y="152" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="30" fill="#ffffff" font-weight="bold">1</text>
+<text x="396" y="142" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff" font-weight="bold">Repair</text>
+<text x="396" y="160" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">manual · 14 May 2026</text>
+<rect x="43" y="189" width="594" height="88" rx="13" fill="#2e5aa0"/><rect x="44" y="190" width="592" height="86" rx="13" fill="#0e2950"/>
+<line x1="68" y1="242" x2="612" y2="242" stroke="#1a335f" stroke-width="2"/>
+<line x1="68.0" y1="238" x2="68.0" y2="246" stroke="#2a4670" stroke-width="1"/>
+<text x="68.0" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="middle">Mar</text>
+<line x1="176.8" y1="238" x2="176.8" y2="246" stroke="#2a4670" stroke-width="1"/>
+<text x="176.8" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="middle">Apr</text>
+<line x1="282.1" y1="238" x2="282.1" y2="246" stroke="#2a4670" stroke-width="1"/>
+<text x="282.0903225806452" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="middle">May</text>
+<line x1="390.9" y1="238" x2="390.9" y2="246" stroke="#2a4670" stroke-width="1"/>
+<text x="390.89032258064515" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="middle">Jun</text>
+<line x1="496.2" y1="238" x2="496.2" y2="246" stroke="#2a4670" stroke-width="1"/>
+<text x="496.18064516129033" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="middle">Jul</text>
+<line x1="605.0" y1="238" x2="605.0" y2="246" stroke="#2a4670" stroke-width="1"/>
+<text x="604.9806451612903" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="middle">Aug</text>
+<line x1="71.5" y1="242" x2="71.5" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="71.5" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="120.6" y1="242" x2="120.6" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="120.6" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="169.8" y1="242" x2="169.8" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="169.8" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="218.9" y1="242" x2="218.9" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="218.9" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="268.1" y1="242" x2="268.1" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="268.1" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="317.2" y1="242" x2="317.2" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="317.2" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="366.3" y1="242" x2="366.3" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="366.3" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="415.5" y1="242" x2="415.5" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="415.5" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="464.6" y1="242" x2="464.6" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="464.6" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="513.7" y1="242" x2="513.7" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="513.7" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="562.9" y1="242" x2="562.9" y2="226" stroke="#1d9e75" stroke-width="2"/>
+<circle cx="562.9" cy="223" r="3.4" fill="#5dcaa5"/>
+<line x1="327.7" y1="242" x2="327.7" y2="260" stroke="#e2a44a" stroke-width="2"/>
+<path d="M327.7 256 l6 7 l-6 7 l-6 -7 Z" fill="#e2a44a"/>
+<circle cx="612.0" cy="223" r="3.4" fill="none" stroke="#6f86a8" stroke-width="1.4"/>
+<text x="612.0" y="214" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#6f86a8" text-anchor="middle">next</text>
+<text x="68" y="212" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#5dcaa5" font-weight="bold">UPDATE &amp; REPAIR TIMELINE</text>
+<text x="612" y="212" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">v4.12.1 → v4.14.1</text>
+<rect x="43" y="287" width="594" height="118" rx="13" fill="#21407a"/><rect x="44" y="288" width="592" height="116" rx="13" fill="#0e2950"/>
+<text x="66" y="308" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#5dcaa5" font-weight="bold">RECENT ENTRIES</text>
+<circle cx="70" cy="324" r="3.4" fill="#5dcaa5"/>
+<text x="84" y="328" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4">20 Jul 2026</text>
+<text x="168" y="328" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Automatic software update</text>
+<text x="614" y="328" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" text-anchor="end">v4.14.1</text>
+<circle cx="70" cy="343" r="3.4" fill="#5dcaa5"/>
+<text x="84" y="347" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4">06 Jul 2026</text>
+<text x="168" y="347" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Automatic software update</text>
+<text x="614" y="347" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" text-anchor="end">v4.14.0</text>
+<circle cx="70" cy="362" r="3.4" fill="#5dcaa5"/>
+<text x="84" y="366" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4">22 Jun 2026</text>
+<text x="168" y="366" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Automatic software update</text>
+<text x="614" y="366" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" text-anchor="end">v4.13.4</text>
+<circle cx="70" cy="381" r="3.4" fill="#e2a44a"/>
+<text x="84" y="385" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4">14 May 2026</text>
+<text x="168" y="385" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Repair — SENS-B connector replaced</text>
+<text x="614" y="385" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#e2a44a" text-anchor="end">€ 148.00</text>
+<text x="84" y="404" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">7 earlier automatic updates not listed · full log in the payload</text>
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1.5"/>
+<line x1="305" y1="473" x2="375" y2="473" stroke="#6b7686" stroke-width="3" stroke-linecap="round"/>
+<text x="20" y="14" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">Service &amp; repair — detail page, header icon removed. 11 automatic updates 02 Mar → 20 Jul 2026 (every 14 days), 1 manual repair 14 May 2026. All SIMULATED.</text>
+<text x="20" y="508" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#5dcaa5" font-weight="bold">TILE FACE ON THE LANDING</text>
+<rect x="19" y="517" width="292" height="74" rx="13" fill="#21407a"/><rect x="20" y="518" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M38.5 561 L46.5 553"/><path d="M51.5 553.6 A4.4 4.4 0 1 0 51.5 546.4"/></g>
+<text x="68" y="541" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Service &amp; repair</text>
+<circle cx="73" cy="558" r="3.5" fill="#5dcaa5"/>
+<text x="82" y="561.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">11 automatic updates</text>
+<circle cx="73" cy="574" r="3.5" fill="#5dcaa5"/>
+<text x="82" y="577.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 repair · May 2026</text>
+<polyline points="282,549 288,554 282,559" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="330" y="534" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#e24b4a" font-weight="bold">THIS DATA IS INVENTED</text>
+<text x="482.6" y="534" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">and the passport must say so. New basis value "simulated" added to BASIS_VALUES / DppBasis, used on service.software_update_basis</text>
+<text x="330" y="550" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">and repair_history.basis. IsFirmSource() excludes it, so the dots render dim, not firm — the same treatment as "modelled".</text>
+<text x="330" y="568" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#e2a44a" font-weight="bold">WHAT THE FACE LOSES</text>
+<text x="469.4" y="568" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">rows 4/5 currently read "disassembly guide in this app" and "spare parts — not provided" (Table 6 #12/#15). The totals replace them;</text>
+<text x="330" y="584" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">those two lines move to this detail page. Say if you would rather keep one of them and drop a total.</text>
+<text x="330" y="602" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#7f9bc4" font-weight="bold">DATES</text>
+<text x="377.0" y="602" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">every 14 days from Mon 02 Mar 2026. Last is 20 Jul; next due 03 Aug, drawn hollow. Nothing is dated in the future.</text>
+</svg>

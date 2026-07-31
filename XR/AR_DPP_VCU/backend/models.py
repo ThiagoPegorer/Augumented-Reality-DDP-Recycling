@@ -55,7 +55,11 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 # Closed vocabularies (documented here, enforced by convention + the UI)
 # ---------------------------------------------------------------------------
-BASIS_VALUES = ("declared", "datasheet", "measured", "assumed", "modelled", "not_provided")
+# "simulated" (v0.9) marks data that was INVENTED for the study demonstrator. It is
+# not a weaker measurement - it is not a measurement at all - so the UI must never
+# render it as a firm source. See DppBasis.IsFirmSource in DPPModels.cs.
+BASIS_VALUES = ("declared", "datasheet", "measured", "assumed", "modelled",
+                "simulated", "not_provided")
 STATUS_VALUES = ("available", "not_provided", "not_applicable")
 
 
@@ -284,6 +288,14 @@ class SparePart(BaseModel):
     status: str = "not_provided"             # STATUS_VALUES
 
 
+class SoftwareUpdate(BaseModel):
+    """v0.9 - one entry in the software update log (Table 6 #12, updates)."""
+    date: Optional[str] = None               # ISO yyyy-mm-dd
+    version: Optional[str] = None
+    channel: str = "automatic"               # automatic | manual
+    note: Optional[str] = None
+
+
 class Service(BaseModel):
     """v0.6 - Table 6 #12 (use / repair / maintenance / updates) and
     #15 (resale, end-of-life options, waste-handling service availability)."""
@@ -294,6 +306,8 @@ class Service(BaseModel):
     resale_options: List[str] = Field(default_factory=list)
     eol_options: List[str] = Field(default_factory=list)
     waste_handling_services: List[str] = Field(default_factory=list)
+    software_updates: List[SoftwareUpdate] = Field(default_factory=list)   # v0.9
+    software_update_basis: str = "not_provided"                            # v0.9
     basis: str = "not_provided"              # BASIS_VALUES
 
 
@@ -372,6 +386,32 @@ class EndOfLife(BaseModel):
     collection_scheme: Optional[CollectionScheme] = None              # Table 6 #4
 
 
+class PhysicalPart(BaseModel):
+    """v0.8 - one part of the PHYSICAL DEMONSTRATOR the participant handles.
+
+    This is NOT product data. The 3D-printed study unit stands in for a Bosch
+    MS 50.4; its parts are printed blocks distinguished by colour. Keeping them
+    in their own block stops replica facts leaking into `specifications`, where
+    a reader would take them for the product's declared values."""
+    id: str
+    name: str
+    count: int = 1
+    colour: Optional[str] = None             # plain-language colour of the printed part
+    swatch_hex: Optional[str] = None         # UI swatch, e.g. "#4da3ff"
+    photo_id: Optional[str] = None           # -> Assets/Textures/Parts/<photo_id>.png
+    note: Optional[str] = None
+
+
+class PhysicalUnit(BaseModel):
+    """v0.8 - facts about the demonstrator itself, kept apart from product data."""
+    is_replica: bool = True
+    replica_of: Optional[str] = None
+    size_mm: Optional[str] = None
+    parts: List[PhysicalPart] = Field(default_factory=list)
+    basis: str = "measured"                  # BASIS_VALUES
+    note: Optional[str] = None
+
+
 class DppMeta(BaseModel):
     """v0.6 - provenance of the record itself, so a reader can tell how much of
     this passport is real. `attributes_not_provided` is filled by hand for now;
@@ -407,6 +447,7 @@ class DPP(BaseModel):
     end_of_life: EndOfLife
     # ---- v0.6 additions (all optional / empty-by-default) ----
     dpp_meta: Optional[DppMeta] = None
+    physical_unit: Optional[PhysicalUnit] = None   # v0.8
     documents: List[DocumentRef] = Field(default_factory=list)
     substances_of_concern: List[SubstanceOfConcern] = Field(default_factory=list)
     service: Optional[Service] = None

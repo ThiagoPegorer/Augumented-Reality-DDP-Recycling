@@ -40,6 +40,9 @@ namespace DPP.EditorTools
         private const int   CompSegmentPool = 12;
         private const int   CompLegendPool = 5;
         private const int   SpecChipPool = 6;
+        private const int   SvcTickPool  = 16;   // v9 - software-update ticks
+        private const int   SvcMonthPool = 8;    // v9 - timeline month labels
+        private const int   SvcLogPool   = 5;    // v9 - most-recent log rows
         private const float ScenarioBarH = 52f;
         private const float RecoveryTrackW = 240f;
 
@@ -91,59 +94,84 @@ namespace DPP.EditorTools
             AddImage(Stretch("PanelBG", canva), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
             var landing = Stretch("Landing", canva);
-            MakeScreenHeader(landing, "Digital Product Passport", "Vehicle Control Unit",
-                rightCaption: null,
-                backTarget: welcome, backMethod: welcome != null ? nameof(WelcomeController.ShowWelcome) : null);
+            // v3 (2026-07-30): no back arrow and no 19 pt product title on this screen.
+            // Back moved to a labelled "Home" pill in the bottom bar, and the
+            // caption slides left into the arrow's slot. Reclaims 28 px of height.
+            MakeCaptionHeader(landing, "Digital Product Passport");
 
-            BuildIdentityHero(landing, view, canvaRouter);
+            BuildProductInfoBlock(landing, view);
 
-            // Four declaration tiles. statusDots/statusTexts are ONE flat array of 8
-            // (2 rows per tile) so the view can address them by index; the compliance
-            // tile spends its first row on tri-state badges, so index 3 stays null.
+            // v8 grid. statusDots/statusTexts stay ONE flat array of 8 addressed by index:
+            //   0 electrical parts · 1 unused · 2 compliance · 3 unused (badges take the row)
+            //   4/5 service · 6/7 usage
+            //
+            // ⚠ SUBSTANCES & SAFETY HAS NO TILE IN v8. Renaming it to Mechanical data removed
+            // the only place the passport spoke about substances of concern — Table 6 #5 #6
+            // #7 #16 #17. The bindings still exist in PassportView; nothing renders them.
             var dots = new Image[8];
             var texts = new TMP_Text[8];
 
-            var tSub = MakeTileCard(landing, 24, 192, "SubstancesCard", DPPSpriteFactory.IcWarning,
-                "Substances & safety", canvaRouter, nameof(PassportRouter.Open2), rows: 2);
-            dots[0] = tSub.dots[0]; texts[0] = tSub.texts[0];
-            dots[1] = tSub.dots[1]; texts[1] = tSub.texts[1];
+            // Mechanical data — full width, spec chips, inert card, "+" opens detail1.
+            var tMec = MakeTileCard(landing, 24, 100, "MechanicalCard", DPPSpriteFactory.IcCube,
+                "Mechanical data", canvaRouter, nameof(PassportRouter.Open1),
+                rows: 0, w: 592f, plusButton: true, heroStroke: true);
+            BuildSpecChipPool(tMec.card, view);
 
-            var tCom = MakeTileCard(landing, 326, 192, "ComplianceCard", DPPSpriteFactory.IcShield,
-                "Compliance & certification", canvaRouter, nameof(PassportRouter.Open3), rows: 1, firstRowY: 48);
-            dots[2] = tCom.dots[0]; texts[2] = tCom.texts[0];
-            dots[3] = null; texts[3] = null;                      // no slot on the face
-            BuildComplianceBadges(tCom.card, view);
+            // Electrical data — supply chip + one bound row, "+" opens detail2.
+            var tEle = MakeTileCard(landing, 24, 180, "ElectricalCard", DPPSpriteFactory.IcBolt,
+                "Electrical data", canvaRouter, nameof(PassportRouter.Open2),
+                rows: 1, firstRowY: 48f, plusButton: true);
+            BuildSupplyChip(tEle.card, view);
+            dots[0] = tEle.dots[0]; texts[0] = tEle.texts[0];
+            dots[1] = null; texts[1] = null;
 
-            var tSvc = MakeTileCard(landing, 24, 272, "ServiceCard", DPPSpriteFactory.IcWrench,
-                "Service & repair", canvaRouter, nameof(PassportRouter.Open4), rows: 2);
+            var tSvc = MakeTileCard(landing, 326, 180, "ServiceCard", DPPSpriteFactory.IcWrench,
+                "Service & repair", canvaRouter, nameof(PassportRouter.Open4), rows: 2, plusButton: true);
             dots[4] = tSvc.dots[0]; texts[4] = tSvc.texts[0];
             dots[5] = tSvc.dots[1]; texts[5] = tSvc.texts[1];
 
-            var tUse = MakeTileCard(landing, 326, 272, "UsageCard", DPPSpriteFactory.IcClock,
-                "Usage & repair history", canvaRouter, nameof(PassportRouter.Open5), rows: 2);
+            var tUse = MakeTileCard(landing, 24, 260, "UsageCard", DPPSpriteFactory.IcClock,
+                "Usage & repair history", canvaRouter, nameof(PassportRouter.Open5), rows: 2, plusButton: true);
             dots[6] = tUse.dots[0]; texts[6] = tUse.texts[0];
             dots[7] = tUse.dots[1]; texts[7] = tUse.texts[1];
+
+            var tCom = MakeTileCard(landing, 326, 260, "ComplianceCard", DPPSpriteFactory.IcShield,
+                "Compliance & certification", canvaRouter, nameof(PassportRouter.Open3), rows: 1, firstRowY: 48, plusButton: true);
+            dots[2] = tCom.dots[0]; texts[2] = tCom.texts[0];
+            dots[3] = null; texts[3] = null;                      // badges occupy the first row
+            BuildComplianceBadges(tCom.card, view);
 
             SetRefArray(view, "statusDots", dots);
             SetRefArray(view, "statusTexts", texts);
 
-            // Legend + forward CTA. No ●/○ glyphs — 00 §3 keeps to the SF Pro atlas.
-            AddText(TL("LegendLine1", landing, 24, 366, 250, 16),
-                "Filled dot = declared,", 11, DPPTheme.TextTip, bold: false);
-            AddText(TL("LegendLine2", landing, 24, 382, 250, 16),
-                "ring = not provided", 11, DPPTheme.TextTip, bold: false);
-            var toModel = BuildWideCta(landing, "ContinueButton", x: 288, y: 354, w: 328, label: "Continue");
+            // Bottom bar (v3) — secondary LEFT, primary RIGHT, the order Welcome, the
+            // first-run prompt and the disassembly gate all use. 180 + 24 + 388 = 592,
+            // exactly the content width.
+            //
+            // The dot legend that used to sit bottom-left is GONE. It was a third
+            // encoding of the same fact: PassportView.SetRow already writes the words
+            // ("— not provided") into the row AND dims it to text/tip. Nothing is lost.
+            var toWelcome = BuildWideCta(landing, "HomeButton", x: 24, y: 354, w: 180,
+                label: "Home", primary: false, chevron: false);
+            if (welcome != null) WireClick(toWelcome, welcome, nameof(WelcomeController.ShowWelcome));
+            else Debug.LogWarning("[DPPUIBuilder] Home button left unwired — no WelcomeController in the scene.");
+
+            var toModel = BuildWideCta(landing, "ContinueButton", x: 228, y: 354, w: 388, label: "Continue");
             WireClick(toModel, router, nameof(ScreenRouter.ShowModelExploration));
 
             // Detail shells — chrome only, bodies deliberately unbuilt.
-            var dIdentity   = MakeShellPage(canva, canvaRouter, "IdentityDetail",   "Identity & specifications", DPPSpriteFactory.IcPerson);
-            var dSubstances = MakeShellPage(canva, canvaRouter, "SubstancesDetail", "Substances & safety",       DPPSpriteFactory.IcWarning);
+            // v4: no IdentityDetail shell — the product info block is not tappable.
+            // v8: detail1 = Mechanical (technical drawing, empty for now), detail2 = Electrical.
+            var dMechanical = MakeShellPage(canva, canvaRouter, "MechanicalDetail", "Mechanical data",           DPPSpriteFactory.IcCube);
+            var dElectrical = MakeShellPage(canva, canvaRouter, "ElectricalDetail", "Electrical data",           DPPSpriteFactory.IcBolt);
             var dCompliance = MakeShellPage(canva, canvaRouter, "ComplianceDetail", "Compliance & certification",DPPSpriteFactory.IcShield);
-            var dService    = MakeShellPage(canva, canvaRouter, "ServiceDetail",    "Service & repair",          DPPSpriteFactory.IcWrench);
+            var dService    = MakeShellPage(canva, canvaRouter, "ServiceDetail",    "Service & repair", null,
+                                            showIcon: false, rightCaption: "simulated data", placeholder: false);
+            BuildServiceDetail(dService, view);
             var dUsage      = MakeShellPage(canva, canvaRouter, "UsageDetail",      "Usage & repair history",    DPPSpriteFactory.IcClock);
             SetRef(canvaRouter, "landing", landing.gameObject);
-            SetRef(canvaRouter, "detail1", dIdentity.gameObject);
-            SetRef(canvaRouter, "detail2", dSubstances.gameObject);
+            SetRef(canvaRouter, "detail1", dMechanical.gameObject);
+            SetRef(canvaRouter, "detail2", dElectrical.gameObject);
             SetRef(canvaRouter, "detail3", dCompliance.gameObject);
             SetRef(canvaRouter, "detail4", dService.gameObject);
             SetRef(canvaRouter, "detail5", dUsage.gameObject);
@@ -216,51 +244,47 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // Identity hero (spec 13 v2 §2) — 592 × 96, full width
+        // Product information (spec 13 v4) — plain text, NOT a card.
+        //
+        // v4 (2026-07-30, Thiago): "This tab will not be a button, I just want to
+        // plot the name." The tappable Identity & specifications card is therefore
+        // gone entirely — no fill, no stroke, no hover outline, no icon, no chevron,
+        // no MakeTappable. A non-interactive block must not wear the same costume as
+        // the four tiles below it, or the tiles stop reading as tappable.
+        //
+        // DROPPED WITH THE CARD, and homeless until a later tab claims them:
+        //   * the 5 spec chips (size · weight · protection class · supply voltage ·
+        //     operating temperature). PassportView.FillChips returns early when
+        //     specChipRoots is unwired, so nothing breaks — it renders nothing.
+        //   * the product_category caption ("EEE — electronic control unit …")
+        //   * the documents status line (the Table 6 #1/#2 not-applicable statement)
+        //   * production date and country of origin, which rode on the identity line
+        //
+        // A "Product information" label was drawn once and cut (Thiago): the screen
+        // already says "Digital Product Passport" 14 px above this line.
+        //
+        // The IdentityDetail shell is no longer built and detail1 stays null.
+        // PassportRouter null-guards every slot, so the now-unreachable Open1()
+        // degrades to Back() rather than throwing.
         // =================================================================
-        private static void BuildIdentityHero(RectTransform landing, PassportView view, PassportRouter r)
+        private static void BuildProductInfoBlock(RectTransform landing, PassportView view)
         {
-            var card = TL("IdentityHero", landing, 24, 88, 592, 96);
-            const float W = 592f, H = 96f;
+            // "manufacturer | model" — bound in PassportView, never a literal here.
+            var name = AddText(TL("ProductName", landing, 24, 62, 592, 22),
+                "manufacturer | model", 16, DPPTheme.TextOnNavy, bold: true);
+            SetRef(view, "identityLine", name);
 
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
-                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
-            outline.gameObject.SetActive(false);
-            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
-            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
-
-            AddImage(TLCenter("Icon", card, 26, 24, 22, 22), DPPSpriteFactory.IcPerson, DPPTheme.Hex("#7fd3b6"));
-            AddText(TL("Title", card, 48, 12, 300, 20), "Identity & specifications", 15, DPPTheme.TextOnNavy, bold: true);
-            var cat = AddText(TL("Category", card, 300, 12, 250, 20), "EEE", 11, DPPTheme.TextSecondary,
-                bold: false, align: TextAlignmentOptions.MidlineRight);
-            SetRef(view, "categoryCaption", cat);
-
-            var line = AddText(TL("IdentityLine", card, 26, 34, 540, 18), "manufacturer", 13, DPPTheme.TextOnNavy, bold: false);
-            SetRef(view, "identityLine", line);
-
-            // Spec chip pool — the view sizes each chip to its text and hides the rest.
-            var chipRow = TL("SpecChips", card, 26, 56, 540, 20);
-            var chipRoots = new RectTransform[SpecChipPool];
-            var chipLabels = new TMP_Text[SpecChipPool];
-            for (int i = 0; i < SpecChipPool; i++)
-            {
-                chipRoots[i] = TL($"Chip{i}", chipRow, 0, 0, 80, 20);
-                AddImage(Stretch("Fill", chipRoots[i]), DPPSpriteFactory.Pill, DPPTheme.CardBlue, sliced: true);
-                chipLabels[i] = AddText(Stretch("Label", chipRoots[i]), "—", 10.5f, DPPTheme.Hex("#dbe4f0"),
-                    bold: false, align: TextAlignmentOptions.Center);
-                chipRoots[i].gameObject.SetActive(false);
-            }
-            SetRefArray(view, "specChipRoots", chipRoots);
-            SetRefArray(view, "specChipLabels", chipLabels);
-
-            var dot = AddImage(TLCenter("DocDot", card, 31, 87, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TextTip);
-            SetRef(view, "docStatusDot", dot);
-            var docLine = AddText(TL("DocStatus", card, 40, 80, 530, 14),
-                "documents", 10.5f, DPPTheme.TextTip, bold: false);
-            SetRef(view, "docStatusLine", docLine);
-
-            AddChevron(card, 566, 22);
-            MakeTappable(card, fill, outline, r, nameof(PassportRouter.Open1));
+            // v4.1: the serial moves ONTO the name's line — "… MS 50.4 - VCU0001" —
+            // while keeping its own 11 pt text/tip styling.
+            //
+            // TWO TMP objects, not one with rich text: AddText assigns the dedicated
+            // BOLD font asset (_fontBold) for the name, and no rich-text tag can switch
+            // a font ASSET back off, so an inline serial would render bold. Same rect y
+            // and height (62, 22) so the two midlines coincide; PassportView slides this
+            // one right by the measured width of the name.
+            var serial = AddText(TL("SerialNumber", landing, 24, 62, 200, 22),
+                "serial", 11, DPPTheme.TextTip, bold: false);
+            SetRef(view, "serialLine", serial);
         }
 
         // =================================================================
@@ -275,19 +299,29 @@ namespace DPP.EditorTools
 
         private static TileParts MakeTileCard(RectTransform landing, float x, float y, string name,
             string iconSprite, string title, PassportRouter r, string openMethod,
-            int rows, float firstRowY = 32f)
+            int rows, float firstRowY = 32f, float w = 290f, bool plusButton = false,
+            bool heroStroke = false)
         {
-            const float W = 290f, H = 72f;
-            var card = TL(name, landing, x, y, W, H);
+            const float H = 72f;
+            var card = TL(name, landing, x, y, w, H);
 
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
-                DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
-            outline.gameObject.SetActive(false);
-            AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            var fill = AddImage(CenterIn("Fill", card, W, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+            // v8: plusButton tiles are INERT cards — only the circle is clickable
+            // (Thiago, 2026-07-31). They therefore get no card-wide hover outline and no
+            // MakeTappable; the circle carries both. ⚠ This is an affordance split: the
+            // other tiles respond anywhere, these two respond on one 52 px circle.
+            Image outline = null;
+            if (!plusButton)
+            {
+                outline = AddImage(CenterIn("HoverOutline", card, w + 12, H + 12),
+                    DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
+                outline.gameObject.SetActive(false);
+            }
+            AddImage(CenterIn("Stroke", card, w + 2, H + 2), DPPSpriteFactory.RoundedR13,
+                heroStroke ? DPPTheme.TabActiveStroke : DPPTheme.RowStroke, sliced: true);
+            var fill = AddImage(CenterIn("Fill", card, w, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
 
             AddImage(TLCenter("Icon", card, 26, 36, 22, 22), iconSprite, DPPTheme.Hex("#7fd3b6"));
-            AddText(TL("Title", card, 48, 10, 224, 20), title, 14, DPPTheme.TextOnNavy, bold: true);
+            AddText(TL("Title", card, 48, 10, w - 90f, 20), title, 14, DPPTheme.TextOnNavy, bold: true);
 
             var dots = new Image[rows];
             var texts = new TMP_Text[rows];
@@ -295,12 +329,76 @@ namespace DPP.EditorTools
             {
                 float ry = firstRowY + i * 16f;
                 dots[i] = AddImage(TLCenter($"Dot{i}", card, 53, ry + 8, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TextTip);
-                texts[i] = AddText(TL($"Row{i}", card, 62, ry, 200, 16), "—", 11, DPPTheme.TextSecondary, bold: false);
+                // Narrower when a "+" sits at the right edge, so a long row can never
+                // slide under the circle.
+                texts[i] = AddText(TL($"Row{i}", card, 62, ry, plusButton ? 168f : 200f, 16),
+                    "—", 11, DPPTheme.TextSecondary, bold: false);
             }
 
-            AddChevron(card, 266, 36);
-            MakeTappable(card, fill, outline, r, openMethod);
+            if (plusButton) BuildPlusButton(card, w - 30f, 36f, r, openMethod);
+            else
+            {
+                AddChevron(card, w - 24f, 36f);
+                MakeTappable(card, fill, outline, r, openMethod);
+            }
             return new TileParts { card = card, dots = dots, texts = texts };
+        }
+
+        /// <summary>Circular "+" that opens a detail page. 40 px visual inside a 52 px hit
+        /// rect — 5.2 cm at panel scale, ~5° at 0.6 m, comfortably above hand-ray jitter and
+        /// over the 00 §4 minimum. Same stroke/fill/hover recipe as the screen-header back
+        /// button so the two read as the same class of control.</summary>
+        private static Button BuildPlusButton(RectTransform card, float cx, float cy,
+            PassportRouter router, string method)
+        {
+            var root = TLCenter("PlusButton", card, cx, cy, 52, 52);
+            var outline = AddImage(CenterIn("HoverOutline", root, 50, 50), DPPSpriteFactory.Circle64, Color.white);
+            outline.gameObject.SetActive(false);
+            AddImage(CenterIn("Ring", root, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
+            var fill = AddImage(CenterIn("Fill", root, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);
+            AddImage(CenterIn("Icon", root, 20, 20), DPPSpriteFactory.IcPlus, Color.white);
+
+            var btn = root.gameObject.AddComponent<Button>();
+            btn.transition = Selectable.Transition.None;
+            btn.targetGraphic = fill;
+            WireClick(btn, router, method);
+
+            var hover = root.gameObject.AddComponent<HoverHighlight>();
+            SetRef(hover, "highlightOutline", outline.gameObject);
+            return btn;
+        }
+
+        /// <summary>Spec chip pool on the Mechanical data row — the SAME pool the identity
+        /// hero owned in v2/v3, so PassportView.FillChips still drives it and every value
+        /// stays bound. Supply voltage deliberately left out: it belongs to Electrical data.</summary>
+        private static void BuildSpecChipPool(RectTransform card, PassportView view)
+        {
+            var chipRow = TL("SpecChips", card, 48, 30, 500, 20);
+            var roots = new RectTransform[SpecChipPool];
+            var labels = new TMP_Text[SpecChipPool];
+            for (int i = 0; i < SpecChipPool; i++)
+            {
+                roots[i] = TL($"Chip{i}", chipRow, 0, 0, 80, 20);
+                AddImage(Stretch("Fill", roots[i]), DPPSpriteFactory.Pill, DPPTheme.CardBlue, sliced: true);
+                labels[i] = AddText(Stretch("Label", roots[i]), "—", 10.5f, DPPTheme.Hex("#dbe4f0"),
+                    bold: false, align: TextAlignmentOptions.Center);
+                roots[i].gameObject.SetActive(false);
+            }
+            SetRefArray(view, "specChipRoots", roots);
+            SetRefArray(view, "specChipLabels", labels);
+        }
+
+        /// <summary>Single supply-voltage chip on the Electrical data tile. One chip rather
+        /// than a pool; the view widens it to its own text and hides it when unset.</summary>
+        private static void BuildSupplyChip(RectTransform card, PassportView view)
+        {
+            var root = TL("SupplyChip", card, 48, 30, 80, 20);
+            AddImage(Stretch("Fill", root), DPPSpriteFactory.Pill, DPPTheme.CardBlue, sliced: true);
+            var label = AddText(Stretch("Label", root), "—", 10.5f, DPPTheme.Hex("#dbe4f0"),
+                bold: false, align: TextAlignmentOptions.Center);
+            root.gameObject.SetActive(false);
+            SetRef(view, "supplyChipRoot", root);
+            SetRef(view, "supplyChipLabel", label);
         }
 
         /// <summary>Tri-state CE / RoHS / REACH badges on the compliance tile's first row.</summary>
@@ -497,7 +595,8 @@ namespace DPP.EditorTools
         // Bodies come with the modal build round.
         // =================================================================
         private static RectTransform MakeShellPage(RectTransform screen, PassportRouter router,
-            string name, string title, string iconSprite)
+            string name, string title, string iconSprite,
+            bool showIcon = true, string rightCaption = null, bool placeholder = true)
         {
             var page = Stretch(name, screen);
 
@@ -515,14 +614,39 @@ namespace DPP.EditorTools
             var hover = back.gameObject.AddComponent<HoverHighlight>();
             SetRef(hover, "highlightOutline", outline.gameObject);
 
-            AddImage(TLCenter("TitleIcon", page, 88, 44, 20, 20), iconSprite, DPPTheme.Hex("#7fd3b6"));
-            AddText(TL("Title", page, 102, 31, 480, 26), title, 19, DPPTheme.TextOnNavy, bold: true);
+            // v9: the icon is optional. Service & repair drops it (Thiago, 2026-07-31 —
+            // the wrench read as a magnifying glass) and the title slides into its slot.
+            // ⚠ The other four shells still show one; this is the odd header out.
+            if (showIcon) AddImage(TLCenter("TitleIcon", page, 88, 44, 20, 20), iconSprite, DPPTheme.Hex("#7fd3b6"));
+            AddText(TL("Title", page, showIcon ? 102 : 76, 31, 480, 26), title, 19, DPPTheme.TextOnNavy, bold: true);
+            if (!string.IsNullOrEmpty(rightCaption))
+                AddText(TL("RightCaption", page, 316, 36, 300, 16), rightCaption, 10.5f,
+                    DPPTheme.Hex("#e2a44a"), bold: false, align: TextAlignmentOptions.MidlineRight);
             AddImage(TL("Separator", page, 24, 76, 592, 1), null, DPPTheme.Hex("#1a335f"));
-            AddText(TL("Placeholder", page, 24, 110, 592, 20),
-                "Full entry is not built yet.", 13, DPPTheme.TextTip, bold: false);
+            if (placeholder)
+                AddText(TL("Placeholder", page, 24, 110, 592, 20),
+                    "Full entry is not built yet.", 13, DPPTheme.TextTip, bold: false);
 
             page.gameObject.SetActive(false);
             return page;
+        }
+
+        // =================================================================
+        // Slim header (v3) — caption + rule, no arrow, no product title.
+        //
+        // DPP CANVA LANDING ONLY. MakeScreenHeader below is shared with the
+        // disassembly intro (RBv2_0/4) and the Composition & impact landing, and
+        // MakeShellPage builds its own copy of the same arrow, so the arrow must
+        // NOT be stripped there — those screens still need a one-step-back edge.
+        // Here the back edge lives in the bottom bar as "Home".
+        //
+        // Caption sits at x 24 (the arrow's old slot) and the rule at y 48 instead
+        // of 76, which is the 28 px handed to the tab block.
+        // =================================================================
+        private static void MakeCaptionHeader(RectTransform parent, string caption)
+        {
+            AddText(TL("Eyebrow", parent, 24, 24, 300, 15), caption, 11.5f, DPPTheme.TextCaption, bold: false);
+            AddImage(TL("Separator", parent, 24, 48, 592, 1), null, DPPTheme.Hex("#1a335f"));
         }
 
         // =================================================================
@@ -607,12 +731,124 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
+        // Service & repair detail (spec 13 v9) — the FIRST populated shell.
+        //
+        // Everything here is bound: counts, tick positions, month labels and the log
+        // all come from service.software_updates[] and repair_history.events[]. The
+        // builder lays out empty pools; PassportView.PopulateService fills and places
+        // them. Nothing is typed in.
+        //
+        // ⚠ THE DATA IS INVENTED. Both collections carry basis "simulated", the header
+        // says so, and DppBasis.IsFirmSource excludes it so every bound dot renders dim.
+        // =================================================================
+        private const float SvcTrackX = 24f, SvcTrackW = 544f, SvcAxisY = 52f;
+
+        private static void BuildServiceDetail(RectTransform page, PassportView view)
+        {
+            // ---- two counters ----
+            var cA = TL("UpdatesCard", page, 24, 88, 290, 70);
+            AddImage(CenterIn("Stroke", cA, 292, 72), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
+            AddImage(CenterIn("Fill", cA, 290, 70), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            var upCount = AddText(TL("Count", cA, 18, 20, 44, 36), "0", 30, DPPTheme.TextOnNavy, bold: true);
+            AddText(TL("Label", cA, 62, 22, 200, 20), "Software updates", 13, DPPTheme.TextOnNavy, bold: true);
+            var upCaption = AddText(TL("Caption", cA, 62, 42, 210, 16), "—", 10.5f, DPPTheme.TextTip, bold: false);
+
+            var cB = TL("RepairsCard", page, 326, 88, 290, 70);
+            AddImage(CenterIn("Stroke", cB, 292, 72), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
+            AddImage(CenterIn("Fill", cB, 290, 70), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            var rpCount = AddText(TL("Count", cB, 18, 20, 44, 36), "0", 30, DPPTheme.TextOnNavy, bold: true);
+            AddText(TL("Label", cB, 62, 22, 200, 20), "Repairs", 13, DPPTheme.TextOnNavy, bold: true);
+            var rpCaption = AddText(TL("Caption", cB, 62, 42, 210, 16), "—", 10.5f, DPPTheme.TextTip, bold: false);
+
+            // ---- timeline ----
+            var tl = TL("TimelineCard", page, 24, 170, 592, 86);
+            AddImage(CenterIn("Stroke", tl, 594, 88), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", tl, 592, 86), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            AddText(TL("Head", tl, 24, 14, 300, 14), "UPDATE & REPAIR TIMELINE", 10, DPPTheme.TealLight, bold: true);
+            var vRange = AddText(TL("Versions", tl, 300, 14, 268, 14), "—", 10, DPPTheme.TextTip,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+            AddImage(TL("Axis", tl, SvcTrackX, SvcAxisY, SvcTrackW, 2), null, DPPTheme.Hex("#1a335f"));
+
+            // Month pool: labels + their axis notches, placed by the view.
+            var monthTicks = new RectTransform[SvcMonthPool];
+            var monthLabels = new TMP_Text[SvcMonthPool];
+            for (int i = 0; i < SvcMonthPool; i++)
+            {
+                monthTicks[i] = TL($"MonthTick{i}", tl, 0, SvcAxisY - 4f, 1, 10);
+                AddImage(monthTicks[i], null, DPPTheme.Hex("#2a4670"));
+                monthLabels[i] = AddText(TL($"MonthLabel{i}", tl, 0, SvcAxisY + 8f, 40, 14), "—", 10,
+                    DPPTheme.TextTip, bold: false, align: TextAlignmentOptions.Center);
+                monthTicks[i].gameObject.SetActive(false);
+                monthLabels[i].gameObject.SetActive(false);
+            }
+
+            // Update ticks stand ABOVE the axis, the repair marker hangs BELOW it, so the
+            // two event kinds never collide even when they fall on the same day.
+            var ticks = new RectTransform[SvcTickPool];
+            for (int i = 0; i < SvcTickPool; i++)
+            {
+                ticks[i] = TL($"Tick{i}", tl, 0, SvcAxisY - 18f, 2, 18);
+                AddImage(ticks[i], null, DPPTheme.TealAccent);
+                AddImage(CenterIn("Head", ticks[i], 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TealLight)
+                    .rectTransform.anchoredPosition = new Vector2(0f, 9f);
+                ticks[i].gameObject.SetActive(false);
+            }
+
+            var marker = TL("RepairMarker", tl, 0, SvcAxisY + 2f, 12, 12);
+            AddImage(marker, null, DPPTheme.Hex("#e2a44a")).rectTransform.localEulerAngles = new Vector3(0, 0, 45);
+            marker.gameObject.SetActive(false);
+
+            // ---- recent-entry log ----
+            var lg = TL("LogCard", page, 24, 268, 592, 116);
+            AddImage(CenterIn("Stroke", lg, 594, 118), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
+            AddImage(CenterIn("Fill", lg, 592, 116), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            AddText(TL("Head", lg, 24, 12, 300, 14), "RECENT ENTRIES", 10, DPPTheme.TealLight, bold: true);
+
+            var logDots = new Image[SvcLogPool];
+            var logDates = new TMP_Text[SvcLogPool];
+            var logDescs = new TMP_Text[SvcLogPool];
+            var logRights = new TMP_Text[SvcLogPool];
+            for (int i = 0; i < SvcLogPool; i++)
+            {
+                float ry = 34f + i * 19f;
+                logDots[i] = AddImage(TLCenter($"LogDot{i}", lg, 28, ry + 7, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TextTip);
+                logDates[i] = AddText(TL($"LogDate{i}", lg, 40, ry, 84, 14), "—", 10.5f, DPPTheme.TextCaption, bold: false);
+                logDescs[i] = AddText(TL($"LogDesc{i}", lg, 126, ry, 330, 14), "—", 10.5f, DPPTheme.TextSecondary, bold: false);
+                logRights[i] = AddText(TL($"LogRight{i}", lg, 400, ry, 170, 14), "—", 10.5f, DPPTheme.TextTip,
+                    bold: false, align: TextAlignmentOptions.MidlineRight);
+                logDots[i].gameObject.SetActive(false);
+                logDates[i].gameObject.SetActive(false);
+                logDescs[i].gameObject.SetActive(false);
+                logRights[i].gameObject.SetActive(false);
+            }
+            var logFooter = AddText(TL("LogFooter", lg, 40, 96, 520, 14), "", 9.5f, DPPTheme.TextTip, bold: false);
+
+            SetRef(view, "svcUpdateCount", upCount);
+            SetRef(view, "svcUpdateCaption", upCaption);
+            SetRef(view, "svcRepairCount", rpCount);
+            SetRef(view, "svcRepairCaption", rpCaption);
+            SetRef(view, "svcVersionRange", vRange);
+            SetRef(view, "svcRepairMarker", marker);
+            SetRef(view, "svcLogFooter", logFooter);
+            SetRefArray(view, "svcTicks", ticks);
+            SetRefArray(view, "svcMonthTicks", monthTicks);
+            SetRefArray(view, "svcMonthLabels", monthLabels);
+            SetRefArray(view, "svcLogDots", logDots);
+            SetRefArray(view, "svcLogDates", logDates);
+            SetRefArray(view, "svcLogDescs", logDescs);
+            SetRefArray(view, "svcLogRights", logRights);
+        }
+
+        // =================================================================
         // Shared bits
         // =================================================================
 
-        /// <summary>Wide primary CTA (teal pill + chevron) anchored top-left in spec coords.</summary>
+        /// <summary>Wide CTA anchored top-left in spec coords. primary = teal pill with a
+        /// chevron; secondary = dark fill inside a grey stroke and no chevron — the same
+        /// treatment BuildPillButton gives Welcome's "Close app". Defaults keep every
+        /// pre-v3 call site behaving exactly as before.</summary>
         private static Button BuildWideCta(RectTransform parent, string name,
-            float x, float y, float w, string label)
+            float x, float y, float w, string label, bool primary = true, bool chevron = true)
         {
             const float H = 52f;
             var root = TL(name, parent, x, y, w, H);
@@ -621,17 +857,25 @@ namespace DPP.EditorTools
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
 
+            if (!primary)
+                AddImage(CenterIn("Stroke", root, w + 4f, H + 4f),
+                    DPPSpriteFactory.RoundedR13, DPPTheme.TabInactiveFill, sliced: true);
+
             var fill = AddImage(CenterIn("Fill", root, w, H), DPPSpriteFactory.RoundedR13,
-                DPPTheme.TealAccent, sliced: true, raycast: true);
+                primary ? DPPTheme.TealAccent : DPPTheme.SecondaryButtonFill, sliced: true, raycast: true);
 
-            AddText(Stretch("Label", root), label, 16, DPPTheme.TextOnNavy,
-                bold: true, align: TextAlignmentOptions.Center);
+            AddText(Stretch("Label", root), label, 16,
+                primary ? DPPTheme.TextOnNavy : DPPTheme.TextSecondary,
+                bold: primary, align: TextAlignmentOptions.Center);
 
-            // Chevron from two capsule bars — the SF Pro SDF atlas has no glyph (00 §3).
-            // anchoredPosition.y is UP, so the UPPER bar tilts -45.
-            float cx = w * 0.5f - 26f;
-            CtaChevronBar(root, "ChevronTop", cx, 4f, -45f);
-            CtaChevronBar(root, "ChevronBottom", cx, -4f, 45f);
+            if (chevron)
+            {
+                // Chevron from two capsule bars — the SF Pro SDF atlas has no glyph (00 §3).
+                // anchoredPosition.y is UP, so the UPPER bar tilts -45.
+                float cx = w * 0.5f - 26f;
+                CtaChevronBar(root, "ChevronTop", cx, 4f, -45f);
+                CtaChevronBar(root, "ChevronBottom", cx, -4f, 45f);
+            }
 
             var button = root.gameObject.AddComponent<Button>();
             button.transition = Selectable.Transition.None;

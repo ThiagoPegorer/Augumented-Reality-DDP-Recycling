@@ -11,7 +11,7 @@ namespace DPP.EditorTools
 {
     /// <summary>
     /// RBv2_0/3 builder — ReBuilt v2.0 Open App routine (spec 12, mocks
-    /// drafts/12_welcome_canvas.svg + drafts/12b_first_run_modal.svg).
+    /// drafts/12_v2_welcome_canvas.svg + drafts/12b_v2_first_run.svg).
     ///
     /// Builds TWO independent world-space canvases:
     ///   "WelcomeCanvas"  640x430 — OPEN APP: brand logo, title, subtitle,
@@ -19,8 +19,11 @@ namespace DPP.EditorTools
     ///                    Rev 2 (2026-07-30): generated teal-disc mark replaced by
     ///                    Assets/Textures/Brand/rebuilt_logo.png at 96 px, no disc;
     ///                    primary label "Continue to scan" -> "Scan to start".
-    ///   "FirstRunCanvas" 440x210 — FIRST TIME USING THE APP? modal, shown
-    ///                    after a successful scan, before the main canvas.
+    ///   "FirstRunCanvas" 640x430 — FIRST TIME USING THE APP?, shown after a
+    ///                    successful scan, before the main canvas.
+    ///                    Rev 2 (2026-07-30): was a 440x210 modal card. Now the
+    ///                    standard panel size with panel chrome, and the buttons
+    ///                    are "Skip" / "Tutorial" on the Welcome canvas geometry.
     ///
     /// Both get their own GraphicRaycaster and grabber bar (00 §4 on-plane
     /// rule + §5), and every button carries the hover-only white outline
@@ -146,13 +149,35 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // FIRST TIME USING THE APP? — modal canvas (spec 12 §3)
+        // FIRST TIME USING THE APP? — full-size panel (spec 12 §3, rev 2)
+        //
+        // REV 2 (2026-07-30), mock drafts/12b_v2_first_run.svg option B:
+        //
+        //   * 440 x 210 modal card  ->  the standard 640 x 430 panel (00 §1).
+        //   * Modal chrome (stroke-behind-fill RoundedR20 card) -> PANEL chrome
+        //     (RoundedR22 + NavyPanel). At full panel size the card border read
+        //     as a frame inside a frame. sortingOrder stays 10 — this is still
+        //     drawn ON TOP of the panel canvases, it just no longer *looks* like
+        //     a small floating dialog.
+        //   * Labels "No, skip" / "Yes, show me" -> "Skip" / "Tutorial".
+        //   * Buttons take the WELCOME CANVAS geometry exactly (180 @ cx 114,
+        //     388 @ cx 422, cy 376). Asymmetric on purpose: Welcome is the screen
+        //     the participant just came from, so neither hit target moves.
+        //     WARNING — it also weights the choice toward the tutorial, and the
+        //     narrow left pill was "Close app" one screen earlier. Both are
+        //     accepted trade-offs; the steering is worth naming in the
+        //     methodology because the tutorial is part of Condition B.
+        //
+        // A pinch glyph and a "Two steps · about a minute" caption were both
+        // trialled in the mock and CUT (Thiago, 2026-07-30). That leaves two
+        // lines of text on a tall panel, so the text block is optically centred
+        // in the space ABOVE the buttons (baselines 168 / 198) rather than kept
+        // on Welcome's baselines (216 / 246). With no logo above it, Welcome's
+        // empty top third would read as an image that failed to load.
         // =================================================================
         private static GameObject BuildFirstRunCanvas(GameObject mainGO,
             out FirstRunPrompt prompt, out Button yesBtn, out Button noBtn)
         {
-            const float W = 440f, H = 210f;
-
             var go = new GameObject("FirstRunCanvas", typeof(Canvas), typeof(GraphicRaycaster));
             var canvas = go.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
@@ -160,27 +185,28 @@ namespace DPP.EditorTools
             canvas.sortingOrder = 10;                             // above the panel canvases
 
             var rt = (RectTransform)go.transform;
-            rt.sizeDelta = new Vector2(W, H);
+            rt.sizeDelta = new Vector2(PanelW, PanelH);           // 640 x 430 — standard panel (00 §1)
             rt.position = CanvasPos + new Vector3(0f, 0f, -0.05f);
             rt.localScale = Vector3.one * CanvasScale;
 
             prompt = go.AddComponent<FirstRunPrompt>();
 
-            var card = Stretch("Card", rt);
-            // Stroke-behind-fill (same technique as the choice cards).
-            AddImage(Stretch("Stroke", card), DPPSpriteFactory.RoundedR20, DPPTheme.TabActiveStroke, sliced: true);
-            AddImage(CenterIn("Fill", card, W - 4f, H - 4f), DPPSpriteFactory.RoundedR20, DPPTheme.TabActiveFill, sliced: true);
+            var page = Stretch("FirstRun", rt);
+            AddImage(Stretch("PanelBG", page), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
 
-            AddText(TLCenter("Title", card, 220, 52, 400, 26),
-                "First time using ReBuilt?", 18, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
-            AddText(TLCenter("Subtitle", card, 220, 82, 400, 20),
-                "A quick tutorial shows you how to interact in AR.", 13, DPPTheme.TextSecondary,
+            // TLCenter takes the RECT centre, not the baseline. TMP puts the
+            // baseline roughly 10 px below centre at 30 pt and 5 px at 14 pt, so
+            // the mock's 168 / 198 baselines become rect centres of 158 / 193.
+            AddText(TLCenter("Title", page, 320, 158, 600, 42),
+                "First time using ReBuilt?", 30, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            AddText(TLCenter("Subtitle", page, 320, 193, 600, 22),
+                "A quick tutorial shows you how to interact in AR.", 14, DPPTheme.TextSecondary,
                 bold: false, align: TextAlignmentOptions.Center);
 
-            noBtn = BuildPillButton(card, "NoButton", cx: 119, cy: 156, w: 190, h: 52,
-                label: "No, skip", labelSize: 15, primary: false, chevron: false);
-            yesBtn = BuildPillButton(card, "YesButton", cx: 329, cy: 156, w: 190, h: 52,
-                label: "Yes, show me", labelSize: 15, primary: true, chevron: true);
+            noBtn = BuildPillButton(page, "NoButton", cx: 114, cy: 376, w: 180, h: 52,
+                label: "Skip", labelSize: 16, primary: false, chevron: false);
+            yesBtn = BuildPillButton(page, "YesButton", cx: 422, cy: 376, w: 388, h: 52,
+                label: "Tutorial", labelSize: 16, primary: true, chevron: true);
 
             BuildGrabberBar(rt);                                  // draggable anywhere in AR space
             return go;

@@ -1,0 +1,111 @@
+<svg width="100%" viewBox="0 0 680 610" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>DPP Canva v5 — Substances &amp; safety becomes a full-width Mechanical data row</title>
+<desc>The first tile is renamed Mechanical data and becomes a full-width 592 by 72 band carrying the spec chips that used to live in the identity hero, with a plus button at its right edge that opens an empty detail tab for the technical drawing. The remaining three tiles drop into a two-plus-one arrangement, leaving one slot empty because the rename removes the only tile that spoke about substances of concern.</desc>
+
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+
+<!-- header -->
+<text x="44" y="55" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#7f9bc4">Digital Product Passport</text>
+<rect x="44" y="68" width="592" height="1" fill="#1a335f"/>
+<text x="44" y="98" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Bosch Motorsport | Vehicle Control Unit MS 50.4<tspan font-size="11" font-weight="normal" fill="#6f86a8"> - VCU0001</tspan></text>
+
+<!-- ================= MECHANICAL DATA — full width 592 x 72 ================= -->
+<rect x="43" y="119" width="594" height="74" rx="13" fill="#21407a"/>
+<rect x="44" y="120" width="592" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M63 153 L70 149 L77 153 L70 157 Z"/>
+  <path d="M63 153 L63 160"/><path d="M77 153 L77 160"/>
+  <path d="M63 160 L70 164 L77 160"/><path d="M70 157 L70 164"/>
+</g>
+<text x="92" y="143" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Mechanical data</text>
+
+<g font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0">
+  <rect x="92"  y="156" width="117" height="20" rx="10" fill="#13366b"/><text x="150.5" y="170" text-anchor="middle">200 x 150 x 60 mm</text>
+  <rect x="215" y="156" width="50"  height="20" rx="10" fill="#13366b"/><text x="240"   y="170" text-anchor="middle">660 g</text>
+  <rect x="271" y="156" width="44"  height="20" rx="10" fill="#13366b"/><text x="293"   y="170" text-anchor="middle">IP67</text>
+  <rect x="321" y="156" width="56"  height="20" rx="10" fill="#13366b"/><text x="349"   y="170" text-anchor="middle">5-18 V</text>
+  <rect x="383" y="156" width="84"  height="20" rx="10" fill="#13366b"/><text x="425"   y="170" text-anchor="middle">-20 to 80 °C</text>
+</g>
+
+<!-- the "+" circle: THE ONLY hit target on this row. The card itself is not a button. -->
+<circle cx="606" cy="156" r="21.5" fill="#2e5aa0"/>
+<circle cx="606" cy="156" r="20" fill="#13366b"/>
+<g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round">
+  <line x1="598" y1="156" x2="614" y2="156"/>
+  <line x1="606" y1="148" x2="606" y2="164"/>
+</g>
+<rect x="580" y="130" width="52" height="52" rx="26" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>
+<text x="606" y="196" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#5dcaa5" opacity="0.85">52 px hit</text>
+
+<!-- ================= remaining tiles, 2 + 1 ================= -->
+<rect x="43" y="199" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="44" y="200" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M70 226 L79 229 L79 238 C79 242, 74 245, 70 247 C66 245, 61 242, 61 238 L61 229 Z"/>
+</g>
+<text x="92" y="223" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Compliance &amp; certification</text>
+<g font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5">
+  <rect x="92"  y="230" width="34" height="16" rx="8" fill="#0e2950" stroke="#1d9e75" stroke-width="1.2"/><text x="109" y="241" text-anchor="middle" fill="#5dcaa5">CE</text>
+  <rect x="130" y="230" width="46" height="16" rx="8" fill="#0e2950" stroke="#1d9e75" stroke-width="1.2"/><text x="153" y="241" text-anchor="middle" fill="#5dcaa5">RoHS</text>
+  <rect x="180" y="230" width="52" height="16" rx="8" fill="#0e2950" stroke="#6f86a8" stroke-width="1.2"/><text x="206" y="241" text-anchor="middle" fill="#6f86a8">REACH</text>
+</g>
+<circle cx="97" cy="256" r="3.5" fill="#6f86a8"/>
+<text x="106" y="259.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 certificate on file</text>
+<polyline points="306,231 312,236 306,241" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="345" y="199" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="346" y="200" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M364.5 243 L372.5 235"/>
+  <path d="M375.5 232 a5.5 5.5 0 1 0 -0.2 -0.2"/>
+</g>
+<text x="394" y="223" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Service &amp; repair</text>
+<circle cx="399" cy="240" r="3.5" fill="#6f86a8"/>
+<text x="408" y="243.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Spare parts — not provided</text>
+<circle cx="399" cy="256" r="3.5" fill="#6f86a8"/>
+<text x="408" y="259.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Disassembly guide — in app</text>
+<polyline points="608,231 614,236 608,241" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="43" y="279" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="44" y="280" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="70" cy="316" r="9"/><path d="M70 311 L70 316 L74 319"/>
+</g>
+<text x="92" y="303" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Usage &amp; repair history</text>
+<circle cx="97" cy="320" r="3.5" fill="#6f86a8"/>
+<text x="106" y="323.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">In service — not provided</text>
+<circle cx="97" cy="336" r="3.5" fill="#6f86a8"/>
+<text x="106" y="339.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Repairs logged — none</text>
+<polyline points="306,311 312,316 306,321" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- the slot the rename empties -->
+<rect x="346" y="280" width="290" height="72" rx="13" fill="none" stroke="#e24b4a" stroke-width="1.6" stroke-dasharray="6 5" opacity="0.75"/>
+<text x="491" y="309" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" font-weight="bold" fill="#e24b4a" opacity="0.9">empty after the rename</text>
+<text x="491" y="326" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" opacity="0.9">nothing now speaks about substances</text>
+<text x="491" y="341" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" opacity="0.9">of concern — Table 6 #5 #6 #7 #16 #17</text>
+
+<!-- bottom bar -->
+<rect x="44" y="374" width="180" height="52" rx="13" fill="#1a2740" stroke="#324a6d" stroke-width="2"/>
+<text x="134" y="406" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#9fb3d1">Home</text>
+<rect x="248" y="374" width="388" height="52" rx="13" fill="#1d9e75"/>
+<text x="442" y="406" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Continue</text>
+<polyline points="606,388 614,396 606,404" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1.5"/>
+<line x1="305" y1="473" x2="375" y2="473" stroke="#6b7686" stroke-width="3" stroke-linecap="round"/>
+
+<!-- ===================== NOTES ===================== -->
+<text x="20" y="14" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">DPP Canva v5 rev B · Mechanical data 592 x 72 @ y 100 · card NOT tappable, only the 40 px circle (52 px hit rect) @ c(562, 36) · Compliance + Service @ y 180 · Usage @ y 260 · bottom bar unchanged @ y 354</text>
+
+<text x="20" y="506" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5dcaa5">CHIPS ARE BOUND, NOT TYPED</text>
+<text x="196" y="506" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">the existing specChipRoots pool + PassportView.FillChips move here — this un-orphans the values v4 dropped, with no new code</text>
+<text x="20" y="522" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">FillChips emits every non-null specification in a fixed order, so you get FIVE chips, not three. Filtering to your three is one line — say so and I will.</text>
+
+<text x="20" y="546" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#e2a44a">TEXT CHANGED FROM YOUR BRIEF</text>
+<text x="216" y="546" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">"≤ 660 g" → "660 g".  U+2264 is NOT in either SF Pro SDF atlas (checked: 244 glyphs, ≤ and U+2212 both absent) — it</text>
+<text x="216" y="562" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">would render as a fallback box. "≤" would also be wrong: 660 g is the declared mass, not an upper bound. "°" IS in the atlas, so °C is safe.</text>
+<text x="216" y="578" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Dimensions render 200 x 150 x 60 mm from the payload, per your answer. specifications.protection_class edited: "IP67 (representative)" → "IP67".</text>
+
+<text x="20" y="602" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#e24b4a">NEW SPRITES</text>
+<text x="108" y="602" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">IcCube (isometric box, replaces the warning triangle) and IcPlus. The card loses MakeTappable and its hover outline — the circle carries both.</text>
+</svg>

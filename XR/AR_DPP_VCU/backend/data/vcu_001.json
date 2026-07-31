@@ -8,9 +8,9 @@
   },
   "identity": {
     "manufacturer": "Bosch Motorsport",
-    "model": "VCU Bosch MS 50.4 (model)",
-    "type_number": null,
-    "serial_number": "VCU-2026-001",
+    "model": "Vehicle Control Unit MS 50.4",
+    "type_number": "F02U.V02.965-02",
+    "serial_number": "VCU0001",
     "production_date": "2026-03-27",
     "country_of_origin": "DE",
     "product_category": "EEE - electronic control unit (WEEE cat. 5, small equipment)",
@@ -20,7 +20,7 @@
   "specifications": {
     "size_mm": "200 x 150 x 60",
     "weight_g": 660,
-    "protection_class": "IP67 (representative)",
+    "protection_class": "IP67",
     "supply_voltage": "5-18 V",
     "operating_temp_c": "-20 to 80",
     "connectors": "3 round connectors (LIFE, SENS-A, SENS-B), screw-fixed",
@@ -572,12 +572,81 @@
   "service": {
     "spare_parts": [],
     "maintenance_interval": null,
-    "software_update_policy": null,
+    "software_update_policy": "Over-the-air, automatic, every 14 days",
     "repair_doc_id": "repair_manual",
     "resale_options": [],
     "eol_options": [],
     "waste_handling_services": [],
-    "basis": "not_provided"
+    "basis": "not_provided",
+    "software_updates": [
+      {
+        "date": "2026-03-02",
+        "version": "v4.12.1",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-03-16",
+        "version": "v4.12.2",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-03-30",
+        "version": "v4.12.3",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-04-13",
+        "version": "v4.12.4",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-04-27",
+        "version": "v4.13.0",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-05-11",
+        "version": "v4.13.1",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-05-25",
+        "version": "v4.13.2",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-06-08",
+        "version": "v4.13.3",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-06-22",
+        "version": "v4.13.4",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-07-06",
+        "version": "v4.14.0",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      },
+      {
+        "date": "2026-07-20",
+        "version": "v4.14.1",
+        "channel": "automatic",
+        "note": "over-the-air control-unit firmware"
+      }
+    ],
+    "software_update_basis": "simulated"
   },
   "usage_history": {
     "purchase_date": null,
@@ -588,8 +657,18 @@
     "basis": "not_provided"
   },
   "repair_history": {
-    "events": [],
-    "basis": "not_provided"
+    "events": [
+      {
+        "date": "2026-05-14",
+        "description": "SENS-B connector replaced after intermittent signal loss",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": 148.0,
+        "image_url": null
+      }
+    ],
+    "basis": "simulated"
   },
   "disassembly": {
     "total_steps": 5,
@@ -600,8 +679,9 @@
     "parts": [
       "VCU case",
       "PCB board",
-      "3 processors",
-      "3 chips",
+      "2 processors",
+      "1 CPU",
+      "3 sensors",
       "3 connectors",
       "14 screws"
     ],
@@ -686,13 +766,13 @@
         ],
         "actions": [
           {
-            "title": "Locate the processors & ICs",
-            "subtitle": "3 processors + 3 chips in the board pockets",
+            "title": "Locate the processors, CPU & sensors",
+            "subtitle": "2 processors + 1 CPU + 3 sensors in the board pockets",
             "icon": "magnify",
             "value": false
           },
           {
-            "title": "Pop the chips out of their pockets",
+            "title": "Pop the parts out of their pockets",
             "subtitle": "High-value silicon · reuse stream",
             "icon": "chip",
             "value": true
@@ -710,7 +790,7 @@
         "actions": [
           {
             "title": "Shells into the aluminium stream",
-            "subtitle": "Die-cast AlSi · 363 g · highest CO2 credit",
+            "subtitle": "Die-cast AlSi · 344 g · highest CO2 credit",
             "icon": "recycle",
             "value": false
           },
@@ -741,5 +821,50 @@
       "instructions": [],
       "basis": "not_provided"
     }
+  },
+  "physical_unit": {
+    "is_replica": true,
+    "replica_of": "Bosch Motorsport Vehicle Control Unit MS 50.4",
+    "size_mm": "200 x 150 x 60",
+    "basis": "measured",
+    "note": "3D-printed demonstrator built for the ReBuilt v2.0 study. The product's declared size is 166 x 121 x 41 mm (Bosch data sheet 234686731).",
+    "parts": [
+      {
+        "id": "connectors",
+        "name": "Connectors",
+        "count": 3,
+        "colour": "grey",
+        "swatch_hex": "#7f9bc4",
+        "photo_id": "connectors",
+        "note": "stand in for LIFE, SENS-A and SENS-B"
+      },
+      {
+        "id": "processors",
+        "name": "Processors",
+        "count": 2,
+        "colour": "blue and yellow",
+        "swatch_hex": "#4da3ff",
+        "photo_id": "processors",
+        "note": "667 MHz dual core"
+      },
+      {
+        "id": "cpu",
+        "name": "CPU",
+        "count": 1,
+        "colour": "brown",
+        "swatch_hex": "#8a6240",
+        "photo_id": "cpu",
+        "note": null
+      },
+      {
+        "id": "sensors",
+        "name": "Sensors",
+        "count": 3,
+        "colour": "red",
+        "swatch_hex": "#e24b4a",
+        "photo_id": "sensors",
+        "note": null
+      }
+    ]
   }
 }

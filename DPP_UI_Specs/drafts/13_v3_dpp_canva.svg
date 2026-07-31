@@ -1,0 +1,110 @@
+<svg width="100%" viewBox="0 0 680 560" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>DPP Canva v3 — APPROVED: arrow removed, slim header, Home / Continue bottom bar</title>
+<desc>The DPP Canva landing page after three deletions and one addition. The circular back arrow at top left is gone, replaced by a labelled Home pill on the left of the bottom bar with Continue as the wide teal primary on the right. The 19 pt Vehicle Control Unit title is deleted and Digital Product Passport keeps its caption styling but moves left to x 24. The two-line dot legend is deleted. Everything between the rule and the button row shifts up 28 px, which is the space reclaimed for the tab remodel.</desc>
+
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+
+<!-- header: caption only, moved left into the arrow's slot -->
+<text x="44" y="55" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#7f9bc4">Digital Product Passport</text>
+<rect x="44" y="68" width="592" height="1" fill="#1a335f"/>
+
+<!-- ---------- identity hero (was y 88, now y 60) ---------- -->
+<rect x="43" y="79" width="594" height="98" rx="13" fill="#2e5aa0"/>
+<rect x="44" y="80" width="592" height="96" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round">
+  <circle cx="70" cy="99" r="4.4"/>
+  <path d="M62.5 110 C63.8 104.6, 76.2 104.6, 77.5 110"/>
+</g>
+<text x="92" y="106" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Identity &amp; specifications</text>
+<text x="594" y="106" text-anchor="end" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">EEE</text>
+<text x="70" y="127" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff">Bosch · VCU-2100 · SN 0001</text>
+<g font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0">
+  <rect x="70" y="136" width="64" height="20" rx="10" fill="#13366b"/><text x="102" y="150" text-anchor="middle">660.2 g</text>
+  <rect x="140" y="136" width="58" height="20" rx="10" fill="#13366b"/><text x="169" y="150" text-anchor="middle">12 V DC</text>
+  <rect x="204" y="136" width="52" height="20" rx="10" fill="#13366b"/><text x="230" y="150" text-anchor="middle">IP6K7</text>
+</g>
+<circle cx="75" cy="167" r="3.5" fill="#6f86a8"/>
+<text x="84" y="170" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">Documents — not provided</text>
+<polyline points="606,97 612,102 606,107" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- ---------- four tiles (was y 192 / 272, now y 164 / 244) ---------- -->
+<rect x="43" y="183" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="44" y="184" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M70 212 L79 227 L61 227 Z"/><path d="M70 217 L70 221"/>
+</g>
+<text x="92" y="207" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Substances &amp; safety</text>
+<circle cx="97" cy="224" r="3.5" fill="#6f86a8"/>
+<text x="106" y="227.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">SVHC — not provided</text>
+<circle cx="97" cy="240" r="3.5" fill="#6f86a8"/>
+<text x="106" y="243.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Safety warnings — none</text>
+<polyline points="306,215 312,220 306,225" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="345" y="183" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="346" y="184" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M372 210 L381 213 L381 222 C381 226, 376 229, 372 231 C368 229, 363 226, 363 222 L363 213 Z"/>
+</g>
+<text x="394" y="207" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Compliance &amp; certification</text>
+<g font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5">
+  <rect x="394" y="214" width="34" height="16" rx="8" fill="#0e2950" stroke="#1d9e75" stroke-width="1.2"/><text x="411" y="225" text-anchor="middle" fill="#5dcaa5">CE</text>
+  <rect x="432" y="214" width="46" height="16" rx="8" fill="#0e2950" stroke="#1d9e75" stroke-width="1.2"/><text x="455" y="225" text-anchor="middle" fill="#5dcaa5">RoHS</text>
+  <rect x="482" y="214" width="52" height="16" rx="8" fill="#0e2950" stroke="#6f86a8" stroke-width="1.2"/><text x="508" y="225" text-anchor="middle" fill="#6f86a8">REACH</text>
+</g>
+<circle cx="399" cy="240" r="3.5" fill="#6f86a8"/>
+<text x="408" y="243.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 certificate on file</text>
+<polyline points="608,215 614,220 608,225" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="43" y="263" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="44" y="264" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M62.5 307 L70.5 299"/>
+  <path d="M73.5 296 a5.5 5.5 0 1 0 -0.2 -0.2"/>
+</g>
+<text x="92" y="287" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Service &amp; repair</text>
+<circle cx="97" cy="304" r="3.5" fill="#6f86a8"/>
+<text x="106" y="307.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Spare parts — not provided</text>
+<circle cx="97" cy="320" r="3.5" fill="#6f86a8"/>
+<text x="106" y="323.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Disassembly guide — in app</text>
+<polyline points="306,295 312,300 306,305" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="345" y="263" width="292" height="74" rx="13" fill="#21407a"/>
+<rect x="346" y="264" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="372" cy="300" r="9"/><path d="M372 295 L372 300 L376 303"/>
+</g>
+<text x="394" y="287" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Usage &amp; repair history</text>
+<circle cx="399" cy="304" r="3.5" fill="#6f86a8"/>
+<text x="408" y="307.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">In service — not provided</text>
+<circle cx="399" cy="320" r="3.5" fill="#6f86a8"/>
+<text x="408" y="323.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Repairs logged — none</text>
+<polyline points="608,295 614,300 608,305" fill="none" stroke="#9fb3d1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- reclaimed gap marker -->
+<g stroke="#5dcaa5" stroke-width="1" stroke-dasharray="4 4" opacity="0.6">
+  <line x1="640" y1="337" x2="640" y2="374"/>
+</g>
+<text x="646" y="360" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" opacity="0.9">38</text>
+
+<!-- ---------- bottom bar: Home LEFT, Continue RIGHT ---------- -->
+<rect x="44" y="374" width="180" height="52" rx="13" fill="#1a2740" stroke="#324a6d" stroke-width="2"/>
+<text x="134" y="406" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#9fb3d1">Home</text>
+
+<rect x="248" y="374" width="388" height="52" rx="13" fill="#1d9e75"/>
+<text x="442" y="406" text-anchor="middle" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Continue</text>
+<polyline points="606,388 614,396 606,404" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- grabber -->
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1.5"/>
+<line x1="305" y1="473" x2="375" y2="473" stroke="#6b7686" stroke-width="3" stroke-linecap="round"/>
+
+<!-- ===================== NOTES ===================== -->
+<text x="20" y="14" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">DPP Canva v3 · APPROVED 2026-07-30 · panel 640 x 430 · tab block untouched — remodel is the next step</text>
+
+<text x="20" y="506" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#e24b4a">REMOVED</text>
+<text x="92" y="506" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">circular back arrow (top left, 40 px)  ·  "Vehicle Control Unit" 19 pt title  ·  the two-line dot legend (bottom left)</text>
+<text x="20" y="524" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#5dcaa5">RECLAIMED</text>
+<text x="92" y="524" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">28 px vertical — rule 76 → 48, hero 88 → 60, tiles 192 → 164 and 272 → 244. Gap above the bottom bar: 10 px → 38 px.</text>
+<text x="20" y="542" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" font-weight="bold" fill="#7f9bc4">BOTTOM BAR</text>
+<text x="106" y="542" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Home (secondary) 180 @ x 24  ·  24 px gutter  ·  Continue (primary + chevron) 388 @ x 228. 180 + 24 + 388 = 592.</text>
+</svg>

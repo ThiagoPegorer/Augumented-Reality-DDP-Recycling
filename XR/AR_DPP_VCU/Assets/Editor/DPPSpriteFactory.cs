@@ -32,6 +32,9 @@ namespace DPP.EditorTools
         // Stroke icons (white, transparent bg, tint via Image.color).
         public const string IcHouse   = "ui_ic_house";
         public const string IcPerson  = "ui_ic_person";
+        public const string IcCube    = "ui_ic_cube";    // v8 - Mechanical data
+        public const string IcBolt    = "ui_ic_bolt";    // v8 - Electrical data
+        public const string IcPlus    = "ui_ic_plus";    // v8 - "open this page"
         public const string IcLayers  = "ui_ic_layers";
         public const string IcWarning = "ui_ic_warning";
         public const string IcShield  = "ui_ic_shield";
@@ -92,6 +95,16 @@ namespace DPP.EditorTools
             // head still reads as open at the 22 px the tiles draw it at.
             MakeStrokeIcon(IcWrench, 2.0f,
                 Poly(-7.5f,7, 0.5f,-1), ArcPts(3.5f,-4, 4.4f,4.4f, 55, 325));
+            // v8 glyphs. Cube = isometric box (mechanical), bolt = electrical, plus =
+            // "there is a page behind this". Drawn, not typed: 00 §3 keeps text to the
+            // SF Pro SDF atlas and a UI affordance should not depend on a font glyph.
+            MakeStrokeIcon(IcCube, 1.8f,
+                Poly(-7,-3, 0,-7, 7,-3, 0,1, -7,-3), Poly(-7,-3, -7,4), Poly(7,-3, 7,4),
+                Poly(-7,4, 0,8, 7,4), Poly(0,1, 0,8));
+            MakeStrokeIcon(IcBolt, 1.8f,
+                Poly(2,-8, -4,1, 0,1, -2,8, 4,-1, 0,-1, 2,-8));
+            MakeStrokeIcon(IcPlus, 2.4f,
+                Poly(0,-6.5f, 0,6.5f), Poly(-6.5f,0, 6.5f,0));
             // Hollow status dot. A ring must be its own sprite: Circle64 is a plain
             // disc with no 9-slice border, so Image.fillCenter=false renders nothing.
             MakeStrokeIcon(CircleRing, 2.6f, CirclePts(0,0,7.2f));

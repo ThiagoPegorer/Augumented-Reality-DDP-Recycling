@@ -3,7 +3,8 @@
 > **Living spec** — updated every iteration. Current status: **✅ BUILT & DEVICE-TESTED (2026-07-29)** —
 > ReBuilt v2.0 **block 1 of 4**. Not yet frozen: RBv2.0 is released only after the full end-to-end pass.
 > Journey source: Miro `USER JOURNEY DIAGRAM` v4 (`OPEN APP ROUTINE`). Mocks:
-> `drafts/12_welcome_canvas.svg`, `drafts/12b_first_run_modal.svg`.
+> `drafts/12_v2_welcome_canvas.svg`, `drafts/12b_v2_first_run.svg`
+> (superseded: `12_welcome_canvas.svg`, `12b_first_run_modal.svg`).
 
 ---
 
@@ -63,24 +64,56 @@ mark — the entry screen must never render blank.
 `teal/accent`, which is the colour of the CTA directly beneath it. The two greens are visibly not the same
 green. Recolouring a logo to match a UI palette is the wrong trade, so it stays as authored.
 
-## 3. First-run prompt (`FirstRunCanvas`, 440 × 210)
+## 3. First-run prompt (`FirstRunCanvas`, 640 × 430) — rev 2
 
 Shown **after a successful scan and passport fetch, before the main canvas opens**. Own canvas,
-`sortingOrder = 10`, stroke-behind-fill card chrome, own grabber bar, and it **recenters in front of
-the user each time it opens** (0.7 m, −0.05 m height offset) — the participant may have moved while
-scanning.
+`sortingOrder = 10`, **panel chrome** (`RoundedR22` + `navy/panel`), own grabber bar, and it
+**recenters in front of the user each time it opens** (0.7 m, −0.05 m height offset) — the participant
+may have moved while scanning.
 
 | Element | Spec |
 |---|---|
-| Title | "First time using ReBuilt?" — 18 pt bold, centred |
-| Subtitle | "A quick tutorial shows you how to interact in AR." — 13 pt secondary |
-| `No, skip` | secondary pill 190 × 52, centre (119, 156) |
-| `Yes, show me` | primary pill + chevron 190 × 52, centre (329, 156) |
+| Title | "First time using ReBuilt?" — 30 pt bold, centred, baseline y = 168 |
+| Subtitle | "A quick tutorial shows you how to interact in AR." — 14 pt secondary, baseline y = 198 |
+| `Skip` | secondary pill 180 × 52, centre (114, 376) |
+| `Tutorial` | primary teal pill + chevron 388 × 52, centre (422, 376) |
 
 **Design decision (2026-07-29): the question is asked after EVERY successful scan, not once per
 install.** It sits inside the kiosk cycle, so each participant is offered the tutorial regardless of
 who wore the headset before them. A persisted "already seen" flag would silently skip the tutorial for
 participant 2 onward — unacceptable for a comparative study.
+
+### 3.1 Revision 2 (2026-07-30) — standard panel size
+
+Mock: `drafts/12b_v2_first_run.svg` (option B). Four changes, in order of consequence:
+
+1. **440 × 210 modal card → the standard 640 × 430 panel** (00 §1). Thiago's instruction: the panel
+   size is now a project standard, and a one-off card size for a single question was the odd one out.
+2. **Modal chrome → panel chrome.** The stroke-behind-fill `RoundedR20` card border read as a frame
+   inside a frame once the card filled the standard footprint. `sortingOrder` stays **10** — this is
+   still drawn on top of the panel canvases, it just no longer *looks* like a small floating dialog.
+3. **`No, skip` / `Yes, show me` → `Skip` / `Tutorial`**, on the **Welcome canvas button geometry
+   verbatim** (180 × 52 @ cx 114, 388 × 52 + chevron @ cx 422, cy 376). Welcome is the screen the
+   participant came from two steps earlier, so neither hit target moves.
+4. **Pinch glyph and a "Two steps · about a minute" caption were trialled and cut.** Both appeared in
+   the first mock; Thiago removed them. That leaves two lines of text on a tall panel, so the text
+   block is optically centred in the space **above** the buttons (baselines 168 / 198) instead of
+   sitting on Welcome's baselines (216 / 246). With no logo above it, Welcome's empty top third would
+   read as an image that failed to load rather than as deliberate air.
+
+⚠ **Two accepted trade-offs, both worth naming in the methodology:**
+
+- The asymmetric pair **weights the choice toward the tutorial** — 388 px of teal against 180 px of
+  grey is not a neutral presentation of two options. Defensible because the tutorial is part of
+  Condition B's design, but it is steering, and it should be reported as such.
+- The narrow left pill was **`Close app`** on the Welcome canvas and is **`Skip`** here. Same size,
+  same colour, same coordinates, different consequence. Judged low risk (the labels differ and the QR
+  scanner sits between the two screens) but it is a real position-learning collision.
+
+**Open:** `FirstRunPrompt.spawnDistance` is still **0.7 m / −0.05 m**, tuned when this was a small
+floating card. The main panel sits at **0.6 m, eye height 1.1176**. Now that the prompt is the same
+size as the main panel, matching those two values exactly would make the hand-off seamless. Not
+changed — it touches runtime placement, which was outside the approved mock.
 
 ## 4. Changes to existing components
 
@@ -102,11 +135,11 @@ Jul 31.**
 |---|---|
 | `Assets/Scripts/DDP/UI/WelcomeController.cs` | `ShowWelcome()` · `ContinueToScan()` · `CloseApp()`. `showOnStart` toggles legacy entry. |
 | `Assets/Scripts/DDP/UI/FirstRunPrompt.cs` | `Show()` · `ChooseYes()` · `ChooseNo()` · **`event Action TutorialRequested`** |
-| `Assets/Editor/DPPUIBuilder.Welcome.cs` | `DPP → Build Phase 7 — Welcome + First Run` |
+| `Assets/Editor/DPPUIBuilder.Welcome.cs` | `RBv2_0/3 — Welcome + first run` (`Build3_WelcomeFirstRun`) |
 
-**Build order:** Phase 7 needs Phase 1 (finds `DPPPanelCanvas`) and Phase 6 (finds `QRScanController`
-to wire Continue). It destroys and rebuilds only its own two canvases — safe to re-run at any time, and
-it does not touch `DPPPanelCanvas`.
+**Build order:** `RBv2_0/3` needs `RBv2_0/1` (finds `DPPPanelCanvas`) and `RBv2_0/2` (finds
+`QRScanController` to wire Continue). It destroys and rebuilds only its own two canvases — safe to
+re-run at any time, and it does not touch `DPPPanelCanvas`.
 
 ## 6. Hooks reserved for later blocks
 
@@ -133,5 +166,9 @@ it does not touch `DPPPanelCanvas`.
 - **2026-07-30 (rev 2)** — Brand logo replaces the generated teal-disc mark (96 px, no disc);
   primary label `Continue to scan` → **`Scan to start`**. Mock `drafts/12_v2_welcome_canvas.svg`.
   Approved by Thiago before coding, per the mock-first routine.
+- **2026-07-30 (rev 3)** — First-run prompt rebuilt at the standard **640 × 430** with panel chrome;
+  labels → **`Skip` / `Tutorial`** on the Welcome canvas geometry; pinch glyph and the "Two steps"
+  caption cut; text block optically centred above the buttons. Mock `drafts/12b_v2_first_run.svg`
+  option B, approved before coding. See §3.1.
 
-*Last updated: 2026-07-30 · Status: rev 2 built, awaiting device check — RBv2.0 block 1 of 4*
+*Last updated: 2026-07-30 · Status: rev 3 coded, awaiting device check — RBv2.0 block 1 of 4*
