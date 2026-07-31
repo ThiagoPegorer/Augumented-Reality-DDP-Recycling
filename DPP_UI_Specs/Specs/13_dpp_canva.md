@@ -1,6 +1,6 @@
-# DPP UI Spec — 13: DPP Canva (product info) — **v9**
+# DPP UI Spec — 13: DPP Canva (product info) — **v10**
 
-> **Living spec** — ReBuilt v2.0. Status: **v9 CODED 2026-07-31, awaiting device check.**
+> **Living spec** — ReBuilt v2.0. Status: **v10 CODED 2026-07-31, awaiting device check.**
 > v1 (built + device-tested 2026-07-29) was a 2×2 grid of four title-only cards opening full-page
 > modals. v2 kept the drill-down but put **live data on the face of every tile** and realigned the
 > categories to CIRPASS D2.2 Table 6. v3 strips the screen chrome — no back arrow, no product title,
@@ -274,6 +274,49 @@ its icon — the `IcWrench` glyph read as a magnifying glass (⚠ in the *mock*;
 an open C arc, so it looks different on device). It is now the only shell header without an
 icon; the other four still show one.
 
+## 1.5 What changed in v10 (2026-07-31) — first device pass, three fixes
+
+Found by Thiago on the PICO after the first successful `RBv2_0/7` run.
+
+| # | Defect | Fix |
+|---|---|---|
+| 1 | Mechanical chips hard against the headline, 22 px hole underneath | chip row y 30 → **41**: 11 px above, 11 px below |
+| 2 | `9 electrical parts` was a dot-row, `5 to 18 V` was a chip — two grammars in one tile | both are now **chips on one row at y 41**, and the text reads **`9 components`** |
+| 3 | Service log rows printed through each other | masked window + **pinch-drag scrolling**, and the description column no longer starts where the value column does |
+
+### 1.5.1 Why the log overlapped
+
+v9 gave the description `TL(126, ry, 330, 14)` → 126–456, and the right-hand value column
+started at **400**. Any entry longer than ~48 characters printed straight through it, and the
+repair line is 55. Two changes: the description is now 112–442 with the value at 450–550, and
+every description cell is `TextOverflowModes.Truncate`, so a longer payload string clips
+instead of overlapping. NoWrap + Overflow — the previous combination — draws past the rect.
+
+### 1.5.2 `PinchScrollArea`
+
+New runtime component, `Assets/Scripts/DDP/UI/PinchScrollArea.cs`. The gesture Thiago asked
+for already existed — pinch inside the window, drag vertically — but it lived **inside**
+`ZonePartInteraction`, interleaved with part-drag state, hold-to-isolate and twist blocking.
+It could not be reused, so the gesture was extracted on its own with no dependency on the
+model, the twist gesture or a row template.
+
+- Same ray acquisition as `ZonePartInteraction`: `hand.Computed && hand.RayValid`, `RayPose`,
+  plane intersection, viewport-local hit test.
+- A **12 px threshold** before a pinch counts as a scroll, so a pinch meant as a tap does not
+  nudge the list — this matters if log rows ever become tappable.
+- `MaxScroll()` is `content.height − viewport.height`, floored at 0, so a short list cannot be
+  dragged out of view.
+- Mouse `IBeginDragHandler` / `IDragHandler` for Play Mode. ⚠ Both paths use the SAME sign:
+  dragging up reveals later entries. The first draft had the mouse inverted.
+
+The log now builds **every** entry into a taller `Content` inside a `RectMask2D` viewport
+(560 × 76, four rows of 19) rather than truncating at five. `PassportView` sets the content
+height from the row count, which is what drives `MaxScroll`.
+
+⚠ The Electrical tile no longer uses `statusDots[0]` / `statusTexts[1]`. Rows 0 and 1 of that
+flat array of 8 are now dead, and the substances computation that used to fill them is still
+only a comment in `PopulateStatusTiles`.
+
 ## 2. Layout (panel 640 × 430; panel-local = mock SVG minus 20) — **v4**
 
 | Element | x | y | w | h |
@@ -377,4 +420,22 @@ Circle64, CircleRing, RoundedR13/R20/R22, Pill, Grip. v3 adds none — deleting 
   `text/tip` (`… MS 50.4 - VCU0001`); two TMP objects with runtime measurement, because the
   name uses the bold font asset. `PassportView.PlaceSerialAfterName()` added.
 
-*Last updated: 2026-07-31 · Status: v9 coded, awaiting device check · Prev: 12 Open App · Next: 14 Composition & impact*
+- **2026-07-31 (v11)** — **Usage & repair history → Usage Profile**: chip tile (15 years ·
+  225,000 km) + a populated 6×2 detail page bound to `environmental.usage_profile`, now matched
+  to the LCA S4 use-phase model. Full spec: **`13c_usage_profile.md`**. Status rows 6/7 retired;
+  `BuildFaceChipPool` generalised; payload stale v3 figures (4,500 h / 216 kWh) corrected to
+  5,625 h / 66.2 kWh.
+
+- **2026-07-31 (v12)** — **Compliance & certification → Compliance & Safety**: chip tile
+  (`CE (EMC)` · `2 SVHC declared`) + populated detail page off the Bosch EC/EU DoC (manual
+  pp. 132–134). RoHS → not_applicable (out of scope, means of transport); Lead + Lead monoxide
+  fill `substances_of_concern` with basis DECLARED — **Table 6 #5/#6 render again**. Tri-state
+  badges retired. Full spec: **`13d_compliance_safety.md`**.
+
+- **2026-07-31 (v13)** — **Service & repair rebuilt** against the 13c/13d standards after an
+  8-point audit (`13_v15_service_audit.svg`): 1×2 twin scrollable histories — 25 repairs
+  (rising toward EoL) + 60 quarterly updates v1.1→v15.4, 2011-anchored so nothing postdates
+  the Mar 2026 retirement. Tile joins the chip family; `statusDots` machinery deleted; the
+  `→` missing-glyph bug fixed by deletion. Full spec: **`13e_service_repair.md`**.
+
+*Last updated: 2026-07-31 · Status: v13 coded, awaiting device check · Prev: 12 Open App · Next: 14 Composition & impact*

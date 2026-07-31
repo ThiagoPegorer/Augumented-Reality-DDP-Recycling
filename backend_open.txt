@@ -1,0 +1,7 @@
+cd C:\Claude\Projects\AR_DPP\XR\AR_DPP_VCU\backend
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+
+
+
+hotspot -> http://172.20.10.8:8000
+WiFi home -> 192.168.178.65:8000

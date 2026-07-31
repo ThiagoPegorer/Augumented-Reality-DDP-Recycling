@@ -40,9 +40,15 @@ namespace DPP.EditorTools
         private const int   CompSegmentPool = 12;
         private const int   CompLegendPool = 5;
         private const int   SpecChipPool = 6;
-        private const int   SvcTickPool  = 16;   // v9 - software-update ticks
-        private const int   SvcMonthPool = 8;    // v9 - timeline month labels
-        private const int   SvcLogPool   = 5;    // v9 - most-recent log rows
+        private const int   ElecChipPool = 2;    // v10 - supply voltage + component count
+        private const int   UsageChipPool = 2;   // v11 - years + km
+        private const int   UsageYearPool = 18;  // v11 - annual distance rows (16 + spare)
+        private const int   UsageStatCount = 6;  // v11 - right-column stats
+        private const int   CompChipPool  = 2;   // v12 - CE + SVHC chips
+        private const int   CompStatCount = 6;   // v12 - right-column entries
+        private const int   SvcChipPool   = 2;   // v13 - updates + repairs chips
+        private const int   SvcRepairPool = 27;  // v13 - repair rows (25 + spare)
+        private const int   SvcUpdatePool = 62;  // v13 - update rows (60 + spare)
         private const float ScenarioBarH = 52f;
         private const float RecoveryTrackW = 240f;
 
@@ -101,48 +107,39 @@ namespace DPP.EditorTools
 
             BuildProductInfoBlock(landing, view);
 
-            // v8 grid. statusDots/statusTexts stay ONE flat array of 8 addressed by index:
-            //   0 electrical parts · 1 unused · 2 compliance · 3 unused (badges take the row)
-            //   4/5 service · 6/7 usage
+            // v13 grid — EVERY tile is a chip tile now; the statusDots/statusTexts
+            // pools (2 rows per tile, spec 13 v2) are gone with the last dot-row face.
             //
-            // ⚠ SUBSTANCES & SAFETY HAS NO TILE IN v8. Renaming it to Mechanical data removed
-            // the only place the passport spoke about substances of concern — Table 6 #5 #6
-            // #7 #16 #17. The bindings still exist in PassportView; nothing renders them.
-            var dots = new Image[8];
-            var texts = new TMP_Text[8];
+            // ⚠ Substances of concern render on Compliance & Safety since v12 (the Bosch
+            // REACH statement); the old substances tile computation left with the array.
 
             // Mechanical data — full width, spec chips, inert card, "+" opens detail1.
             var tMec = MakeTileCard(landing, 24, 100, "MechanicalCard", DPPSpriteFactory.IcCube,
                 "Mechanical data", canvaRouter, nameof(PassportRouter.Open1),
-                rows: 0, w: 592f, plusButton: true, heroStroke: true);
+                rows: 0, w: 592f, plusButton: true, heroStroke: true, pngIcon: "ic_mechanical");
             BuildSpecChipPool(tMec.card, view);
 
-            // Electrical data — supply chip + one bound row, "+" opens detail2.
+            // v10: no status row — the component count became a chip beside the voltage.
             var tEle = MakeTileCard(landing, 24, 180, "ElectricalCard", DPPSpriteFactory.IcBolt,
                 "Electrical data", canvaRouter, nameof(PassportRouter.Open2),
-                rows: 1, firstRowY: 48f, plusButton: true);
-            BuildSupplyChip(tEle.card, view);
-            dots[0] = tEle.dots[0]; texts[0] = tEle.texts[0];
-            dots[1] = null; texts[1] = null;
+                rows: 0, plusButton: true, pngIcon: "ic_electrical");
+            BuildFaceChipPool(tEle.card, view, "ElecChips", "elecChipRoots", "elecChipLabels", ElecChipPool);
 
+            // v13: Service & repair joins the chip family — 60 updates · 25 repairs.
             var tSvc = MakeTileCard(landing, 326, 180, "ServiceCard", DPPSpriteFactory.IcWrench,
-                "Service & repair", canvaRouter, nameof(PassportRouter.Open4), rows: 2, plusButton: true);
-            dots[4] = tSvc.dots[0]; texts[4] = tSvc.texts[0];
-            dots[5] = tSvc.dots[1]; texts[5] = tSvc.texts[1];
+                "Service & repair", canvaRouter, nameof(PassportRouter.Open4), rows: 0, plusButton: true, pngIcon: "ic_service");
+            BuildFaceChipPool(tSvc.card, view, "SvcChips", "svcChipRoots", "svcChipLabels", SvcChipPool);
 
+            // v11: Usage Profile — chip tile like Electrical; no status rows.
             var tUse = MakeTileCard(landing, 24, 260, "UsageCard", DPPSpriteFactory.IcClock,
-                "Usage & repair history", canvaRouter, nameof(PassportRouter.Open5), rows: 2, plusButton: true);
-            dots[6] = tUse.dots[0]; texts[6] = tUse.texts[0];
-            dots[7] = tUse.dots[1]; texts[7] = tUse.texts[1];
+                "Usage Profile", canvaRouter, nameof(PassportRouter.Open5), rows: 0, plusButton: true, pngIcon: "ic_usage");
+            BuildFaceChipPool(tUse.card, view, "UsageChips", "usageChipRoots", "usageChipLabels", UsageChipPool);
 
+            // v12: Compliance & Safety — chip tile; the tri-state badges died with the
+            // old face (RoHS is not false, it is OUT OF SCOPE for means of transport).
             var tCom = MakeTileCard(landing, 326, 260, "ComplianceCard", DPPSpriteFactory.IcShield,
-                "Compliance & certification", canvaRouter, nameof(PassportRouter.Open3), rows: 1, firstRowY: 48, plusButton: true);
-            dots[2] = tCom.dots[0]; texts[2] = tCom.texts[0];
-            dots[3] = null; texts[3] = null;                      // badges occupy the first row
-            BuildComplianceBadges(tCom.card, view);
-
-            SetRefArray(view, "statusDots", dots);
-            SetRefArray(view, "statusTexts", texts);
+                "Compliance & Safety", canvaRouter, nameof(PassportRouter.Open3), rows: 0, plusButton: true, pngIcon: "ic_compliance");
+            BuildFaceChipPool(tCom.card, view, "CompChips", "compChipRoots", "compChipLabels", CompChipPool);
 
             // Bottom bar (v3) — secondary LEFT, primary RIGHT, the order Welcome, the
             // first-run prompt and the disassembly gate all use. 180 + 24 + 388 = 592,
@@ -162,13 +159,17 @@ namespace DPP.EditorTools
             // Detail shells — chrome only, bodies deliberately unbuilt.
             // v4: no IdentityDetail shell — the product info block is not tappable.
             // v8: detail1 = Mechanical (technical drawing, empty for now), detail2 = Electrical.
-            var dMechanical = MakeShellPage(canva, canvaRouter, "MechanicalDetail", "Mechanical data",           DPPSpriteFactory.IcCube);
-            var dElectrical = MakeShellPage(canva, canvaRouter, "ElectricalDetail", "Electrical data",           DPPSpriteFactory.IcBolt);
-            var dCompliance = MakeShellPage(canva, canvaRouter, "ComplianceDetail", "Compliance & certification",DPPSpriteFactory.IcShield);
+            var dMechanical = MakeShellPage(canva, canvaRouter, "MechanicalDetail", "Mechanical data",           DPPSpriteFactory.IcCube, pngIcon: "ic_mechanical");
+            var dElectrical = MakeShellPage(canva, canvaRouter, "ElectricalDetail", "Electrical data",           DPPSpriteFactory.IcBolt, pngIcon: "ic_electrical");
+            var dCompliance = MakeShellPage(canva, canvaRouter, "ComplianceDetail", "Compliance & Safety", null,
+                                            showIcon: false, placeholder: false);
+            BuildComplianceDetail(dCompliance, view);
             var dService    = MakeShellPage(canva, canvaRouter, "ServiceDetail",    "Service & repair", null,
-                                            showIcon: false, rightCaption: "simulated data", placeholder: false);
+                                            showIcon: false, placeholder: false);
             BuildServiceDetail(dService, view);
-            var dUsage      = MakeShellPage(canva, canvaRouter, "UsageDetail",      "Usage & repair history",    DPPSpriteFactory.IcClock);
+            var dUsage      = MakeShellPage(canva, canvaRouter, "UsageDetail", "Usage Profile", null,
+                                            showIcon: false, placeholder: false);
+            BuildUsageDetail(dUsage, view);
             SetRef(canvaRouter, "landing", landing.gameObject);
             SetRef(canvaRouter, "detail1", dMechanical.gameObject);
             SetRef(canvaRouter, "detail2", dElectrical.gameObject);
@@ -300,7 +301,7 @@ namespace DPP.EditorTools
         private static TileParts MakeTileCard(RectTransform landing, float x, float y, string name,
             string iconSprite, string title, PassportRouter r, string openMethod,
             int rows, float firstRowY = 32f, float w = 290f, bool plusButton = false,
-            bool heroStroke = false)
+            bool heroStroke = false, string pngIcon = null)
         {
             const float H = 72f;
             var card = TL(name, landing, x, y, w, H);
@@ -320,7 +321,25 @@ namespace DPP.EditorTools
                 heroStroke ? DPPTheme.TabActiveStroke : DPPTheme.RowStroke, sliced: true);
             var fill = AddImage(CenterIn("Fill", card, w, H), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
 
-            AddImage(TLCenter("Icon", card, 26, 36, 22, 22), iconSprite, DPPTheme.Hex("#7fd3b6"));
+            // v14: the tab icons are Thiago's authored PNGs (DPP_UI_Specs/Icons, trimmed
+            // + squared at import). Drawn UNTINTED — they carry their own green, the same
+            // no-recolour decision as the brand logo. Generated-sprite fallback keeps the
+            // never-blank rule when the PNG is missing on a fresh clone.
+            var iconRT = TLCenter("Icon", card, 26, 36, 22, 22);
+            var tileIcon = pngIcon != null ? LoadTileIcon(pngIcon) : null;
+            if (tileIcon != null)
+            {
+                var iconImg = iconRT.gameObject.AddComponent<Image>();
+                iconImg.sprite = tileIcon;
+                iconImg.preserveAspect = true;
+                iconImg.raycastTarget = false;
+            }
+            else
+            {
+                if (pngIcon != null)
+                    Debug.LogWarning($"[DPPUIBuilder] Tile icon '{pngIcon}' not found in {TileIconDir} — using the generated glyph.");
+                AddImage(iconRT, iconSprite, DPPTheme.Hex("#7fd3b6"));
+            }
             AddText(TL("Title", card, 48, 10, w - 90f, 20), title, 14, DPPTheme.TextOnNavy, bold: true);
 
             var dots = new Image[rows];
@@ -373,7 +392,10 @@ namespace DPP.EditorTools
         /// stays bound. Supply voltage deliberately left out: it belongs to Electrical data.</summary>
         private static void BuildSpecChipPool(RectTransform card, PassportView view)
         {
-            var chipRow = TL("SpecChips", card, 48, 30, 500, 20);
+            // y 41, not 30: the title rect ends at 30 and the card at 72, so a 20 px
+            // chip row at 41 leaves 11 px above and 11 px below (Thiago, 2026-07-31 —
+            // the chips were hard against the headline with a 22 px hole underneath).
+            var chipRow = TL("SpecChips", card, 48, 41, 500, 20);
             var roots = new RectTransform[SpecChipPool];
             var labels = new TMP_Text[SpecChipPool];
             for (int i = 0; i < SpecChipPool; i++)
@@ -388,37 +410,105 @@ namespace DPP.EditorTools
             SetRefArray(view, "specChipLabels", labels);
         }
 
-        /// <summary>Single supply-voltage chip on the Electrical data tile. One chip rather
-        /// than a pool; the view widens it to its own text and hides it when unset.</summary>
-        private static void BuildSupplyChip(RectTransform card, PassportView view)
+        /// <summary>Face chip pool — the SAME widget on every chip tile (Mechanical uses
+        /// its own historical pool; Electrical and Usage Profile share this). Chip row at
+        /// y 41 centres title + chips in the 72 px card. v11 generalised from the
+        /// electrical-only builder; the field names are parameters so one method serves
+        /// any tile.</summary>
+        private static void BuildFaceChipPool(RectTransform card, PassportView view,
+            string rowName, string rootsField, string labelsField, int pool)
         {
-            var root = TL("SupplyChip", card, 48, 30, 80, 20);
-            AddImage(Stretch("Fill", root), DPPSpriteFactory.Pill, DPPTheme.CardBlue, sliced: true);
-            var label = AddText(Stretch("Label", root), "—", 10.5f, DPPTheme.Hex("#dbe4f0"),
-                bold: false, align: TextAlignmentOptions.Center);
-            root.gameObject.SetActive(false);
-            SetRef(view, "supplyChipRoot", root);
-            SetRef(view, "supplyChipLabel", label);
+            var chipRow = TL(rowName, card, 48, 41, 200, 20);
+            var roots = new RectTransform[pool];
+            var labels = new TMP_Text[pool];
+            for (int i = 0; i < pool; i++)
+            {
+                roots[i] = TL($"Chip{i}", chipRow, 0, 0, 80, 20);
+                AddImage(Stretch("Fill", roots[i]), DPPSpriteFactory.Pill, DPPTheme.CardBlue, sliced: true);
+                labels[i] = AddText(Stretch("Label", roots[i]), "—", 10.5f, DPPTheme.Hex("#dbe4f0"),
+                    bold: false, align: TextAlignmentOptions.Center);
+                roots[i].gameObject.SetActive(false);
+            }
+            SetRefArray(view, rootsField, roots);
+            SetRefArray(view, labelsField, labels);
         }
 
-        /// <summary>Tri-state CE / RoHS / REACH badges on the compliance tile's first row.</summary>
-        private static void BuildComplianceBadges(RectTransform card, PassportView view)
+        // =================================================================
+        // Compliance & Safety detail (spec 13d) — Usage Profile family.
+        //
+        // Everything on this page comes off the signed Bosch EC/EU Declaration of
+        // Conformity (Operation Manual VCU MS 50.4P pp. 132-134, 09 Oct 2020) —
+        // the firmest source class in the passport. basis: declared throughout.
+        //
+        // Left: ONE scrollable card (chrome = touchable) with the DoC's further-
+        // explanations + disposal text and the full SVHC names/CAS numbers, as a
+        // single wrapping rich-text block whose height the view measures.
+        // Right: six plain groups, titles LEFT, values CENTRED — same pattern as
+        // BuildUsageDetail (kept as duplication, not shared, so the compiled and
+        // device-tested Usage code stays untouched).
+        // =================================================================
+        private static readonly string[] CompStatTitles =
         {
-            string[] labels = { "CE", "RoHS", "REACH" };
-            float[] xs = { 48f, 86f, 136f };
-            float[] ws = { 34f, 46f, 52f };
-            var strokes = new Image[3];
-            var texts = new TMP_Text[3];
-            for (int i = 0; i < 3; i++)
+            "CE CONFORMITY", "TESTED TO", "ROHS 2011/65/EU",
+            "REACH SVHC", "WEEE CATEGORY", "DECLARATION"
+        };
+
+        private static void BuildComplianceDetail(RectTransform page, PassportView view)
+        {
+            // ---- left: scrollable declaration notes ----
+            var nc = TL("NotesCard", page, 24, 88, 290, 330);
+            AddImage(CenterIn("Stroke", nc, 292, 332), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", nc, 290, 330), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            AddText(TL("Head", nc, 14, 8, 180, 16), "DECLARATION NOTES", 10, DPPTheme.TealLight, bold: true);
+            var docLine = AddText(TL("DocRef", nc, 14, 9, 262, 15), "—", 9, DPPTheme.TextTip,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+
+            var viewGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+            var viewport = (RectTransform)viewGO.transform;
+            viewport.SetParent(nc, false);
+            viewport.anchorMin = viewport.anchorMax = new Vector2(0f, 1f);
+            viewport.pivot = new Vector2(0f, 1f);
+            viewport.anchoredPosition = new Vector2(14f, -28f);
+            viewport.sizeDelta = new Vector2(262f, 294f);
+            AddImage(Stretch("HitArea", viewport), null, new Color(0f, 0f, 0f, 0f), raycast: true);
+
+            var contentGO = new GameObject("Content", typeof(RectTransform));
+            var content = (RectTransform)contentGO.transform;
+            content.SetParent(viewport, false);
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(1f, 1f);
+            content.pivot = new Vector2(0.5f, 1f);
+            content.anchoredPosition = Vector2.zero;
+            content.sizeDelta = new Vector2(0f, 294f);            // height set by the view
+
+            var scroll = viewGO.AddComponent<PinchScrollArea>();
+            SetRef(scroll, "viewport", viewport);
+            SetRef(scroll, "content", content);
+
+            // One wrapping text block, not a row pool: the notes are paragraphs of
+            // varying length. AddText defaults to NoWrap — turned on here, and the
+            // view sizes the content from GetPreferredValues at the fixed width.
+            var notes = AddText(TL("Notes", content, 0, 2, 254, 290), "—", 9.5f,
+                DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.TopLeft);
+            notes.textWrappingMode = TextWrappingModes.Normal;
+
+            // ---- right: six plain groups (same pattern as the Usage page) ----
+            var statValues = new TMP_Text[CompStatCount];
+            for (int i = 0; i < CompStatCount; i++)
             {
-                var b = TL($"Badge{i}", card, xs[i], 30, ws[i], 16);
-                strokes[i] = AddImage(Stretch("Stroke", b), DPPSpriteFactory.Pill, DPPTheme.TextTip, sliced: true);
-                AddImage(CenterIn("Fill", b, ws[i] - 2f, 14f), DPPSpriteFactory.Pill, DPPTheme.RowFill, sliced: true);
-                texts[i] = AddText(Stretch("Label", b), labels[i], 9.5f, DPPTheme.TextTip,
-                    bold: false, align: TextAlignmentOptions.Center);
+                float y = 88f + i * 57f;
+                AddText(TL($"StatHead{i}", page, 326, y + 4f, 220, 15),
+                    CompStatTitles[i], 9.5f, DPPTheme.TealLight, bold: true);
+                statValues[i] = AddText(TL($"StatVal{i}", page, 326, y + 20f, 290, 22),
+                    "—", 16, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+                if (i < CompStatCount - 1)
+                    AddImage(TL($"StatRule{i}", page, 326, y + 51f, 290, 1), null, DPPTheme.Hex("#12294e"));
             }
-            SetRefArray(view, "complianceBadgeStrokes", strokes);
-            SetRefArray(view, "complianceBadgeLabels", texts);
+
+            SetRef(view, "compNotesText", notes);
+            SetRef(view, "compNotesContent", content);
+            SetRef(view, "compDocLine", docLine);
+            SetRefArray(view, "compStatValues", statValues);
         }
 
         // =================================================================
@@ -596,7 +686,8 @@ namespace DPP.EditorTools
         // =================================================================
         private static RectTransform MakeShellPage(RectTransform screen, PassportRouter router,
             string name, string title, string iconSprite,
-            bool showIcon = true, string rightCaption = null, bool placeholder = true)
+            bool showIcon = true, string rightCaption = null, bool placeholder = true,
+            string pngIcon = null)
         {
             var page = Stretch(name, screen);
 
@@ -617,7 +708,19 @@ namespace DPP.EditorTools
             // v9: the icon is optional. Service & repair drops it (Thiago, 2026-07-31 —
             // the wrench read as a magnifying glass) and the title slides into its slot.
             // ⚠ The other four shells still show one; this is the odd header out.
-            if (showIcon) AddImage(TLCenter("TitleIcon", page, 88, 44, 20, 20), iconSprite, DPPTheme.Hex("#7fd3b6"));
+            if (showIcon)
+            {
+                var shellIconRT = TLCenter("TitleIcon", page, 88, 44, 20, 20);
+                var shellIcon = pngIcon != null ? LoadTileIcon(pngIcon) : null;   // v14: match the tile
+                if (shellIcon != null)
+                {
+                    var img = shellIconRT.gameObject.AddComponent<Image>();
+                    img.sprite = shellIcon;
+                    img.preserveAspect = true;
+                    img.raycastTarget = false;
+                }
+                else AddImage(shellIconRT, iconSprite, DPPTheme.Hex("#7fd3b6"));
+            }
             AddText(TL("Title", page, showIcon ? 102 : 76, 31, 480, 26), title, 19, DPPTheme.TextOnNavy, bold: true);
             if (!string.IsNullOrEmpty(rightCaption))
                 AddText(TL("RightCaption", page, 316, 36, 300, 16), rightCaption, 10.5f,
@@ -731,112 +834,203 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // Service & repair detail (spec 13 v9) — the FIRST populated shell.
+        // Service & repair detail (spec 13e) — 1 x 2, two scrollable histories.
         //
-        // Everything here is bound: counts, tick positions, month labels and the log
-        // all come from service.software_updates[] and repair_history.events[]. The
-        // builder lays out empty pools; PassportView.PopulateService fills and places
-        // them. Nothing is typed in.
-        //
-        // ⚠ THE DATA IS INVENTED. Both collections carry basis "simulated", the header
-        // says so, and DppBasis.IsFirmSource excludes it so every bound dot renders dim.
+        // v13 replaces the v9/v10 page (counter cards, timeline card, 5-row log)
+        // wholesale: both columns are pinch-scrollable cards — the only chrome,
+        // and both genuinely touchable. LEFT: 25 repairs as two-line rows (none
+        // in service years 1-5, rising to 3/yr toward end of life). RIGHT: 60
+        // quarterly updates v1.1 (Apr 2011) -> v15.4 (Jan 2026). Everything ends
+        // before the Mar 2026 retirement — the old fortnightly 2026 story
+        // postdated it. The "→" version-range label (missing-glyph bug) is gone.
+        // Counts live in the card heads and the tile chips; no stats column.
         // =================================================================
-        private const float SvcTrackX = 24f, SvcTrackW = 544f, SvcAxisY = 52f;
-
         private static void BuildServiceDetail(RectTransform page, PassportView view)
         {
-            // ---- two counters ----
-            var cA = TL("UpdatesCard", page, 24, 88, 290, 70);
-            AddImage(CenterIn("Stroke", cA, 292, 72), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            AddImage(CenterIn("Fill", cA, 290, 70), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
-            var upCount = AddText(TL("Count", cA, 18, 20, 44, 36), "0", 30, DPPTheme.TextOnNavy, bold: true);
-            AddText(TL("Label", cA, 62, 22, 200, 20), "Software updates", 13, DPPTheme.TextOnNavy, bold: true);
-            var upCaption = AddText(TL("Caption", cA, 62, 42, 210, 16), "—", 10.5f, DPPTheme.TextTip, bold: false);
-
-            var cB = TL("RepairsCard", page, 326, 88, 290, 70);
-            AddImage(CenterIn("Stroke", cB, 292, 72), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            AddImage(CenterIn("Fill", cB, 290, 70), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
-            var rpCount = AddText(TL("Count", cB, 18, 20, 44, 36), "0", 30, DPPTheme.TextOnNavy, bold: true);
-            AddText(TL("Label", cB, 62, 22, 200, 20), "Repairs", 13, DPPTheme.TextOnNavy, bold: true);
-            var rpCaption = AddText(TL("Caption", cB, 62, 42, 210, 16), "—", 10.5f, DPPTheme.TextTip, bold: false);
-
-            // ---- timeline ----
-            var tl = TL("TimelineCard", page, 24, 170, 592, 86);
-            AddImage(CenterIn("Stroke", tl, 594, 88), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
-            AddImage(CenterIn("Fill", tl, 592, 86), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
-            AddText(TL("Head", tl, 24, 14, 300, 14), "UPDATE & REPAIR TIMELINE", 10, DPPTheme.TealLight, bold: true);
-            var vRange = AddText(TL("Versions", tl, 300, 14, 268, 14), "—", 10, DPPTheme.TextTip,
+            // ---- LEFT: repairs ----
+            var rc = TL("RepairCard", page, 24, 88, 290, 330);
+            AddImage(CenterIn("Stroke", rc, 292, 332), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", rc, 290, 330), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            var repHead = AddText(TL("Head", rc, 14, 8, 180, 16), "REPAIRS", 10, DPPTheme.TealLight, bold: true);
+            var repMeta = AddText(TL("Meta", rc, 14, 9, 262, 15), "", 9, DPPTheme.TextTip,
                 bold: false, align: TextAlignmentOptions.MidlineRight);
-            AddImage(TL("Axis", tl, SvcTrackX, SvcAxisY, SvcTrackW, 2), null, DPPTheme.Hex("#1a335f"));
 
-            // Month pool: labels + their axis notches, placed by the view.
-            var monthTicks = new RectTransform[SvcMonthPool];
-            var monthLabels = new TMP_Text[SvcMonthPool];
-            for (int i = 0; i < SvcMonthPool; i++)
+            var repViewport = MakeScrollWindow(rc, out var repContent);
+            var repRows = new RectTransform[SvcRepairPool];
+            var repDates = new TMP_Text[SvcRepairPool];
+            var repDescs = new TMP_Text[SvcRepairPool];
+            for (int i = 0; i < SvcRepairPool; i++)
             {
-                monthTicks[i] = TL($"MonthTick{i}", tl, 0, SvcAxisY - 4f, 1, 10);
-                AddImage(monthTicks[i], null, DPPTheme.Hex("#2a4670"));
-                monthLabels[i] = AddText(TL($"MonthLabel{i}", tl, 0, SvcAxisY + 8f, 40, 14), "—", 10,
-                    DPPTheme.TextTip, bold: false, align: TextAlignmentOptions.Center);
-                monthTicks[i].gameObject.SetActive(false);
-                monthLabels[i].gameObject.SetActive(false);
+                var row = TL($"RepairRow{i}", repContent, 0, i * 34f, 262, 34);
+                repRows[i] = row;
+                AddImage(TLCenter("Dot", row, 6, 10, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.Hex("#e2a44a"));
+                repDates[i] = AddText(TL("Date", row, 18, 2, 240, 15), "—", 10.5f, DPPTheme.TextCaption, bold: false);
+                repDescs[i] = AddText(TL("Desc", row, 18, 17, 244, 14), "—", 9.5f, DPPTheme.TextSecondary, bold: false);
+                repDescs[i].overflowMode = TextOverflowModes.Truncate;
+                AddImage(TL("Rule", row, 0, 33, 262, 1), null, DPPTheme.Hex("#16335f"));
+                row.gameObject.SetActive(false);
             }
 
-            // Update ticks stand ABOVE the axis, the repair marker hangs BELOW it, so the
-            // two event kinds never collide even when they fall on the same day.
-            var ticks = new RectTransform[SvcTickPool];
-            for (int i = 0; i < SvcTickPool; i++)
+            // ---- RIGHT: software updates ----
+            var uc = TL("UpdateCard", page, 326, 88, 290, 330);
+            AddImage(CenterIn("Stroke", uc, 292, 332), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", uc, 290, 330), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            var upHead = AddText(TL("Head", uc, 14, 8, 200, 16), "SOFTWARE UPDATES", 10, DPPTheme.TealLight, bold: true);
+            var upMeta = AddText(TL("Meta", uc, 14, 9, 262, 15), "", 9, DPPTheme.TextTip,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+
+            var upViewport = MakeScrollWindow(uc, out var upContent);
+            var upRows = new RectTransform[SvcUpdatePool];
+            var upDates = new TMP_Text[SvcUpdatePool];
+            var upVersions = new TMP_Text[SvcUpdatePool];
+            for (int i = 0; i < SvcUpdatePool; i++)
             {
-                ticks[i] = TL($"Tick{i}", tl, 0, SvcAxisY - 18f, 2, 18);
-                AddImage(ticks[i], null, DPPTheme.TealAccent);
-                AddImage(CenterIn("Head", ticks[i], 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TealLight)
-                    .rectTransform.anchoredPosition = new Vector2(0f, 9f);
-                ticks[i].gameObject.SetActive(false);
+                var row = TL($"UpdateRow{i}", upContent, 0, i * 25f, 262, 25);
+                upRows[i] = row;
+                AddImage(TLCenter("Dot", row, 6, 12, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TealLight);
+                upDates[i] = AddText(TL("Date", row, 18, 4, 160, 16), "—", 10.5f, DPPTheme.TextCaption, bold: false);
+                upVersions[i] = AddText(TL("Version", row, 0, 4, 262, 16), "—", 10.5f, DPPTheme.TextOnNavy,
+                    bold: true, align: TextAlignmentOptions.MidlineRight);
+                AddImage(TL("Rule", row, 0, 24, 262, 1), null, DPPTheme.Hex("#16335f"));
+                row.gameObject.SetActive(false);
             }
 
-            var marker = TL("RepairMarker", tl, 0, SvcAxisY + 2f, 12, 12);
-            AddImage(marker, null, DPPTheme.Hex("#e2a44a")).rectTransform.localEulerAngles = new Vector3(0, 0, 45);
-            marker.gameObject.SetActive(false);
+            SetRef(view, "svcRepairHead", repHead);
+            SetRef(view, "svcRepairMeta", repMeta);
+            SetRef(view, "svcRepairContent", repContent);
+            SetRefArray(view, "svcRepairRows", repRows);
+            SetRefArray(view, "svcRepairDates", repDates);
+            SetRefArray(view, "svcRepairDescs", repDescs);
+            SetRef(view, "svcUpdateHead", upHead);
+            SetRef(view, "svcUpdateMeta", upMeta);
+            SetRef(view, "svcUpdateContent", upContent);
+            SetRefArray(view, "svcUpdateRows", upRows);
+            SetRefArray(view, "svcUpdateDates", upDates);
+            SetRefArray(view, "svcUpdateVersions", upVersions);
+        }
 
-            // ---- recent-entry log ----
-            var lg = TL("LogCard", page, 24, 268, 592, 116);
-            AddImage(CenterIn("Stroke", lg, 594, 118), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
-            AddImage(CenterIn("Fill", lg, 592, 116), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
-            AddText(TL("Head", lg, 24, 12, 300, 14), "RECENT ENTRIES", 10, DPPTheme.TealLight, bold: true);
+        /// <summary>The standard 262 x 294 masked, pinch-scrollable window inside a
+        /// 290 x 330 list card — the same construction the Usage year list and the
+        /// Compliance notes use, extracted now that FOUR cards build it.</summary>
+        private static RectTransform MakeScrollWindow(RectTransform card, out RectTransform content)
+        {
+            var viewGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+            var viewport = (RectTransform)viewGO.transform;
+            viewport.SetParent(card, false);
+            viewport.anchorMin = viewport.anchorMax = new Vector2(0f, 1f);
+            viewport.pivot = new Vector2(0f, 1f);
+            viewport.anchoredPosition = new Vector2(14f, -28f);
+            viewport.sizeDelta = new Vector2(262f, 294f);
+            AddImage(Stretch("HitArea", viewport), null, new Color(0f, 0f, 0f, 0f), raycast: true);
 
-            var logDots = new Image[SvcLogPool];
-            var logDates = new TMP_Text[SvcLogPool];
-            var logDescs = new TMP_Text[SvcLogPool];
-            var logRights = new TMP_Text[SvcLogPool];
-            for (int i = 0; i < SvcLogPool; i++)
+            var contentGO = new GameObject("Content", typeof(RectTransform));
+            content = (RectTransform)contentGO.transform;
+            content.SetParent(viewport, false);
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(1f, 1f);
+            content.pivot = new Vector2(0.5f, 1f);
+            content.anchoredPosition = Vector2.zero;
+            content.sizeDelta = new Vector2(0f, 294f);
+
+            var scroll = viewGO.AddComponent<PinchScrollArea>();
+            SetRef(scroll, "viewport", viewport);
+            SetRef(scroll, "content", content);
+            return viewport;
+        }
+
+        // =================================================================
+        // Usage Profile detail (spec 13c, rev G) — 6 x 2 grid.
+        //
+        // Left: ONE full-height card holding the km-per-year list. It is the only
+        // chrome on the page because it is the only touchable thing (chrome =
+        // touchable — Thiago's collected feedback, 2026-07-31). PinchScrollArea
+        // scrolls it; 11 full rows visible, the clipped 12th is the affordance.
+        //
+        // Right: six plain stat groups, titles LEFT, values CENTRED (cx 471),
+        // hairline separators, red full-width bar under Total distance = design
+        // life consumed, unit due for recycling (first state-use of red here).
+        //
+        // Content spans y 88..418 — 12 px below the rule, 12 px above the panel
+        // edge, mirror-equal (rev F).
+        //
+        // ⚠ NO basis marker anywhere on this page (caption and estimated tag both
+        // removed on instruction). The car-energy estimate is visually identical
+        // to the modelled S4 values. Accepted, user-directed — spec 13c logs it.
+        // =================================================================
+        private static readonly string[] UsageStatTitles =
+        {
+            "TOTAL DISTANCE", "OPERATING HOURS", "OWN ENERGY USE",
+            "CAR ENERGY USE", "AVERAGE SPEED", "DAILY USE"
+        };
+
+        private static void BuildUsageDetail(RectTransform page, PassportView view)
+        {
+            // ---- left: the year list (the page's one block) ----
+            var lc = TL("YearListCard", page, 24, 88, 290, 330);
+            AddImage(CenterIn("Stroke", lc, 292, 332), DPPSpriteFactory.RoundedR13, DPPTheme.TabActiveStroke, sliced: true);
+            AddImage(CenterIn("Fill", lc, 290, 330), DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true);
+            AddText(TL("Head", lc, 14, 8, 180, 16), "KM DRIVEN PER YEAR", 10, DPPTheme.TealLight, bold: true);
+            var range = AddText(TL("Range", lc, 14, 9, 262, 15), "—", 9, DPPTheme.TextTip,
+                bold: false, align: TextAlignmentOptions.MidlineRight);
+
+            var viewGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+            var viewport = (RectTransform)viewGO.transform;
+            viewport.SetParent(lc, false);
+            viewport.anchorMin = viewport.anchorMax = new Vector2(0f, 1f);
+            viewport.pivot = new Vector2(0f, 1f);
+            viewport.anchoredPosition = new Vector2(14f, -28f);
+            viewport.sizeDelta = new Vector2(262f, 294f);
+            AddImage(Stretch("HitArea", viewport), null, new Color(0f, 0f, 0f, 0f), raycast: true);
+
+            var contentGO = new GameObject("Content", typeof(RectTransform));
+            var content = (RectTransform)contentGO.transform;
+            content.SetParent(viewport, false);
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(1f, 1f);
+            content.pivot = new Vector2(0.5f, 1f);
+            content.anchoredPosition = Vector2.zero;
+            content.sizeDelta = new Vector2(0f, 294f);        // height set by the view
+
+            var scroll = viewGO.AddComponent<PinchScrollArea>();
+            SetRef(scroll, "viewport", viewport);
+            SetRef(scroll, "content", content);
+
+            var rows = new RectTransform[UsageYearPool];
+            var yearLabels = new TMP_Text[UsageYearPool];
+            var kmValues = new TMP_Text[UsageYearPool];
+            for (int i = 0; i < UsageYearPool; i++)
             {
-                float ry = 34f + i * 19f;
-                logDots[i] = AddImage(TLCenter($"LogDot{i}", lg, 28, ry + 7, 7, 7), DPPSpriteFactory.Circle64, DPPTheme.TextTip);
-                logDates[i] = AddText(TL($"LogDate{i}", lg, 40, ry, 84, 14), "—", 10.5f, DPPTheme.TextCaption, bold: false);
-                logDescs[i] = AddText(TL($"LogDesc{i}", lg, 126, ry, 330, 14), "—", 10.5f, DPPTheme.TextSecondary, bold: false);
-                logRights[i] = AddText(TL($"LogRight{i}", lg, 400, ry, 170, 14), "—", 10.5f, DPPTheme.TextTip,
-                    bold: false, align: TextAlignmentOptions.MidlineRight);
-                logDots[i].gameObject.SetActive(false);
-                logDates[i].gameObject.SetActive(false);
-                logDescs[i].gameObject.SetActive(false);
-                logRights[i].gameObject.SetActive(false);
+                var row = TL($"YearRow{i}", content, 0, i * 25f, 262, 25);
+                rows[i] = row;
+                yearLabels[i] = AddText(TL("Year", row, 0, 4, 150, 16), "—", 11, DPPTheme.TextSecondary, bold: false);
+                kmValues[i] = AddText(TL("Km", row, 0, 4, 262, 16), "—", 11, DPPTheme.TextOnNavy,
+                    bold: true, align: TextAlignmentOptions.MidlineRight);
+                AddImage(TL("Rule", row, 0, 24, 262, 1), null, DPPTheme.Hex("#16335f"));
+                row.gameObject.SetActive(false);
             }
-            var logFooter = AddText(TL("LogFooter", lg, 40, 96, 520, 14), "", 9.5f, DPPTheme.TextTip, bold: false);
 
-            SetRef(view, "svcUpdateCount", upCount);
-            SetRef(view, "svcUpdateCaption", upCaption);
-            SetRef(view, "svcRepairCount", rpCount);
-            SetRef(view, "svcRepairCaption", rpCaption);
-            SetRef(view, "svcVersionRange", vRange);
-            SetRef(view, "svcRepairMarker", marker);
-            SetRef(view, "svcLogFooter", logFooter);
-            SetRefArray(view, "svcTicks", ticks);
-            SetRefArray(view, "svcMonthTicks", monthTicks);
-            SetRefArray(view, "svcMonthLabels", monthLabels);
-            SetRefArray(view, "svcLogDots", logDots);
-            SetRefArray(view, "svcLogDates", logDates);
-            SetRefArray(view, "svcLogDescs", logDescs);
-            SetRefArray(view, "svcLogRights", logRights);
+            // ---- right: six plain stat groups — no cards, they are not buttons ----
+            var statValues = new TMP_Text[UsageStatCount];
+            for (int i = 0; i < UsageStatCount; i++)
+            {
+                float y = 88f + i * 57f;                       // 6 x 45 + 5 x 12 = 330
+                AddText(TL($"StatHead{i}", page, 326, y + 4f, 220, 15),
+                    UsageStatTitles[i], 9.5f, DPPTheme.TealLight, bold: true);
+                statValues[i] = AddText(TL($"StatVal{i}", page, 326, y + 20f, 290, 22),
+                    "—", 16, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+                if (i == 0)
+                    AddImage(TL("LifeBar", page, 326, y + 41f, 290, 4),
+                        null, DPPTheme.Hex("#e24b4a"));        // red: design life consumed
+                if (i < UsageStatCount - 1)
+                    AddImage(TL($"StatRule{i}", page, 326, y + 51f, 290, 1), null, DPPTheme.Hex("#12294e"));
+            }
+
+            SetRef(view, "usageRangeLabel", range);
+            SetRef(view, "usageListContent", content);
+            SetRefArray(view, "usageYearRows", rows);
+            SetRefArray(view, "usageYearLabels", yearLabels);
+            SetRefArray(view, "usageKmValues", kmValues);
+            SetRefArray(view, "usageStatValues", statValues);
         }
 
         // =================================================================
@@ -886,6 +1080,37 @@ namespace DPP.EditorTools
             SetRef(hover, "lift", root);
 
             return button;
+        }
+
+        private const string TileIconDir = "Assets/Textures/Icons/";
+
+        /// <summary>Loads an authored tab icon, fixing its import settings on first use —
+        /// the same treatment LoadBrandLogo gives the brand mark, so a fresh clone needs
+        /// no manual Inspector step. Kept OUT of Assets/Textures/UI/, which
+        /// DPPSpriteFactory owns and regenerates.</summary>
+        private static Sprite LoadTileIcon(string name)
+        {
+            string path = TileIconDir + name + ".png";
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null)
+            {
+                AssetDatabase.Refresh();
+                importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            }
+            if (importer == null) return null;
+
+            if (importer.textureType != TextureImporterType.Sprite)
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.alphaIsTransparency = true;
+                importer.mipmapEnabled = false;
+                importer.wrapMode = TextureWrapMode.Clamp;
+                importer.filterMode = FilterMode.Bilinear;
+                importer.maxTextureSize = 256;
+                importer.SaveAndReimport();
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
 
         private static void CtaChevronBar(RectTransform parent, string name, float dx, float dy, float zRot)

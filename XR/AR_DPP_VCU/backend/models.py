@@ -148,6 +148,7 @@ class SubstanceOfConcern(BaseModel):
     concentration_pct_w_w: Optional[float] = None
     threshold_pct_w_w: Optional[float] = None    # e.g. 0.1 for REACH SVHC
     above_threshold: Optional[bool] = None
+    symbol: Optional[str] = None             # v0.12 - short form for the UI ("Pb", "PbO")
     basis: str = "not_provided"              # BASIS_VALUES
 
 
@@ -211,13 +212,31 @@ class ImpactRecovery(BaseModel):
     basis: str = "not_provided"               # BASIS_VALUES
 
 
+class AnnualDistance(BaseModel):
+    """v0.11 - one year of the modelled distance series (Usage Profile list)."""
+    year: str
+    distance_km: int
+    note: Optional[str] = None               # "from Apr" / "to Mar" on partial years
+
+
 class UsageProfile(BaseModel):
-    """DESIGNED service-life assumptions (a specification, not a measurement).
-    Measured use data belongs in usage_history - keep the two apart."""
+    """The LCA use-phase model (S4) as shown on the Usage Profile page.
+    MODELLED assumptions, not measurements - measured use data would belong in
+    usage_history. v0.11 carries the S4 parameters + the per-year distance
+    series; car_energy_kwh_estimate is OUTSIDE the S4 boundary (own draw only)
+    and is a plain average-BEV estimate, 17.5 kWh/100 km."""
     service_life_years: Optional[int] = None
     lifetime_distance_km: Optional[int] = None
-    operating_hours: Optional[int] = None
-    lifetime_energy_kwh: Optional[float] = None
+    operating_hours: Optional[int] = None    # 5,625 = 225,000 km / 40 km/h
+    lifetime_energy_kwh: Optional[float] = None  # OWN draw: 9 W x 5,625 h / 0.765 = 66.2
+    annual_distances: List[AnnualDistance] = Field(default_factory=list)  # v0.11
+    service_period: Optional[str] = None     # "Apr 2011 - Mar 2026"
+    avg_speed_kmh: Optional[float] = None    # MiD 2017
+    own_power_w: Optional[float] = None      # MS 5.0 family proxy
+    charging_efficiency: Optional[float] = None
+    car_energy_kwh_estimate: Optional[float] = None  # outside the LCA boundary
+    daily_use: Optional[str] = None          # "~30 km · ~45 min" (MiD 2017)
+    basis: str = "not_provided"              # BASIS_VALUES
     note: Optional[str] = None
 
 
@@ -257,12 +276,29 @@ class Indicators(BaseModel):
     pef_note: Optional[str] = None
 
 
+class DeclarationNote(BaseModel):
+    """v0.12 - one section of the DoC's 'Further explanations' / disposal text,
+    rendered in the Compliance & Safety scroll card."""
+    title: str
+    body: str
+
+
 class Compliance(BaseModel):
-    """Nullable until verified - UI shows an em-dash for None."""
+    """Nullable until verified - UI shows an em-dash for None.
+
+    v0.12, sourced from the Bosch EC/EU Declaration of Conformity (Operation
+    Manual VCU MS 50.4P pp. 132-134, dated 09 Oct 2020): ONLY 2014/30/EU (EMC)
+    is declared; RoHS is out of scope for means of transport (rohs_applicable
+    False, rohs stays None - 'not applicable' is not 'non-conformant')."""
     ce: Optional[bool] = None
+    ce_scope: Optional[str] = None           # v0.12 - "2014/30/EU (EMC)"
+    tested_to: Optional[str] = None          # v0.12 - "ECE R10 · rev.6 : 2019"
+    declaration_date: Optional[str] = None   # v0.12 - ISO yyyy-mm-dd
     rohs: Optional[bool] = None
-    reach: Optional[bool] = None
+    rohs_applicable: Optional[bool] = None   # v0.12 - False: out of 2011/65/EU scope
+    reach: Optional[bool] = None             # True = Art. 33 information duty fulfilled
     weee_category: Optional[str] = None
+    declaration_notes: List[DeclarationNote] = Field(default_factory=list)  # v0.12
     # v0.6 - state HOW each flag is known, and point at the DoC document
     basis: Optional[str] = None                     # BASIS_VALUES
     declaration_of_conformity_doc_id: Optional[str] = None   # -> documents[].id

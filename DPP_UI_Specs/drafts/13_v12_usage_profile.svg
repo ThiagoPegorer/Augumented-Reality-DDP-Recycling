@@ -1,0 +1,66 @@
+<svg width="100%" viewBox="0 0 680 620" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Usage Profile — the LCA use-phase model (S4) as a passport page</title>
+<desc>The Usage Profile detail page: two hero counters for fifteen years of service and 225,000 km, six tiles carrying the S4 use-phase parameters — own energy use of 66.2 kWh, 15,000 km per year, 40 km/h average speed, 5,625 operating hours, 9 W own power draw and roughly 30 km of daily use — plus one amber-tagged simulated fault line that links to the repair in Service and repair. An inset shows the landing tile with two chips and the plus circle.</desc>
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="62" cy="64" r="21.5" fill="#2e5aa0"/><circle cx="62" cy="64" r="20" fill="#13366b"/>
+<g stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M65 58 L58 64 L65 70"/><path d="M58 64 L70 64"/></g>
+<text x="96" y="71" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Usage Profile</text>
+<text x="636" y="68" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4" text-anchor="end">modelled · LCA use phase (S4)</text>
+<rect x="44" y="96" width="592" height="1" fill="#1a335f"/>
+<rect x="43" y="107" width="292" height="72" rx="13" fill="#21407a"/><rect x="44" y="108" width="290" height="70" rx="13" fill="#0e2950"/>
+<text x="66" y="152" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="30" fill="#ffffff" font-weight="bold">15</text>
+<text x="110" y="142" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff" font-weight="bold">Years of service</text>
+<text x="110" y="160" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">BEV passenger car · Germany</text>
+<rect x="345" y="107" width="292" height="72" rx="13" fill="#21407a"/><rect x="346" y="108" width="290" height="70" rx="13" fill="#0e2950"/>
+<text x="368" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="24" fill="#ffffff" font-weight="bold">225,000</text>
+<text x="478" y="142" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff" font-weight="bold">km driven</text>
+<text x="478" y="160" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">15,000 km per year</text>
+<rect x="43" y="189" width="191" height="66" rx="13" fill="#21407a"/><rect x="44" y="190" width="189" height="64" rx="13" fill="#0e2950"/>
+<text x="56" y="206" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">OWN ENERGY USE</text>
+<text x="56" y="228" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">66.2 kWh / 15 y</text>
+<text x="56" y="244" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">9 W x 5,625 h / 0.765 · DE grid</text>
+<rect x="244" y="189" width="191" height="66" rx="13" fill="#21407a"/><rect x="245" y="190" width="189" height="64" rx="13" fill="#0e2950"/>
+<text x="257" y="206" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">DISTANCE / YEAR</text>
+<text x="257" y="228" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">15,000 km</text>
+<text x="257" y="244" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">MiD 2017 fleet: ~14,700</text>
+<rect x="445" y="189" width="191" height="66" rx="13" fill="#21407a"/><rect x="446" y="190" width="189" height="64" rx="13" fill="#0e2950"/>
+<text x="458" y="206" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">AVERAGE SPEED</text>
+<text x="458" y="228" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">40 km/h</text>
+<text x="458" y="244" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">MiD 2017 · range 35–45</text>
+<rect x="43" y="265" width="191" height="66" rx="13" fill="#21407a"/><rect x="44" y="266" width="189" height="64" rx="13" fill="#0e2950"/>
+<text x="56" y="282" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">OPERATING HOURS</text>
+<text x="56" y="304" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">5,625 h</text>
+<text x="56" y="320" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">225,000 km / 40 km/h</text>
+<rect x="244" y="265" width="191" height="66" rx="13" fill="#21407a"/><rect x="245" y="266" width="189" height="64" rx="13" fill="#0e2950"/>
+<text x="257" y="282" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">OWN POWER DRAW</text>
+<text x="257" y="304" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">9 W</text>
+<text x="257" y="320" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">MS 5.0 family proxy · 9–20 W</text>
+<rect x="445" y="265" width="191" height="66" rx="13" fill="#21407a"/><rect x="446" y="266" width="189" height="64" rx="13" fill="#0e2950"/>
+<text x="458" y="282" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">DAILY USE</text>
+<text x="458" y="304" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">~30 km · ~45 min</text>
+<text x="458" y="320" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">MiD 2017 mobility survey</text>
+<rect x="43" y="343" width="594" height="50" rx="13" fill="#21407a"/><rect x="44" y="344" width="592" height="48" rx="13" fill="#0e2950"/>
+<circle cx="70" cy="368" r="3.5" fill="#e2a44a"/>
+<text x="84" y="364" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">3 fault events logged over the use phase</text>
+<text x="84" y="380" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">most recent: intermittent SENS-B signal, Apr 2026 → repaired 14 May 2026 (see Service &amp; repair)</text>
+<text x="614" y="364" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#e2a44a" text-anchor="end">simulated</text>
+<text x="44" y="428" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.8" fill="#6f86a8">profile values are the S4 exchanges or their documented sources — MiD 2017 · Bosch MS 5.0 manual (family proxy) · Apostolaki-Iosifidou et al. 2017 · 9 W × 5,625 h ÷ 0.765 = 66.2 kWh ✓</text>
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1.5"/>
+<line x1="305" y1="473" x2="375" y2="473" stroke="#6b7686" stroke-width="3" stroke-linecap="round"/>
+<text x="20" y="14" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">Usage Profile — "+" detail page. Two hero counters + six S4 parameter tiles + the simulated fault line. 640 x 430.</text>
+<text x="20" y="508" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#5dcaa5" font-weight="bold">TILE FACE ON THE LANDING</text>
+<rect x="19" y="517" width="292" height="74" rx="13" fill="#21407a"/><rect x="20" y="518" width="290" height="72" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="46" cy="554" r="9"/><path d="M46 549 L46 554 L50 557"/></g>
+<text x="68" y="541" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Usage Profile</text>
+<rect x="68" y="549" width="64" height="20" rx="10" fill="#13366b"/><text x="100.0" y="563" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">15 years</text>
+<rect x="138" y="549" width="84" height="20" rx="10" fill="#13366b"/><text x="180.0" y="563" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">225,000 km</text>
+<circle cx="280" cy="554" r="21.5" fill="#2e5aa0"/><circle cx="280" cy="554" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="272" y1="554" x2="288" y2="554"/><line x1="280" y1="546" x2="280" y2="562"/></g>
+<text x="330" y="528" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" font-weight="bold">WHY EXACT DESIGN VALUES ARE NOW RIGHT</text>
+<text x="330" y="542" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">this page shows the LCA's ASSUMED profile, not fake telemetry. Basis flips simulated → modelled; the 2011 in-service fiction and 226,500 km both die.</text>
+<text x="330" y="546" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#e24b4a" font-weight="bold">WHAT DIED WITH THE BOUNDARY</text>
+<text x="330" y="560" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">the 2,590 kWh/y vehicle-consumption tile. S4 charges only the VCU's OWN draw (66.2 kWh total); vehicle energy is outside the FU — the exact error v3 made and v4 corrected 3.3x.</text>
+<text x="330" y="564" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#e2a44a" font-weight="bold">ONE SIMULATED ELEMENT REMAINS</text>
+<text x="330" y="578" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">the fault line (with its Service &amp; repair cross-link) is telemetry, not S4 — it keeps its own amber tag while the profile tiles are modelled. Cut it if you want this page pure S4.</text>
+<text x="330" y="582" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4" font-weight="bold">DATA HOME</text>
+<text x="330" y="596" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">environmental.usage_profile gains avg_speed_kmh 40, operating_hours 5625, own_power_w 9, own_energy_kwh 66.2, charging_efficiency 0.765, daily_km 30, daily_minutes 45, grid "DE low voltage" (schema v0.11).</text>
+</svg>

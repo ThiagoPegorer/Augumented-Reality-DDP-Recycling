@@ -219,6 +219,7 @@ namespace DPP.Models
         public float? concentration_pct_w_w;
         public float? threshold_pct_w_w;       // e.g. 0.1 for REACH SVHC
         public bool? above_threshold;
+        public string symbol;                  // v0.12 — short form for the UI ("Pb", "PbO")
         public string basis;                   // DppBasis
     }
 
@@ -298,9 +299,26 @@ namespace DPP.Models
     {
         public int? service_life_years;
         public int? lifetime_distance_km;
-        public int? operating_hours;
-        public float? lifetime_energy_kwh;
+        public int? operating_hours;             // v0.11: 5,625 = 225,000 km / 40 km/h
+        public float? lifetime_energy_kwh;       // v0.11: OWN draw, 66.2 kWh (S4)
+        public List<AnnualDistance> annual_distances;    // v0.11
+        public string service_period;            // "Apr 2011 - Mar 2026"
+        public float? avg_speed_kmh;
+        public float? own_power_w;
+        public float? charging_efficiency;
+        public float? car_energy_kwh_estimate;   // OUTSIDE the S4 boundary
+        public string daily_use;
+        public string basis;                     // DppBasis
         public string note;
+    }
+
+    /// <summary>v0.11 — one year of the modelled distance series (Usage Profile).</summary>
+    [Serializable]
+    public class AnnualDistance
+    {
+        public string year;
+        public int distance_km;
+        public string note;              // "from Apr" / "to Mar" on partial years
     }
 
     [Serializable]
@@ -349,12 +367,25 @@ namespace DPP.Models
     public class Compliance
     {
         public bool? ce;
+        public string ce_scope;                  // v0.12 — "2014/30/EU (EMC)"
+        public string tested_to;                 // v0.12 — "ECE R10 · rev.6 : 2019"
+        public string declaration_date;          // v0.12 — ISO yyyy-MM-dd
         public bool? rohs;
-        public bool? reach;
+        public bool? rohs_applicable;            // v0.12 — False: out of 2011/65/EU scope
+        public bool? reach;                      // True = Art. 33 duty fulfilled
         public string weee_category;
+        public List<DeclarationNote> declaration_notes;   // v0.12
         // v0.6 — state HOW the flags are known, and point at the DoC document
         public string basis;                                  // DppBasis
         public string declaration_of_conformity_doc_id;        // → documents[].id
+    }
+
+    /// <summary>v0.12 — one section of the DoC's further-explanations / disposal text.</summary>
+    [Serializable]
+    public class DeclarationNote
+    {
+        public string title;
+        public string body;
     }
 
     /// <summary>v0.6 — T6 #22 responsibility / supply-chain certifications.</summary>

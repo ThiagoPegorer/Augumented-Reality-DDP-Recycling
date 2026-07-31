@@ -44,7 +44,6 @@ namespace DPP.UI
         private const float RecoveryScaleMaxPct = 50f;    // 240 px = 50 %
         private const float ProductNameX = 24f;           // ProductName rect x (spec 13 §2)
         private const float SerialGap = 2f;               // the leading space is 11 pt, name is 16
-        private const float SvcTrackX = 24f, SvcTrackW = 544f;   // timeline geometry (mirrors the builder)
         private static readonly Color SvcRepairColor = DPPTheme.Hex("#e2a44a");
 
         // Segment palette by descending mass rank (00 §2 tokens + neutrals).
@@ -70,41 +69,47 @@ namespace DPP.UI
         [SerializeField] private TMP_Text categoryCaption;
         [SerializeField] private RectTransform[] specChipRoots;
         [SerializeField] private TMP_Text[] specChipLabels;
-        [SerializeField] private RectTransform supplyChipRoot;   // v8 - Electrical tile
-        [SerializeField] private TMP_Text supplyChipLabel;       // v8
+        [SerializeField] private RectTransform[] elecChipRoots;  // v10 - Electrical tile
+        [SerializeField] private TMP_Text[] elecChipLabels;      // v10
+
+        // ---------------- Usage Profile (spec 13c) ----------------
+        [Header("Usage Profile")]
+        [SerializeField] private RectTransform[] usageChipRoots;
+        [SerializeField] private TMP_Text[] usageChipLabels;
+        [SerializeField] private TMP_Text usageRangeLabel;
+        [SerializeField] private RectTransform usageListContent;
+        [SerializeField] private RectTransform[] usageYearRows;
+        [SerializeField] private TMP_Text[] usageYearLabels;
+        [SerializeField] private TMP_Text[] usageKmValues;
+        [SerializeField] private TMP_Text[] usageStatValues;
+
+        // ---------------- Compliance & Safety (spec 13d) ----------------
+        [Header("Compliance & Safety")]
+        [SerializeField] private RectTransform[] compChipRoots;
+        [SerializeField] private TMP_Text[] compChipLabels;
+        [SerializeField] private TMP_Text compNotesText;
+        [SerializeField] private RectTransform compNotesContent;
+        [SerializeField] private TMP_Text compDocLine;
+        [SerializeField] private TMP_Text[] compStatValues;
         [SerializeField] private Image docStatusDot;
         [SerializeField] private TMP_Text docStatusLine;
 
-        // ---------------- Service & repair detail (spec 13 v9) ----------------
-        [Header("Service & repair detail")]
-        [SerializeField] private TMP_Text svcUpdateCount;
-        [SerializeField] private TMP_Text svcUpdateCaption;
-        [SerializeField] private TMP_Text svcRepairCount;
-        [SerializeField] private TMP_Text svcRepairCaption;
-        [SerializeField] private TMP_Text svcVersionRange;
-        [SerializeField] private RectTransform[] svcTicks;
-        [SerializeField] private RectTransform svcRepairMarker;
-        [SerializeField] private RectTransform[] svcMonthTicks;
-        [SerializeField] private TMP_Text[] svcMonthLabels;
-        [SerializeField] private Image[] svcLogDots;
-        [SerializeField] private TMP_Text[] svcLogDates;
-        [SerializeField] private TMP_Text[] svcLogDescs;
-        [SerializeField] private TMP_Text[] svcLogRights;
-        [SerializeField] private TMP_Text svcLogFooter;
-
-        [Header("Dot sprites (set by builder) — filled = declared, ring = not provided")]
-        [SerializeField] private Sprite dotFilledSprite;
-        [SerializeField] private Sprite dotRingSprite;
-
-        // ---------------- Tile status rows ----------------
-        // Two rows per tile, in tile order: substances, compliance, service, usage.
-        [Header("Tile status rows (2 per tile: substances, compliance, service, usage)")]
-        [SerializeField] private Image[] statusDots;
-        [SerializeField] private TMP_Text[] statusTexts;
-
-        [Header("Compliance tri-state badges (CE, RoHS, REACH)")]
-        [SerializeField] private Image[] complianceBadgeStrokes;
-        [SerializeField] private TMP_Text[] complianceBadgeLabels;
+        // ---------------- Service & repair (spec 13e) ----------------
+        [Header("Service & repair")]
+        [SerializeField] private RectTransform[] svcChipRoots;
+        [SerializeField] private TMP_Text[] svcChipLabels;
+        [SerializeField] private TMP_Text svcRepairHead;
+        [SerializeField] private TMP_Text svcRepairMeta;
+        [SerializeField] private RectTransform svcRepairContent;
+        [SerializeField] private RectTransform[] svcRepairRows;
+        [SerializeField] private TMP_Text[] svcRepairDates;
+        [SerializeField] private TMP_Text[] svcRepairDescs;
+        [SerializeField] private TMP_Text svcUpdateHead;
+        [SerializeField] private TMP_Text svcUpdateMeta;
+        [SerializeField] private RectTransform svcUpdateContent;
+        [SerializeField] private RectTransform[] svcUpdateRows;
+        [SerializeField] private TMP_Text[] svcUpdateDates;
+        [SerializeField] private TMP_Text[] svcUpdateVersions;
 
         // ---------------- Block 1 — composition (spec 14 §3) ----------------
         [Header("Composition")]
@@ -133,6 +138,10 @@ namespace DPP.UI
         [SerializeField] private RectTransform[] recoverySeg3;
         [SerializeField] private RectTransform[] recoverySeg4;
 
+        [Header("Dot sprites (set by builder) — filled = declared, ring = not provided")]
+        [SerializeField] private Sprite dotFilledSprite;
+        [SerializeField] private Sprite dotRingSprite;
+
         // =================================================================
 
         public void Populate(DPPData data)
@@ -141,7 +150,8 @@ namespace DPP.UI
             PopulateIdentity(data);
             PopulateElectrical(data);
             PopulateService(data);
-            PopulateStatusTiles(data);
+            PopulateUsageProfile(data);
+            PopulateCompliance(data);
             PopulateComposition(data);
             PopulateScenarios(data);
             PopulateRecovery(data);
@@ -224,8 +234,14 @@ namespace DPP.UI
             rt.anchoredPosition = new Vector2(ProductNameX + w + SerialGap, rt.anchoredPosition.y);
         }
 
-        private void FillChips(List<string> chips)
+        private void FillChips(List<string> chips) => LayoutChips(specChipRoots, specChipLabels, chips);
+
+        /// <summary>Lays a chip row out left to right, each chip sized to its own text and
+        /// unused pool entries hidden. v10: shared by the Mechanical and the Electrical
+        /// rows so the two are literally the same widget, not two that merely look alike.</summary>
+        private static void LayoutChips(RectTransform[] roots, TMP_Text[] labels, List<string> chips)
         {
+            var specChipRoots = roots; var specChipLabels = labels;
             if (specChipRoots == null || specChipLabels == null) return;
             int n = Mathf.Min(specChipRoots.Length, specChipLabels.Length);
             float x = 0f;
@@ -237,18 +253,153 @@ namespace DPP.UI
                 if (!has) continue;
 
                 specChipLabels[i].text = chips[i];
-                // Width follows the text so chips never clip or leave dead space.
-                //
                 // GetPreferredValues, NOT ForceMeshUpdate + preferredWidth: Populate runs
                 // while BOTH passport screens are still INACTIVE (the fetch completes on
                 // the scan screen), and preferredWidth on a disabled TMP object can read 0
-                // — every chip would collapse to the 44 px minimum. GetPreferredValues
-                // measures from the text without needing an active mesh.
+                // — every chip would collapse to the 44 px minimum.
                 float w = Mathf.Max(44f, specChipLabels[i].GetPreferredValues(chips[i]).x + pad);
                 specChipRoots[i].sizeDelta = new Vector2(w, specChipRoots[i].sizeDelta.y);
                 specChipRoots[i].anchoredPosition = new Vector2(x, specChipRoots[i].anchoredPosition.y);
                 x += w + gap;
             }
+        }
+
+        // ---------------- Usage Profile (spec 13c) ----------------
+
+        /// <summary>Fills the Usage Profile tile chips and the 6 x 2 detail page: the
+        /// pinch-scrollable km-per-year list (content height drives PinchScrollArea)
+        /// and the six centred stat values. Everything from environmental.usage_profile —
+        /// the S4 use-phase model plus the out-of-boundary car estimate; no literals.</summary>
+        private void PopulateUsageProfile(DPPData d)
+        {
+            var up = d.environmental?.usage_profile;
+
+            var chips = new List<string>();
+            if (up?.service_life_years != null) chips.Add($"{up.service_life_years.Value} years");
+            if (up?.lifetime_distance_km != null)
+                chips.Add(string.Format(CultureInfo.InvariantCulture, "{0:N0} km", up.lifetime_distance_km.Value));
+            LayoutChips(usageChipRoots, usageChipLabels, chips);
+
+            if (usageRangeLabel != null) usageRangeLabel.text = up?.service_period ?? "";
+
+            var years = up?.annual_distances?.Where(a => a != null).ToList() ?? new List<AnnualDistance>();
+            if (usageYearRows != null)
+            {
+                int n = usageYearRows.Length;
+                for (int i = 0; i < n; i++)
+                {
+                    bool has = i < years.Count;
+                    if (usageYearRows[i] != null) usageYearRows[i].gameObject.SetActive(has);
+                    if (!has) continue;
+                    bool partial = !string.IsNullOrEmpty(years[i].note);
+                    if (usageYearLabels != null && i < usageYearLabels.Length && usageYearLabels[i] != null)
+                    {
+                        usageYearLabels[i].text = partial ? $"{years[i].year}  ·  {years[i].note}" : years[i].year;
+                        usageYearLabels[i].color = partial ? DPPTheme.TextCaption : DPPTheme.TextSecondary;
+                    }
+                    if (usageKmValues != null && i < usageKmValues.Length && usageKmValues[i] != null)
+                        usageKmValues[i].text = string.Format(CultureInfo.InvariantCulture, "{0:N0} km", years[i].distance_km);
+                }
+                if (usageListContent != null)
+                    usageListContent.sizeDelta = new Vector2(usageListContent.sizeDelta.x,
+                        Mathf.Min(n, years.Count) * 25f + 4f);
+            }
+
+            SetStat(0, up?.lifetime_distance_km != null
+                ? string.Format(CultureInfo.InvariantCulture, "{0:N0} km", up.lifetime_distance_km.Value) : null);
+            SetStat(1, up?.operating_hours != null
+                ? string.Format(CultureInfo.InvariantCulture, "{0:N0} h", up.operating_hours.Value) : null);
+            SetStat(2, up?.lifetime_energy_kwh != null
+                ? string.Format(CultureInfo.InvariantCulture, "{0:0.#} kWh", up.lifetime_energy_kwh.Value) : null);
+            SetStat(3, up?.car_energy_kwh_estimate != null
+                ? string.Format(CultureInfo.InvariantCulture, "{0:N0} kWh", up.car_energy_kwh_estimate.Value) : null);
+            SetStat(4, up?.avg_speed_kmh != null
+                ? string.Format(CultureInfo.InvariantCulture, "{0:0.#} km/h", up.avg_speed_kmh.Value) : null);
+            SetStat(5, string.IsNullOrEmpty(up?.daily_use) ? null : up.daily_use);
+        }
+
+        private void SetStat(int i, string text)
+        {
+            if (usageStatValues == null || i >= usageStatValues.Length || usageStatValues[i] == null) return;
+            usageStatValues[i].text = string.IsNullOrEmpty(text) ? Dash : text;
+        }
+
+        // ---------------- Compliance & Safety (spec 13d) ----------------
+
+        /// <summary>Chips, the six declared values and the scrollable declaration
+        /// notes — all off the Bosch EC/EU DoC (manual pp. 132-134). The notes are one
+        /// wrapping rich-text block; its measured height drives PinchScrollArea.</summary>
+        private void PopulateCompliance(DPPData d)
+        {
+            var comp = d.compliance;
+            var soc = d.substances_of_concern?.Where(x => x != null).ToList() ?? new List<SubstanceOfConcern>();
+
+            var chips = new List<string>();
+            if (comp?.ce == true)
+                chips.Add(string.IsNullOrEmpty(comp.ce_scope) ? "CE" : $"CE ({ShortScope(comp.ce_scope)})");
+            if (soc.Count > 0) chips.Add($"{soc.Count} SVHC declared");
+            LayoutChips(compChipRoots, compChipLabels, chips);
+
+            SetCompStat(0, comp?.ce == true ? comp.ce_scope : null, false);
+            SetCompStat(1, comp?.tested_to, false);
+            // RoHS: three genuinely different states — conformant, non-conformant and
+            // OUT OF SCOPE. "not applicable" renders dimmer than a real value.
+            SetCompStat(2, comp?.rohs == true ? "conforms"
+                         : comp?.rohs == false ? "does not conform"
+                         : comp?.rohs_applicable == false ? "not applicable" : null,
+                         dim: comp?.rohs == null);
+            string symbols = string.Join(", ", soc.Where(x => !string.IsNullOrEmpty(x.symbol)).Select(x => x.symbol));
+            SetCompStat(3, soc.Count > 0
+                ? (symbols.Length > 0 ? $"{soc.Count} declared · {symbols}" : $"{soc.Count} declared")
+                : "none declared", dim: soc.Count == 0);
+            SetCompStat(4, comp?.weee_category, false);
+            SetCompStat(5, LongDate(comp?.declaration_date), false);
+
+            if (compDocLine != null)
+                compDocLine.text = comp?.declaration_date != null
+                    ? $"Bosch DoC · {LongDate(comp.declaration_date)}" : "";
+
+            // ---- notes: DoC sections + the full SVHC identities (Art. 33 needs the
+            // names and CAS numbers somewhere on the page; the face shows symbols) ----
+            if (compNotesText != null)
+            {
+                var sb = new System.Text.StringBuilder();
+                foreach (var nte in comp?.declaration_notes ?? new List<DeclarationNote>())
+                {
+                    if (nte == null) continue;
+                    sb.Append("<color=#5dcaa5><size=8.8>").Append(nte.title.ToUpperInvariant())
+                      .Append("</size></color>\n").Append(nte.body).Append("\n\n");
+                }
+                if (soc.Count > 0)
+                {
+                    sb.Append("<color=#5dcaa5><size=8.8>SVHC (REACH ART. 33, > 0.1 % W/W)</size></color>\n");
+                    foreach (var x in soc)
+                        sb.Append(x.name)
+                          .Append(string.IsNullOrEmpty(x.cas_number) ? "" : $" · CAS {x.cas_number}")
+                          .Append("\n");
+                }
+                compNotesText.text = sb.ToString().TrimEnd();
+
+                if (compNotesContent != null)
+                {
+                    float h = compNotesText.GetPreferredValues(compNotesText.text, 254f, 0f).y;
+                    compNotesContent.sizeDelta = new Vector2(compNotesContent.sizeDelta.x, h + 8f);
+                }
+            }
+        }
+
+        private void SetCompStat(int i, string text, bool dim)
+        {
+            if (compStatValues == null || i >= compStatValues.Length || compStatValues[i] == null) return;
+            compStatValues[i].text = string.IsNullOrEmpty(text) ? Dash : text;
+            compStatValues[i].color = dim ? DPPTheme.TextSecondary : DPPTheme.TextOnNavy;
+        }
+
+        /// <summary>"2014/30/EU (EMC)" → "EMC" for the tile chip.</summary>
+        private static string ShortScope(string scope)
+        {
+            int a = scope.IndexOf('('); int z = scope.IndexOf(')');
+            return a >= 0 && z > a ? scope.Substring(a + 1, z - a - 1) : scope;
         }
 
         // ---------------- Tile status rows ----------------
@@ -261,85 +412,25 @@ namespace DPP.UI
         /// inactive (see FillChips).</summary>
         private void PopulateElectrical(DPPData d)
         {
+            // v10: supply voltage and the component count are two chips on one row, in the
+            // same style as Mechanical data. The count is the sum of physical_unit.parts[],
+            // i.e. the coloured blocks actually inside the demonstrator.
+            var chips = new List<string>();
             string v = d.specifications?.supply_voltage;
-            bool has = !string.IsNullOrEmpty(v);
-            if (supplyChipRoot != null) supplyChipRoot.gameObject.SetActive(has);
-            if (!has || supplyChipLabel == null || supplyChipRoot == null) return;
+            if (!string.IsNullOrEmpty(v)) chips.Add(v);
 
-            supplyChipLabel.text = v;
-            float w = Mathf.Max(44f, supplyChipLabel.GetPreferredValues(v).x + 22f);
-            supplyChipRoot.sizeDelta = new Vector2(w, supplyChipRoot.sizeDelta.y);
+            int parts = d.physical_unit?.parts?.Sum(p => p == null ? 0 : Mathf.Max(1, p.count)) ?? 0;
+            if (parts > 0) chips.Add($"{parts} components");
+
+            LayoutChips(elecChipRoots, elecChipLabels, chips);
         }
 
-        private void PopulateStatusTiles(DPPData d)
-        {
-            // 0 electrical parts · 2/3 compliance · 4/5 service · 6/7 usage
-            //
-            // ⚠ v8 removed the substances rows with the tile. The passport no longer says
-            // anything about substances of concern (Table 6 #5 #6 #7 #16 #17). Restoring it
-            // is a tile plus the block below, which is why the code is left here in comment
-            // rather than deleted:
-            //     int soc = d.substances_of_concern?.Count ?? 0;
-            //     string socBasis = d.end_of_life?.substances_basis ?? DppBasis.NotProvided;
-            //     -> "no substance declaration made" when soc == 0 and basis is not_provided
-            //
-            // Row 0 counts the PHYSICAL DEMONSTRATOR's parts, not product data: it must
-            // agree with the coloured blocks the participant is holding.
-            var pu = d.physical_unit;
-            int partCount = pu?.parts?.Sum(p => p == null ? 0 : Mathf.Max(1, p.count)) ?? 0;
-            SetRow(0, partCount > 0 ? (string.IsNullOrEmpty(pu.basis) ? DppBasis.Measured : pu.basis)
-                                    : DppBasis.NotProvided,
-                partCount > 0 ? $"{partCount} electrical parts" : "parts list — not provided");
+        // ---------------- Service & repair detail (spec 13e) ----------------
 
-            var comp = d.compliance;
-            SetBadge(0, "CE", comp?.ce);
-            SetBadge(1, "RoHS", comp?.rohs);
-            SetBadge(2, "REACH", comp?.reach);
-            SetRow(2, comp?.basis ?? DppBasis.NotProvided,
-                string.IsNullOrEmpty(comp?.weee_category) ? "WEEE category not stated" : comp.weee_category);
-            int certs = d.certifications?.Count(c => c != null && c.status == DppStatus.Available) ?? 0;
-            SetRow(3, certs > 0 ? DppBasis.Declared : DppBasis.NotProvided,
-                certs > 0 ? $"{certs} supply-chain certification(s)" : "no supply-chain certification");
-
-            // v9: the face carries the two TOTALS Thiago asked for. The lines it used to
-            // show — "disassembly guide in this app" (T6 #12) and the spare-parts state
-            // (T6 #15) — move to the detail page; they are not lost, just one level down.
-            var svc = d.service;
-            int updates = svc?.software_updates?.Count(u => u != null) ?? 0;
-            SetRow(4, updates > 0 ? Basis(svc.software_update_basis) : DppBasis.NotProvided,
-                updates > 0 ? $"{updates} automatic updates" : "no update history");
-
-            var repEvents = d.repair_history?.events?.Where(e => e != null).ToList();
-            int repairs = repEvents?.Count ?? 0;
-            SetRow(5, repairs > 0 ? Basis(d.repair_history.basis) : DppBasis.NotProvided,
-                repairs > 0 ? $"{repairs} repair · {MonthYear(repEvents[repairs - 1].date)}"
-                            : "no repair recorded");
-
-            var up = d.environmental?.usage_profile;
-            SetRow(6, DppBasis.Assumed, up == null ? "no design life stated" : Join(" · ",
-                up.service_life_years.HasValue ? $"design life {up.service_life_years.Value} y" : null,
-                up.lifetime_distance_km.HasValue
-                    ? string.Format(CultureInfo.InvariantCulture, "{0:N0} km", up.lifetime_distance_km.Value) : null));
-
-            var uh = d.usage_history; var rh = d.repair_history;
-            bool hasUse = uh != null && uh.basis != DppBasis.NotProvided;
-            int rhCount = rh?.events?.Count ?? 0;
-            // v9: take the basis from the RECORD, never assume "measured". The repair log
-            // is simulated, and this row must not upgrade it to a firm source.
-            string useBasis = hasUse ? Basis(uh.basis)
-                            : rhCount > 0 ? Basis(rh.basis) : DppBasis.NotProvided;
-            SetRow(7, useBasis,
-                hasUse || rhCount > 0 ? $"{rhCount} repair event(s) recorded" : "no measured use or repair data");
-        }
-
-        // ---------------- Service & repair detail (spec 13 v9) ----------------
-
-        /// <summary>Fills the update/repair counters, places one tick per software update on
-        /// the timeline, hangs the repair marker below the axis and lists the most recent
-        /// entries. Every number and position comes from the payload.
-        ///
-        /// ⚠ The payload marks both collections "simulated". Basis() passes that through so
-        /// the dots stay dim — nothing here may present invented data as measured.</summary>
+        /// <summary>Spec 13e — the twin service histories. Chips on the tile, heads with
+        /// counts, and two scrollable lists whose content heights drive PinchScrollArea.
+        /// Both collections carry basis "simulated" in the payload; ordering is oldest
+        /// first, like the Usage year list.</summary>
         private void PopulateService(DPPData d)
         {
             var ups = d.service?.software_updates?.Where(u => u != null && ParseDate(u.date).HasValue)
@@ -347,131 +438,51 @@ namespace DPP.UI
             var reps = d.repair_history?.events?.Where(e => e != null && ParseDate(e.date).HasValue)
                         .OrderBy(e => ParseDate(e.date).Value).ToList() ?? new List<RepairEvent>();
 
-            if (svcUpdateCount != null) svcUpdateCount.text = ups.Count.ToString();
-            if (svcRepairCount != null) svcRepairCount.text = reps.Count.ToString();
-            if (svcUpdateCaption != null)
-                svcUpdateCaption.text = ups.Count > 1 ? CadenceCaption(ups) : "no update history";
-            if (svcRepairCaption != null)
-                svcRepairCaption.text = reps.Count > 0
-                    ? $"manual · {LongDate(reps[reps.Count - 1].date)}" : "none recorded";
-            if (svcVersionRange != null)
-                svcVersionRange.text = ups.Count > 0 ? $"{ups[0].version} → {ups[ups.Count - 1].version}" : Dash;
+            var chips = new List<string>();
+            if (ups.Count > 0) chips.Add($"{ups.Count} updates");
+            if (reps.Count > 0) chips.Add($"{reps.Count} repairs");
+            LayoutChips(svcChipRoots, svcChipLabels, chips);
 
-            // Timeline spans first update -> one cadence beyond the last, so the axis shows
-            // when the next one is due without inventing an event for it.
-            DateTime t0 = ups.Count > 0 ? ParseDate(ups[0].date).Value : DateTime.MinValue;
-            DateTime tN = ups.Count > 0 ? ParseDate(ups[ups.Count - 1].date).Value : t0;
-            double cadence = ups.Count > 1 ? (tN - t0).TotalDays / (ups.Count - 1) : 14.0;
-            DateTime t1 = tN.AddDays(cadence);
-            double span = Math.Max(1.0, (t1 - t0).TotalDays);
+            if (svcRepairHead != null) svcRepairHead.text = $"REPAIRS · {reps.Count}";
+            if (svcRepairMeta != null)
+                svcRepairMeta.text = reps.Count > 0 ? $"first: {MonthYear(reps[0].date)}" : "none recorded";
+            if (svcUpdateHead != null) svcUpdateHead.text = $"SOFTWARE UPDATES · {ups.Count}";
+            if (svcUpdateMeta != null) svcUpdateMeta.text = ups.Count > 1 ? CadenceCaption(ups) : "";
 
-            if (svcTicks != null)
-                for (int i = 0; i < svcTicks.Length; i++)
+            if (svcRepairRows != null)
+            {
+                for (int i = 0; i < svcRepairRows.Length; i++)
+                {
+                    bool has = i < reps.Count;
+                    if (svcRepairRows[i] != null) svcRepairRows[i].gameObject.SetActive(has);
+                    if (!has) continue;
+                    if (svcRepairDates != null && i < svcRepairDates.Length && svcRepairDates[i] != null)
+                        svcRepairDates[i].text = LongDate(reps[i].date);
+                    if (svcRepairDescs != null && i < svcRepairDescs.Length && svcRepairDescs[i] != null)
+                        svcRepairDescs[i].text = string.IsNullOrEmpty(reps[i].description) ? Dash : reps[i].description;
+                }
+                if (svcRepairContent != null)
+                    svcRepairContent.sizeDelta = new Vector2(svcRepairContent.sizeDelta.x,
+                        Mathf.Min(svcRepairRows.Length, reps.Count) * 34f + 4f);
+            }
+
+            if (svcUpdateRows != null)
+            {
+                for (int i = 0; i < svcUpdateRows.Length; i++)
                 {
                     bool has = i < ups.Count;
-                    if (svcTicks[i] == null) continue;
-                    svcTicks[i].gameObject.SetActive(has);
+                    if (svcUpdateRows[i] != null) svcUpdateRows[i].gameObject.SetActive(has);
                     if (!has) continue;
-                    float x = TrackX(ParseDate(ups[i].date).Value, t0, span);
-                    svcTicks[i].anchoredPosition = new Vector2(x - 1f, svcTicks[i].anchoredPosition.y);
+                    if (svcUpdateDates != null && i < svcUpdateDates.Length && svcUpdateDates[i] != null)
+                        svcUpdateDates[i].text = LongDate(ups[i].date);
+                    if (svcUpdateVersions != null && i < svcUpdateVersions.Length && svcUpdateVersions[i] != null)
+                        svcUpdateVersions[i].text = string.IsNullOrEmpty(ups[i].version) ? Dash : ups[i].version;
                 }
-
-            if (svcRepairMarker != null)
-            {
-                bool has = reps.Count > 0 && ups.Count > 0;
-                svcRepairMarker.gameObject.SetActive(has);
-                if (has)
-                {
-                    float x = TrackX(ParseDate(reps[0].date).Value, t0, span);
-                    svcRepairMarker.anchoredPosition = new Vector2(x - 6f, svcRepairMarker.anchoredPosition.y);
-                }
-            }
-
-            PlaceMonths(t0, t1, span, ups.Count > 0);
-            FillLog(ups, reps);
-        }
-
-        /// <summary>One label per month boundary inside the timeline range.</summary>
-        private void PlaceMonths(DateTime t0, DateTime t1, double span, bool any)
-        {
-            if (svcMonthTicks == null || svcMonthLabels == null) return;
-            var marks = new List<DateTime>();
-            if (any)
-            {
-                var m = new DateTime(t0.Year, t0.Month, 1);
-                while (m <= t1)
-                {
-                    if (m >= t0) marks.Add(m);
-                    m = m.AddMonths(1);
-                }
-            }
-            int n = Mathf.Min(svcMonthTicks.Length, svcMonthLabels.Length);
-            for (int i = 0; i < n; i++)
-            {
-                bool has = i < marks.Count;
-                if (svcMonthTicks[i] != null) svcMonthTicks[i].gameObject.SetActive(has);
-                if (svcMonthLabels[i] != null) svcMonthLabels[i].gameObject.SetActive(has);
-                if (!has) continue;
-                float x = TrackX(marks[i], t0, span);
-                if (svcMonthTicks[i] != null)
-                    svcMonthTicks[i].anchoredPosition = new Vector2(x, svcMonthTicks[i].anchoredPosition.y);
-                if (svcMonthLabels[i] != null)
-                {
-                    svcMonthLabels[i].text = marks[i].ToString("MMM", CultureInfo.InvariantCulture);
-                    svcMonthLabels[i].rectTransform.anchoredPosition =
-                        new Vector2(x - 20f, svcMonthLabels[i].rectTransform.anchoredPosition.y);
-                }
+                if (svcUpdateContent != null)
+                    svcUpdateContent.sizeDelta = new Vector2(svcUpdateContent.sizeDelta.x,
+                        Mathf.Min(svcUpdateRows.Length, ups.Count) * 25f + 4f);
             }
         }
-
-        /// <summary>Most recent entries first, updates and repairs merged.</summary>
-        private void FillLog(List<SoftwareUpdate> ups, List<RepairEvent> reps)
-        {
-            if (svcLogDates == null) return;
-            var rows = new List<(DateTime when, string date, string desc, string right, bool repair)>();
-            foreach (var u in ups)
-                rows.Add((ParseDate(u.date).Value, LongDate(u.date), "Automatic software update",
-                          string.IsNullOrEmpty(u.version) ? Dash : u.version, false));
-            foreach (var e in reps)
-                rows.Add((ParseDate(e.date).Value, LongDate(e.date),
-                          "Repair — " + (string.IsNullOrEmpty(e.description) ? Dash : e.description),
-                          e.cost_eur.HasValue
-                            ? string.Format(CultureInfo.InvariantCulture, "€ {0:N2}", e.cost_eur.Value) : "",
-                          true));
-            rows = rows.OrderByDescending(r => r.when).ToList();
-
-            int n = svcLogDates.Length;
-            for (int i = 0; i < n; i++)
-            {
-                bool has = i < rows.Count;
-                if (svcLogDots != null && i < svcLogDots.Length && svcLogDots[i] != null)
-                {
-                    svcLogDots[i].gameObject.SetActive(has);
-                    if (has) svcLogDots[i].color = rows[i].repair ? SvcRepairColor : DPPTheme.TealLight;
-                }
-                SetLogCell(svcLogDates, i, has, has ? rows[i].date : null);
-                SetLogCell(svcLogDescs, i, has, has ? rows[i].desc : null);
-                SetLogCell(svcLogRights, i, has, has ? rows[i].right : null);
-                if (has && svcLogRights != null && i < svcLogRights.Length && svcLogRights[i] != null)
-                    svcLogRights[i].color = rows[i].repair ? SvcRepairColor : DPPTheme.TextTip;
-            }
-            if (svcLogFooter != null)
-            {
-                int hidden = Mathf.Max(0, rows.Count - n);
-                svcLogFooter.text = hidden > 0
-                    ? $"{hidden} earlier entries not listed · full log in the payload" : "";
-            }
-        }
-
-        private static void SetLogCell(TMP_Text[] pool, int i, bool has, string text)
-        {
-            if (pool == null || i >= pool.Length || pool[i] == null) return;
-            pool[i].gameObject.SetActive(has);
-            if (has) pool[i].text = text ?? "";
-        }
-
-        private static float TrackX(DateTime d, DateTime t0, double span) =>
-            SvcTrackX + (float)((d - t0).TotalDays / span) * SvcTrackW;
 
         private static DateTime? ParseDate(string s) =>
             DateTime.TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture,
@@ -489,12 +500,18 @@ namespace DPP.UI
             return d.HasValue ? d.Value.ToString("MMM yyyy", CultureInfo.InvariantCulture) : Dash;
         }
 
-        /// <summary>Cadence stated from the DATA, not assumed: median gap between updates.</summary>
+        /// <summary>Cadence stated from the DATA, not assumed: mean gap between updates,
+        /// in months when the gap is month-scale (the v13 history is quarterly).</summary>
         private static string CadenceCaption(List<SoftwareUpdate> ups)
         {
             var a = ParseDate(ups[0].date).Value;
             var b = ParseDate(ups[ups.Count - 1].date).Value;
             int days = Mathf.RoundToInt((float)((b - a).TotalDays / (ups.Count - 1)));
+            if (days >= 28)
+            {
+                int months = Mathf.Max(1, Mathf.RoundToInt(days / 30.44f));
+                return $"automatic · every {months} months";
+            }
             return days % 7 == 0 && days > 0
                 ? $"automatic · every {days / 7} weeks"
                 : $"automatic · every {days} days";
@@ -502,22 +519,6 @@ namespace DPP.UI
 
         private static string Basis(string b) => string.IsNullOrEmpty(b) ? DppBasis.NotProvided : b;
 
-        private void SetRow(int i, string basis, string text)
-        {
-            if (statusDots != null && i < statusDots.Length) SetDot(statusDots[i], basis);
-            if (statusTexts != null && i < statusTexts.Length && statusTexts[i] != null)
-            {
-                statusTexts[i].text = string.IsNullOrEmpty(text) ? Dash : text;
-                statusTexts[i].color = basis == DppBasis.NotProvided ? DPPTheme.TextTip : DPPTheme.TextSecondary;
-            }
-        }
-
-        /// <summary>Filled bright = firm source · filled dim = modelled/assumed ·
-        /// hollow ring = not provided.
-        ///
-        /// The state is carried by SWAPPING THE SPRITE, not by Image.fillCenter:
-        /// Circle64 is a plain disc with no 9-slice border, so fillCenter=false would
-        /// render nothing at all. The builder injects both sprites.</summary>
         private void SetDot(Image dot, string basis)
         {
             if (dot == null) return;
@@ -527,22 +528,6 @@ namespace DPP.UI
             dot.type = Image.Type.Simple;
             dot.color = missing ? DotMissing
                       : (DppBasis.IsFirmSource(basis) ? DotDeclared : DotModelled);
-        }
-
-        private void SetBadge(int i, string label, bool? value)
-        {
-            if (complianceBadgeLabels != null && i < complianceBadgeLabels.Length && complianceBadgeLabels[i] != null)
-            {
-                // No check/cross glyphs (00 §3 — not in the SF Pro SDF atlas).
-                // Colour carries the state: teal = declared, red = declared false,
-                // dim + em-dash = not provided.
-                complianceBadgeLabels[i].text = value.HasValue ? label : $"{label} {Dash}";
-                complianceBadgeLabels[i].color = !value.HasValue ? DPPTheme.TextTip
-                    : (value.Value ? DPPTheme.TealText : DPPTheme.SafetyText);
-            }
-            if (complianceBadgeStrokes != null && i < complianceBadgeStrokes.Length && complianceBadgeStrokes[i] != null)
-                complianceBadgeStrokes[i].color = !value.HasValue ? DPPTheme.TextTip
-                    : (value.Value ? DPPTheme.TealAccent : DPPTheme.SafetyStroke);
         }
 
         // ---------------- Block 1 — composition ----------------

@@ -56,9 +56,9 @@
       "kind": "declaration",
       "cirpass_ref": "T6 #3",
       "mandatory": true,
-      "status": "not_provided",
+      "status": "available",
       "url": null,
-      "note": "CE marking not verified for the as-built prototype unit."
+      "note": "EC/EU DoC, Bosch Engineering GmbH, 09 Oct 2020 - Operation Manual VCU MS 50.4P pp. 132-133"
     },
     {
       "id": "user_manual",
@@ -368,7 +368,32 @@
       "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25); see LCA_Analysis/Docs/BOM_v4.md"
     }
   ],
-  "substances_of_concern": [],
+  "substances_of_concern": [
+    {
+      "name": "Lead",
+      "cas_number": "7439-92-1",
+      "regulation": "REACH SVHC",
+      "component_id": null,
+      "location_note": "electronic components; the solder itself is lead-free SAC305",
+      "concentration_pct_w_w": null,
+      "threshold_pct_w_w": 0.1,
+      "above_threshold": true,
+      "symbol": "Pb",
+      "basis": "declared"
+    },
+    {
+      "name": "Lead monoxide (lead oxide)",
+      "cas_number": "1317-36-8",
+      "regulation": "REACH SVHC",
+      "component_id": null,
+      "location_note": "component ceramics / glass frits",
+      "concentration_pct_w_w": null,
+      "threshold_pct_w_w": 0.1,
+      "above_threshold": true,
+      "symbol": "PbO",
+      "basis": "declared"
+    }
+  ],
   "precious_metals": [
     {
       "metal": "Gold (Au)",
@@ -411,9 +436,84 @@
     "usage_profile": {
       "service_life_years": 15,
       "lifetime_distance_km": 225000,
-      "operating_hours": 4500,
-      "lifetime_energy_kwh": 216,
-      "note": "design assumptions; a production DPP would carry vehicle telemetry"
+      "operating_hours": 5625,
+      "lifetime_energy_kwh": 66.2,
+      "annual_distances": [
+        {
+          "year": "2011",
+          "distance_km": 11300,
+          "note": "from Apr"
+        },
+        {
+          "year": "2012",
+          "distance_km": 14850
+        },
+        {
+          "year": "2013",
+          "distance_km": 15620
+        },
+        {
+          "year": "2014",
+          "distance_km": 16240
+        },
+        {
+          "year": "2015",
+          "distance_km": 14380
+        },
+        {
+          "year": "2016",
+          "distance_km": 15910
+        },
+        {
+          "year": "2017",
+          "distance_km": 13970
+        },
+        {
+          "year": "2018",
+          "distance_km": 15480
+        },
+        {
+          "year": "2019",
+          "distance_km": 16050
+        },
+        {
+          "year": "2020",
+          "distance_km": 11890
+        },
+        {
+          "year": "2021",
+          "distance_km": 13540
+        },
+        {
+          "year": "2022",
+          "distance_km": 15760
+        },
+        {
+          "year": "2023",
+          "distance_km": 16180
+        },
+        {
+          "year": "2024",
+          "distance_km": 15390
+        },
+        {
+          "year": "2025",
+          "distance_km": 14840
+        },
+        {
+          "year": "2026",
+          "distance_km": 3600,
+          "note": "to Mar"
+        }
+      ],
+      "service_period": "Apr 2011 – Mar 2026",
+      "avg_speed_kmh": 40,
+      "own_power_w": 9,
+      "charging_efficiency": 0.765,
+      "car_energy_kwh_estimate": 39375,
+      "daily_use": "~30 km · ~45 min",
+      "basis": "modelled",
+      "note": "S4 use-phase model (LCA_framework_v4 Stage 4). car_energy_kwh_estimate is outside the S4 boundary: average-BEV estimate at 17.5 kWh/100 km. Annual series simulated around the 15,000 km/yr FU, sum = 225,000."
     },
     "recycled_content_basis": "not_provided",
     "lca_basis": "modelled",
@@ -561,18 +661,40 @@
     "pef_note": null
   },
   "compliance": {
-    "ce": null,
+    "ce": true,
+    "ce_scope": "2014/30/EU (EMC)",
+    "tested_to": "ECE R10 · rev.6 : 2019",
+    "declaration_date": "2020-10-09",
     "rohs": null,
-    "reach": null,
-    "weee_category": "Cat. 5 (small equipment) - to verify",
-    "basis": "not_provided",
+    "rohs_applicable": false,
+    "reach": true,
+    "weee_category": "Cat. 5 · small equipment",
+    "declaration_notes": [
+      {
+        "title": "Assessment",
+        "body": "The product may only be assessed with regard to its electrical, mechanical and functional safety, and to environmental effects (foreign bodies, temperature, humidity), after it has been installed in the product intended for the final user."
+      },
+      {
+        "title": "EMC after installation",
+        "body": "Once installed, the EMC properties may change. The final product (complete apparatus, machines, installations) must be inspected for EMC by its own manufacturer."
+      },
+      {
+        "title": "Instructions",
+        "body": "The assembling, installation and safety instructions according to the manual have to be followed."
+      },
+      {
+        "title": "Disposal",
+        "body": "Sort hardware, accessories and packaging for recycling. Do not dispose of this electronic device in household waste."
+      }
+    ],
+    "basis": "declared",
     "declaration_of_conformity_doc_id": "declaration_of_conformity"
   },
   "certifications": [],
   "service": {
     "spare_parts": [],
     "maintenance_interval": null,
-    "software_update_policy": "Over-the-air, automatic, every 14 days",
+    "software_update_policy": "Over-the-air, automatic, quarterly",
     "repair_doc_id": "repair_manual",
     "resale_options": [],
     "eol_options": [],
@@ -580,70 +702,364 @@
     "basis": "not_provided",
     "software_updates": [
       {
-        "date": "2026-03-02",
-        "version": "v4.12.1",
+        "date": "2011-04-01",
+        "version": "v1.1",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-03-16",
-        "version": "v4.12.2",
+        "date": "2011-07-01",
+        "version": "v1.2",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-03-30",
-        "version": "v4.12.3",
+        "date": "2011-10-01",
+        "version": "v1.3",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-04-13",
-        "version": "v4.12.4",
+        "date": "2012-01-01",
+        "version": "v1.4",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-04-27",
-        "version": "v4.13.0",
+        "date": "2012-04-01",
+        "version": "v2.1",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-05-11",
-        "version": "v4.13.1",
+        "date": "2012-07-01",
+        "version": "v2.2",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-05-25",
-        "version": "v4.13.2",
+        "date": "2012-10-01",
+        "version": "v2.3",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-06-08",
-        "version": "v4.13.3",
+        "date": "2013-01-01",
+        "version": "v2.4",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-06-22",
-        "version": "v4.13.4",
+        "date": "2013-04-01",
+        "version": "v3.1",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-07-06",
-        "version": "v4.14.0",
+        "date": "2013-07-01",
+        "version": "v3.2",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
       },
       {
-        "date": "2026-07-20",
-        "version": "v4.14.1",
+        "date": "2013-10-01",
+        "version": "v3.3",
         "channel": "automatic",
-        "note": "over-the-air control-unit firmware"
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2014-01-01",
+        "version": "v3.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2014-04-01",
+        "version": "v4.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2014-07-01",
+        "version": "v4.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2014-10-01",
+        "version": "v4.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2015-01-01",
+        "version": "v4.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2015-04-01",
+        "version": "v5.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2015-07-01",
+        "version": "v5.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2015-10-01",
+        "version": "v5.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2016-01-01",
+        "version": "v5.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2016-04-01",
+        "version": "v6.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2016-07-01",
+        "version": "v6.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2016-10-01",
+        "version": "v6.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2017-01-01",
+        "version": "v6.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2017-04-01",
+        "version": "v7.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2017-07-01",
+        "version": "v7.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2017-10-01",
+        "version": "v7.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2018-01-01",
+        "version": "v7.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2018-04-01",
+        "version": "v8.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2018-07-01",
+        "version": "v8.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2018-10-01",
+        "version": "v8.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2019-01-01",
+        "version": "v8.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2019-04-01",
+        "version": "v9.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2019-07-01",
+        "version": "v9.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2019-10-01",
+        "version": "v9.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2020-01-01",
+        "version": "v9.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2020-04-01",
+        "version": "v10.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2020-07-01",
+        "version": "v10.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2020-10-01",
+        "version": "v10.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2021-01-01",
+        "version": "v10.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2021-04-01",
+        "version": "v11.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2021-07-01",
+        "version": "v11.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2021-10-01",
+        "version": "v11.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2022-01-01",
+        "version": "v11.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2022-04-01",
+        "version": "v12.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2022-07-01",
+        "version": "v12.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2022-10-01",
+        "version": "v12.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2023-01-01",
+        "version": "v12.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2023-04-01",
+        "version": "v13.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2023-07-01",
+        "version": "v13.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2023-10-01",
+        "version": "v13.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2024-01-01",
+        "version": "v13.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2024-04-01",
+        "version": "v14.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2024-07-01",
+        "version": "v14.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2024-10-01",
+        "version": "v14.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2025-01-01",
+        "version": "v14.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2025-04-01",
+        "version": "v15.1",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2025-07-01",
+        "version": "v15.2",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2025-10-01",
+        "version": "v15.3",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
+      },
+      {
+        "date": "2026-01-01",
+        "version": "v15.4",
+        "channel": "automatic",
+        "note": "quarterly over-the-air firmware"
       }
     ],
     "software_update_basis": "simulated"
@@ -659,12 +1075,231 @@
   "repair_history": {
     "events": [
       {
-        "date": "2026-05-14",
-        "description": "SENS-B connector replaced after intermittent signal loss",
+        "date": "2016-09-12",
+        "description": "Connector reseat - SENS-A",
         "exchanged_component_ids": [
           "connectors"
         ],
-        "cost_eur": 148.0,
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2017-02-25",
+        "description": "Fasteners replaced (4 x M3)",
+        "exchanged_component_ids": [
+          "fasteners"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2017-09-08",
+        "description": "Housing seal renewed",
+        "exchanged_component_ids": [
+          "housing"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2018-02-17",
+        "description": "Thermal interface renewed",
+        "exchanged_component_ids": [
+          "tim"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2018-09-03",
+        "description": "Connector reseat - LIFE",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2019-02-12",
+        "description": "Conformal coating touch-up",
+        "exchanged_component_ids": [
+          "coating"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2019-09-25",
+        "description": "PCB remount and torque check",
+        "exchanged_component_ids": [
+          "pcb_substrate",
+          "fasteners"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2020-02-08",
+        "description": "Connector reseat - SENS-B",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2020-09-17",
+        "description": "Connector reseat - SENS-A",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2021-02-03",
+        "description": "Fasteners replaced (4 x M3)",
+        "exchanged_component_ids": [
+          "fasteners"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2021-06-12",
+        "description": "Housing seal renewed",
+        "exchanged_component_ids": [
+          "housing"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2021-10-25",
+        "description": "Thermal interface renewed",
+        "exchanged_component_ids": [
+          "tim"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2022-02-08",
+        "description": "Connector reseat - LIFE",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2022-06-17",
+        "description": "Conformal coating touch-up",
+        "exchanged_component_ids": [
+          "coating"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2022-10-03",
+        "description": "PCB remount and torque check",
+        "exchanged_component_ids": [
+          "pcb_substrate",
+          "fasteners"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2023-02-12",
+        "description": "Connector reseat - SENS-B",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2023-06-25",
+        "description": "Connector reseat - SENS-A",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2023-10-08",
+        "description": "Fasteners replaced (4 x M3)",
+        "exchanged_component_ids": [
+          "fasteners"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2024-02-17",
+        "description": "Housing seal renewed",
+        "exchanged_component_ids": [
+          "housing"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2024-06-03",
+        "description": "Thermal interface renewed",
+        "exchanged_component_ids": [
+          "tim"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2024-10-12",
+        "description": "Connector reseat - LIFE",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2025-02-25",
+        "description": "Conformal coating touch-up",
+        "exchanged_component_ids": [
+          "coating"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2025-06-08",
+        "description": "PCB remount and torque check",
+        "exchanged_component_ids": [
+          "pcb_substrate",
+          "fasteners"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2025-10-17",
+        "description": "Connector reseat - SENS-B",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
+        "image_url": null
+      },
+      {
+        "date": "2026-02-03",
+        "description": "Connector reseat - SENS-A",
+        "exchanged_component_ids": [
+          "connectors"
+        ],
+        "cost_eur": null,
         "image_url": null
       }
     ],
@@ -810,7 +1445,7 @@
     "recycling_route": "WEEE - selective treatment recommended",
     "contains_battery": false,
     "hazardous_warnings": [],
-    "substances_basis": "not_provided",
+    "substances_basis": "declared",
     "recycling_instructions": [],
     "collection_scheme": {
       "scheme_name": null,

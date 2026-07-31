@@ -1,5 +1,36 @@
 {
   "$defs": {
+    "AnnualDistance": {
+      "description": "v0.11 - one year of the modelled distance series (Usage Profile list).",
+      "properties": {
+        "year": {
+          "title": "Year",
+          "type": "string"
+        },
+        "distance_km": {
+          "title": "Distance Km",
+          "type": "integer"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "year",
+        "distance_km"
+      ],
+      "title": "AnnualDistance",
+      "type": "object"
+    },
     "Certification": {
       "description": "v0.6 - Table 6 #22 responsibility / supply-chain certifications.",
       "properties": {
@@ -280,6 +311,61 @@
           ],
           "default": null,
           "title": "Declaration Of Conformity Doc Id"
+        },
+        "ce_scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ce Scope"
+        },
+        "tested_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tested To"
+        },
+        "declaration_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declaration Date"
+        },
+        "rohs_applicable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rohs Applicable"
+        },
+        "declaration_notes": {
+          "items": {
+            "$ref": "#/$defs/DeclarationNote"
+          },
+          "title": "Declaration Notes",
+          "type": "array"
         }
       },
       "title": "Compliance",
@@ -362,6 +448,25 @@
         "disassembly_step"
       ],
       "title": "Component",
+      "type": "object"
+    },
+    "DeclarationNote": {
+      "description": "v0.12 - one section of the DoC's 'Further explanations' / disposal text,\nrendered in the Compliance & Safety scroll card.",
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "body": {
+          "title": "Body",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "body"
+      ],
+      "title": "DeclarationNote",
       "type": "object"
     },
     "Disassembly": {
@@ -1843,6 +1948,18 @@
           "default": "not_provided",
           "title": "Basis",
           "type": "string"
+        },
+        "symbol": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Symbol"
         }
       },
       "required": [
@@ -1985,6 +2102,90 @@
           ],
           "default": null,
           "title": "Note"
+        },
+        "annual_distances": {
+          "items": {
+            "$ref": "#/$defs/AnnualDistance"
+          },
+          "title": "Annual Distances",
+          "type": "array"
+        },
+        "service_period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Period"
+        },
+        "avg_speed_kmh": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Avg Speed Kmh"
+        },
+        "own_power_w": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Own Power W"
+        },
+        "charging_efficiency": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Charging Efficiency"
+        },
+        "car_energy_kwh_estimate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Car Energy Kwh Estimate"
+        },
+        "daily_use": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Daily Use"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
         }
       },
       "title": "UsageProfile",
