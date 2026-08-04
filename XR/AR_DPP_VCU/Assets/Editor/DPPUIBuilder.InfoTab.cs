@@ -42,7 +42,7 @@ namespace DPP.EditorTools
             var page = Stretch(name, screen);
 
             var back = TLCenter("BackButton", page, 42, 44, 40, 40);
-            var backOutline = AddImage(CenterIn("HoverOutline", back, 50, 50), DPPSpriteFactory.Circle64, Color.white);
+            var backOutline = AddImage(CenterIn("HoverOutline", back, 46, 46), DPPSpriteFactory.Circle64, Color.white);
             backOutline.gameObject.SetActive(false);
             AddImage(CenterIn("Ring", back, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
             var backFill = AddImage(CenterIn("Fill", back, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);

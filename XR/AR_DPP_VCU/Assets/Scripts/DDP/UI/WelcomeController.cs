@@ -29,9 +29,6 @@ namespace DPP.UI
         [Tooltip("Scan screen owner. Continue hands off to BeginNewScan().")]
         [SerializeField] private QRScanController scanner;
 
-        [Tooltip("First-run prompt canvas root — hidden at launch.")]
-        [SerializeField] private GameObject firstRunRoot;
-
         [Header("Behaviour")]
         [Tooltip("Show the welcome canvas at launch. OFF = legacy entry (scanner owns launch).")]
         [SerializeField] private bool showOnStart = true;
@@ -40,7 +37,6 @@ namespace DPP.UI
         {
             // Whoever runs first wins the same result: nothing but Welcome is up.
             if (mainCanvasRoot != null) mainCanvasRoot.SetActive(false);
-            if (firstRunRoot != null) firstRunRoot.SetActive(false);
 
             if (!showOnStart)
             {
@@ -60,7 +56,6 @@ namespace DPP.UI
         {
             gameObject.SetActive(true);
             if (mainCanvasRoot != null) mainCanvasRoot.SetActive(false);
-            if (firstRunRoot != null) firstRunRoot.SetActive(false);
             Debug.Log("[Welcome] Welcome canvas shown.");
         }
 

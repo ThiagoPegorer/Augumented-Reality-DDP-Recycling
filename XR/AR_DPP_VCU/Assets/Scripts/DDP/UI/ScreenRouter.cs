@@ -23,9 +23,15 @@ namespace DPP.UI
     /// missing method on this class, some serialized UnityEvent still points at
     /// the old API — run RBv2_0/Tools/Clean RBv1.0 leftovers.
     /// </summary>
+    /// <summary>Who is using the app this session (RBv2.1 spec 03). `None` until
+    /// the user chooses — the screen cannot be skipped.</summary>
+    public enum StakeholderMode { None, ProductUser, Recycler }
+
     public class ScreenRouter : MonoBehaviour
     {
         [Header("Passport screens (built by RBv2_0/7)")]
+        [Tooltip("RBv2.1 spec 03 — the role fork, opened by a successful scan. Built by RBv2_0/8.")]
+        [SerializeField] private GameObject stakeholderDecision;
         [Tooltip("Product info — the app's main screen in RBv2.0. Back goes to the Welcome canvas.")]
         [SerializeField] private GameObject dppCanva;
         [Tooltip("Life cycle overview + the exploded action zone. Back goes to the DPP Canva.")]
@@ -57,6 +63,40 @@ namespace DPP.UI
         /// <see cref="ShowDppCanva"/>.
         /// </summary>
         public void ShowMainPage() => ShowDppCanva();
+
+        // ---------------- RBv2.1: the stakeholder role ----------------
+
+        /// <summary>Which audience is using the app this session. Read by the DPP
+        /// Canva to decide whether the disassembly route is offered at all.</summary>
+        public StakeholderMode Mode { get; private set; } = StakeholderMode.None;
+
+        /// <summary>Set by the role cards (spec 03).</summary>
+        public void SetStakeholderMode(StakeholderMode mode)
+        {
+            Mode = mode;
+            Debug.Log($"[ScreenRouter] Stakeholder mode = {mode}.");
+        }
+
+        /// <summary>Opened by a successful scan (spec 02 section 4), and re-entered by
+        /// Back from the DPP Canva so a wrong tap costs one press, not a whole session.
+        ///
+        /// Clearing the mode HERE is what makes the kiosk cycle safe: every new scan
+        /// passes through this screen, so participant 2 can never inherit participant
+        /// 1's role, and no extra reset call has to be remembered anywhere else.</summary>
+        public void ShowStakeholder()
+        {
+            Mode = StakeholderMode.None;
+            if (stakeholderDecision == null)
+            {
+                // Never strand a participant on a missing screen — fall through to
+                // the passport, which is what both roles see first anyway.
+                Debug.LogWarning("[ScreenRouter] Stakeholder screen not assigned — run RBv2_0/8. Opening the passport directly.");
+                ShowDppCanva();
+                return;
+            }
+            Show(stakeholderDecision, "Stakeholder decision");
+        }
+
 
         /// <summary>DPP Canva — product info. The app's main screen.</summary>
         public void ShowDppCanva()

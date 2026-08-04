@@ -1,0 +1,42 @@
+<svg width="100%" viewBox="0 0 680 600" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Mechanical data — plus-page proposal: drawing left, dimensions and mounting right</title>
+<desc>Proposal for the Mechanical data detail page: a technical drawing panel on the left with the source still to be decided, and six stat groups on the right — demonstrator size, declared product size, weight, mounting, connector panel and housing — in the established title-left value-centred style.</desc>
+<rect x="20" y="20" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="62" cy="64" r="21.5" fill="#2e5aa0"/><circle cx="62" cy="64" r="20" fill="#13366b"/>
+<g stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M65 58 L58 64 L65 70"/><path d="M58 64 L70 64"/></g>
+<text x="96" y="71" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Mechanical data</text>
+<rect x="44" y="96" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="108" width="360" height="330" rx="13" fill="#081a38" stroke="#1a335f" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="224" y="240" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#6f86a8" text-anchor="middle">technical drawing</text>
+<text x="224" y="260" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#e2a44a" text-anchor="middle">SOURCE DECISION NEEDED — see notes</text>
+<text x="224" y="278" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#4a5f80" text-anchor="middle">suggested: dimensioned line drawing,</text>
+<text x="224" y="292" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#4a5f80" text-anchor="middle">transparent PNG, ~1200 px wide</text>
+<text x="416" y="126" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">UNIT SIZE (this demonstrator)</text>
+<text x="531" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold" text-anchor="middle">200 x 150 x 60 mm</text>
+<line x1="416" y1="165" x2="636" y2="165" stroke="#12294e" stroke-width="1"/>
+<text x="416" y="183" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">PRODUCT SIZE (declared)</text>
+<text x="531" y="207" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold" text-anchor="middle">166 x 121 x 41 mm</text>
+<line x1="416" y1="222" x2="636" y2="222" stroke="#12294e" stroke-width="1"/>
+<text x="416" y="240" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">WEIGHT</text>
+<text x="531" y="264" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold" text-anchor="middle">660 g</text>
+<line x1="416" y1="279" x2="636" y2="279" stroke="#12294e" stroke-width="1"/>
+<text x="416" y="297" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">MOUNTING</text>
+<text x="531" y="321" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold" text-anchor="middle">6 x M3 · 4.5 Nm</text>
+<line x1="416" y1="336" x2="636" y2="336" stroke="#12294e" stroke-width="1"/>
+<text x="416" y="354" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">CONNECTOR PANEL</text>
+<text x="531" y="378" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold" text-anchor="middle">3 x motorsport circular</text>
+<line x1="416" y1="393" x2="636" y2="393" stroke="#12294e" stroke-width="1"/>
+<text x="416" y="411" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5" font-weight="bold">HOUSING</text>
+<text x="531" y="435" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold" text-anchor="middle">2-shell · 14 x M3</text>
+<rect x="240" y="462" width="200" height="22" rx="11" fill="#0a0e16" stroke="#2a3344" stroke-width="1.5"/>
+<line x1="305" y1="473" x2="375" y2="473" stroke="#6b7686" stroke-width="3" stroke-linecap="round"/>
+<text x="20" y="14" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#6f86a8">Mechanical data — "+" page PROPOSAL. Drawing left (360 wide), six Usage-family stat groups right. Both sizes side by side, labelled — the comparison the row itself refuses to make.</text>
+<text x="20" y="508" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#e2a44a" font-weight="bold">THE DRAWING SOURCE IS THE DECISION</text>
+<text x="249.60000000000002" y="508" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">(a) Bosch datasheet p.3–4 dimension drawings — accurate but COPYRIGHTED, and it would enter the git repo inside Assets/. Same class of problem as committing the PDF.</text>
+<text x="20" y="526" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">(b) a drawing of YOUR CAD replica (CAD_Specs) exported as a line rendering — no rights issue, matches the object in hand, but shows 200 x 150 x 60, not the product.</text>
+<text x="20" y="544" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">(c) no drawing for tomorrow — the six stat groups already carry the page; the drawing slot ships empty with a placeholder note. Zero effort, zero risk.</text>
+<text x="20" y="562" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" font-weight="bold">WHY BOTH SIZES SIT HERE</text>
+<text x="179.20000000000002" y="562" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">spec 13 v8 deferred the declared 166 x 121 x 41 to this page: the row shows the demonstrator, this page owns the demonstrator-vs-product comparison, explicitly labelled.</text>
+<text x="20" y="580" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#7f9bc4" font-weight="bold">VALUES</text>
+<text x="70.4" y="580" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.3" fill="#9fb3d1">mounting/housing/connector lines come from the datasheet + disassembly payload (14 x M3, 3 connectors); all bound, none typed. Chrome question: the drawing panel is static — by the rule it gets NO card chrome (drawn frameless or thin hairline only).</text>
+</svg>

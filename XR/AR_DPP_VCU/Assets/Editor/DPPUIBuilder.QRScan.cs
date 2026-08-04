@@ -94,18 +94,23 @@ namespace DPP.EditorTools
             // Compact card covering title + buttons (v3: no panel behind).
             AddImage(TLCenter("Patch", error, 220, 162, 340, 160), DPPSpriteFactory.RoundedR20, DPPTheme.NavyPanel, sliced: true);
             AddText(TL("ErrTitle", error, 20, 104, 400, 20), "Could not reach the passport server", 14, DPPTheme.Hex("#f3b0b0"), bold: true, align: TextAlignmentOptions.Center);
-            AddText(TL("ErrSub", error, 20, 128, 400, 16), "Check the hotspot connection, then retry.", 12, DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Center);
+            AddText(TL("ErrSub", error, 20, 128, 400, 16), "Check the hotspot connection, then scan again.", 12, DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Center);
 
-            var retryRT = TLCenter("RetryButton", error, 145, 186, 140, 32);
-            var retryFill = AddImage(CenterIn("Fill", retryRT, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
-            AddText(Stretch("Label", retryRT), "Retry", 12.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
-            var retryBtn = retryRT.gameObject.AddComponent<Button>();
-            retryBtn.transition = Selectable.Transition.None;
-            retryBtn.targetGraphic = retryFill;
+            // RB2.1 (spec 02 section 5): this panel IS the routine CONTINUE APP? question.
+            // LEFT = No -> Close app (red, session-ending). RIGHT = Yes -> Scan again
+            // (teal primary). RBv2.0 had "Retry" teal on the LEFT and "Scan again" dark
+            // on the right, which put the go-forward action on the wrong side and
+            // offered two buttons that both re-attempted the fetch.
+            var closeRT = TLCenter("CloseAppButton", error, 145, 186, 140, 32);
+            var closeFill = AddImage(CenterIn("Fill", closeRT, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.SafetyStroke, sliced: true, raycast: true);
+            AddText(Stretch("Label", closeRT), "Close app", 12.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
+            var closeBtn = closeRT.gameObject.AddComponent<Button>();
+            closeBtn.transition = Selectable.Transition.None;
+            closeBtn.targetGraphic = closeFill;
 
             var againRT = TLCenter("ScanAgainButton", error, 295, 186, 140, 32);
-            var againFill = AddImage(CenterIn("Fill", againRT, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#1a2740"), sliced: true, raycast: true);
-            AddText(Stretch("Label", againRT), "Scan again", 12.5f, DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Center);
+            var againFill = AddImage(CenterIn("Fill", againRT, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
+            AddText(Stretch("Label", againRT), "Scan again", 12.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
             var againBtn = againRT.gameObject.AddComponent<Button>();
             againBtn.transition = Selectable.Transition.None;
             againBtn.targetGraphic = againFill;
@@ -120,8 +125,20 @@ namespace DPP.EditorTools
             SetRef(controller, "errorGroup", error.gameObject);
             SetRef(controller, "sweepLine", sweep);
             SetRef(controller, "searchingLabel", searching);
-            SetRef(controller, "retryButton", retryBtn);
+            SetRef(controller, "closeAppButton", closeBtn);
             SetRef(controller, "scanAgainButton", againBtn);
+
+            // SELF-HEALING WIRE. A phase that RECREATES an object must re-point
+            // everyone who references it. The Welcome canvas (RBv2_0/3) holds a
+            // reference to this controller; rebuilding the scan screen destroys the
+            // old one, so running /2 after /3 used to leave "Scan to start" wired to
+            // a dead object — the button appeared to do nothing at all.
+            var welcomeCtl = FindAnyIncludingInactive<WelcomeController>();
+            if (welcomeCtl != null)
+            {
+                SetRef(welcomeCtl, "scanner", controller);
+                Debug.Log("[DPPUIBuilder] Re-pointed WelcomeController.scanner at the rebuilt scan controller.");
+            }
 
             // The scanner owns the fetch now — kill the legacy auto-fetch.
             if (manager != null) SetBool(manager, "fetchOnStart", false);

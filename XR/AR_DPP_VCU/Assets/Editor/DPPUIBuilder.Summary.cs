@@ -113,7 +113,7 @@ namespace DPP.EditorTools
             sentMessage.gameObject.SetActive(false);
 
             var sendRT = TL("ActionButton", screen, 326, 372, 290, 44);
-            var sendOutline = AddImage(CenterIn("HoverOutline", sendRT, 298, 52), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var sendOutline = AddImage(CenterIn("HoverOutline", sendRT, 296, 50), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             sendOutline.gameObject.SetActive(false);
             var sendFill = AddImage(CenterIn("Fill", sendRT, 290, 44), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
             var sendLabel = AddText(Stretch("Label", sendRT), "Send dismantling report", 15f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
@@ -200,7 +200,7 @@ namespace DPP.EditorTools
             Color fill, string label, CompletionSummaryView view, string method)
         {
             var btn = TL(name, card, x, 96, w, 46);
-            var outline = AddImage(CenterIn("HoverOutline", btn, w + 8, 54), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var outline = AddImage(CenterIn("HoverOutline", btn, w + HoverHalo, 52), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
             var fillImg = AddImage(CenterIn("Fill", btn, w, 46), DPPSpriteFactory.RoundedR13, fill, sliced: true, raycast: true);
             AddText(Stretch("Label", btn), label, 14, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);

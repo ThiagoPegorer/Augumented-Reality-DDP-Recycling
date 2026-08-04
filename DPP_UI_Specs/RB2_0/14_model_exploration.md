@@ -1,6 +1,6 @@
-# DPP UI Spec — 14: Composition & Impact (+ the disassembly gate) — **v2**
+# DPP UI Spec — 14: Composition & Impact — **v2**
 
-> **Living spec** — ReBuilt v2.0. Status: **v2 DESIGN APPROVED 2026-07-30, NOT BUILT.**
+> **Living spec** — ReBuilt v2.0. Status: **v2 BUILT (`RBv2_0/7`); gate REMOVED 2026-08-01.**
 > v1 (built + device-tested 2026-07-29) showed the LCA modal promoted to a main panel.
 > v2 receives **Materials & composition** and the **Indicators** category from spec 13 and restructures
 > the panel into **three tappable blocks**. Mock: `drafts/14_v4_composition_impact.svg`.
@@ -32,7 +32,7 @@ Back → `ScreenRouter.ShowDppCanva()`.
 | **2 — Climate · EoL scenarios** (stroke `row/stroke`) | 24 | 196 | 290 | 138 |
 | **3 — Recovery rate** (stroke `teal/accent`) | 326 | 196 | 290 | 138 |
 | Gesture hint (2 lines) 11 `text/tip` | 24 | 366 / 380 | 320 | 16 |
-| Primary CTA `Continue ›` | 288 | 354 | 328 | 52 |
+| Primary CTA `Continue to disassembly ›` | 288 | 354 | 328 | 52 |
 
 **The circularity-indicator row from the earlier draft is REMOVED** (Thiago, 2026-07-30): repairability,
 recyclability and reusability are already expressed by these three blocks, so a separate row of hollow
@@ -98,15 +98,22 @@ Bound to `environmental.impact_recovery[]` (schema v0.7). Source
 **Blocks 2 and 3 together carry thesis finding #3:** climate barely moves while minerals move a lot →
 the AR-DPP is primarily a **critical-raw-materials instrument**. Neither block says that alone.
 
-## 6. The gate — `CONTINUE TO DISASSEMBLY?` (unchanged from v1)
+## 6. The gate — **REMOVED 2026-08-01** (Thiago, P02 follow-up week)
 
-Own root canvas `ContinueGateCanvas`, 440 × 210, `sortingOrder 10`, own GraphicRaycaster + grabber bar,
-recenters 0.7 m in front on open. Title `Continue to disassembly?`; two subtitle lines; secondary
-**`Quit`** c(119,156) → Welcome; primary `Continue ›` c(329,156) → disassembly intro.
+The `CONTINUE TO DISASSEMBLY?` interstitial (own root canvas, Quit / Continue, v1 §6) is gone.
+The exploration CTA now **names its destination** — `Continue to disassembly ›` — and wires straight
+to `ScreenRouter.ShowDisassembly()`. Rationale: the gate was one more panel to read and place for a
+confirmation the renamed button already communicates.
 
-**The asymmetry is deliberate** — every other Back edge moves one level; this one leaves the product
-session, so the button is **Quit**, never Back. `ContinueGate.Quit()` routes through `ShowDppCanva()`
-**before** `ShowWelcome()` because the zone is a separate ROOT canvas that Welcome cannot hide.
+**What died:** `BuildContinueGateCanvas` (builder), `ContinueGate.cs` (component, moved to
+`_to_delete/`), the gate's grabber bar + recenter-on-open. `RemoveByName("ContinueGateCanvas")`
+stays in `RBv2_0/7` so re-running the builder clears the gate from pre-removal scenes.
+
+**Accepted loss — the Quit escape:** the gate's `Quit` was the ONLY one-tap exit to Welcome at this
+point in the journey (deliberate v1 asymmetry: Quit, never Back). Leaving the session now takes
+Back → DPP Canva → `Home`. Two taps instead of one, on an edge participants rarely take; logged
+here because the v1 spec argued that asymmetry loudly. The timer note is unaffected — timing still
+starts at `Start disassembly` inside the intro, which is now one screen closer.
 
 ## 7. Open items
 
@@ -124,5 +131,7 @@ session, so the button is **Quit**, never Back. `ContinueGate.Quit()` routes thr
   structure agreed; circularity row dropped.
 - **2026-07-30 (b)** — payload swapped to openLCA EF 3.1 + VCU_BOM_v4; S1–S4 chart replaced by the
   four-scenario climate ladder because no per-stage export exists; composition switched to by-material.
+- **2026-08-01** — gate removed; CTA relabelled `Continue to disassembly`, wired direct to the intro
+  (§6). Post-P02 priority #1, Thiago's spec: "really simple: remove it".
 
-*Last updated: 2026-07-30 · Status: v2 design approved, not built · Prev: 13 DPP Canva · Next: tutorial (block 4)*
+*Last updated: 2026-08-01 · Status: v2 built, gate removed · Prev: 13 DPP Canva · Next: tutorial (block 4)*

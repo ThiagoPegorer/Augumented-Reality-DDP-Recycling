@@ -208,6 +208,7 @@ namespace DPP.UI
                 _grabHand = hand;
                 _grabDistance = Vector3.Distance(origin, hitPoint);
                 _grabOffset = panelRoot.position - hitPoint;
+                HandPinchAudio.ObjectGrabbed(hand == rightHand);
             }
             return over;
         }
@@ -224,7 +225,9 @@ namespace DPP.UI
             }
 
             Vector3 target = origin + direction * _grabDistance;
+            Vector3 before = panelRoot.position;
             panelRoot.position = target + _grabOffset;
+            HandPinchAudio.DragTick(_grabHand == rightHand, panelRoot.position - before);
 
             // Turn to face the user as it moves, so dragging it to your side
             // never leaves it edge-on. Rotation persists after release.
@@ -285,6 +288,7 @@ namespace DPP.UI
         {
             if (panelRoot == null) return;
             _mouseDragging = true;
+            HandPinchAudio.ObjectGrabbed(true);
             _dragPlane = new Plane(-transform.forward, transform.position);
             if (TryMousePoint(eventData, out Vector3 p))
                 _mouseGrabOffset = panelRoot.position - p;
@@ -294,7 +298,11 @@ namespace DPP.UI
         {
             if (panelRoot == null) return;
             if (TryMousePoint(eventData, out Vector3 p))
+            {
+                Vector3 before = panelRoot.position;
                 panelRoot.position = p + _mouseGrabOffset;
+                HandPinchAudio.DragTick(true, panelRoot.position - before);
+            }
 
             if (billboardWhileDragging || alwaysBillboard)
                 FaceCamera();

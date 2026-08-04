@@ -72,7 +72,7 @@ namespace DPP.EditorTools
 
             // ---- Header: home button only (v3 — eyebrow + step indicator removed) ----
             var home = TLCenter("HomeButton", screen, 70, 46, 36, 36);
-            var homeOutline = AddImage(CenterIn("HoverOutline", home, 46, 46), DPPSpriteFactory.Circle64, Color.white);
+            var homeOutline = AddImage(CenterIn("HoverOutline", home, 42, 42), DPPSpriteFactory.Circle64, Color.white);
             homeOutline.gameObject.SetActive(false);
             AddImage(CenterIn("Ring", home, 39, 39), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
             var homeFill = AddImage(CenterIn("Fill", home, 36, 36), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);
@@ -88,10 +88,10 @@ namespace DPP.EditorTools
             var title = AddText(TL("Title", screen, 52, 88, 320, 32), "Open the housing", 25, DPPTheme.TextOnNavy, bold: true);
 
             // ---- Task rows (unboxed, with status buttons) ----
-            var r1 = MakeTaskRow(screen, "TaskRow1", 142, DPPSpriteFactory.IcCross,
+            var r1 = MakeTaskRow(screen, "TaskRow1", 142,
                 "Remove the 4 lid screws", "Allen key · M3 · keep them aside",
                 controller, nameof(StepFlowController.ToggleTask1));
-            var r2 = MakeTaskRow(screen, "TaskRow2", 210, DPPSpriteFactory.IcUp,
+            var r2 = MakeTaskRow(screen, "TaskRow2", 210,
                 "Lift off the top cover", "Locating lip disengages · exposes the PCB",
                 controller, nameof(StepFlowController.ToggleTask2));
 
@@ -117,7 +117,7 @@ namespace DPP.EditorTools
 
             // ---- Nav buttons ----
             var back = TL("BackButton", screen, 52, 350, 150, 52);
-            var backOutline = AddImage(CenterIn("HoverOutline", back, 158, 60), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var backOutline = AddImage(CenterIn("HoverOutline", back, 156, 58), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             backOutline.gameObject.SetActive(false);
             AddImage(CenterIn("Stroke", back, 152, 54), DPPSpriteFactory.RoundedR13, DPPTheme.TabInactiveFill, sliced: true);
             var backFill = AddImage(CenterIn("Fill", back, 150, 52), DPPSpriteFactory.RoundedR13, DPPTheme.SecondaryButtonFill, sliced: true, raycast: true);
@@ -130,7 +130,7 @@ namespace DPP.EditorTools
             SetRef(backHover, "highlightOutline", backOutline.gameObject);
 
             var confirm = TL("ConfirmButton", screen, 214, 350, 398, 52);
-            var confOutline = AddImage(CenterIn("HoverOutline", confirm, 406, 60), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var confOutline = AddImage(CenterIn("HoverOutline", confirm, 404, 58), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             confOutline.gameObject.SetActive(false);
             // Baked in the LOCKED state (tasks start pending); controller drives colors.
             var confFill = AddImage(CenterIn("Fill", confirm, 398, 52), DPPSpriteFactory.RoundedR13, DPPTheme.SecondaryButtonFill, sliced: true, raycast: true);
@@ -164,12 +164,12 @@ namespace DPP.EditorTools
             SetRef(controller, "progressFill", fillRT);
             SetRef(controller, "progressLabel", progressLabel);
             SetRef(controller, "task1Fill", r1.fill);
-            SetRef(controller, "task1Icon", r1.icon);
+            SetRef(controller, "task1Cross", r1.cross);
             SetRef(controller, "task1Check", r1.check);
             SetRef(controller, "task1Title", r1.title);
             SetRef(controller, "task1Subtitle", r1.subtitle);
             SetRef(controller, "task2Fill", r2.fill);
-            SetRef(controller, "task2Icon", r2.icon);
+            SetRef(controller, "task2Cross", r2.cross);
             SetRef(controller, "task2Check", r2.check);
             SetRef(controller, "task2Title", r2.title);
             SetRef(controller, "task2Subtitle", r2.subtitle);
@@ -179,7 +179,6 @@ namespace DPP.EditorTools
             SetRef(controller, "confirmChevron1", chev1);
             SetRef(controller, "confirmChevron2", chev2);
             SetRef(controller, "confirmHover", confHover);
-            WireIconLookup(controller);
 
             if (router != null)
             {
@@ -188,6 +187,13 @@ namespace DPP.EditorTools
             }
             var manager = Object.FindFirstObjectByType<DPPManager>();
             if (manager != null) SetRef(manager, "stepFlow", controller);
+
+            // SELF-HEALING WIRE (see the note in RBv2_0/2). RBv2_0/6 sets
+            // StepFlowController.summary; rebuilding the step flow destroys that
+            // controller, so running /5 after /6 would leave "Finish & see summary"
+            // unable to hand the session over. Re-point it here.
+            var summaryView = FindAnyIncludingInactive<CompletionSummaryView>();
+            if (summaryView != null) SetRef(controller, "summary", summaryView);
 
             screen.gameObject.SetActive(false);
             exploded.SetActive(false);
@@ -229,7 +235,7 @@ namespace DPP.EditorTools
             string label, StepFlowController controller, string method)
         {
             var btn = TL(name, card, x, 92, 150, 46);
-            var outline = AddImage(CenterIn("HoverOutline", btn, 158, 54), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var outline = AddImage(CenterIn("HoverOutline", btn, 156, 52), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
             var fillImg = AddImage(CenterIn("Fill", btn, 150, 46), DPPSpriteFactory.RoundedR13, fill, sliced: true, raycast: true);
             AddText(Stretch("Label", btn), label, 15, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
@@ -269,26 +275,40 @@ namespace DPP.EditorTools
         // =================================================================
         private struct TaskRowParts
         {
-            public Image fill, icon;
-            public GameObject check;
+            public Image fill;
+            public GameObject cross, check;
             public TMP_Text title, subtitle;
         }
 
-        /// <summary>Unboxed task row (spec 04 v3): clickable status circle (36 px,
-        /// red glyph → green check) + bold title + subtitle. No card box.</summary>
+        /// <summary>Unboxed task row (spec 04 v3): clickable status circle + bold
+        /// title + subtitle. No card box.
+        ///
+        /// v3.2 (Thiago, 2026-08-01): the circle is now a pure BINARY status light —
+        /// red ✗ = not done, green ✓ = done. It used to show the action's own glyph
+        /// (screw, lever, board …) while pending, which read as decoration rather
+        /// than as an unfinished task. Both marks are drawn from the same 3 px
+        /// capsule so the pair matches in weight; per-action glyphs are gone.</summary>
         private static TaskRowParts MakeTaskRow(RectTransform screen, string name, float y,
-            string iconSprite, string demoTitle, string demoSubtitle,
+            string demoTitle, string demoSubtitle,
             StepFlowController controller, string toggleMethod)
         {
             var row = TL(name, screen, 52, y, 320, 56);
 
             // Status button — the only interactive element of the row.
             var status = TLCenter("StatusButton", row, 18, 18, 36, 36);
-            var outline = AddImage(CenterIn("HoverOutline", status, 46, 46), DPPSpriteFactory.Circle64, Color.white);
+            var outline = AddImage(CenterIn("HoverOutline", status, 42, 42), DPPSpriteFactory.Circle64, Color.white);
             outline.gameObject.SetActive(false);
             var fill = AddImage(CenterIn("Fill", status, 36, 36), DPPSpriteFactory.Circle64,
                 DPPTheme.Hex("#e24b4a"), sliced: false, raycast: true);
-            var icon = AddImage(CenterIn("Icon", status, 18, 18), iconSprite, Color.white);
+
+            // Cross mark (shown at rest, on the red fill) — two capsule bars forming an ✗.
+            var cross = CenterIn("Cross", status, 36, 36);
+            var xbar1 = TLCenter("Bar1", cross, 18, 18, 20, 3);
+            xbar1.localRotation = Quaternion.Euler(0, 0, 45);
+            AddImage(xbar1, DPPSpriteFactory.Grip, Color.white);
+            var xbar2 = TLCenter("Bar2", cross, 18, 18, 20, 3);
+            xbar2.localRotation = Quaternion.Euler(0, 0, -45);
+            AddImage(xbar2, DPPSpriteFactory.Grip, Color.white);
 
             // Check mark (hidden at rest) — two capsule bars forming a ✓.
             var check = CenterIn("Check", status, 36, 36);
@@ -310,30 +330,13 @@ namespace DPP.EditorTools
             var title = AddText(TL("Title", row, 50, 0, 270, 20), demoTitle, 14.5f, DPPTheme.TextOnNavy, bold: true);
             var subtitle = AddText(TL("Subtitle", row, 50, 22, 270, 18), demoSubtitle, 12, DPPTheme.TextSecondary, bold: false);
 
-            return new TaskRowParts { fill = fill, icon = icon, check = check.gameObject, title = title, subtitle = subtitle };
+            return new TaskRowParts { fill = fill, cross = cross.gameObject, check = check.gameObject, title = title, subtitle = subtitle };
         }
 
-        private static void WireIconLookup(StepFlowController controller)
-        {
-            string[] keys = { "cross", "up", "pins", "usb", "lever", "board", "magnify", "chip", "recycle", "label" };
-            string[] sprites = {
-                DPPSpriteFactory.IcCross, DPPSpriteFactory.IcUp, DPPSpriteFactory.IcPins,
-                DPPSpriteFactory.IcUsb, DPPSpriteFactory.IcLever, DPPSpriteFactory.IcBoard,
-                DPPSpriteFactory.IcMagnify, DPPSpriteFactory.IcChip, DPPSpriteFactory.Recycle,
-                DPPSpriteFactory.IcLabel
-            };
-            var so = new SerializedObject(controller);
-            var keysProp = so.FindProperty("iconKeys");
-            var sprProp = so.FindProperty("iconSprites");
-            keysProp.arraySize = keys.Length;
-            sprProp.arraySize = keys.Length;
-            for (int i = 0; i < keys.Length; i++)
-            {
-                keysProp.GetArrayElementAtIndex(i).stringValue = keys[i];
-                sprProp.GetArrayElementAtIndex(i).objectReferenceValue = DPPSpriteFactory.Load(sprites[i]);
-            }
-            so.ApplyModifiedPropertiesWithoutUndo();
-        }
+        // WireIconLookup died with the per-action glyphs (v3.2, 2026-08-01): the
+        // status circle is binary now, so the keys→sprite table it filled has no
+        // reader. The action glyph sprites themselves are still generated by
+        // DPPSpriteFactory — unused here, kept for a future non-status use.
 
         // =================================================================
         // Exploded ACTION ZONE (v3.0 RESET, 2026-07-19)

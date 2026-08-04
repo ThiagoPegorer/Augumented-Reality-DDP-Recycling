@@ -104,6 +104,12 @@ namespace DPP.EditorTools
         // =================================================================
 
         /// <summary>Full-stretch child rect.</summary>
+        /// <summary>Total size a hover outline adds to the element it rings, so the
+        /// halo is HoverHalo/2 on each side. Reduced 10-12 -> 6 (5-6 px per side -> 3)
+        /// on Thiago's device review, 2026-08-04: at arm's length the thicker ring read
+        /// as a selected STATE rather than as a passing highlight.</summary>
+        private const float HoverHalo = 6f;
+
         private static RectTransform Stretch(string name, Transform parent)
         {
             var rt = NewRT(name, parent);

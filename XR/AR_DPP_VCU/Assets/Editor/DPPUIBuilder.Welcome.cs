@@ -47,7 +47,11 @@ namespace DPP.EditorTools
                 return;
             }
             var router = mainGO.GetComponent<ScreenRouter>();
-            var scanner = Object.FindFirstObjectByType<QRScanController>();
+            // MUST include inactive objects: the scan canvas deactivates itself at
+            // launch (waitForWelcome) and stays inactive in a saved scene, so a plain
+            // FindFirstObjectByType returns NULL and Continue silently wires to nothing.
+            // That made RBv2_0/3 depend on being run right after RBv2_0/2. It no longer does.
+            var scanner = FindAnyIncludingInactive<QRScanController>();
             if (scanner == null)
                 Debug.LogWarning("[DPPUIBuilder] No QRScanController in the scene — run RBv2_0/2 first, then re-run RBv2_0/3 to wire Continue.");
 
@@ -55,35 +59,27 @@ namespace DPP.EditorTools
             RemoveByName("FirstRunCanvas");
 
             var welcomeGO = BuildWelcomeCanvas(mainGO, out var welcome, out var continueBtn, out var closeBtn);
-            var firstRunGO = BuildFirstRunCanvas(mainGO, out var prompt, out var yesBtn, out var noBtn);
 
             // ---- wiring: Welcome ----
             SetRef(welcome, "mainCanvasRoot", mainGO);
             SetRef(welcome, "scanner", scanner);
-            SetRef(welcome, "firstRunRoot", firstRunGO);
             WireClick(continueBtn, welcome, nameof(WelcomeController.ContinueToScan));
             WireClick(closeBtn, welcome, nameof(WelcomeController.CloseApp));
-
-            // ---- wiring: first-run prompt ----
-            SetRef(prompt, "mainCanvasRoot", mainGO);
-            SetRef(prompt, "router", router);
-            WireClick(yesBtn, prompt, nameof(FirstRunPrompt.ChooseYes));
-            WireClick(noBtn, prompt, nameof(FirstRunPrompt.ChooseNo));
 
             // ---- wiring: hand entry over to Welcome ----
             if (scanner != null)
             {
                 SetBool(scanner, "waitForWelcome", true);
-                SetRef(scanner, "firstRunPrompt", prompt);
+                // firstRunPrompt intentionally left NULL (RB2.1 spec 01 §4): the prompt
+                // is deleted, so a successful fetch opens the passport directly. When
+                // spec 03 lands, this is where the stakeholder screen gets wired.
             }
 
-            firstRunGO.SetActive(false);
-
             Undo.RegisterCreatedObjectUndo(welcomeGO, "Build Welcome Canvas");
-            Undo.RegisterCreatedObjectUndo(firstRunGO, "Build First Run Canvas");
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             Debug.Log("[DPPUIBuilder] RBv2_0/3 — Welcome + First Run built. " +
-                      "QRScanController.waitForWelcome enabled (entry is now Welcome → Continue → scan). Save the scene.");
+                      "QRScanController.waitForWelcome enabled (entry is now Welcome → Continue → scan). " +
+                      "RB2.1: first-run prompt removed, Close app is red. Save the scene.");
         }
 
         // =================================================================
@@ -140,7 +136,8 @@ namespace DPP.EditorTools
                 bold: false, align: TextAlignmentOptions.Center);
 
             closeBtn = BuildPillButton(page, "CloseButton", cx: 114, cy: 376, w: 180, h: 52,
-                label: "Close app", labelSize: 16, primary: false, chevron: false);
+                label: "Close app", labelSize: 16, primary: false, chevron: false,
+                destructive: true);                               // RB2.1 spec 01 §2.2
             continueBtn = BuildPillButton(page, "ContinueButton", cx: 422, cy: 376, w: 388, h: 52,
                 label: "Scan to start", labelSize: 16, primary: true, chevron: true);
 
@@ -149,68 +146,20 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // FIRST TIME USING THE APP? — full-size panel (spec 12 §3, rev 2)
+        // The FIRST-RUN PROMPT ("First time using ReBuilt?" -> Skip / Tutorial)
+        // was DELETED in RB2.1 (spec 01 §4). The tutorial is no longer one gated
+        // sequence before the product; it is a pop-up on each page (spec 09), so
+        // there is nothing left for an upfront yes/no question to gate.
         //
-        // REV 2 (2026-07-30), mock drafts/12b_v2_first_run.svg option B:
+        // Requirement that must NOT die with it: the prompt appeared after EVERY
+        // successful scan, not once per install, so participant 2 was offered the
+        // tutorial as reliably as participant 1. If a per-page pop-up ever
+        // persists a "seen" flag across participants, the kiosk cycle silently
+        // degrades for everyone after the first. Spec 09 owns that.
         //
-        //   * 440 x 210 modal card  ->  the standard 640 x 430 panel (00 §1).
-        //   * Modal chrome (stroke-behind-fill RoundedR20 card) -> PANEL chrome
-        //     (RoundedR22 + NavyPanel). At full panel size the card border read
-        //     as a frame inside a frame. sortingOrder stays 10 — this is still
-        //     drawn ON TOP of the panel canvases, it just no longer *looks* like
-        //     a small floating dialog.
-        //   * Labels "No, skip" / "Yes, show me" -> "Skip" / "Tutorial".
-        //   * Buttons take the WELCOME CANVAS geometry exactly (180 @ cx 114,
-        //     388 @ cx 422, cy 376). Asymmetric on purpose: Welcome is the screen
-        //     the participant just came from, so neither hit target moves.
-        //     WARNING — it also weights the choice toward the tutorial, and the
-        //     narrow left pill was "Close app" one screen earlier. Both are
-        //     accepted trade-offs; the steering is worth naming in the
-        //     methodology because the tutorial is part of Condition B.
-        //
-        // A pinch glyph and a "Two steps · about a minute" caption were both
-        // trialled in the mock and CUT (Thiago, 2026-07-30). That leaves two
-        // lines of text on a tall panel, so the text block is optically centred
-        // in the space ABOVE the buttons (baselines 168 / 198) rather than kept
-        // on Welcome's baselines (216 / 246). With no logo above it, Welcome's
-        // empty top third would read as an image that failed to load.
+        // RemoveByName("FirstRunCanvas") above stays, so re-running this phase
+        // clears the canvas from any pre-RB2.1 scene.
         // =================================================================
-        private static GameObject BuildFirstRunCanvas(GameObject mainGO,
-            out FirstRunPrompt prompt, out Button yesBtn, out Button noBtn)
-        {
-            var go = new GameObject("FirstRunCanvas", typeof(Canvas), typeof(GraphicRaycaster));
-            var canvas = go.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.WorldSpace;
-            canvas.worldCamera = Camera.main;
-            canvas.sortingOrder = 10;                             // above the panel canvases
-
-            var rt = (RectTransform)go.transform;
-            rt.sizeDelta = new Vector2(PanelW, PanelH);           // 640 x 430 — standard panel (00 §1)
-            rt.position = CanvasPos + new Vector3(0f, 0f, -0.05f);
-            rt.localScale = Vector3.one * CanvasScale;
-
-            prompt = go.AddComponent<FirstRunPrompt>();
-
-            var page = Stretch("FirstRun", rt);
-            AddImage(Stretch("PanelBG", page), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
-
-            // TLCenter takes the RECT centre, not the baseline. TMP puts the
-            // baseline roughly 10 px below centre at 30 pt and 5 px at 14 pt, so
-            // the mock's 168 / 198 baselines become rect centres of 158 / 193.
-            AddText(TLCenter("Title", page, 320, 158, 600, 42),
-                "First time using ReBuilt?", 30, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
-            AddText(TLCenter("Subtitle", page, 320, 193, 600, 22),
-                "A quick tutorial shows you how to interact in AR.", 14, DPPTheme.TextSecondary,
-                bold: false, align: TextAlignmentOptions.Center);
-
-            noBtn = BuildPillButton(page, "NoButton", cx: 114, cy: 376, w: 180, h: 52,
-                label: "Skip", labelSize: 16, primary: false, chevron: false);
-            yesBtn = BuildPillButton(page, "YesButton", cx: 422, cy: 376, w: 388, h: 52,
-                label: "Tutorial", labelSize: 16, primary: true, chevron: true);
-
-            BuildGrabberBar(rt);                                  // draggable anywhere in AR space
-            return go;
-        }
 
         // =================================================================
         // Shared pill button — primary (teal) or secondary, with the
@@ -218,25 +167,32 @@ namespace DPP.EditorTools
         // =================================================================
         private static Button BuildPillButton(RectTransform parent, string name,
             float cx, float cy, float w, float h, string label, float labelSize,
-            bool primary, bool chevron)
+            bool primary, bool chevron, bool destructive = false)
         {
             var root = TLCenter(name, parent, cx, cy, w, h);
 
             // Hover-only white outline, behind everything, off at rest (00 §4).
-            var outline = AddImage(CenterIn("HoverOutline", root, w + 10f, h + 10f),
+            var outline = AddImage(CenterIn("HoverOutline", root, w + HoverHalo, h + HoverHalo),
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
 
-            if (!primary)
+            // Destructive = the session-ending action (00 §2.1, RB2.1). Solid red,
+            // white bold, no stroke — it reads as a filled button like the primary
+            // does, because a red OUTLINE on a dark fill reads as a warning state
+            // rather than as something you are meant to press.
+            if (!primary && !destructive)
                 AddImage(CenterIn("Stroke", root, w + 4f, h + 4f),
                     DPPSpriteFactory.RoundedR13, DPPTheme.TabInactiveFill, sliced: true);
 
+            Color fillColor = destructive ? DPPTheme.SafetyStroke
+                            : primary     ? DPPTheme.TealAccent
+                                          : DPPTheme.SecondaryButtonFill;
             var fill = AddImage(CenterIn("Fill", root, w, h), DPPSpriteFactory.RoundedR13,
-                primary ? DPPTheme.TealAccent : DPPTheme.SecondaryButtonFill, sliced: true, raycast: true);
+                fillColor, sliced: true, raycast: true);
 
             AddText(Stretch("Label", root), label, labelSize,
-                primary ? DPPTheme.TextOnNavy : DPPTheme.TextSecondary,
-                bold: primary, align: TextAlignmentOptions.Center);
+                (primary || destructive) ? DPPTheme.TextOnNavy : DPPTheme.TextSecondary,
+                bold: primary || destructive, align: TextAlignmentOptions.Center);
 
             if (chevron)
             {

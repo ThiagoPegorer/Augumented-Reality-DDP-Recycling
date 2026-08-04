@@ -79,7 +79,11 @@ namespace DPP.UI
             bool rising = nowPinching && !wasPinching;
             wasPinching = nowPinching;
 
-            if (over && rising) _dragHand = hand;
+            if (over && rising)
+            {
+                _dragHand = hand;
+                HandPinchAudio.ObjectGrabbed(hand == rightHand);
+            }
             return over;
         }
 
@@ -91,7 +95,12 @@ namespace DPP.UI
 
             // While dragging, follow the ray even slightly outside the hit area.
             if (RayToTrackNorm(origin, dir, out float norm) && scrollRect != null)
+            {
+                float oldNorm = scrollRect.verticalNormalizedPosition;
                 scrollRect.verticalNormalizedPosition = norm;
+                HandPinchAudio.DragTick(_dragHand == rightHand,
+                    _rect.TransformVector(new Vector3(0f, (norm - oldNorm) * _rect.rect.height, 0f)));
+            }
             return true;
         }
 

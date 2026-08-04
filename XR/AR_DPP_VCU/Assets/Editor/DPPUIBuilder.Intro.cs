@@ -177,7 +177,7 @@ namespace DPP.EditorTools
         {
             var btn = TL("StartButton", screen, 24, 368, 592, 48);
 
-            var outline = AddImage(CenterIn("HoverOutline", btn, 600, 56), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
+            var outline = AddImage(CenterIn("HoverOutline", btn, 598, 54), DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
 
             var fill = AddImage(CenterIn("Fill", btn, 592, 48), DPPSpriteFactory.RoundedR13,

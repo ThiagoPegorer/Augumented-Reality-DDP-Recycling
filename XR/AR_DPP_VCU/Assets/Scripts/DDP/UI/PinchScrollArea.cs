@@ -45,13 +45,22 @@ namespace DPP.UI
             => Mathf.Max(0f, (content != null ? content.sizeDelta.y : 0f)
                            - (viewport != null ? viewport.rect.height : 0f));
 
-        private void Apply(float delta)
+        /// <summary>Applies the scroll and returns the content travel actually
+        /// used this call (clamps eat the rest) — the audio's motion signal.</summary>
+        private float Apply(float delta)
         {
-            if (content == null) return;
+            if (content == null) return 0f;
             var p = content.anchoredPosition;
             p.y = Mathf.Clamp(_contentStartY + delta, 0f, MaxScroll());
+            float dy = p.y - content.anchoredPosition.y;
             content.anchoredPosition = p;
+            return dy;
         }
+
+        /// <summary>Frame delta → world vector for HandPinchAudio (the wind's
+        /// direction input). Uses the viewport plane so "up" matches the panel.</summary>
+        private Vector3 WorldDelta(float dy)
+            => viewport != null ? viewport.TransformVector(new Vector3(0f, dy, 0f)) : Vector3.zero;
 
         // ---------------- mouse (Editor / Play Mode) ----------------
 
@@ -59,6 +68,7 @@ namespace DPP.UI
         {
             _contentStartY = content != null ? content.anchoredPosition.y : 0f;
             _startY = 0f;
+            HandPinchAudio.ObjectGrabbed(true);
         }
 
         public void OnDrag(PointerEventData e)
@@ -68,7 +78,7 @@ namespace DPP.UI
             // the list. Getting this backwards makes the list feel broken rather than
             // inverted, so the two input paths must agree.
             _startY += e.delta.y;
-            Apply(_startY);
+            HandPinchAudio.DragTick(true, WorldDelta(Apply(_startY)));
         }
 
 #if !PICO_OPENXR_SDK
@@ -123,8 +133,12 @@ namespace DPP.UI
                 if (LocalY(_isLeft ? leftRay : rightRay, out float y))
                 {
                     float delta = y - _startY;
-                    if (!_scrolling && Mathf.Abs(delta) > scrollThreshold) _scrolling = true;
-                    if (_scrolling) Apply(delta);
+                    if (!_scrolling && Mathf.Abs(delta) > scrollThreshold)
+                    {
+                        _scrolling = true;
+                        HandPinchAudio.ObjectGrabbed(!_isLeft);
+                    }
+                    if (_scrolling) HandPinchAudio.DragTick(!_isLeft, WorldDelta(Apply(delta)));
                 }
                 return;
             }

@@ -46,8 +46,6 @@ namespace DPP.UI
         [SerializeField] private ScreenRouter router;
         [Tooltip("Root of the main 640×430 canvas — hidden until a passport is loaded.")]
         [SerializeField] private GameObject mainCanvasRoot;
-        [Tooltip("RBv2.0: asked after every successful scan, before the main canvas opens. Null = open the main canvas directly (RBv1.0 behaviour).")]
-        [SerializeField] private FirstRunPrompt firstRunPrompt;
 
         [Header("Scan screen groups")]
         [SerializeField] private GameObject scanGroup;
@@ -55,7 +53,8 @@ namespace DPP.UI
         [SerializeField] private GameObject errorGroup;
         [SerializeField] private RectTransform sweepLine;
         [SerializeField] private TMP_Text searchingLabel;
-        [SerializeField] private Button retryButton;
+        [Tooltip("Error panel LEFT button: quits the app. RB2.1 spec 02 section 5 - this panel is the routine CONTINUE APP? question.")]
+        [SerializeField] private Button closeAppButton;
         [SerializeField] private Button scanAgainButton;
 
         [Header("Head follow (v3 viewfinder — full gaze ray, RBv2.0 2026-07-30)")]
@@ -109,7 +108,7 @@ namespace DPP.UI
 
         private void Start()
         {
-            if (retryButton != null) retryButton.onClick.AddListener(RetryFetch);
+            if (closeAppButton != null) closeAppButton.onClick.AddListener(CloseApp);
             if (scanAgainButton != null) scanAgainButton.onClick.AddListener(RestartScan);
             if (manager != null) manager.FetchCompleted += OnFetchCompleted;
 
@@ -146,6 +145,15 @@ namespace DPP.UI
         {
             if (manager != null) manager.FetchCompleted -= OnFetchCompleted;
             StopCamera();
+        }
+
+        /// <summary>Error panel, LEFT button - the routine CONTINUE APP? = No.
+        /// Self-contained (not routed through WelcomeController) because RBv2_0/2
+        /// builds BEFORE the Welcome canvas exists, so there is nothing to wire to.</summary>
+        public void CloseApp()
+        {
+            Debug.Log("[QRScanController] Close app from the scan-error panel.");
+            Application.Quit();
         }
 
         /// <summary>Enter the scan flow: from the Welcome canvas' Continue
@@ -278,13 +286,6 @@ namespace DPP.UI
             EnterState(State.Found);
         }
 
-        private void RetryFetch()
-        {
-            EnterState(State.Fetching);
-            if (foundGroup != null) foundGroup.SetActive(true);
-            if (manager != null) manager.FetchAndPopulate(_pendingProductId);
-        }
-
         private void RestartScan()
         {
             EnterState(State.Scanning);
@@ -307,16 +308,12 @@ namespace DPP.UI
             EnterState(State.Done);
             gameObject.SetActive(false);               // scan screen retires for this cycle
 
-            // RBv2.0: ask the first-run question before opening the passport.
-            if (firstRunPrompt != null)
-            {
-                firstRunPrompt.Show();
-                return;
-            }
-
-            // RBv1.0 fallback (prompt not wired).
+            // RB2.1 (spec 02 section 4): the first-run prompt is deleted. A successful
+            // fetch opens the STAKEHOLDER DECISION screen, which asks who is using the
+            // app before any passport content is shown. ShowStakeholder falls through
+            // to the passport if that screen has not been built yet.
             if (mainCanvasRoot != null) mainCanvasRoot.SetActive(true);
-            if (router != null) router.ShowMainPage();
+            if (router != null) router.ShowStakeholder();
         }
 
         // ---- camera pipeline (as proven by QRCameraProbe) ----------------

@@ -14,8 +14,16 @@ namespace DPP.UI
     /// v3 (2026-07-10):
     ///   - Header eyebrow + "Step n of 5" REMOVED (progress rail carries n/5).
     ///   - Task rows are UNBOXED; each has a clickable status circle:
-    ///     RED (pending, shows the action glyph) → tap → GREEN (done, shows a
-    ///     check). Tapping again un-checks (glove mis-taps happen).
+    ///     RED ✗ (pending) → tap → GREEN ✓ (done). Tapping again un-checks
+    ///     (glove mis-taps happen).
+    ///
+    /// v3.2 (Thiago, 2026-08-01): the pending state shows a universal ✗ instead
+    /// of the action's own glyph (screw, lever, board …). The circle is a status
+    /// light, and a status light must have exactly two readings — a glyph on red
+    /// invited "what is this icon telling me?" instead of "this is not done yet".
+    /// The task's identity is carried by the title and subtitle beside it, so
+    /// nothing is lost. The `iconKeys`/`iconSprites` lookup died with it, and
+    /// `StepAction.icon` in the payload now has no reader.
     ///   - "Confirm & next" is LOCKED (grey, non-interactable) until BOTH
     ///     tasks are green. Task state resets on entering a step (incl. Back).
     ///   - The how-to slot plays the current step's motion on the real model
@@ -41,14 +49,14 @@ namespace DPP.UI
 
         [Header("Task row 1")]
         [SerializeField] private Image task1Fill;          // status circle fill (red/green)
-        [SerializeField] private Image task1Icon;          // action glyph (pending state)
-        [SerializeField] private GameObject task1Check;    // check mark (done state)
+        [SerializeField] private GameObject task1Cross;    // ✗ mark (pending state)
+        [SerializeField] private GameObject task1Check;    // ✓ mark (done state)
         [SerializeField] private TMP_Text task1Title;
         [SerializeField] private TMP_Text task1Subtitle;
 
         [Header("Task row 2")]
         [SerializeField] private Image task2Fill;
-        [SerializeField] private Image task2Icon;
+        [SerializeField] private GameObject task2Cross;
         [SerializeField] private GameObject task2Check;
         [SerializeField] private TMP_Text task2Title;
         [SerializeField] private TMP_Text task2Subtitle;
@@ -63,10 +71,6 @@ namespace DPP.UI
         [SerializeField] private Image confirmChevron1;
         [SerializeField] private Image confirmChevron2;
         [SerializeField] private HoverHighlight confirmHover;
-
-        [Header("Icon lookup (wired by builder; keys per spec 04 §8)")]
-        [SerializeField] private string[] iconKeys;
-        [SerializeField] private Sprite[] iconSprites;
 
         private List<Step> _steps;
         private int _index;
@@ -213,14 +217,14 @@ namespace DPP.UI
             Step step = _steps[_index];
             if (titleText != null) titleText.text = step.title;
 
-            ApplyAction(step, 0, task1Icon, task1Title, task1Subtitle);
-            ApplyAction(step, 1, task2Icon, task2Title, task2Subtitle);
+            ApplyAction(step, 0, task1Title, task1Subtitle);
+            ApplyAction(step, 1, task2Title, task2Subtitle);
 
             if (confirmLabel != null)
                 confirmLabel.text = n >= total ? "Finish & see summary" : "Confirm & next";
         }
 
-        private void ApplyAction(Step step, int i, Image icon, TMP_Text title, TMP_Text subtitle)
+        private void ApplyAction(Step step, int i, TMP_Text title, TMP_Text subtitle)
         {
             bool has = step.actions != null && i < step.actions.Count;
             if (!has) return;
@@ -230,25 +234,21 @@ namespace DPP.UI
             if (subtitle != null)
             {
                 subtitle.text = a.subtitle ?? "";
-                // Gold high-value accent lives on the subtitle now (the icon
-                // circle is a status button — red/green only).
+                // Gold high-value accent lives on the subtitle (the status
+                // circle is binary — red ✗ / green ✓ only).
                 subtitle.color = a.value ? GoldText : DPPTheme.TextSecondary;
             }
-            if (icon != null)
-            {
-                Sprite s = LookupIcon(a.icon);
-                if (s != null) icon.sprite = s;
-            }
+            // a.icon is no longer read: the circle is a status light, not a glyph slot.
         }
 
         private void ApplyTaskVisual(int i)
         {
             Image fill = i == 0 ? task1Fill : task2Fill;
-            Image icon = i == 0 ? task1Icon : task2Icon;
+            GameObject cross = i == 0 ? task1Cross : task2Cross;
             GameObject check = i == 0 ? task1Check : task2Check;
 
             if (fill != null) fill.color = _done[i] ? DoneGreen : PendingRed;
-            if (icon != null) icon.gameObject.SetActive(!_done[i]);
+            if (cross != null) cross.SetActive(!_done[i]);
             if (check != null) check.SetActive(_done[i]);
         }
 
@@ -261,14 +261,6 @@ namespace DPP.UI
             if (confirmChevron1 != null) confirmChevron1.color = unlocked ? Color.white : LockedText;
             if (confirmChevron2 != null) confirmChevron2.color = unlocked ? Color.white : LockedText;
             if (confirmHover != null) confirmHover.enabled = unlocked;
-        }
-
-        private Sprite LookupIcon(string key)
-        {
-            if (iconKeys == null || iconSprites == null || string.IsNullOrEmpty(key)) return null;
-            for (int i = 0; i < iconKeys.Length && i < iconSprites.Length; i++)
-                if (iconKeys[i] == key) return iconSprites[i];
-            return null;
         }
 
         private IEnumerator AnimateProgress(float targetH)

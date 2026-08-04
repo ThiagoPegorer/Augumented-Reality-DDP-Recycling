@@ -18,7 +18,8 @@ namespace DPP.EditorTools
     ///   ModelExploration  — three blocks: composition by material, climate across the
     ///                       four EoL scenarios, recovery rate per impact category.
     ///                       Shown beside the exploded action zone. Back → DppCanva.
-    ///   ContinueGateCanvas — "Continue to disassembly?" · Quit / Continue.
+    ///                       "Continue to disassembly" → the intro, no gate between
+    ///                       (interstitial gate removed 2026-08-01).
     ///
     /// DATA: one <see cref="PassportView"/> on DppCanva owns the bindings for BOTH
     /// screens; SetRef happily points it at objects inside ModelExploration. Element
@@ -78,7 +79,7 @@ namespace DPP.EditorTools
 
             DestroyChild(canvasRT, "DppCanva");
             DestroyChild(canvasRT, "ModelExploration");
-            RemoveByName("ContinueGateCanvas");
+            RemoveByName("ContinueGateCanvas"); // gate retired 2026-08-01 — this clears pre-removal scenes
 
             var oldInfoTab = canvasRT.Find("InformationTab");
             if (oldInfoTab != null)
@@ -114,14 +115,17 @@ namespace DPP.EditorTools
             // REACH statement); the old substances tile computation left with the array.
 
             // Mechanical data — full width, spec chips, inert card, "+" opens detail1.
+            // v14.1 (2026-08-01): "+" HIDDEN — the Mechanical detail page is deferred
+            // to RB2.1, so the face carries the chips and nothing opens.
             var tMec = MakeTileCard(landing, 24, 100, "MechanicalCard", DPPSpriteFactory.IcCube,
-                "Mechanical data", canvaRouter, nameof(PassportRouter.Open1),
+                "Mechanical data", canvaRouter, null,
                 rows: 0, w: 592f, plusButton: true, heroStroke: true, pngIcon: "ic_mechanical");
             BuildSpecChipPool(tMec.card, view);
 
             // v10: no status row — the component count became a chip beside the voltage.
+            // v14.1: "+" HIDDEN — Electrical detail page deferred to RB2.1.
             var tEle = MakeTileCard(landing, 24, 180, "ElectricalCard", DPPSpriteFactory.IcBolt,
-                "Electrical data", canvaRouter, nameof(PassportRouter.Open2),
+                "Electrical data", canvaRouter, null,
                 rows: 0, plusButton: true, pngIcon: "ic_electrical");
             BuildFaceChipPool(tEle.card, view, "ElecChips", "elecChipRoots", "elecChipLabels", ElecChipPool);
 
@@ -158,9 +162,9 @@ namespace DPP.EditorTools
 
             // Detail shells — chrome only, bodies deliberately unbuilt.
             // v4: no IdentityDetail shell — the product info block is not tappable.
-            // v8: detail1 = Mechanical (technical drawing, empty for now), detail2 = Electrical.
-            var dMechanical = MakeShellPage(canva, canvaRouter, "MechanicalDetail", "Mechanical data",           DPPSpriteFactory.IcCube, pngIcon: "ic_mechanical");
-            var dElectrical = MakeShellPage(canva, canvaRouter, "ElectricalDetail", "Electrical data",           DPPSpriteFactory.IcBolt, pngIcon: "ic_electrical");
+            // v8 built Mechanical/Electrical shells here; v14.1 removed them — their
+            // "+" is hidden until RB2.1, and an unreachable placeholder page is scene
+            // clutter. detail1/detail2 stay null; PassportRouter null-guards.
             var dCompliance = MakeShellPage(canva, canvaRouter, "ComplianceDetail", "Compliance & Safety", null,
                                             showIcon: false, placeholder: false);
             BuildComplianceDetail(dCompliance, view);
@@ -171,8 +175,6 @@ namespace DPP.EditorTools
                                             showIcon: false, placeholder: false);
             BuildUsageDetail(dUsage, view);
             SetRef(canvaRouter, "landing", landing.gameObject);
-            SetRef(canvaRouter, "detail1", dMechanical.gameObject);
-            SetRef(canvaRouter, "detail2", dElectrical.gameObject);
             SetRef(canvaRouter, "detail3", dCompliance.gameObject);
             SetRef(canvaRouter, "detail4", dService.gameObject);
             SetRef(canvaRouter, "detail5", dUsage.gameObject);
@@ -200,7 +202,9 @@ namespace DPP.EditorTools
                 "Both hands pinching: twist to rotate, pull apart", 11, DPPTheme.TextTip, bold: false);
             AddText(TL("HintLine2", exLanding, 24, 380, 330, 16),
                 "to zoom. No timer yet.", 11, DPPTheme.TextTip, bold: false);
-            var toGate = BuildWideCta(exLanding, "ContinueButton", x: 288, y: 354, w: 328, label: "Continue");
+            // The interstitial gate is gone (Thiago, 2026-08-01) — the CTA now names
+            // its destination and jumps straight to the disassembly intro.
+            var toDisassembly = BuildWideCta(exLanding, "ContinueButton", x: 288, y: 354, w: 328, label: "Continue to disassembly");
 
             var xMaterial = MakeShellPage(explore, exploreRouter, "MaterialLocationDetail", "Material location per component", DPPSpriteFactory.IcLayers);
             var xLifecycle = MakeShellPage(explore, exploreRouter, "LifecycleDetail", "Life-cycle process detail", DPPSpriteFactory.IcLeaf);
@@ -211,14 +215,36 @@ namespace DPP.EditorTools
             SetRef(exploreRouter, "detail3", xRecovery.gameObject);
 
             // =================================================================
-            // Gate + wiring
+            // Audio + wiring
             // =================================================================
-            var gateGO = BuildContinueGateCanvas(out var gate, out var quitBtn, out var continueBtn);
-            SetRef(gate, "router", router);
-            SetRef(gate, "welcome", welcome);
-            WireClick(quitBtn, gate, nameof(ContinueGate.Quit));
-            WireClick(continueBtn, gate, nameof(ContinueGate.Continue));
-            WireClick(toGate, gate, nameof(ContinueGate.Show));
+            // ---- UI click audio (P02 feedback, 2026-08-01): one sweep object ----
+            RemoveByName("UIClickAudio");
+            var audioGO = new GameObject("UIClickAudio", typeof(AudioSource));
+            var clickAudio = audioGO.AddComponent<UIClickAudio>();
+            var clickClip = AssetDatabase.LoadAssetAtPath<AudioClip>(UIClickClipPath);
+            if (clickClip == null)
+            {
+                AssetDatabase.Refresh();
+                clickClip = AssetDatabase.LoadAssetAtPath<AudioClip>(UIClickClipPath);
+            }
+            if (clickClip != null) SetRef(clickAudio, "clip", clickClip);
+            else Debug.LogWarning($"[DPPUIBuilder] {UIClickClipPath} not found — UI clicks will be silent.");
+            Undo.RegisterCreatedObjectUndo(audioGO, "Build UI click audio");
+
+            // ---- per-hand pinch audio (P02 feedback): water-drop down + ripple hold ----
+            RemoveByName("HandPinchAudio");
+            var pinchGO = new GameObject("HandPinchAudio");
+            var pinchAudio = pinchGO.AddComponent<HandPinchAudio>();
+            WireClip(pinchAudio, "pinchRight", AudioDir + "pinch_right.wav");
+            WireClip(pinchAudio, "pinchLeft", AudioDir + "pinch_left.wav");
+            WireClip(pinchAudio, "dragLoopRight", AudioDir + "drag_loop_right.wav");
+            WireClip(pinchAudio, "dragLoopLeft", AudioDir + "drag_loop_left.wav");
+            Undo.RegisterCreatedObjectUndo(pinchGO, "Build hand pinch audio");
+
+            // No gate between exploration and disassembly (2026-08-01): the CTA
+            // says where it goes and goes there. RemoveByName above still clears
+            // any ContinueGateCanvas a previous build left in the scene.
+            WireClick(toDisassembly, router, nameof(ScreenRouter.ShowDisassembly));
 
             SetRef(view, "dotFilledSprite", dotFilled);
             SetRef(view, "dotRingSprite", dotRing);
@@ -236,7 +262,6 @@ namespace DPP.EditorTools
 
             canva.gameObject.SetActive(false);
             explore.gameObject.SetActive(false);
-            gateGO.SetActive(false);
 
             Selection.activeGameObject = canva.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
@@ -313,7 +338,7 @@ namespace DPP.EditorTools
             Image outline = null;
             if (!plusButton)
             {
-                outline = AddImage(CenterIn("HoverOutline", card, w + 12, H + 12),
+                outline = AddImage(CenterIn("HoverOutline", card, w + HoverHalo, H + HoverHalo),
                     DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
                 outline.gameObject.SetActive(false);
             }
@@ -354,7 +379,12 @@ namespace DPP.EditorTools
                     "—", 11, DPPTheme.TextSecondary, bold: false);
             }
 
-            if (plusButton) BuildPlusButton(card, w - 30f, 36f, r, openMethod);
+            // v14.1: openMethod == null -> a fully INERT tile — no "+", no chevron,
+            // no tap. Used while a tile's detail page is deferred (RB2.1): an absent
+            // control is honest; a "+" onto "Full entry is not built yet." is a dead
+            // end a study participant will walk into.
+            if (openMethod == null) { /* chips only */ }
+            else if (plusButton) BuildPlusButton(card, w - 30f, 36f, r, openMethod);
             else
             {
                 AddChevron(card, w - 24f, 36f);
@@ -371,7 +401,7 @@ namespace DPP.EditorTools
             PassportRouter router, string method)
         {
             var root = TLCenter("PlusButton", card, cx, cy, 52, 52);
-            var outline = AddImage(CenterIn("HoverOutline", root, 50, 50), DPPSpriteFactory.Circle64, Color.white);
+            var outline = AddImage(CenterIn("HoverOutline", root, 46, 46), DPPSpriteFactory.Circle64, Color.white);
             outline.gameObject.SetActive(false);
             AddImage(CenterIn("Ring", root, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
             var fill = AddImage(CenterIn("Fill", root, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);
@@ -519,7 +549,7 @@ namespace DPP.EditorTools
             var card = TL("CompositionBlock", page, 24, 88, 592, 100);
             const float W = 592f, H = 100f;
 
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+            var outline = AddImage(CenterIn("HoverOutline", card, W + HoverHalo, H + HoverHalo),
                 DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
             AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true);
@@ -574,7 +604,7 @@ namespace DPP.EditorTools
             var card = TL("ScenarioBlock", page, 24, 196, 290, 138);
             const float W = 290f, H = 138f;
 
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+            var outline = AddImage(CenterIn("HoverOutline", card, W + HoverHalo, H + HoverHalo),
                 DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
             AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.RowStroke, sliced: true);
@@ -629,7 +659,7 @@ namespace DPP.EditorTools
             var card = TL("RecoveryBlock", page, 326, 196, 290, 138);
             const float W = 290f, H = 138f;
 
-            var outline = AddImage(CenterIn("HoverOutline", card, W + 12, H + 12),
+            var outline = AddImage(CenterIn("HoverOutline", card, W + HoverHalo, H + HoverHalo),
                 DPPSpriteFactory.RoundedR20, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
             AddImage(CenterIn("Stroke", card, W + 2, H + 2), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true);
@@ -692,7 +722,7 @@ namespace DPP.EditorTools
             var page = Stretch(name, screen);
 
             var back = TLCenter("BackButton", page, 42, 44, 40, 40);
-            var outline = AddImage(CenterIn("HoverOutline", back, 50, 50), DPPSpriteFactory.Circle64, Color.white);
+            var outline = AddImage(CenterIn("HoverOutline", back, 46, 46), DPPSpriteFactory.Circle64, Color.white);
             outline.gameObject.SetActive(false);
             AddImage(CenterIn("Ring", back, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
             var fill = AddImage(CenterIn("Fill", back, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);
@@ -759,7 +789,7 @@ namespace DPP.EditorTools
             string rightCaption, Object backTarget, string backMethod)
         {
             var back = TLCenter("BackButton", parent, 42, 44, 40, 40);
-            var outline = AddImage(CenterIn("HoverOutline", back, 50, 50), DPPSpriteFactory.Circle64, Color.white);
+            var outline = AddImage(CenterIn("HoverOutline", back, 46, 46), DPPSpriteFactory.Circle64, Color.white);
             outline.gameObject.SetActive(false);
             AddImage(CenterIn("Ring", back, 43, 43), DPPSpriteFactory.Circle64, DPPTheme.TabActiveStroke);
             var fill = AddImage(CenterIn("Fill", back, 40, 40), DPPSpriteFactory.Circle64, DPPTheme.CardBlue, sliced: false, raycast: true);
@@ -782,55 +812,6 @@ namespace DPP.EditorTools
                     DPPTheme.TextCaption, bold: false, align: TextAlignmentOptions.MidlineRight);
 
             AddImage(TL("Separator", parent, 24, 76, 592, 1), null, DPPTheme.Hex("#1a335f"));
-        }
-
-        // =================================================================
-        // Gate modal — own root canvas, 440 × 210 (spec 14 §6)
-        // =================================================================
-        private static GameObject BuildContinueGateCanvas(out ContinueGate gate,
-            out Button quitBtn, out Button continueBtn)
-        {
-            const float W = 440f, H = 210f;
-
-            var go = new GameObject("ContinueGateCanvas", typeof(Canvas), typeof(GraphicRaycaster));
-            var canvas = go.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.WorldSpace;
-            canvas.worldCamera = Camera.main;
-            canvas.sortingOrder = 10;
-
-            var rt = (RectTransform)go.transform;
-            rt.sizeDelta = new Vector2(W, H);
-            rt.position = CanvasPos + new Vector3(0f, 0f, -0.05f);
-            rt.localScale = Vector3.one * CanvasScale;
-
-            gate = go.AddComponent<ContinueGate>();
-
-            var card = Stretch("Card", rt);
-            AddImage(Stretch("Stroke", card), DPPSpriteFactory.RoundedR20, DPPTheme.TabActiveStroke, sliced: true);
-            AddImage(CenterIn("Fill", card, W - 4f, H - 4f), DPPSpriteFactory.RoundedR20, DPPTheme.TabActiveFill, sliced: true);
-
-            AddText(TLCenter("Title", card, 220, 52, 400, 26),
-                "Continue to disassembly?", 18, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
-            AddText(TLCenter("Subtitle1", card, 220, 80, 400, 20),
-                "The guided 5-step dismantling comes next.", 13, DPPTheme.TextSecondary,
-                bold: false, align: TextAlignmentOptions.Center);
-            AddText(TLCenter("Subtitle2", card, 220, 98, 400, 20),
-                "Timing starts when you press Start disassembly.", 13, DPPTheme.TextSecondary,
-                bold: false, align: TextAlignmentOptions.Center);
-
-            // "Quit", not "Back": this edge leaves the product session entirely — the one
-            // deliberate break in the one-step-back hierarchy (Thiago, 2026-07-29).
-            quitBtn = BuildPillButton(card, "QuitButton", cx: 119, cy: 156, w: 190, h: 52,
-                label: "Quit", labelSize: 15, primary: false, chevron: false);
-            continueBtn = BuildPillButton(card, "ContinueButton", cx: 329, cy: 156, w: 190, h: 52,
-                label: "Continue", labelSize: 15, primary: true, chevron: true);
-
-            BuildGrabberBar(rt);
-            var handle = go.GetComponentInChildren<PanelGrabHandle>(true);
-            if (handle != null) SetBool(handle, "recenterOnStart", false); // ContinueGate.Show places it
-
-            Undo.RegisterCreatedObjectUndo(go, "Build Continue Gate");
-            return go;
         }
 
         // =================================================================
@@ -1047,7 +1028,7 @@ namespace DPP.EditorTools
             const float H = 52f;
             var root = TL(name, parent, x, y, w, H);
 
-            var outline = AddImage(CenterIn("HoverOutline", root, w + 10f, H + 10f),
+            var outline = AddImage(CenterIn("HoverOutline", root, w + HoverHalo, H + HoverHalo),
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
 
@@ -1082,7 +1063,23 @@ namespace DPP.EditorTools
             return button;
         }
 
+        /// <summary>Loads an AudioClip and assigns it to a serialized field, warning
+        /// loudly on a miss — an unwired clip is silent, and silence hides the miss.</summary>
+        private static void WireClip(Object target, string field, string path)
+        {
+            var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            if (clip == null)
+            {
+                AssetDatabase.Refresh();
+                clip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            }
+            if (clip != null) SetRef(target, field, clip);
+            else Debug.LogWarning($"[DPPUIBuilder] {path} not found — '{field}' will be silent.");
+        }
+
         private const string TileIconDir = "Assets/Textures/Icons/";
+        private const string UIClickClipPath = "Assets/Audio/UI/ui_click.wav";   // "Buttons sound"
+        private const string AudioDir = "Assets/Audio/UI/";
 
         /// <summary>Loads an authored tab icon, fixing its import settings on first use —
         /// the same treatment LoadBrandLogo gives the brand mark, so a fresh clone needs

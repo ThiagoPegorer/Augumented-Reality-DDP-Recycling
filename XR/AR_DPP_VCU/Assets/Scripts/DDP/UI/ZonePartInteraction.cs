@@ -234,6 +234,7 @@ namespace DPP.UI
                     if (!_scrollMode && Mathf.Abs(delta) > scrollThreshold)
                     {
                         _scrollMode = true;
+                        HandPinchAudio.ObjectGrabbed(!_scrollIsLeft);
                         // A hold that started on the same pinch was a misread — cancel it.
                         if (_held != null && _holdIsLeft == _scrollIsLeft)
                         {
@@ -245,7 +246,10 @@ namespace DPP.UI
                     {
                         var p = content.anchoredPosition;
                         p.y = Mathf.Clamp(_contentStartY + delta, 0f, MaxScroll());
+                        float dy = p.y - content.anchoredPosition.y;
                         content.anchoredPosition = p;
+                        HandPinchAudio.DragTick(!_scrollIsLeft,
+                            viewport != null ? viewport.TransformVector(new Vector3(0f, dy, 0f)) : Vector3.zero);
                     }
                 }
             }
@@ -263,7 +267,11 @@ namespace DPP.UI
                 else
                 {
                     float p = ParamOnAxis(_dragIsLeft ? leftRay : rightRay);
+                    // Audio tracks the PART's real motion, not the hand's — a part
+                    // pinned at a dependency limit falls silent even if the hand moves.
+                    Vector3 before = _drag.container.position;
                     m.SetTravel(_drag, _travel0 + (p - _param0) / _worldPerModel);
+                    HandPinchAudio.DragTick(!_dragIsLeft, _drag.container.position - before);
                 }
             }
 
@@ -309,6 +317,7 @@ namespace DPP.UI
                             _held = hotRow.body;
                             _holdIsLeft = hotIsLeft;
                             m.Isolate(_held);
+                            HandPinchAudio.ObjectGrabbed(!hotIsLeft);
                         }
                     }
                 }
@@ -389,6 +398,7 @@ namespace DPP.UI
         {
             _drag = b;
             _dragIsLeft = isLeft;
+            HandPinchAudio.ObjectGrabbed(!isLeft);
 
             var parent = b.container.parent;
             _axisDir = parent.TransformDirection(b.axisLocal).normalized;
