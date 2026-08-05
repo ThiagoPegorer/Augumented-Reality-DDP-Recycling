@@ -57,7 +57,7 @@ namespace DPP.EditorTools
         public const string IcStar    = "ui_ic_star";     // gold recovery cards
         public const string IcCheck   = "ui_ic_check";    // done header
 
-        [MenuItem("RBv2_0/Tools/Generate UI sprites", false, 50)]
+        [MenuItem("RBv2_1/Tools/Generate UI sprites", false, 50)]
         public static void GenerateAll()
         {
             Directory.CreateDirectory(SpriteDir);

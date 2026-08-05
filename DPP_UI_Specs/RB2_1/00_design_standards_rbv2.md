@@ -91,15 +91,16 @@ Fixed brand hexes, not theme-adaptive.
 | `model/connector+pcb` | `#2e7d4f` | Green — 3 connectors + PCB |
 | `model/ghost` | 10 % opacity of the part's real colour | Step-focus ghosting |
 
-### 2.1 Red is a reserved signal — **three** sanctioned meanings
+### 2.1 Red is a reserved signal — **four** sanctioned meanings
 
-`safety/stroke` `#e24b4a` carries **state or consequence, never decoration**:
+`safety/stroke` `#e24b4a` carries **state, consequence or regulation — never decoration**:
 
 | # | Meaning | Where |
 |---|---|---|
 | 1 | **"this task is not done"** | step task circles (red ✗) |
 | 2 | **"this unit has consumed its design life"** | usage-profile bar |
 | 3 | **"this action ends the session"** | `Close app` (Thiago, 2026-08-04) |
+| 4 | **"this is a regulatory or safety marking"** | compliance badge + its modal chips (Thiago, 2026-08-04) |
 
 **Rule for meaning 3:** red marks the **exit**, and only the exit. It sits on the **secondary
 button slot** (180 × 52 at cx 114) — never on a primary CTA, never on a button that continues the
@@ -107,6 +108,27 @@ journey. One red button per screen, maximum.
 
 **Red button treatment:** solid fill `#e24b4a`, white bold label, no chevron (a chevron means
 "forward"). Same geometry as the secondary pill it replaces, so no hit target moves.
+
+**Rule for meaning 4 — added 2026-08-04 with the compliance badge (`04` §6).** Regulatory red is
+**outline and glyph only, never fill.** A solid red surface means "consequence" (meaning 3) and the
+two must stay visually separable at a glance:
+
+| | Meaning 3 — consequence | Meaning 4 — regulation |
+|---|---|---|
+| Treatment | solid `#e24b4a` fill, white label | `#e24b4a` 1.4 px stroke + shield glyph, `text/on-navy` label on `row/fill` |
+| Shape | 180 × 52 pill in the button row | 200 × 30 badge in the header band |
+| Position | bottom-left button slot | header, right of the title |
+
+Three constraints on meaning 4, all mandatory:
+
+1. **Red never carries the message alone.** The badge always spells out what it marks
+   (`CE · REACH · WEEE 5 · IP67`), so a colour-blind user loses nothing — the same mitigation
+   already required for red beside green below.
+2. **It is informational, not an alert.** The badge says "this product carries these markings",
+   not "something is wrong". Red inside the modal is narrower still: a chip is red **only when the
+   marking itself reports something adverse** — currently `REACH`, because 2 SVHCs are declared
+   above 0.1 % w/w. `CE`, `WEEE 5` and `IP67` stay `teal/light`.
+3. **One regulatory badge per screen**, in the header. It is never repeated inside the content band.
 
 ⚠ **Red beside green.** `Close app` red now sits next to a `teal/accent` green CTA on both the
 Welcome page and the scan-error panel. Roughly 8 % of men have a red-green colour deficiency, for

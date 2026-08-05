@@ -29,13 +29,18 @@ namespace DPP.UI
 
     public class ScreenRouter : MonoBehaviour
     {
-        [Header("Passport screens (built by RBv2_0/7)")]
-        [Tooltip("RBv2.1 spec 03 — the role fork, opened by a successful scan. Built by RBv2_0/8.")]
+        [Header("Passport screens — DPP page + certificates by RBv2_1/8, legacy exploration by RBv2_0/Legacy")]
+        [Tooltip("RBv2.1 spec 03 — the role fork, opened by a successful scan. Built by RBv2_1/7.")]
         [SerializeField] private GameObject stakeholderDecision;
         [Tooltip("Product info — the app's main screen in RBv2.0. Back goes to the Welcome canvas.")]
         [SerializeField] private GameObject dppCanva;
         [Tooltip("Life cycle overview + the exploded action zone. Back goes to the DPP Canva.")]
         [SerializeField] private GameObject modelExploration;
+
+        [Tooltip("RBv2.1 spec 04 §5 — Certificates & safety. A full SCREEN, not a modal: it covers " +
+                 "the whole panel anyway, and an overlay sharing this canvas plane with live controls " +
+                 "lets clicks resolve to the buttons underneath it. Built by RBv2_1/8.")]
+        [SerializeField] private GameObject certificates;
 
         [Header("Disassembly")]
         [SerializeField] private GameObject disassemblyIntro;
@@ -90,7 +95,7 @@ namespace DPP.UI
             {
                 // Never strand a participant on a missing screen — fall through to
                 // the passport, which is what both roles see first anyway.
-                Debug.LogWarning("[ScreenRouter] Stakeholder screen not assigned — run RBv2_0/8. Opening the passport directly.");
+                Debug.LogWarning("[ScreenRouter] Stakeholder screen not assigned — run RBv2_1/7. Opening the passport directly.");
                 ShowDppCanva();
                 return;
             }
@@ -98,12 +103,24 @@ namespace DPP.UI
         }
 
 
+        /// <summary>Certificates &amp; safety (spec 04 §5). Opened by the compliance
+        /// badge; its X returns to the DPP page.</summary>
+        public void ShowCertificates()
+        {
+            if (certificates == null)
+            {
+                Debug.LogWarning("[ScreenRouter] Certificates page not assigned — run RBv2_1/8.");
+                return;
+            }
+            Show(certificates, "Certificates & safety");
+        }
+
         /// <summary>DPP Canva — product info. The app's main screen.</summary>
         public void ShowDppCanva()
         {
             if (dppCanva == null)
             {
-                Debug.LogWarning("[ScreenRouter] DPP Canva not assigned — run RBv2_0/7.");
+                Debug.LogWarning("[ScreenRouter] DPP page not assigned — run RBv2_1/8.");
                 return;
             }
             Show(dppCanva, "DPP Canva");
@@ -114,7 +131,7 @@ namespace DPP.UI
         {
             if (modelExploration == null)
             {
-                Debug.LogWarning("[ScreenRouter] Model exploration not assigned — run RBv2_0/7.");
+                Debug.LogWarning("[ScreenRouter] Model exploration not assigned — run RBv2_0/Legacy.");
                 return;
             }
             Show(modelExploration, "Model exploration");
@@ -172,6 +189,14 @@ namespace DPP.UI
             // before that (old behaviour) let e.g. the intro's loop claim the
             // camera and then the step flow's OnDisable switched it back off —
             // the intro animation appeared dead after Back from step 1.
+            // RBv2.1 RULE — EVERY panel screen belongs in this list, no exceptions.
+            // The stakeholder screen was missing from it once and cost a day. It is a full-panel child of DPPPanelCanvas carrying two
+            // 290x170 card buttons, so once shown it stayed ACTIVE on top of every
+            // screen that followed and kept stealing raycasts. Both cards call
+            // ShowDppCanva(), which is exactly the reported "every button sends me
+            // back to the DPP canvas". Every panel screen must be listed here.
+            DeactivateUnless(stakeholderDecision, target);
+            DeactivateUnless(certificates,      target);
             DeactivateUnless(dppCanva,          target);
             DeactivateUnless(modelExploration,  target);
             DeactivateUnless(disassemblyIntro,  target);

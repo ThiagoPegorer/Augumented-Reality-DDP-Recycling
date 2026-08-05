@@ -38,7 +38,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_0/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -188,7 +188,7 @@ namespace DPP.EditorTools
             var manager = Object.FindFirstObjectByType<DPPManager>();
             if (manager != null) SetRef(manager, "stepFlow", controller);
 
-            // SELF-HEALING WIRE (see the note in RBv2_0/2). RBv2_0/6 sets
+            // SELF-HEALING WIRE (see the note in RBv2_1/2). RBv2_0/6 sets
             // StepFlowController.summary; rebuilding the step flow destroys that
             // controller, so running /5 after /6 would leave "Finish & see summary"
             // unable to hand the session over. Re-point it here.

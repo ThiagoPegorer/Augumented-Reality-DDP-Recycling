@@ -16,12 +16,17 @@ namespace DPP.EditorTools
     /// perfectly normal and does nothing.
     ///
     /// That has now cost two debugging sessions (Welcome's Continue after re-running
-    /// RBv2_0/2; the same class of failure earlier). The phases now re-point what they
+    /// RBv2_1/2; the same class of failure earlier). The phases now re-point what they
     /// break (see the SELF-HEALING WIRE notes in /2 and /5), and this menu item is the
     /// backstop: it walks every cross-phase reference and reports what is missing,
     /// with the phase to re-run.
     ///
     /// Run it after any sequence of phase builds, and before every device build.
+    ///
+    /// WHAT BELONGS IN THE MAP: references one phase writes into an object another
+    /// phase owns. References created and wired inside a single phase (a tile's own
+    /// chips, a button's own label) cannot dangle without someone deleting them by
+    /// hand, and listing them would bury the signal in noise.
     /// </summary>
     public static partial class DPPUIBuilder
     {
@@ -36,9 +41,13 @@ namespace DPP.EditorTools
         {
             [typeof(ScreenRouter)] = new[]
             {
-                new Wire("ScreenRouter", "stakeholderDecision", "RBv2_0/8"),
-                new Wire("ScreenRouter", "dppCanva",            "RBv2_0/7"),
-                new Wire("ScreenRouter", "modelExploration",    "RBv2_0/7"),
+                new Wire("ScreenRouter", "stakeholderDecision", "RBv2_1/7"),
+                new Wire("ScreenRouter", "certificates",        "RBv2_1/8"),
+                // RBv2.1: dppCanva now points at the DPP PAGE, set by RBv2_1/8.
+                // Re-running RBv2_0/Legacy rebuilds the legacy canva and does NOT restore
+                // this reference — /1 is the phase to re-run.
+                new Wire("ScreenRouter", "dppCanva",            "RBv2_1/8"),
+                new Wire("ScreenRouter", "modelExploration",    "RBv2_0/Legacy"),
                 new Wire("ScreenRouter", "disassemblyIntro",    "RBv2_0/4"),
                 new Wire("ScreenRouter", "stepFlow",            "RBv2_0/5"),
                 new Wire("ScreenRouter", "completionSummary",   "RBv2_0/6"),
@@ -46,23 +55,47 @@ namespace DPP.EditorTools
             },
             [typeof(WelcomeController)] = new[]
             {
-                new Wire("WelcomeController", "mainCanvasRoot", "RBv2_0/3"),
-                new Wire("WelcomeController", "scanner",        "RBv2_0/2 (or /3)"),
+                new Wire("WelcomeController", "mainCanvasRoot", "RBv2_1/3"),
+                new Wire("WelcomeController", "scanner",        "RBv2_1/2 (or /3)"),
             },
             [typeof(QRScanController)] = new[]
             {
-                new Wire("QRScanController", "manager",         "RBv2_0/2"),
-                new Wire("QRScanController", "router",          "RBv2_0/2"),
-                new Wire("QRScanController", "mainCanvasRoot",  "RBv2_0/2"),
-                new Wire("QRScanController", "scanGroup",       "RBv2_0/2"),
-                new Wire("QRScanController", "foundGroup",      "RBv2_0/2"),
-                new Wire("QRScanController", "errorGroup",      "RBv2_0/2"),
-                new Wire("QRScanController", "closeAppButton",  "RBv2_0/2"),
-                new Wire("QRScanController", "scanAgainButton", "RBv2_0/2"),
+                new Wire("QRScanController", "manager",         "RBv2_1/2"),
+                new Wire("QRScanController", "router",          "RBv2_1/2"),
+                new Wire("QRScanController", "mainCanvasRoot",  "RBv2_1/2"),
+                new Wire("QRScanController", "scanGroup",       "RBv2_1/2"),
+                new Wire("QRScanController", "foundGroup",      "RBv2_1/2"),
+                new Wire("QRScanController", "errorGroup",      "RBv2_1/2"),
+                new Wire("QRScanController", "closeAppButton",  "RBv2_1/2"),
+                new Wire("QRScanController", "scanAgainButton", "RBv2_1/2"),
             },
             [typeof(StakeholderSelect)] = new[]
             {
-                new Wire("StakeholderSelect", "router", "RBv2_0/8"),
+                new Wire("StakeholderSelect", "router",  "RBv2_1/7"),
+                new Wire("StakeholderSelect", "welcome", "RBv2_1/7"),   // Quit -> Welcome (RBv2.1)
+            },
+            // RBv2.1 spec 04. Only CROSS-PHASE references are listed: the chips and
+            // their labels are created and wired inside the same run as the page, so
+            // they cannot go stale on their own. router / welcome / scanner point at
+            // objects three other phases own, and those are the ones that rot.
+            [typeof(DppPageView)] = new[]
+            {
+                new Wire("DppPageView", "router",       "RBv2_1/8"),
+                new Wire("DppPageView", "welcome",      "RBv2_1/8"),
+                new Wire("DppPageView", "scanner",      "RBv2_1/8"),
+                new Wire("DppPageView", "backButton",   "RBv2_1/8"),
+                new Wire("DppPageView", "title",        "RBv2_1/8"),
+                new Wire("DppPageView", "leftLabel",    "RBv2_1/8"),
+                new Wire("DppPageView", "leftFill",     "RBv2_1/8"),
+                new Wire("DppPageView", "leftStroke",   "RBv2_1/8"),
+                new Wire("DppPageView", "primaryLabel", "RBv2_1/8"),
+            },
+            [typeof(DPP.DPPManager)] = new[]
+            {
+                // Without this the page shows the values baked at build time and
+                // silently stops tracking the payload - the failure mode spec 13
+                // called out as "static copy that lies".
+                new Wire("DPPManager", "dppPage", "RBv2_1/8"),
             },
             [typeof(StepFlowController)] = new[]
             {
@@ -74,7 +107,7 @@ namespace DPP.EditorTools
             },
         };
 
-        [MenuItem("RBv2_0/Tools/Verify wiring", false, 20)]
+        [MenuItem("RBv2_1/Tools/Verify wiring", false, 20)]
         public static void VerifyWiring()
         {
             int missing = 0, dangling = 0, absent = 0, checkedCount = 0;

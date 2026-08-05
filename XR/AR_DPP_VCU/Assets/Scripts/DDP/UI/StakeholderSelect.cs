@@ -22,6 +22,7 @@ namespace DPP.UI
     {
         [Header("Wiring (set by builder)")]
         [SerializeField] private ScreenRouter router;
+        [SerializeField] private WelcomeController welcome;
 
         /// <summary>LEFT card — read the passport, no dismantling.</summary>
         public void ChooseProductUser() => Choose(StakeholderMode.ProductUser);
@@ -40,15 +41,23 @@ namespace DPP.UI
             router.ShowDppCanva();
         }
 
-        /// <summary>Red pill, bottom-left — leave the app from here.
+        /// <summary>Red pill, bottom-left — leave the SESSION from here.
         ///
         /// Added on review (Thiago, 2026-08-04): before this button the screen had
         /// NO exit at all. Both cards led forward, so a participant who scanned the
-        /// wrong unit, or simply wanted out, had nowhere to go.</summary>
-        public void CloseApp()
+        /// wrong unit, or simply wanted out, had nowhere to go.
+        ///
+        /// 2026-08-05: `Close app` became `Quit` and now returns to the Welcome
+        /// canvas instead of killing the process. In a kiosk loop, quitting the app
+        /// ends the study session for everyone behind the participant; quitting to
+        /// Welcome ends it for one. `Application.Quit` still lives on the Welcome
+        /// screen's own Close app, which is where an operator would use it.
+        /// Naming follows 00 §5: "an edge that leaves the session says Quit".</summary>
+        public void Quit()
         {
-            Debug.Log("[Stakeholder] Close app.");
-            Application.Quit();
+            Debug.Log("[Stakeholder] Quit to Welcome.");
+            if (welcome != null) welcome.ShowWelcome();
+            else Debug.LogWarning("[Stakeholder] No WelcomeController wired — run RBv2_1/7.");
         }
     }
 }

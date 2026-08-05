@@ -33,8 +33,8 @@ Consequences, stated plainly because they cost work:
 | `01` | `01_welcome_page.md` | Welcome / Open App | Open App | ✅ **approved, ready to build** |
 | `02` | `02_scan_qr_code.md` | Scan QR + scan-failure loop | Open App | ✅ **approved, ready to build** |
 | `03` | `03_stakeholder_decision.md` | Stakeholder decision (**new screen**) | Open App | ✅ **draft** — blocked on card icons |
-| `04` | — | DPP Canva + detail pages | DPP | ⬜ **next** |
-| `05` | — | Digital model exploration | DPP | ⬜ |
+| `04` | `04_DPP_page.md` | DPP page — 2×2 tabs, two roles, **absorbs Composition & impact** | DPP | ✅ **phase 1 built** 2026-08-04 — `+` targets are stubs |
+| `05` | — | Digital model — floating object, lenses + per-part detail | DPP | ⬜ (no longer a separate *screen* — see `04` §2) |
 | `06` | — | Disassembly intro | Disassembly | ⬜ |
 | `07` | — | Disassembly steps 1–5 | Disassembly | ⬜ |
 | `08` | — | Summary + report | Disassembly | ⬜ |
@@ -64,6 +64,14 @@ change in §3 → build → device-check.
 | 12 | `Back` from DPP Canva → stakeholder screen, closing the mis-tap dead-end (**extended to both branches**) | Thiago 2026-08-04 | `03` §4.2, `04` | ✅ specified |
 | 13 | DPP Canva built **once, in two modes**, not as two canvases | implementation | `03` §5, `04` | ✅ specified |
 | 14 | Stakeholder mode recorded in the dismantling report | study variable | `03` §5, `08` | ⬜ to specify in `08` |
+| 15 | **DPP Canva absorbs Composition & impact** — one panel screen, not two | Thiago 2026-08-04 (*"split it is being confuse"*) | `04` | ✅ specified |
+| 16 | **2 × 2 tab grid** — Product Specifications · Usage History · Impact & Environmental · **Training Disassembly** (new) | Thiago 2026-08-04 | `04` §3 | ✅ specified |
+| 17 | **Model is persistent and free-floating** across the passport phase; spawns alone, then the panel unfolds from it | P02/P03: *"didn't perceive there was a 3D model"* | `04` §2 | ✅ specified |
+| 18 | **Panel → model highlight**, both directions; Impact tab tints the model by material and glows by value | P02/P03: *"what do I do with this information"* | `04` §4 | ✅ specified |
+| 19 | Drag circle → **drag bar** (circle too small a target) | participant feedback | `04` §5 | ⬜ which handle, open item #5 |
+| 20 | Compliance: device-level badge in the header; SVHC per-part marking **not supported by the payload** (`component_id: null`, all `hazardous: false`) | data check 2026-08-04 | `04` §6 | ⬜ Thiago's call, open item #1 |
+| 21 | Chip standardised as the only content element on `04`: `card/blue`, h 18, **width = preferredWidth + 24 at runtime** | Thiago 2026-08-04 | `00` §5, `04` §3 | ✅ built |
+| 22 | Role-driven navigation on `04`: Product user keeps the header arrow + `Home`; Recycler drops the arrow and takes `Back` in the bottom bar | Thiago 2026-08-04 | `04` §4 | ✅ built |
 | — | **P03 (Domenik) usability items** | P03 session | per screen | ⬜ none on `01`/`02` — both approved as-is |
 
 ⚠ **Row "P03" is the gap.** Thiago's instruction is that Domenik's feedback gets *folded into

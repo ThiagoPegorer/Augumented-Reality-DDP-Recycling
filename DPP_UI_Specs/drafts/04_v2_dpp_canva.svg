@@ -1,0 +1,104 @@
+<svg width="100%" viewBox="0 0 680 1070" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>RB2.1 — 04 DPP Canva v2: centred header, role-specific back affordance</title>
+<desc>Two variants of the DPP Canva. The recycler panel has no header arrow and a Back button bottom left with Continue to disassembly on the right. The product user panel keeps the header arrow back to the stakeholder screen and shows Home bottom left with Scan next product on the right. Both share a centred Digital Product Passport headline and the same two by two tab grid.</desc>
+<text x="20" y="40" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">RECYCLER — no header arrow, Back in the bottom bar</text>
+<rect x="20" y="52" width="640" height="430" rx="22" fill="#0a1f44"/>
+<text x="340" y="105" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold" text-anchor="middle">Digital Product Passport</text>
+<rect x="44" y="128" width="592" height="1" fill="#1a335f"/>
+<rect x="43" y="141" width="292" height="120" rx="13" fill="#21407a"/><rect x="44" y="142" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M64 164 L76 158 L88 164 L76 170 Z"/><path d="M64 164 L64 178 L76 184 L88 178 L88 164"/><path d="M76 170 L76 184"/></g>
+<text x="100" y="172" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Product specifications</text>
+<rect x="60" y="184" width="50" height="20" rx="10" fill="#13366b"/><text x="85.0" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">660 g</text>
+<rect x="116" y="184" width="44" height="20" rx="10" fill="#13366b"/><text x="138.0" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">IP67</text>
+<rect x="166" y="184" width="54" height="20" rx="10" fill="#13366b"/><text x="193.0" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5-18 V</text>
+<circle cx="65" cy="222" r="3.5" fill="#5dcaa5"/>
+<text x="76" y="226" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">11 components · 200 x 150 x 60 mm</text>
+<text x="60" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">mechanical · electrical · compliance &amp; safety</text>
+<circle cx="304" cy="172" r="21.5" fill="#2e5aa0"/><circle cx="304" cy="172" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="296" y1="172" x2="312" y2="172"/><line x1="304" y1="164" x2="304" y2="180"/></g>
+<rect x="345" y="141" width="292" height="120" rx="13" fill="#21407a"/><rect x="346" y="142" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="379" cy="171" r="13"/><path d="M379 163 L379 171 L385 175"/></g>
+<text x="402" y="172" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Usage history</text>
+<rect x="362" y="184" width="62" height="20" rx="10" fill="#13366b"/><text x="393.0" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">15 years</text>
+<rect x="430" y="184" width="76" height="20" rx="10" fill="#13366b"/><text x="468.0" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">225,000 km</text>
+<rect x="512" y="184" width="58" height="20" rx="10" fill="#13366b"/><text x="541.0" y="198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5,625 h</text>
+<circle cx="367" cy="222" r="3.5" fill="#5dcaa5"/>
+<text x="378" y="226" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">60 software updates · 25 repairs</text>
+<text x="362" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">last repair Feb 2026 · service life consumed</text>
+<circle cx="606" cy="172" r="21.5" fill="#2e5aa0"/><circle cx="606" cy="172" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="598" y1="172" x2="614" y2="172"/><line x1="606" y1="164" x2="606" y2="180"/></g>
+<rect x="43" y="269" width="292" height="120" rx="13" fill="#21407a"/><rect x="44" y="270" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M64 312 C64 296 80 286 88 286 C88 300 78 312 64 312 Z"/><path d="M66 310 L86 290"/></g>
+<text x="100" y="300" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Environmental impact</text>
+<rect x="60" y="312" width="98" height="20" rx="10" fill="#13366b"/><text x="109.0" y="326" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">73.4 kg CO2-eq</text>
+<circle cx="65" cy="350" r="3.5" fill="#5dcaa5"/>
+<text x="76" y="354" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">up to -21 % climate · -47 % minerals</text>
+<text x="60" y="374" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">EF 3.1 · guided dismantling + reuse vs today</text>
+<circle cx="304" cy="300" r="21.5" fill="#2e5aa0"/><circle cx="304" cy="300" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="296" y1="300" x2="312" y2="300"/><line x1="304" y1="292" x2="304" y2="308"/></g>
+<rect x="345" y="269" width="292" height="120" rx="13" fill="#21407a"/><rect x="346" y="270" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M366 292 L378 286 L390 292 L378 298 Z"/><path d="M368 304 L378 299 L388 304 L378 309 Z"/><path d="M370 316 L378 312 L386 316 L378 320 Z"/></g>
+<text x="402" y="300" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Training disassembly</text>
+<rect x="362" y="312" width="56" height="20" rx="10" fill="#13366b"/><text x="390.0" y="326" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5 steps</text>
+<rect x="424" y="312" width="72" height="20" rx="10" fill="#13366b"/><text x="460.0" y="326" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">10 actions</text>
+<rect x="502" y="312" width="52" height="20" rx="10" fill="#13366b"/><text x="528.0" y="326" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">~5 min</text>
+<circle cx="367" cy="350" r="3.5" fill="#f0c879"/>
+<text x="378" y="354" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Walk the steps before you touch the unit</text>
+<text x="362" y="374" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">practice only - no timer runs here</text>
+<circle cx="606" cy="300" r="21.5" fill="#2e5aa0"/><circle cx="606" cy="300" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="598" y1="300" x2="614" y2="300"/><line x1="606" y1="292" x2="606" y2="308"/></g>
+<rect x="44" y="402" width="180" height="52" rx="26" fill="#1a2740" stroke="#324a6d"/>
+<text x="134" y="434" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="248" y="402" width="388" height="52" rx="26" fill="#1d9e75"/>
+<text x="430" y="434" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold" text-anchor="middle">Continue to disassembly</text>
+<g stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M596 422 L602 428 L596 434"/></g>
+<text x="20" y="524" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">PRODUCT USER — header arrow back to stakeholder, Home in the bottom bar</text>
+<rect x="20" y="536" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="580" r="21.5" fill="#2e5aa0"/><circle cx="64" cy="580" r="20" fill="#13366b"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M70 572 L60 580 L70 588"/><path d="M60 580 L74 580"/></g>
+<text x="340" y="589" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold" text-anchor="middle">Digital Product Passport</text>
+<rect x="44" y="612" width="592" height="1" fill="#1a335f"/>
+<rect x="43" y="625" width="292" height="120" rx="13" fill="#21407a"/><rect x="44" y="626" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M64 648 L76 642 L88 648 L76 654 Z"/><path d="M64 648 L64 662 L76 668 L88 662 L88 648"/><path d="M76 654 L76 668"/></g>
+<text x="100" y="656" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Product specifications</text>
+<rect x="60" y="668" width="50" height="20" rx="10" fill="#13366b"/><text x="85.0" y="682" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">660 g</text>
+<rect x="116" y="668" width="44" height="20" rx="10" fill="#13366b"/><text x="138.0" y="682" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">IP67</text>
+<rect x="166" y="668" width="54" height="20" rx="10" fill="#13366b"/><text x="193.0" y="682" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5-18 V</text>
+<circle cx="65" cy="706" r="3.5" fill="#5dcaa5"/>
+<text x="76" y="710" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">11 components · 200 x 150 x 60 mm</text>
+<text x="60" y="730" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">mechanical · electrical · compliance &amp; safety</text>
+<circle cx="304" cy="656" r="21.5" fill="#2e5aa0"/><circle cx="304" cy="656" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="296" y1="656" x2="312" y2="656"/><line x1="304" y1="648" x2="304" y2="664"/></g>
+<rect x="345" y="625" width="292" height="120" rx="13" fill="#21407a"/><rect x="346" y="626" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="379" cy="655" r="13"/><path d="M379 647 L379 655 L385 659"/></g>
+<text x="402" y="656" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Usage history</text>
+<rect x="362" y="668" width="62" height="20" rx="10" fill="#13366b"/><text x="393.0" y="682" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">15 years</text>
+<rect x="430" y="668" width="76" height="20" rx="10" fill="#13366b"/><text x="468.0" y="682" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">225,000 km</text>
+<rect x="512" y="668" width="58" height="20" rx="10" fill="#13366b"/><text x="541.0" y="682" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5,625 h</text>
+<circle cx="367" cy="706" r="3.5" fill="#5dcaa5"/>
+<text x="378" y="710" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">60 software updates · 25 repairs</text>
+<text x="362" y="730" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">last repair Feb 2026 · service life consumed</text>
+<circle cx="606" cy="656" r="21.5" fill="#2e5aa0"/><circle cx="606" cy="656" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="598" y1="656" x2="614" y2="656"/><line x1="606" y1="648" x2="606" y2="664"/></g>
+<rect x="43" y="753" width="292" height="120" rx="13" fill="#21407a"/><rect x="44" y="754" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M64 796 C64 780 80 770 88 770 C88 784 78 796 64 796 Z"/><path d="M66 794 L86 774"/></g>
+<text x="100" y="784" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Environmental impact</text>
+<rect x="60" y="796" width="98" height="20" rx="10" fill="#13366b"/><text x="109.0" y="810" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">73.4 kg CO2-eq</text>
+<circle cx="65" cy="834" r="3.5" fill="#5dcaa5"/>
+<text x="76" y="838" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">up to -21 % climate · -47 % minerals</text>
+<text x="60" y="858" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">EF 3.1 · guided dismantling + reuse vs today</text>
+<circle cx="304" cy="784" r="21.5" fill="#2e5aa0"/><circle cx="304" cy="784" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="296" y1="784" x2="312" y2="784"/><line x1="304" y1="776" x2="304" y2="792"/></g>
+<rect x="345" y="753" width="292" height="120" rx="13" fill="#21407a"/><rect x="346" y="754" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M366 776 L378 770 L390 776 L378 782 Z"/><path d="M368 788 L378 783 L388 788 L378 793 Z"/><path d="M370 800 L378 796 L386 800 L378 804 Z"/></g>
+<text x="402" y="784" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Training disassembly</text>
+<rect x="362" y="796" width="56" height="20" rx="10" fill="#13366b"/><text x="390.0" y="810" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5 steps</text>
+<rect x="424" y="796" width="72" height="20" rx="10" fill="#13366b"/><text x="460.0" y="810" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">10 actions</text>
+<rect x="502" y="796" width="52" height="20" rx="10" fill="#13366b"/><text x="528.0" y="810" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">~5 min</text>
+<circle cx="367" cy="834" r="3.5" fill="#f0c879"/>
+<text x="378" y="838" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Walk the steps before you touch the unit</text>
+<text x="362" y="858" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">practice only - no timer runs here</text>
+<circle cx="606" cy="784" r="21.5" fill="#2e5aa0"/><circle cx="606" cy="784" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="598" y1="784" x2="614" y2="784"/><line x1="606" y1="776" x2="606" y2="792"/></g>
+<rect x="44" y="886" width="180" height="52" rx="26" fill="#1a2740" stroke="#324a6d"/>
+<text x="134" y="918" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Home</text>
+<rect x="248" y="886" width="388" height="52" rx="26" fill="#1d9e75"/>
+<text x="430" y="918" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold" text-anchor="middle">Scan next product</text>
+<g stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M596 906 L602 912 L596 918"/></g>
+<text x="20" y="1000" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Header: centred title, sub-headline and serial removed · compliance badge has no home now - open item</text>
+<text x="20" y="1018" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Recycler: no header arrow, bottom-left is Back · Product user: header arrow to stakeholder, bottom-left is Home</text>
+<text x="20" y="1036" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Neither left button is red any more - they no longer end the session (00 s.2.1 meaning 3 is now unused)</text>
+<text x="20" y="1054" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Open: where Home goes (Welcome or stakeholder), and whether Training disassembly is hidden for the Product user</text>
+</svg>

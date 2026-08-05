@@ -8,7 +8,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_0/2 builder — QR scan entry screen (spec 11 stages 3+4, approved
+    /// RBv2_1/2 builder — QR scan entry screen (spec 11 stages 3+4, approved
     /// mock qr_scan_screen_v1.svg 2026-07-21).
     ///
     /// Own world-space canvas "QRScanCanvas" (440×300 + grabber bar). Three
@@ -18,12 +18,12 @@ namespace DPP.EditorTools
     /// RBv2.0 (2026-07-29): the 10 s "Continue with demo unit" fallback button
     /// is REMOVED — entry is QR-only. The operator-level kill-switch is
     /// QRScanController.scanOnStart. The screen is no longer shown at launch
-    /// either: the Welcome canvas (RBv2_0/3) owns entry and calls BeginNewScan().
-    /// Re-run RBv2_0/3 after RBv2_0/2 so the wiring is restored.
+    /// either: the Welcome canvas (RBv2_1/3) owns entry and calls BeginNewScan().
+    /// Re-run RBv2_1/3 after RBv2_1/2 so the wiring is restored.
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        [MenuItem("RBv2_0/2 — QR scan screen", false, 2)]
+        [MenuItem("RBv2_1/2 — QR scan screen", false, 2)]
         public static void Build2_QRScanScreen()
         {
             DPPSpriteFactory.GenerateAll();
@@ -32,7 +32,7 @@ namespace DPP.EditorTools
             var mainGO = GameObject.Find("DPPPanelCanvas");
             if (mainGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_0/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
                 return;
             }
             var router = mainGO.GetComponent<ScreenRouter>();
@@ -129,7 +129,7 @@ namespace DPP.EditorTools
             SetRef(controller, "scanAgainButton", againBtn);
 
             // SELF-HEALING WIRE. A phase that RECREATES an object must re-point
-            // everyone who references it. The Welcome canvas (RBv2_0/3) holds a
+            // everyone who references it. The Welcome canvas (RBv2_1/3) holds a
             // reference to this controller; rebuilding the scan screen destroys the
             // old one, so running /2 after /3 used to leave "Scan to start" wired to
             // a dead object — the button appeared to do nothing at all.
@@ -144,8 +144,8 @@ namespace DPP.EditorTools
             if (manager != null) SetBool(manager, "fetchOnStart", false);
 
             Undo.RegisterCreatedObjectUndo(go, "Build QR Scan Screen");
-            Debug.Log("[DPPUIBuilder] RBv2_0/2 — QR scan screen built (RBv2.0: no demo fallback). " +
-                      "Re-run RBv2_0/3 to restore the Welcome wiring (waitForWelcome + firstRunPrompt).");
+            Debug.Log("[DPPUIBuilder] RBv2_1/2 — QR scan screen built (RBv2.0: no demo fallback). " +
+                      "Re-run RBv2_1/3 to restore the Welcome wiring (waitForWelcome + firstRunPrompt).");
         }
 
         /// <summary>One L-corner of the scan frame: horizontal + vertical bar

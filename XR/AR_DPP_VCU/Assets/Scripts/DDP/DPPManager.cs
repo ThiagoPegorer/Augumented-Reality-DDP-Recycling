@@ -35,6 +35,10 @@ namespace DPP
                  "One instance drives BOTH screens.")]
         [SerializeField] private DPP.UI.PassportView passport;
 
+        [Tooltip("RBv2.1 — the DPP page (spec 04): four tabs, two roles. Supersedes the RB2.0 " +
+                 "canva above, which stays wired until its detail pages are replaced (specs 05-08).")]
+        [SerializeField] private DPP.UI.DppPageView dppPage;
+
         [Tooltip("Screen 03 — Disassembly intro view (Canva design). Populated with tools/time/scope/recover stats.")]
         [SerializeField] private DPP.UI.DisassemblyIntroView disassemblyIntro;
 
@@ -96,6 +100,7 @@ namespace DPP
                 if (mainPage != null)         mainPage.Populate(data);
                 if (infoTab != null)          infoTab.Populate(data);
                 if (passport != null)         passport.Populate(data);
+                if (dppPage != null)          dppPage.Populate(data);
                 if (disassemblyIntro != null) disassemblyIntro.Populate(data);
                 if (stepFlow != null)          stepFlow.Populate(data);
                 if (completionSummary != null) completionSummary.Populate(data);

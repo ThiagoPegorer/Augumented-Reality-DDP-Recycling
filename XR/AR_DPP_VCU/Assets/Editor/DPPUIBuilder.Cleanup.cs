@@ -9,7 +9,7 @@ namespace DPP.EditorTools
     /// RBv2.0 housekeeping — removes RBv1.0 leftovers from an EXISTING scene
     /// without rebuilding anything.
     ///
-    /// Why this exists: RBv2_0/1 is destructive (it deletes DPPPanelCanvas and
+    /// Why this exists: RBv2_1/1 is destructive (it deletes DPPPanelCanvas and
     /// every screen under it), so it is the wrong tool for "get rid of the old
     /// main page". This is the safe, in-place path.
     ///
@@ -20,7 +20,7 @@ namespace DPP.EditorTools
     ///                       DPPManager.mainPage only feeds a null-guard warning,
     ///                       so removing it changes no behaviour.
     ///   · InformationTab  — the RBv1.0 passport screen, split into DppCanva +
-    ///                       ModelExploration by RBv2_0/7.
+    ///                       ModelExploration by RBv2_0/Legacy.
     ///   · DashboardCanvas — the pre-Canva colloquium dashboard, if any scene
     ///                       still carries one.
     ///

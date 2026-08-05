@@ -9,7 +9,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_0/8 — Screen 03: STAKEHOLDER DECISION (spec `03_stakeholder_decision.md`,
+    /// RBv2_1/7 — Screen 03: STAKEHOLDER DECISION (spec `03_stakeholder_decision.md`,
     /// mock `drafts/03_v4_stakeholder.svg`, approved 2026-08-04).
     ///
     /// Sits between the QR scan and the DPP Canva: the app asks who is using it,
@@ -32,7 +32,7 @@ namespace DPP.EditorTools
         private const float StkPad = 20f, StkGap = 20f;
         private const float StkTop = 33f;       // (170 - (48 + 20 + 2*18)) / 2 — content centred
 
-        [MenuItem("RBv2_0/8 — Stakeholder decision", false, 8)]
+        [MenuItem("RBv2_1/7 — Stakeholder decision", false, 7)]
         public static void Build8_StakeholderDecision()
         {
             DPPSpriteFactory.GenerateAll();
@@ -41,7 +41,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_0/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -49,7 +49,7 @@ namespace DPP.EditorTools
             if (router == null)
                 Debug.LogWarning("[DPPUIBuilder] No ScreenRouter on DPPPanelCanvas — the cards will not route.");
 
-            DestroyChild(canvasRT, "StakeholderDecision");
+            DestroyChild(canvasRT, "StakeholderDecision");   // also clears the old CloseAppButton
 
             var screen = Stretch("StakeholderDecision", canvasRT);
             Undo.RegisterCreatedObjectUndo(screen.gameObject, "Build Stakeholder Decision");
@@ -72,20 +72,21 @@ namespace DPP.EditorTools
 
             // Destructive pill in the standard LEFT slot — identical geometry to the
             // Welcome canvas' Close app, so the hit target never moves (00 §5).
-            var closeBtn = BuildPillButton(screen, "CloseAppButton", cx: 114, cy: 376, w: 180, h: 52,
-                label: "Close app", labelSize: 16, primary: false, chevron: false, destructive: true);
+            var quitBtn = BuildPillButton(screen, "QuitButton", cx: 114, cy: 376, w: 180, h: 52,
+                label: "Quit", labelSize: 16, primary: false, chevron: false, destructive: true);
 
             // ---- wiring ----
             SetRef(select, "router", router);
+            SetRef(select, "welcome", Object.FindFirstObjectByType<WelcomeController>(FindObjectsInactive.Include));
             WireClick(userBtn, select, nameof(StakeholderSelect.ChooseProductUser));
             WireClick(recBtn, select, nameof(StakeholderSelect.ChooseRecycler));
-            WireClick(closeBtn, select, nameof(StakeholderSelect.CloseApp));
+            WireClick(quitBtn, select, nameof(StakeholderSelect.Quit));
             if (router != null) SetRef(router, "stakeholderDecision", screen.gameObject);
 
             screen.gameObject.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_0/8 — Stakeholder decision built. " +
+            Debug.Log("[DPPUIBuilder] RBv2_1/7 — Stakeholder decision built. " +
                       "A successful scan now opens this screen instead of the passport directly. Save the scene.");
         }
 

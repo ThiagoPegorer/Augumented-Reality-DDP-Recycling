@@ -16,7 +16,7 @@ namespace DPP.EditorTools
     /// step, numbered in RUN ORDER under the "RBv2_0" menu. Source of truth:
     /// DPP_UI_Specs/00_design_standards.md plus the per-screen spec.
     ///
-    /// RBv2_0/1 — Panel canvas + router:
+    /// RBv2_1/1 — Panel canvas + router:
     ///   - generates the procedural UI sprites,
     ///   - deletes the legacy "DashboardCanvas" (XR rig, hands, reticles,
     ///     DDPManager and EventSystem are untouched),
@@ -24,7 +24,7 @@ namespace DPP.EditorTools
     ///     ScreenRouter + grabber bar (PanelGrabHandle). No screens.
     ///
     /// ⚠ DESTRUCTIVE: re-running this DELETES DPPPanelCanvas and every screen
-    /// under it — you must then re-run RBv2_0/2 through RBv2_0/7. For removing
+    /// under it — you must then re-run RBv2_1/2 → /6 and RBv2_1/7 → /8. For removing
     /// RBv1.0 leftovers from an existing scene use RBv2_0/Tools instead.
     /// </summary>
     public static partial class DPPUIBuilder
@@ -39,7 +39,7 @@ namespace DPP.EditorTools
 
         private static TMP_FontAsset _fontRegular, _fontBold;
 
-        [MenuItem("RBv2_0/1 — Panel canvas + router", false, 1)]
+        [MenuItem("RBv2_1/1 — Panel canvas + router", false, 1)]
         public static void Build1_PanelCanvas()
         {
             DPPSpriteFactory.GenerateAll();
@@ -68,12 +68,12 @@ namespace DPP.EditorTools
 
             // RBv2.0 (2026-07-30): NO Main Page. The RBv1.0 two-card page
             // (Informations | Disassembly) went with the tab bar — the passport
-            // canvas built by RBv2_0/7 is the app's main screen and the Welcome
-            // canvas (RBv2_0/3) is the entry point. Nothing routes to a main page.
+            // canvas built by RBv2_0/Legacy is the app's main screen and the Welcome
+            // canvas (RBv2_1/3) is the entry point. Nothing routes to a main page.
 
             Selection.activeGameObject = canvasGO;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_0/1 — panel canvas + router built (no screens). Now run RBv2_0/2 → RBv2_0/7 in order, then save the scene.");
+            Debug.Log("[DPPUIBuilder] RBv2_1/1 — panel canvas + router built (no screens). Now run RBv2_1/2 → /6, then RBv2_1/7 and RBv2_1/8, then save the scene.");
         }
 
         // =================================================================

@@ -1,0 +1,54 @@
+<svg width="100%" viewBox="0 0 680 640" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>RB2.1 — 04 DPP Canva v6: tab faces populated</title>
+<desc>The DPP Canva with the four tab faces populated. Product specifications carries the product name, manufacturer and serial. Usage history shows lifetime energy, distance and hours. Environmental impact shows the four scenario carbon figures. Training disassembly shows five steps, ten actions and about five minutes. All tile contents are vertically centred.</desc>
+<text x="20" y="32" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">RECYCLER — headline + small text only</text>
+<rect x="20" y="44" width="640" height="430" rx="22" fill="#0a1f44"/>
+<text x="44" y="91" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">Digital Product Passport</text>
+<rect x="436" y="67" width="200" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M457 74 L464 77 L464 83 C464 87 457 90 457 90 C457 90 450 87 450 83 L450 77 Z"/></g>
+<text x="548" y="86" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="44" y="120" width="592" height="1" fill="#1a335f"/>
+<rect x="43" y="133" width="292" height="120" rx="13" fill="#21407a"/><rect x="44" y="134" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M64 154 L76 148 L88 154 L76 160 Z"/><path d="M64 154 L64 168 L76 174 L88 168 L88 154"/><path d="M76 160 L76 174"/></g>
+<text x="100" y="162" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Product specifications</text>
+<circle cx="304" cy="164" r="21.5" fill="#2e5aa0"/><circle cx="304" cy="164" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="296" y1="164" x2="312" y2="164"/><line x1="304" y1="156" x2="304" y2="172"/></g>
+<rect x="60" y="181.0" width="186" height="20" rx="10.0" fill="#13366b"/><text x="153.0" y="195.0" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">Vehicle Control Unit MS 50.4</text>
+<rect x="60" y="206.0" width="114" height="20" rx="10.0" fill="#13366b"/><text x="117.0" y="220.0" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">Bosch Motorsport</text>
+<rect x="180" y="206.0" width="62" height="20" rx="10.0" fill="#13366b"/><text x="211.0" y="220.0" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">VCU0001</text>
+<text x="60" y="242.0" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">mechanical · electrical</text>
+<rect x="345" y="133" width="292" height="120" rx="13" fill="#21407a"/><rect x="346" y="134" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="379" cy="161" r="13"/><path d="M379 153 L379 161 L385 165"/></g>
+<text x="402" y="162" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Usage history</text>
+<circle cx="606" cy="164" r="21.5" fill="#2e5aa0"/><circle cx="606" cy="164" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="598" y1="164" x2="614" y2="164"/><line x1="606" y1="156" x2="606" y2="172"/></g>
+<rect x="362" y="193.5" width="66" height="20" rx="10.0" fill="#13366b"/><text x="395.0" y="207.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">66.2 kWh</text>
+<rect x="434" y="193.5" width="76" height="20" rx="10.0" fill="#13366b"/><text x="472.0" y="207.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">225,000 km</text>
+<rect x="516" y="193.5" width="58" height="20" rx="10.0" fill="#13366b"/><text x="545.0" y="207.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5,625 h</text>
+<text x="362" y="229.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">last repair Feb 2026 · service life consumed</text>
+<rect x="43" y="261" width="292" height="120" rx="13" fill="#21407a"/><rect x="44" y="262" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M64 302 C64 286 80 276 88 276 C88 290 78 302 64 302 Z"/><path d="M66 300 L86 280"/></g>
+<text x="100" y="290" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Environmental impact</text>
+<circle cx="304" cy="292" r="21.5" fill="#2e5aa0"/><circle cx="304" cy="292" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="296" y1="292" x2="312" y2="292"/><line x1="304" y1="284" x2="304" y2="300"/></g>
+<rect x="60" y="321.5" width="48" height="20" rx="10.0" fill="#13366b"/><text x="84.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">S1 —</text>
+<rect x="114" y="321.5" width="48" height="20" rx="10.0" fill="#13366b"/><text x="138.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">S2 —</text>
+<rect x="168" y="321.5" width="48" height="20" rx="10.0" fill="#13366b"/><text x="192.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">S3 —</text>
+<rect x="222" y="321.5" width="48" height="20" rx="10.0" fill="#13366b"/><text x="246.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">S4 —</text>
+<text x="60" y="357.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">Impact details · recovery rates · LCA</text>
+<rect x="345" y="261" width="292" height="120" rx="13" fill="#21407a"/><rect x="346" y="262" width="290" height="118" rx="13" fill="#0e2950"/>
+<g stroke="#7fd3b6" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M366 282 L378 276 L390 282 L378 288 Z"/><path d="M368 294 L378 289 L388 294 L378 299 Z"/><path d="M370 306 L378 302 L386 306 L378 310 Z"/></g>
+<text x="402" y="290" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Training disassembly</text>
+<circle cx="606" cy="292" r="21.5" fill="#2e5aa0"/><circle cx="606" cy="292" r="20" fill="#13366b"/><g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"><line x1="598" y1="292" x2="614" y2="292"/><line x1="606" y1="284" x2="606" y2="300"/></g>
+<rect x="362" y="321.5" width="56" height="20" rx="10.0" fill="#13366b"/><text x="390.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5 steps</text>
+<rect x="424" y="321.5" width="72" height="20" rx="10.0" fill="#13366b"/><text x="460.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">10 actions</text>
+<rect x="502" y="321.5" width="52" height="20" rx="10.0" fill="#13366b"/><text x="528.0" y="335.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">~5 min</text>
+<text x="362" y="357.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">Dismantling virtual training</text>
+<rect x="44" y="394" width="180" height="52" rx="26" fill="#1a2740" stroke="#324a6d"/>
+<text x="134" y="426" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="248" y="394" width="388" height="52" rx="26" fill="#1d9e75"/>
+<text x="430" y="426" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold" text-anchor="middle">Continue to disassembly</text>
+<g stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M596 414 L602 420 L596 426"/></g>
+<text x="20" y="512" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Every tile is now headline + small text only · contents vertically centred in the band y 48-110</text>
+<text x="20" y="529" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Tab 1: product name is a chip in the same style as manufacturer and serial, on its own row</text>
+<text x="20" y="546" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Tab 3: S1-S4 chips are PLACEHOLDERS - awaiting the per-stage figures from the openLCA contribution tree</text>
+<text x="20" y="563" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Stage 5 (end of life) is deliberately incomplete: the unit is in the recycling phase now, so the face</text>
+<text x="20" y="580" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">reports emissions accrued to this moment, not a full cradle-to-grave total</text>
+</svg>
