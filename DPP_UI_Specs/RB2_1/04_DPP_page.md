@@ -1,242 +1,247 @@
-# DPP UI Spec — RB2.1 / 04: DPP page — **v1**
+# DPP UI Spec — RB2.1 / 04: DPP page — **v2, the super panel**
 
-> **Living spec.** Supersedes RB2.0 `13` (DPP Canva), `13b`–`13e` (detail pages) and `14`
-> (Composition & impact): one panel screen, four tabs, one free-floating model.
-> Standards: `00_design_standards_rbv2.md` · Routine: `RB2_1_routine.md` · Prev: `03` · Next: `05`
-> Mock: `../drafts/04_v11_dpp_canva.svg` · Builder: `RBv2_1/1 — DPP page` · View: `DppPageView.cs`
-> **Status: phase 1 BUILT and device-tested 2026-08-05. The four `+` targets are stubs.**
+> **Living spec.** Supersedes RB2.0 `13` (DPP Canva), `13b`–`13e` and `14` (Composition & impact),
+> **and supersedes its own v1** (the 640 × 430 four-tile page built and device-tested 2026-08-04/05).
+> Standards: `00_design_standards_rbv2.md` · Prev: `03` · Children: `04a` (use phase), `04b`–`04d`
+> Mocks: `../drafts/04b_v2_super_panel.svg` (front), `../drafts/04b_v3_plan_view.svg` (geometry)
+> Builder: `RBv2_1/8` · View: `DppPageView.cs`
+> **Status: v2 specified, not built. v1 is on the device and still runs.**
 
 ---
 
-## 1. Why this screen exists in this form
+## 1. Why v1 is being replaced
 
-Two findings from P02 and P03 drove the rebuild:
+v1 answered "the model is hidden" by spawning the model first and unfolding the panel from it. The model
+was still **beside** the passport, and the panel still owned the attention — which is the complaint P02
+and P03 actually made.
 
-| Finding | Cause | Answer |
+v2 answers it structurally: **the model is the middle of the passport.** It sits between the navigation
+and the data, permanently on screen, and it re-reads itself every time the user changes tab. There is no
+state in which the passport is visible and the model is not.
+
+Second driver: **a recycler should traverse the whole passport before dismantling.** v1 made that
+possible; v2 makes it the only path (§6).
+
+**Carried over from v1 unchanged:** the chip standard (`00` §5), the four tab identities, the role logic
+(`ScreenRouter.Mode`), the certificates screen, and the two hard-won rules — *no overlay shares a canvas
+plane with live controls*, and *every panel screen goes in `ScreenRouter.Show()`'s deactivate pass*.
+
+**Superseded:** the 2 × 2 tile grid, the 24–314 / 326–616 columns, the header layout, the `cx 114 / 422`
+button row, and the per-tab `+` child screens.
+
+## 2. Footprint, placement and inclination
+
+**980 × 430**, replacing the single 640 × 430 footprint for this screen. `00` §1's "one footprint,
+always" was written when every screen was a flat panel of the same job; it is updated here rather than
+excepted. Thiago, 2026-08-06: *"we are not breaking standards, we are doing interactions that substitute
+them over time — nothing is inflexible."* **`00` §1 carries two footprints, and this screen is the only
+holder of the second.**
+
+### 2.1 The panel is not flat — three canvases, toed in
+
+A flat 980-wide panel is 0.98 m across at world scale 0.001, and its outer thirds are read at a slant.
+[Geometry, not opinion] at 0.75 m the outer edges sit **±33°** off the forward axis, and a flat surface
+there is foreshortened to **cos 33° = 0.84** of its width. Text compresses; legibility drops exactly
+where the layout needs it most.
+
+**Each zone is its own world-space canvas, yawed about its vertical axis to face the eye.** The
+compression disappears — this is a readability change, not a stylistic one.
+
+| Canvas | Panel-local x | Width | Centre offset | **Yaw** |
+|---|---|---|---|---|
+| Rail | 0 – 220 | 220 | −0.380 m | **−26.9°** |
+| Stage | 220 – 560 | 340 | −0.100 m | **0°** — see §2.4 |
+| Data | 560 – 980 | 420 | +0.280 m | **+20.5°** |
+
+All three parent to one rig. **The rig moves as a single object**; the yaw values are local and fixed.
+
+**The stage is deliberately NOT yawed.** Freeing the model from a yawed stage would introduce an
+orientation jump at the moment of release. At 0° there is none, and the stage carries a mesh rather than
+text, so it gains nothing from facing the eye.
+
+### 2.2 Placement
+
+**Default 0.75 m**, replacing 0.60 m for this screen. Eye height 1.1176 m and yaw-only facing unchanged.
+
+| Distance | Outer edges | Trade |
 |---|---|---|
-| "Too much information — what do I do with it?" | facts with no task attached | four tabs instead of six tiles + three blocks, and a **Training disassembly** tab that gives the facts a job |
-| "I didn't perceive there was a 3D model there" | the model lived one screen *after* the information | the model is **persistent and free-floating**, and it spawns **before** the panel (§7) |
+| 0.60 m | ±39° | head turns to reach the rail and the data panel |
+| **0.75 m** | **±33°** | **adopted** |
+| 0.88 m | ±29° | comfortable, but the text gets small |
 
-Thiago, 2026-08-04: *"Split it is being confuse and not a smart way for the user."* RB2.0's two
-passport screens merge here. The merge is only safe because spec `14`'s composition data becomes
-something the **model** shows, not more rows in the panel (§7).
+The assembly is centred on the user's forward axis, which puts the stage — and therefore the model —
+about **8° left of centre**. Imperceptible, and preferable to pushing the wider data panel further out.
 
-## 2. Screen anatomy (panel 640 × 430, panel-local coordinates)
+⚠ **Device-verify 0.75 m before content is built.** It is the assumption everything else rests on.
 
-| Element | x | y | w | h | Notes |
-|---|---|---|---|---|---|
-| Back arrow (circle) | 24 | 24 | 40 | 40 | **Product user only** — 52 px hit area |
-| Title `Digital Product Passport` | 24 *(76 with arrow)* | — | — | 25 bold | vertically centred in the 0–76 header band |
-| Compliance badge (button) | 436 | 23 | 200 | 30 | §5 |
-| Header rule | 24 | 76 | 592 | 1 | `#1a335f` |
-| Tab 1 Product specifications | 24 | 90 | 290 | 118 | |
-| Tab 2 Usage history | 326 | 90 | 290 | 118 | |
-| Tab 3 Environmental impact | 24 | 218 | 290 | 118 | |
-| Tab 4 Training disassembly | 326 | 218 | 290 | 118 | **both roles** — a DPP without the disassembly steps is not a DPP (Thiago, 2026-08-05) |
-| Left button | cx 114 | cy 376 | 180 | 52 | label depends on role (§4) |
-| Primary CTA | cx 422 | cy 376 | 388 | 52 | label + target depend on role (§4) |
+### 2.3 One rig, one grab bar
 
-Columns and the button row are the standard geometry of `00` §1.1 and §5 — nothing moves between
-this screen and the others.
+**Locked, the whole assembly is one object.** The three canvases and the model all parent to a single
+rig; **one standard grabber bar (200 × 22, `00` §5) sits centred beneath the stage** and drags
+everything. Thiago, 2026-08-06: *"when the digital model is LOCKED, all the 3 canvas be just as 1, with
+a single drag bar."*
 
-### 2.1 Tab anatomy
+The grab point is under the stage — the user reaches for the object, not for a geometric centre — while
+the rig's **pivot** stays at the assembly centre so billboard-on-drag rotates sensibly. The 100 mm
+offset between the two is imperceptible mid-drag.
 
-Fixed header row, pinned so the four `+` buttons stay on one line across the grid:
+**Unlocked, the model is re-parented out of the stage** into its own root with its own grab bar. The rig
+keeps its grabber and keeps behaving identically, now moving two canvases and an empty stage. No special
+casing: one child left the hierarchy.
 
-- icon 28 × 28 at (18, 14) — authored PNG, rendered as drawn, no tint
-- title 14 bold `text/on-navy` at x 56, baseline y 28
-- `+` button, 40 visual / 52 hit, centred at (260, 30)
+Two grabbers are then live at once. They are spatially separated (one under the freed model's frame, one
+under the empty stage) and **the freed model's grabber is tinted `teal/light`** while the rig's stays
+neutral, so which-moves-what needs no experiment.
 
-Content band **y 48 → 110**, and the chip stack is **vertically centred inside it**. Tiles carry
-different numbers of rows, so a fixed top would leave three of the four looking bottom-heavy.
+`00` §6 already covers the interaction: gesture 3 is pinch-drag a panel, and the guard *"panel drag beats
+model gestures"* is what stops the freed model's grab bar fighting the two-hand rotate that is also live
+on it. `PanelGrabHandle` is reused on both bars.
 
-## 3. The chip — the only content element on this screen
+### 2.4 What three canvases buy
 
-`00` §5 addition, agreed 2026-08-04:
+Beyond legibility: the stage stops being a transparent hole in a canvas and becomes **empty space between
+two canvases**. Nothing can bleed through it, there is no raycast target to suppress, and each surface
+gets its own `GraphicRaycaster` — which `00` §4 already requires for independently-oriented UI groups.
+**The inclination made the implementation simpler, not harder.**
 
-| Property | Value |
+## 3. Anatomy (panel-local coordinates within each zone)
+
+### 3.1 Rail — navigation only, no headline
+
+| Element | x | y | w | h |
+|---|---|---|---|---|
+| Tab button ×4 | 18 | 34 · 114 · 194 · 274 | 184 | 68 |
+| Compliance badge | 18 | 372 | 184 | 30 |
+| Divider | 219 | 18 | 1 | 394 |
+
+Tab button: icon 24 at x 38, two-line label 12.5 at x 72. **Active** = `tab/active-fill` +
+`tab/active-stroke` + a 4 × 40 `teal/light` accent bar on the left edge. **Visited** = a 14 px
+`teal/accent` tick, top-right. **Not yet reached** = dimmed (§6).
+
+**No title on the rail.** The screen names itself through the active tab and the data panel's header.
+
+**The compliance badge lives here**, not in a header: it is a property of the product, not of a tab, and
+the 420-wide data header has no room beside a 19 pt title. Treatment unchanged — `00` §2.1 meaning 4,
+red outline and glyph only, never fill.
+
+### 3.2 Stage — the model, and its two states
+
+The model sits at the stage centre. **It re-reads on every tab change** — the lens idea from `04a` §7.2,
+applied one level up:
+
+| Active tab | Model shows |
 |---|---|
-| Fill | `card/blue` `#13366b`, capsule sprite |
-| Height | 18 · corner radius = h / 2 |
-| Text | 10.5 `#dbe4f0`, single line |
-| **Width** | **`label.preferredWidth + 24`, measured at runtime** |
-| Alignment | centred by default · **left-aligned (12 px padding) when the chip carries a label-plus-value pair** |
-| Sets | chips that belong to one set share the **widest** width in the set |
+| Product specifications | real-life part colours, materials legible |
+| Usage history | end-of-use verdict tint (default) — see `04a` |
+| Environmental impact | material tint + recovery-value glow |
+| Training disassembly | exploded preview of the five steps |
 
-⚠ **Never hardcode a chip width.** Every value on this screen comes from the payload; one extra
-digit clips a fixed chip. The builder bakes a starting width only so the mock reads correctly in
-the editor — `DppPageView.Populate()` re-fits every chip after binding.
+**LOCKED (default).** Slow yaw, ~12 s loop, no input accepted. A living illustration, which is what stops
+it reading as decoration.
 
-## 4. The two roles
+**UNLOCKED.** The lock button (40 visual / 52 hit, stage-local cx 170, cy 372) releases the model into a
+free **340 × 300** object with its own grab bar and the standard two-hand rotate/zoom (`00` §6). The
+stage keeps a **ghost outline** of the model's home plus `return here to re-lock`.
 
-`ScreenRouter.Mode` is set on the stakeholder screen (`03`) and read here in `OnEnable`. **One
-screen, built once, in two modes** — building two canvases would double every future DPP edit.
+⚠ **The layout does not reflow when the model leaves.** `00` §5: hit targets never move under the user.
+
+⚠ **Re-lock SNAPS the model home; it is not carried back.** Once freed the model no longer follows the
+rig, so the user can drift it across the room, or move the panels and leave it behind. The lock button
+returns it to the stage with a short DOTween ease from wherever it ended up. Without this, `return here
+to re-lock` is a chore and the feature becomes a trap.
+
+⚠ **Containment is mandatory, because code cannot fix the alternative.** `00` §4: *a 3D mesh always wins
+the depth test against world-space UI.* A freed model dragged behind or across the rail or data canvas
+will occlude it with no z-order remedy. **The freed model is constrained to a volume in front of the
+stage**, bounded laterally by the inward faces of the two side canvases and forward toward the user
+(see the plan-view mock). It is **not** auto-returned on tab change — the user unlocked it deliberately;
+the re-lock button stays visible in the stage.
+
+### 3.3 Data panel
+
+| Element | x | y | w | h |
+|---|---|---|---|---|
+| Title (active tab name) | 24 | baseline 46 | — | 19 bold |
+| Caption, right-aligned | 396 | baseline 44 | — | 10 `text/tip` |
+| Rule | 24 | 64 | 372 | 1 |
+| Content band | 24 | **76 → 350** | 372 | — |
+| Left button | 24 | 362 | **130** | 46 |
+| Primary CTA | 166 | 362 | **230** | 46 |
+
+⚠ The standard 180 + 388 button row does not fit a 420 column. **130 + 230, primary still right** —
+`00` §5's rule holds; only the widths change, on this screen only.
+
+## 4. The four tabs
+
+Content per tab lives in its own spec: `04a` use phase (written), `04b` training disassembly,
+`04c` product specifications, `04d` environmental impact.
+
+**v2 has no `+` and no child screens for the tabs.** Selecting a tab swaps the data panel and re-reads
+the model. `04a`–`04d` are therefore **content specs, not screen specs**. The only sibling screen that
+remains is **Certificates & safety**, reached from the rail badge.
+
+## 5. Roles
+
+`ScreenRouter.Mode`, set on `03`, read in `OnEnable`.
 
 | | **Product user** | **Recycler** |
 |---|---|---|
-| Header back arrow | **shown** → `ScreenRouter.ShowStakeholder()` | **hidden** |
-| Title x | 76 (arrow occupies 24) | 24 |
-| Left button | **`Quit`, RED** → `WelcomeController.ShowWelcome()` | `Back`, grey → `ScreenRouter.ShowStakeholder()` |
-| Primary CTA | `Scan next product` → `QRScanController.BeginNewScan()` | `Continue to disassembly` → `ScreenRouter.ShowDisassembly()` |
-| Tab 4 Training disassembly | shown | shown |
-| Tabs 1–3 | identical | identical |
+| Entry tab | any — all four available immediately | **Product specifications**, forced (§6) |
+| Tab access | all lit, free navigation | linear walkthrough (§6) |
+| Left button | **`Quit`, red** → `WelcomeController.ShowWelcome()` | `Back` (§6) |
+| Primary CTA | `Scan next product` → `QRScanController.BeginNewScan()` | `Next`, then `Continue to disassembly` on tab 4 |
 
-**Why the back affordance moves.** The Recycler's bottom bar is a `Back` / `Continue` pair, which
-is the clearest possible reading of a linear step. The Product user has no forward step, so the
-bottom-left slot is free for `Quit` and the one-step-back edge returns to the header arrow. A
-participant is only ever one role, so the affordance never moves under them mid-session.
-**This is a deliberate exception to `00` §5**, which defines Back as the header circle.
+The v1 header back arrow is gone — there is no header. The Product user's one-step-back edge is `Quit`.
 
-**`Quit` is red** (`00` §2.1 meaning 3 — the action ends the session) and follows §5's rule that
-"an edge that leaves the session says Quit, never Back". It leaves the **session**, not the app.
-One baked button cannot be both a grey `Back` and a red `Quit`, so the left slot is built by a local
-`DpPill` helper whose fill, stroke and label the view recolours in `ApplyMode()`.
+## 6. The Recycler walkthrough — **Recycler only**
 
-**Spec `03` matched on 2026-08-05:** the stakeholder screen's `Close app` became **`Quit`** (red),
-returning to Welcome. `StakeholderSelect.CloseApp()` → `Quit()` with a `welcome` reference. In a
-kiosk loop `Application.Quit` ends the study for everyone behind the current participant; quitting to
-Welcome ends it for one. The real `Application.Quit` stays on the Welcome screen.
+Replaces v1's locked-CTA idea. Thiago, 2026-08-06: a lock refuses; a path leads.
 
-## 5. Compliance badge and the certificates screen
+1. Selecting **Recycler** on `03` opens the DPP page on **Product specifications**.
+2. Tabs not yet reached render **dimmed** and are not selectable.
+3. The primary CTA reads **`Next`** and advances to the following tab.
+4. On reaching **Training disassembly** (tab 4), the CTA becomes **`Continue to disassembly`**.
+5. **Visited tabs stay lit and selectable**, so the recycler can go back and re-read at any point.
+6. `Back` steps to the previous tab. On tab 1 it returns to the stakeholder screen (`03`).
 
-The badge is a **button**, 200 × 30, 50 px hit area, reading `CE · REACH · WEEE 5 · IP67` beside
-the certificates shield. It is present on the screen regardless of tab, because compliance is a
-property of the product, not of one tab. Treatment follows `00` §2.1 **meaning 4**: `safety/stroke`
-as a 1.4 px **outline and glyph only, never fill**, and the label always names what it marks.
+`Back` / `Next` therefore form a pair that walks the passport, and the disassembly route is reachable
+only from the tab that explains it.
 
-`IP67` lives here rather than on tab 1: Thiago, 2026-08-04 — *"since this a security and safe
-acronym"*.
+⚠ **This is not the gate deleted on 2026-08-01.** That was a `CONTINUE TO DISASSEMBLY?` interstitial
+asking *"are you sure?"* — a confirmation, and one more panel to read. This is a route through content
+that already exists, adding no panel and refusing nothing.
 
-**`Certificates & safety` is a SCREEN, not a modal** (changed 2026-08-05). It is a sibling of
-`DppPage` under `DPPPanelCanvas`, owned by `ScreenRouter.ShowCertificates()`, with the same
-`navy/panel` surface as the main panel and a close **X** at the header's right (cx 598, cy 38,
-36 visual / 52 hit) returning to `ShowDppCanva()`.
+**The Product user is not walked.** They have no disassembly to reach, so all four tabs are lit from the
+start and the CTA is always `Scan next product`.
 
-⚠ **Why it stopped being a modal.** It always covered the whole panel, so it was a page pretending
-to be an overlay. Worse, `PicoHandUIBridge` resolves a click by intersecting the hand ray with the
-**canvas plane**, and a child overlay shares that plane with the page: the old 388 px `Close` pill
-sat on the primary CTA's exact coordinates (cx 422, cy 376) and fired it — "Scan next product" for
-the Product user, "Continue to disassembly" for the Recycler. **Any overlay sharing a canvas plane
-with live controls will do this.**
+## 7. Open items
 
-⚠ **Rule that comes with it:** a new panel screen MUST be added to `ScreenRouter.Show()`'s
-`DeactivateUnless` pass. Omitting it for `stakeholderDecision` caused the 2026-08-04 regression where
-every downstream button returned to the DPP canvas.
+1. **Device-verify 0.75 m and the three yaw angles** before content is built.
+2. `00` edits: second footprint in §1, placement + inclination in §1, the 130 + 230 button row in §5.
+3. Rail surface `#081733` — add a `navy/rail` token to `00` §2, or drop it and separate the zones with
+   the divider alone.
+4. ~~Stage yaw~~ — **settled 2026-08-06: 0°** (§2.1), so releasing the model causes no orientation jump.
+5. ~~Grabber bar arrangement~~ — **settled 2026-08-06: one rig bar beneath the stage** (§2.3).
+6. What the model shows for **Product specifications** and **Environmental impact** is named here but
+   specified nowhere yet (`04c`, `04d`).
+7. Snap-home tween duration and easing for re-lock and for the automatic re-lock on tab change (§3.2).
 
-Content — four rows over the full band, 96 → 400, step 76, chip 92 wide, text column at 132:
+## 8. Iteration log
 
-| Chip | Colour | Content |
-|---|---|---|
-| `CE` | `teal/light` | Conformity marking · declared under 2014/30/EU (EMC) 09 Oct 2020 · tested to ECE R10 rev.6. Assessment is only valid once installed in the final product. |
-| `REACH` | **`safety/stroke`** | Chemicals regulation · 2 substances of very high concern declared above 0.1 % w/w: lead (CAS 7439-92-1) and lead monoxide (CAS 1317-36-8). |
-| `WEEE 5` | `teal/light` | Category 5, small equipment · selective treatment recommended at end of life. Do not dispose of in household waste. |
-| `IP67` | `teal/light` | Dust tight, protected against temporary immersion. Declared for the product; **the printed demonstrator is not sealed.** |
+- **2026-08-04** — v1 designed across mocks `04_v1` → `04_v11`: 2 × 2 tile grid, chip standard,
+  compliance badge promoted to a button with its own screen.
+- **2026-08-05** — v1 built and device-tested. Three defects fixed (TMP chip collapse, missing icons,
+  modal surface); certificates promoted from modal to screen after it fired the CTA underneath it;
+  Training disassembly restored for both roles; `Quit` red.
+- **2026-08-06 (a)** — **v2**: three-zone super panel, driven by the persistent complaint that the model
+  was hidden and the panel owned the attention. Mock `04b_v2`.
+- **2026-08-06 (b)** — inclination adopted (§2.1) after the flat 980 panel was shown to lose 16 % of its
+  width to foreshortening at the edges; placement 0.60 → 0.75 m; one-canvas-with-a-hole replaced by
+  three toed-in canvases; the locked CTA replaced by the Recycler walkthrough (§6); freed-model
+  containment made mandatory (§3.2). Plan-view mock `04b_v3`.
+- **2026-08-06 (c)** — one rig, one grab bar (§2.3): locked, the three canvases and the model are a
+  single draggable object; unlocked, the model re-parents out with its own bar while the rig keeps
+  moving the rest. Stage yaw fixed at 0° and re-lock defined as a snap home, both consequences of that.
+  Changing tab re-locks the model automatically, so a freed model can never show a stale tint.
 
-Chips are **vertically centred against their own paragraph**, not pinned to the first line.
-A chip is red **only when the marking itself reports something adverse** — currently `REACH` alone.
-
-All four texts come from `compliance` and `substances_of_concern` in the payload.
-
-## 6. Tab faces — what each headline is bound to
-
-| Tab | Chips | Payload source |
-|---|---|---|
-| 1 Product specifications | `Vehicle Control Unit MS 50.4` (own row) · `Bosch Motorsport` · `VCU0001` | `identity.model`, `identity.manufacturer`, `identity.serial_number` |
-| 2 Usage history | `66.2 kWh` · `225,000 km` · `5,625 h` | `environmental.usage_profile.lifetime_energy_kwh / lifetime_distance_km / operating_hours` |
-| 3 Environmental impact | `CO2 Emissions 73.25 kg CO2 eq` · `Minerals & Metals 0.01874 kg Sb eq` · `Eutroph. Freshwater 0.11592 kg P eq` | Thiago-supplied life-cycle-stage figures ⚠ see below · `environmental.impact_recovery[]` |
-| 4 Training disassembly | `5 steps` · `10 actions` · `~5 min` | `disassembly.steps[]` (count, action count, `estimated_minutes`) |
-
-Left-aligned, equal-width set on tab 3 only.
-
-⚠ **Open data issue, carried until resolved.** `73.25` does **not** match
-`LCA_Analysis/Outputs/3_impact_assessment/impact_EF31.csv`, which gives **73.4326** kg CO2 eq for
-`sc1`. The other two values match that same `sc1` column exactly (`0.0187391` Sb eq, `0.11592`
-P eq). Either the climate figure excludes the incomplete end-of-life stage while the other two
-include it — in which case the tile shows **two boundaries under one heading** — or one number is
-wrong. This appears in the thesis results as well; it must be settled before the screen is cited.
-
-⚠ **Bosch Motorsport on the face** states that this object *is* a Bosch unit, while `00` §8 calls
-the prototype "a generic 5-step VCU (inspired by the Bosch Motorsport MS 50.4, generic as-built)".
-Thiago's call, made deliberately 2026-08-04.
-
-## 7. The model (specified here, built in `05`)
-
-- **Free-floating, never inside the panel.** Embedding it would cost the 3D liberty that made it
-  the best-liked part of the prototype.
-- **Persistent for the whole passport phase** — it spawns once on arrival from `03` and does not
-  disappear between tabs.
-- **Spawn sequence:** the model appears **alone**, centred, settles and rotates slowly (~1 s),
-  *then* the panel unfolds from its edge. You cannot overlook the only object in the scene.
-- **Panel → model highlight, both directions.** Rule: *a highlight always answers "where does this
-  fact live?" — and sometimes the answer is the whole device.* Device-level facts pulse the whole
-  assembly; part-level facts light the parts. Tab 3 tints the model by material and glows by
-  recovery value. Model → panel is the same map inverted, reusing `ZonePartInteraction`.
-
-## 8. Icons
-
-`Assets/Textures/Icons/` — authored PNGs, rendered as drawn:
-`ic_certificates` (badge + modal) · `ic_product_specs` · `ic_environmental` · `ic_usage_history` ·
-`ic_training`.
-
-⚠ Three sources arrived at 6000 × 3375 with the glyph occupying ~8 % of the canvas; they were
-trimmed to content, squared on transparency and resampled to 256 × 256. **Import at 256, not at
-source size** — at 28 px on screen an untrimmed source resolves to about 5 px of artwork.
-
-⚠ **Glyph clash:** `ic_environmental` (recycling arrows) is the same glyph as `ic_recycler` on the
-stakeholder screen, where it means *"you are a recycler"*. One glyph, two meanings, two screens
-apart. Unresolved.
-
-## 9. Build and wiring
-
-**Menu: `RBv2_1/1 — DPP page`.** Safe to re-run: destroys and rebuilds only `DppPage`.
-
-The builder **does not destroy the RB2.0 `DppCanva`**. It deactivates it and renames it
-`DppCanva_RB2_0_legacy`, then re-points `ScreenRouter.dppCanva` at the new `DppPage`. Reason:
-`DPPManager.passport`, `PassportView` and the RB2.0 detail pages are still referenced elsewhere,
-and destroying them mid-rebuild would strand those references. **Delete the legacy object once the
-per-tab work replaces its detail pages** (`05`–`08`).
-
-Wiring set by the builder: `DppPageView.router / welcome / scanner / backButton / leftButton /
-primaryButton / trainingTile / certificatesModal` + every chip root and label.
-`DPPManager.dppPage` is added so `Populate` runs on every successful fetch — one extra field and
-one extra line in `OnDPPSuccess`, alongside the existing view calls.
-
-Run `RBv2_0/Tools/Verify wiring` after building, then **save the scene**.
-
-## 10. Phase plan
-
-| Phase | Scope | State |
-|---|---|---|
-| 1 | Four tabs + header + badge + certificates + role-driven buttons | ✅ **built 2026-08-04, device-tested and fixed 2026-08-05** |
-| 2 | Tab 1 `+` — model, drag bar, explode, per-component detail, R/L side tab | ⬜ next |
-| 3 | Tab 2 `+` — usage + service log, scroll region from the start (`13` v10 defect 3) | ⬜ |
-| 4 | Tab 3 `+` — impact detail, recovery rates, model tint by material and value | ⬜ |
-| 5 | Tab 4 `+` — step summary before the real run | ⬜ |
-
-The four `+` buttons call `DppPageView.OpenTab1..4`, which currently log and do nothing else.
-They are the seams the per-tab work plugs into.
-
-## 11. Open items
-
-1. `73.25` vs `73.4326` — which boundary do the three figures share (§6).
-2. `ic_environmental` / `ic_recycler` glyph clash (§8).
-3. ~~Tab 4 hidden for the Product user~~ — **resolved 2026-08-05: shown for both roles.**
-4. The small caption line was removed from every tile on 2026-08-04. Nothing on the face now says
-   what is behind a `+`. Two tiles have the room if it should come back.
-5. ~~Whether the stakeholder screen gains a `Home` button beside `Close app`~~ — **resolved
-   2026-08-05: `Close app` became a red `Quit` returning to Welcome; there is no separate Home.**
-6. `RBv2_0/Tools/Verify wiring` does not yet cover `StakeholderSelect.welcome`, `ScreenRouter.certificates`
-   or any `DppPageView` field — a dangling reference in the new screen passes silently.
-
-## 12. Iteration log
-
-- **2026-08-05** — device test. Three defects fixed: chips collapsed to 24 px stubs (TMP reports
-  `preferredWidth = 0` while the screen is inactive — now re-fitted in `OnEnable` after
-  `ForceMeshUpdate`); icons missing (`AssetDatabase.Refresh()` + `spriteImportMode = Single`);
-  certificates background to `navy/panel`. Then: Training disassembly restored for both roles, `Home`
-  → red `Quit`, and the certificates modal promoted to a screen (§5).
-- **2026-08-04** — mocks v1 → v11 (`../drafts/04_v*.svg`): 2 × 2 grid, centred then left headline,
-  compliance badge promoted to a button with a modal, small text removed, chip standardised,
-  authored icons landed. Spec written from v11; phase 1 built.
-
-*Created 2026-08-04 · Status: phase 1 built · Legacy source: `../RB2_0/13*.md`, `../RB2_0/14_model_exploration.md`*
+*Created 2026-08-04 · v2 2026-08-06 · Status: specified, not built · Children: `04a`–`04d`*

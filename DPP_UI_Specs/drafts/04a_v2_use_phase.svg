@@ -1,0 +1,229 @@
+<svg width="100%" viewBox="0 0 1180 1520" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>RB2.1 — 04a Use phase v2: model as index</title>
+<desc>The usage tab opens on the VCU coloured by its end-of-use verdict, with the state of health and the reuse fraction on the panel. Selecting a part fills the panel with what that part recorded. A thermal lens re-tints the same model by temperature history.</desc>
+<text x="20" y="30" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">REUSE LENS (default) — the recycler decision, on the object</text>
+<rect x="20" y="46" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="84" r="19" fill="#13366b" stroke="#2e5aa0"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M69 77 L60 84 L69 91"/><path d="M60 84 L73 84"/></g>
+<text x="96" y="92" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">Use phase</text>
+<text x="636" y="90" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8" text-anchor="end">5,625 h · 11,250 cycles</text>
+<rect x="44" y="122" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="136" width="78" height="28" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="83.0" y="155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Reuse</text>
+<rect x="130" y="136" width="84" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="172.0" y="155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Thermal</text>
+<rect x="222" y="136" width="96" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="270.0" y="155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Electrical</text>
+<rect x="326" y="136" width="64" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="358.0" y="155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Data</text>
+<rect x="398" y="136" width="84" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="440.0" y="155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">History</text>
+<text x="44" y="192" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">STATE OF HEALTH</text>
+<text x="44" y="230" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="34" fill="#ffffff" font-weight="bold">52 %</text>
+<rect x="140" y="218" width="180" height="8" rx="4.0" fill="#16335f"/><rect x="140" y="218" width="93.6" height="8" rx="4.0" fill="#f0c879"/>
+<text x="140" y="242" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">composite of the three indicators below</text>
+<text x="44" y="268" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Flash endurance remaining</text>
+<text x="612" y="268" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="end">55 %</text>
+<rect x="44" y="276" width="568" height="6" rx="3.0" fill="#16335f"/><rect x="44" y="276" width="312.4" height="6" rx="3.0" fill="#1d9e75"/>
+<text x="44" y="296" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">45,000 of 100,000 write cycles used</text>
+<text x="44" y="308" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Thermal cycle budget remaining</text>
+<text x="612" y="308" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="end">25 %</text>
+<rect x="44" y="316" width="568" height="6" rx="3.0" fill="#16335f"/><rect x="44" y="316" width="142.0" height="6" rx="3.0" fill="#f0c879"/>
+<text x="44" y="336" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">11,250 of 15,000 major cycles</text>
+<text x="44" y="348" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Time within temperature limit</text>
+<text x="612" y="348" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="end">99 %</text>
+<rect x="44" y="356" width="568" height="6" rx="3.0" fill="#16335f"/><rect x="44" y="356" width="562.3" height="6" rx="3.0" fill="#1d9e75"/>
+<text x="44" y="376" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">41 h above 80 C of 5,625 h</text>
+<rect x="44" y="392" width="568" height="1" fill="#12294e"/>
+<text x="44" y="418" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">REUSE POTENTIAL BY MASS</text>
+<text x="44" y="444" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="24" fill="#1d9e75" font-weight="bold">0.767</text>
+<text x="122" y="436" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">506 g of 660 g — housing, connectors, fasteners</text>
+<text x="122" y="452" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#f0c879">inside the 0.5–0.9 reuse yield assumed for Sc4</text>
+<rect x="700" y="46" width="440" height="430" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.55"/>
+<text x="920.0" y="36" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" font-weight="bold" text-anchor="middle">floating VCU — coloured by end-of-use verdict</text>
+<rect x="780" y="114" width="300" height="54" rx="8" fill="#1d9e75" opacity="0.92"/>
+<rect x="780" y="114" width="300" height="54" rx="8" fill="none" stroke="#1d9e75" stroke-width="1.4"/>
+<circle cx="796" cy="141" r="4" fill="#1d9e75"/>
+<circle cx="888" cy="141" r="4" fill="#1d9e75"/>
+<circle cx="980" cy="141" r="4" fill="#1d9e75"/>
+<circle cx="1072" cy="141" r="4" fill="#1d9e75"/>
+<rect x="770" y="204" width="320" height="86" rx="6" fill="#324a6d" opacity="0.85"/>
+<rect x="770" y="204" width="320" height="86" rx="6" fill="none" stroke="#324a6d" stroke-width="1.4"/>
+<rect x="810" y="222" width="44" height="30" rx="4" fill="#324a6d"/>
+<rect x="866" y="222" width="38" height="30" rx="4" fill="#324a6d"/>
+<rect x="916" y="228" width="30" height="22" rx="4" fill="#324a6d"/>
+<rect x="968" y="222" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="990" y="222" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="1012" y="222" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="968" y="242" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="990" y="242" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="1012" y="242" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="968" y="262" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="990" y="262" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="1012" y="262" width="14" height="9" rx="2" fill="#324a6d"/>
+<rect x="756" y="210" width="26" height="20" rx="5" fill="#f0c879"/>
+<rect x="756" y="238" width="26" height="20" rx="5" fill="#f0c879"/>
+<rect x="756" y="266" width="26" height="20" rx="5" fill="#f0c879"/>
+<rect x="780" y="326" width="300" height="54" rx="8" fill="#1d9e75" opacity="0.92"/>
+<rect x="780" y="326" width="300" height="54" rx="8" fill="none" stroke="#1d9e75" stroke-width="1.4"/>
+<circle cx="736" cy="450" r="5" fill="#1d9e75"/>
+<text x="746" y="454" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1">reuse</text>
+<circle cx="793.0" cy="450" r="5" fill="#f0c879"/>
+<text x="803.0" y="454" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1">reuse after test</text>
+<circle cx="909.4" cy="450" r="5" fill="#324a6d"/>
+<text x="919.4" y="454" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1">material recovery</text>
+<circle cx="1031.2" cy="450" r="5" fill="#6f86a8"/>
+<text x="1041.2" y="454" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1">consumable</text>
+<text x="20" y="530" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">PART SELECTED — the panel becomes that part’s record</text>
+<rect x="20" y="546" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="584" r="19" fill="#13366b" stroke="#2e5aa0"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M69 577 L60 584 L69 591"/><path d="M60 584 L73 584"/></g>
+<text x="96" y="592" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">Active components</text>
+<text x="636" y="590" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8" text-anchor="end">23.7 g · material recovery</text>
+<rect x="44" y="622" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="636" width="78" height="28" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="83.0" y="655" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Reuse</text>
+<rect x="130" y="636" width="84" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="172.0" y="655" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Thermal</text>
+<rect x="222" y="636" width="96" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="270.0" y="655" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Electrical</text>
+<rect x="326" y="636" width="64" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="358.0" y="655" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Data</text>
+<rect x="398" y="636" width="84" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="440.0" y="655" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">History</text>
+<rect x="44" y="686" width="120" height="18" rx="9.0" fill="#324a6d"/><text x="104.0" y="698.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">material recovery</text>
+<rect x="172" y="686" width="78" height="18" rx="9.0" fill="#13366b"/><text x="211.0" y="698.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">23.7 g</text>
+<rect x="258" y="686" width="132" height="18" rx="9.0" fill="#13366b"/><text x="324.0" y="698.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">processors, ICs, MOSFETs</text>
+<text x="44" y="738" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff">Over-temperature failure logged 2025; replaced unit not re-qualified.</text>
+<text x="44" y="776" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">WHAT THIS PART RECORDED</text>
+<rect x="44" y="800" width="568" height="26" rx="8" fill="#0e2950"/>
+<text x="60" y="817" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1">Peak board temperature</text>
+<text x="372" y="817" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">94 °C</text>
+<text x="600" y="817" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">limit 80 °C</text>
+<rect x="44" y="832" width="568" height="26" rx="8" fill="#0e2950"/>
+<text x="60" y="849" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1">Hours above the limit</text>
+<text x="372" y="849" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">41 h</text>
+<text x="600" y="849" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">of 5,625 powered hours</text>
+<rect x="44" y="864" width="568" height="26" rx="8" fill="#0e2950"/>
+<text x="60" y="881" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1">Major thermal cycles</text>
+<text x="372" y="881" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">11,250</text>
+<text x="600" y="881" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">75 % of the 15,000 budget</text>
+<rect x="44" y="896" width="568" height="26" rx="8" fill="#0e2950"/>
+<text x="60" y="913" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1">Diagnostic codes</text>
+<text x="372" y="913" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">1 active</text>
+<text x="600" y="913" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">over-temperature, not cleared</text>
+<rect x="44" y="928" width="568" height="26" rx="8" fill="#0e2950"/>
+<text x="60" y="945" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1">Service events</text>
+<text x="372" y="945" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">2025-12-03</text>
+<text x="600" y="945" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">replaced at 220,260 km</text>
+<rect x="700" y="546" width="440" height="430" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.55"/>
+<text x="920.0" y="536" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" font-weight="bold" text-anchor="middle">the selected part lifts and pulses; the rest dims</text>
+<rect x="780" y="614" width="300" height="54" rx="8" fill="#16335f" opacity="0.92"/>
+<rect x="780" y="614" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4"/>
+<circle cx="796" cy="641" r="4" fill="#16335f"/>
+<circle cx="888" cy="641" r="4" fill="#16335f"/>
+<circle cx="980" cy="641" r="4" fill="#16335f"/>
+<circle cx="1072" cy="641" r="4" fill="#16335f"/>
+<rect x="770" y="704" width="320" height="86" rx="6" fill="#16335f" opacity="0.85"/>
+<rect x="770" y="704" width="320" height="86" rx="6" fill="none" stroke="#16335f" stroke-width="1.4"/>
+<rect x="810" y="722" width="44" height="30" rx="4" fill="#f08a3c"/>
+<rect x="866" y="722" width="38" height="30" rx="4" fill="#f08a3c"/>
+<rect x="916" y="728" width="30" height="22" rx="4" fill="#f08a3c"/>
+<rect x="968" y="722" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="990" y="722" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="1012" y="722" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="968" y="742" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="990" y="742" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="1012" y="742" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="968" y="762" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="990" y="762" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="1012" y="762" width="14" height="9" rx="2" fill="#16335f"/>
+<rect x="756" y="710" width="26" height="20" rx="5" fill="#16335f"/>
+<rect x="756" y="738" width="26" height="20" rx="5" fill="#16335f"/>
+<rect x="756" y="766" width="26" height="20" rx="5" fill="#16335f"/>
+<rect x="780" y="826" width="300" height="54" rx="8" fill="#16335f" opacity="0.92"/>
+<rect x="780" y="826" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4"/>
+<circle cx="836" cy="736" r="26" fill="#f08a3c" opacity="0.18"/>
+<circle cx="836" cy="736" r="15" fill="#f08a3c" opacity="0.35"/>
+<text x="836" y="704" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#f08a3c" font-weight="bold" text-anchor="middle">selected</text>
+<text x="20" y="1030" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">THERMAL LENS — same model, re-tinted by temperature history</text>
+<rect x="20" y="1046" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="1084" r="19" fill="#13366b" stroke="#2e5aa0"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M69 1077 L60 1084 L69 1091"/><path d="M60 1084 L73 1084"/></g>
+<text x="96" y="1092" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">Thermal exposure</text>
+<text x="636" y="1090" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8" text-anchor="end">94 °C peak · limit 80 °C</text>
+<rect x="44" y="1122" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="1136" width="78" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="83.0" y="1155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Reuse</text>
+<rect x="130" y="1136" width="84" height="28" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="172.0" y="1155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Thermal</text>
+<rect x="222" y="1136" width="96" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="270.0" y="1155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Electrical</text>
+<rect x="326" y="1136" width="64" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="358.0" y="1155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">Data</text>
+<rect x="398" y="1136" width="84" height="28" rx="14" fill="#0e2950" stroke="#21407a"/>
+<text x="440.0" y="1155" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1" text-anchor="middle">History</text>
+<text x="44" y="1192" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">HOURS BY BOARD TEMPERATURE</text>
+<rect x="52" y="1328.1115537848605" width="62" height="7.888446215139442" rx="5" fill="#2e5aa0" opacity="0.9"/>
+<text x="83" y="1324.1115537848605" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold" text-anchor="middle">180</text>
+<text x="83" y="1352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1" text-anchor="middle">below 0°</text>
+<rect x="146" y="1281.6573705179283" width="62" height="54.342629482071715" rx="5" fill="#3f7fb8" opacity="0.9"/>
+<text x="177" y="1277.6573705179283" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold" text-anchor="middle">1,240</text>
+<text x="177" y="1352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1" text-anchor="middle">0–25°</text>
+<rect x="240" y="1226.0" width="62" height="110.0" rx="5" fill="#5dcaa5" opacity="0.9"/>
+<text x="271" y="1222.0" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold" text-anchor="middle">2,510</text>
+<text x="271" y="1352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1" text-anchor="middle">25–50°</text>
+<rect x="334" y="1275.5219123505976" width="62" height="60.47808764940239" rx="5" fill="#c8c05e" opacity="0.9"/>
+<text x="365" y="1271.5219123505976" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold" text-anchor="middle">1,380</text>
+<text x="365" y="1352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1" text-anchor="middle">50–70°</text>
+<rect x="428" y="1323.9920318725099" width="62" height="12.00796812749004" rx="5" fill="#f0c879" opacity="0.9"/>
+<text x="459" y="1319.9920318725099" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold" text-anchor="middle">274</text>
+<text x="459" y="1352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1" text-anchor="middle">70–80°</text>
+<rect x="522" y="1334.203187250996" width="62" height="1.796812749003984" rx="5" fill="#f08a3c" opacity="0.9"/>
+<text x="553" y="1330.203187250996" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold" text-anchor="middle">41</text>
+<text x="553" y="1352" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1" text-anchor="middle">above 80°</text>
+<rect x="44" y="1372" width="568" height="1" fill="#12294e"/>
+<text x="44" y="1398" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">Major thermal cycles</text>
+<text x="44" y="1416" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">11,250 of 15,000</text>
+<text x="340" y="1398" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">Hours above 80 °C</text>
+<text x="340" y="1416" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">41 h</text>
+<text x="44" y="1438" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">Peak board temperature</text>
+<text x="44" y="1456" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">94 °C</text>
+<text x="340" y="1438" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">Declared ambient limit</text>
+<text x="340" y="1456" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="15" fill="#ffffff" font-weight="bold">-20 to 80 °C</text>
+<rect x="700" y="1046" width="440" height="430" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.55"/>
+<text x="920.0" y="1036" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" font-weight="bold" text-anchor="middle">heat ramp: cool board, hot processor</text>
+<rect x="780" y="1114" width="300" height="54" rx="8" fill="#2e5aa0" opacity="0.92"/>
+<rect x="780" y="1114" width="300" height="54" rx="8" fill="none" stroke="#2e5aa0" stroke-width="1.4"/>
+<circle cx="796" cy="1141" r="4" fill="#2e5aa0"/>
+<circle cx="888" cy="1141" r="4" fill="#2e5aa0"/>
+<circle cx="980" cy="1141" r="4" fill="#2e5aa0"/>
+<circle cx="1072" cy="1141" r="4" fill="#2e5aa0"/>
+<rect x="770" y="1204" width="320" height="86" rx="6" fill="#4f9ad0" opacity="0.85"/>
+<rect x="770" y="1204" width="320" height="86" rx="6" fill="none" stroke="#4f9ad0" stroke-width="1.4"/>
+<rect x="810" y="1222" width="44" height="30" rx="4" fill="#f08a3c"/>
+<rect x="866" y="1222" width="38" height="30" rx="4" fill="#f08a3c"/>
+<rect x="916" y="1228" width="30" height="22" rx="4" fill="#f08a3c"/>
+<rect x="968" y="1222" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="990" y="1222" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="1012" y="1222" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="968" y="1242" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="990" y="1242" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="1012" y="1242" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="968" y="1262" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="990" y="1262" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="1012" y="1262" width="14" height="9" rx="2" fill="#c8c05e"/>
+<rect x="756" y="1210" width="26" height="20" rx="5" fill="#3f7fb8"/>
+<rect x="756" y="1238" width="26" height="20" rx="5" fill="#3f7fb8"/>
+<rect x="756" y="1266" width="26" height="20" rx="5" fill="#3f7fb8"/>
+<rect x="780" y="1326" width="300" height="54" rx="8" fill="#2e5aa0" opacity="0.92"/>
+<rect x="780" y="1326" width="300" height="54" rx="8" fill="none" stroke="#2e5aa0" stroke-width="1.4"/>
+<circle cx="836" cy="1236" r="26" fill="#f08a3c" opacity="0.18"/>
+<circle cx="836" cy="1236" r="15" fill="#f08a3c" opacity="0.35"/>
+<text x="836" y="1204" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#f08a3c" font-weight="bold" text-anchor="middle">94 °C</text>
+<text x="20" y="1496" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Material recovery is NOT red — it is the correct outcome for a PCB, not a fault. Red stays reserved (00 s.2.1).</text>
+<text x="20" y="1513" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Verdict colours: teal reuse · gold reuse-after-test · tab/inactive material recovery · tip consumable</text>
+<text x="20" y="1530" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Heat ramp #f08a3c at the top end needs a heat/high token in 00 s.2, or it reuses gold</text>
+<text x="20" y="1547" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Pills re-tint the SAME model; they do not open new screens. Part picking reuses ZonePartInteraction (spec 10).</text>
+<text x="20" y="1564" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">History pill carries the 15 firmware versions and the 13 service events — the only non-spatial block.</text>
+</svg>

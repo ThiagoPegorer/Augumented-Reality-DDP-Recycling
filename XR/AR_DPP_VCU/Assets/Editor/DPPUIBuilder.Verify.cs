@@ -43,6 +43,14 @@ namespace DPP.EditorTools
             {
                 new Wire("ScreenRouter", "stakeholderDecision", "RBv2_1/7"),
                 new Wire("ScreenRouter", "certificates",        "RBv2_1/8"),
+                // `productSpecs` is NOT listed. RBv2_1_1/2 clears it on purpose: once
+                // the super panel owns the page it is a child of the data canvas, not
+                // a sibling screen, and leaving the reference set would make Show()
+                // deactivate it the moment the rig appeared. Null is the correct
+                // state here, so verifying it would report a fault on every run.
+                new Wire("ScreenRouter", "dppSuperPanel",       "RBv2_1_1/1"),
+                new Wire("ScreenRouter", "freeModelRoot",       "RBv2_1_1/1"),
+                new Wire("ScreenRouter", "panelGrabber",        "RBv2_1_1/1"),
                 // RBv2.1: dppCanva now points at the DPP PAGE, set by RBv2_1/8.
                 // Re-running RBv2_0/Legacy rebuilds the legacy canva and does NOT restore
                 // this reference — /1 is the phase to re-run.
@@ -90,12 +98,52 @@ namespace DPP.EditorTools
                 new Wire("DppPageView", "leftStroke",   "RBv2_1/8"),
                 new Wire("DppPageView", "primaryLabel", "RBv2_1/8"),
             },
+            [typeof(ProductSpecsView)] = new[]
+            {
+                // 2026-08-06: panelTitle / panelCaption / subTabRow were deleted when
+                // the page lost its title and the two pills became the header. The
+                // map has to move with the code — a stale row reports a fault that
+                // no phase can fix, which is exactly as bad as no verifier at all.
+                new Wire("ProductSpecsView", "router",       "RBv2_1/9"),
+                new Wire("ProductSpecsView", "subIdFill",    "RBv2_1/9"),
+                new Wire("ProductSpecsView", "subIdLabel",   "RBv2_1/9"),
+                new Wire("ProductSpecsView", "subCompFill",  "RBv2_1/9"),
+                new Wire("ProductSpecsView", "subCompLabel", "RBv2_1/9"),
+                new Wire("ProductSpecsView", "caption",      "RBv2_1/9"),
+                new Wire("ProductSpecsView", "backLabel",    "RBv2_1/9"),
+                new Wire("ProductSpecsView", "primaryLabel", "RBv2_1/9"),
+                new Wire("ProductSpecsView", "identityRoot", "RBv2_1/9"),
+                new Wire("ProductSpecsView", "partsRoot",    "RBv2_1/9"),
+                new Wire("ProductSpecsView", "detailRoot",   "RBv2_1/9"),
+                new Wire("ProductSpecsView", "drawingRoot",  "RBv2_1/9"),
+                new Wire("ProductSpecsView", "listContent",  "RBv2_1/9"),
+                new Wire("ProductSpecsView", "detailDrawing","RBv2_1/9"),
+                new Wire("ProductSpecsView", "detailIso",    "RBv2_1/9"),
+                new Wire("ProductSpecsView", "drawingLarge", "RBv2_1/9"),
+                // `owner` is NOT listed: RBv2_1_1/2 sets it, and it is legitimately
+                // null while the page runs standalone on DPPPanelCanvas.
+            },
+            [typeof(SuperPanelView)] = new[]
+            {
+                new Wire("SuperPanelView", "router",         "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "welcome",        "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "scanner",        "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "stageModelHome", "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "freeModelRoot",  "RBv2_1_1/1"),
+                // `model` is deliberately absent: it is null when VCU_assembly is
+                // not in the scene, and that is a warning at build time, not a
+                // wiring fault the verifier should re-report every run.
+                new Wire("SuperPanelView", "ghostOutline",   "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "lockLabel",      "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "placeholderPage","RBv2_1_1/1"),
+            },
             [typeof(DPP.DPPManager)] = new[]
             {
                 // Without this the page shows the values baked at build time and
                 // silently stops tracking the payload - the failure mode spec 13
                 // called out as "static copy that lies".
-                new Wire("DPPManager", "dppPage", "RBv2_1/8"),
+                new Wire("DPPManager", "dppPage",      "RBv2_1/8"),
+                new Wire("DPPManager", "productSpecs", "RBv2_1/9"),
             },
             [typeof(StepFlowController)] = new[]
             {

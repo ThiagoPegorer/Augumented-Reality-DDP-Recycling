@@ -42,6 +42,25 @@ namespace DPP.UI
                  "lets clicks resolve to the buttons underneath it. Built by RBv2_1/8.")]
         [SerializeField] private GameObject certificates;
 
+        [Tooltip("RBv2.1 spec 04c — the Product specifications tab as a SIBLING screen on this canvas. " +
+                 "Set by RBv2_1/9 and CLEARED by RBv2_1_1/2, which re-parents the page into the super " +
+                 "panel's data canvas. Non-null only while the rig does not exist.")]
+        [SerializeField] private GameObject productSpecs;
+
+        [Header("RBv2.1.1 — the super panel (spec 04 v2)")]
+        [Tooltip("The three-canvas rig, a SCENE ROOT rather than a child of this canvas. Built by " +
+                 "RBv2_1_1/1. When it is assigned it replaces the flat DPP page: ShowDppCanva() routes " +
+                 "here so every existing caller keeps working unchanged.")]
+        [SerializeField] private GameObject dppSuperPanel;
+
+        [Tooltip("Root the model re-parents into when unlocked. A sibling of the rig, so a freed model " +
+                 "stops following the panels. Hidden with the rig.")]
+        [SerializeField] private GameObject freeModelRoot;
+
+        [Tooltip("This canvas's own grabber bar. Hidden while the rig is up, because the rig carries its " +
+                 "own and two live grab bars on one screen is a coin toss for the user.")]
+        [SerializeField] private GameObject panelGrabber;
+
         [Header("Disassembly")]
         [SerializeField] private GameObject disassemblyIntro;
         [SerializeField] private GameObject stepFlow;
@@ -115,15 +134,46 @@ namespace DPP.UI
             Show(certificates, "Certificates & safety");
         }
 
-        /// <summary>DPP Canva — product info. The app's main screen.</summary>
+        /// <summary>Product specifications (spec 04c). Opened by tab 1's "+"; its
+        /// Back walks Drawing → Detail → Parts → Identity and only then returns
+        /// here, so a four-level drill costs one press per level.</summary>
+        public void ShowProductSpecs()
+        {
+            if (productSpecs == null)
+            {
+                Debug.LogWarning("[ScreenRouter] Product specs page not assigned — run RBv2_1/9.");
+                return;
+            }
+            Show(productSpecs, "Product specifications");
+        }
+
+        /// <summary>
+        /// The passport. RBv2.1.1: if the super panel rig exists it wins, and every
+        /// caller of this method — the stakeholder cards, the certificates X, the
+        /// first-run prompt — reaches the new screen with no edit. The flat v1 page
+        /// stays in the scene and is reachable again the moment the rig reference
+        /// is cleared, which is the whole rollback plan.
+        /// </summary>
         public void ShowDppCanva()
         {
+            if (dppSuperPanel != null) { Show(dppSuperPanel, "DPP super panel"); return; }
             if (dppCanva == null)
             {
                 Debug.LogWarning("[ScreenRouter] DPP page not assigned — run RBv2_1/8.");
                 return;
             }
             Show(dppCanva, "DPP Canva");
+        }
+
+        /// <summary>Explicitly the super panel, ignoring the v1 fallback.</summary>
+        public void ShowSuperPanel()
+        {
+            if (dppSuperPanel == null)
+            {
+                Debug.LogWarning("[ScreenRouter] Super panel not assigned — run RBv2_1_1/1.");
+                return;
+            }
+            Show(dppSuperPanel, "DPP super panel");
         }
 
         /// <summary>Digital Model Exploration — LCA overview + the action zone (RBv2.0).</summary>
@@ -197,7 +247,9 @@ namespace DPP.UI
             // back to the DPP canvas". Every panel screen must be listed here.
             DeactivateUnless(stakeholderDecision, target);
             DeactivateUnless(certificates,      target);
+            DeactivateUnless(productSpecs,      target);
             DeactivateUnless(dppCanva,          target);
+            DeactivateUnless(dppSuperPanel,     target);
             DeactivateUnless(modelExploration,  target);
             DeactivateUnless(disassemblyIntro,  target);
             DeactivateUnless(stepFlow,          target);
@@ -206,8 +258,16 @@ namespace DPP.UI
             var zoneOwner = ZoneOwner;
             if (target != zoneOwner) SetActiveSafe(explodedCanvas, false);
 
+            // The rig is a scene ROOT, not a child of this canvas, so it needs its
+            // own companions handled: the freed-model root goes with it, and this
+            // canvas's grabber steps aside so only one grab bar is ever live.
+            bool rigUp = dppSuperPanel != null && target == dppSuperPanel;
+            if (!rigUp) SetActiveSafe(freeModelRoot, false);
+            SetActiveSafe(panelGrabber, !rigUp);
+
             // PASS 2 — activate the target (and its companion canvas).
             SetActiveSafe(target, true);
+            if (rigUp) SetActiveSafe(freeModelRoot, true);
             if (target == zoneOwner) SetActiveSafe(explodedCanvas, true);
 
             Debug.Log($"[ScreenRouter] Showing {label}.");

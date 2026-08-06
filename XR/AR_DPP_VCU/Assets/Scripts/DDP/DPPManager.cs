@@ -39,6 +39,10 @@ namespace DPP
                  "canva above, which stays wired until its detail pages are replaced (specs 05-08).")]
         [SerializeField] private DPP.UI.DppPageView dppPage;
 
+        [Tooltip("Screen 04c — Product specifications tab. Populated with components[], " +
+                 "split into parts and board materials. Built by RBv2_1/9.")]
+        [SerializeField] private DPP.UI.ProductSpecsView productSpecs;
+
         [Tooltip("Screen 03 — Disassembly intro view (Canva design). Populated with tools/time/scope/recover stats.")]
         [SerializeField] private DPP.UI.DisassemblyIntroView disassemblyIntro;
 
@@ -57,6 +61,18 @@ namespace DPP
         /// screens populated; false = network or parse failure. Used by the
         /// QR scan flow (spec 11 stage 3) to advance or show the error state.</summary>
         public event System.Action<bool> FetchCompleted;
+
+        /// <summary>
+        /// The last successfully fetched payload, cached so a view built or
+        /// enabled AFTER the fetch can still populate itself.
+        ///
+        /// Push-only wiring broke exactly this way on 2026-08-06: Product specs
+        /// was serving its baked editor previews on device because one serialized
+        /// reference here was stale, and a screen full of plausible placeholder
+        /// text is far harder to spot than a blank one. A view that can pull is
+        /// immune to that class of failure.
+        /// </summary>
+        public DPPData Latest { get; private set; }
 
         void Start()
         {
@@ -90,6 +106,7 @@ namespace DPP
             try
             {
                 DPPData data = JsonConvert.DeserializeObject<DPPData>(json);
+                Latest = data;
                 if (data == null)
                 {
                     Debug.LogError("[DPPManager] Deserialized DPP is null.");
@@ -101,6 +118,7 @@ namespace DPP
                 if (infoTab != null)          infoTab.Populate(data);
                 if (passport != null)         passport.Populate(data);
                 if (dppPage != null)          dppPage.Populate(data);
+                if (productSpecs != null)     productSpecs.Populate(data);
                 if (disassemblyIntro != null) disassemblyIntro.Populate(data);
                 if (stepFlow != null)          stepFlow.Populate(data);
                 if (completionSummary != null) completionSummary.Populate(data);

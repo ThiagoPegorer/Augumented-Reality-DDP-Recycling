@@ -53,7 +53,8 @@ namespace DPP.Models
         public const string Simulated   = "simulated";
         public const string NotProvided = "not_provided";
 
-        /// <summary>True when a value may be shown as fact rather than as an estimate.</summary>
+
+    /// <summary>True when a value may be shown as fact rather than as an estimate.</summary>
         public static bool IsFirmSource(string basis) =>
             basis == Declared || basis == Datasheet || basis == Measured;
     }
@@ -63,6 +64,153 @@ namespace DPP.Models
         public const string Available     = "available";
         public const string NotProvided   = "not_provided";
         public const string NotApplicable = "not_applicable";
+    }
+
+    [Serializable] public class TempBand { public string band; public int hours; }
+
+    /// <summary>v0.13 — thermal cycles binned by SWING AMPLITUDE. Cycle count alone
+    /// is not a wear measure: Coffin-Manson makes damage scale with dT^n.</summary>
+    [Serializable]
+    public class DeltaTBand
+    {
+        public string band;
+        public int delta_t_mid_c;
+        public int cycles;
+        public int cycles_to_failure;     // N_f at this dT
+        public float damage;              // cycles / N_f (Miner)
+    }
+
+    /// <summary>v0.13 — reference condition the damage model is anchored to. NOT a budget.</summary>
+    [Serializable]
+    public class FatigueReference
+    {
+        public string model;              // Coffin-Manson
+        public string accumulation;       // Miner's rule
+        public int cycles_to_failure;
+        public int at_delta_t_c;
+        public float exponent_n;
+        public string basis;
+        public string note;
+    }
+
+    /// <summary>v0.13 — reported but deliberately NOT scored.</summary>
+    [Serializable]
+    public class HealthFinding
+    {
+        public string id;
+        public string label;
+        public string value;
+        public string note;
+    }
+
+    /// <summary>v0.13 — what the unit physically endured.</summary>
+    [Serializable]
+    public class UnitExposure
+    {
+        public int powered_hours;
+        public int ignition_cycles;
+        public int thermal_cycles_logged;
+        public List<DeltaTBand> delta_t_histogram;
+        public FatigueReference fatigue_reference;
+        public float fatigue_consumed;        // 0-1, sum of Miner damage
+        public int fatigue_remaining_pct;
+        public int board_temp_max_c;
+        public int board_temp_limit_c;
+        public int hours_above_limit;
+        public List<TempBand> temp_histogram_h;
+    }
+
+    [Serializable]
+    public class UnitElectrical
+    {
+        public int voltage_transients_logged;
+        public string transient_standard;   // ISO 7637-2
+        public int undervoltage_events;
+        public int load_dump_events;
+        public string note;
+    }
+
+    [Serializable]
+    public class UnitCompute
+    {
+        public int cpu_hours_above_80pct;
+        public int flash_write_cycles_used;
+        public int flash_write_cycle_limit;
+        public int flash_endurance_remaining_pct;
+        public int ecc_corrected_errors;
+        public int unexpected_resets;
+    }
+
+    [Serializable]
+    public class UnitDiagnostics
+    {
+        public int can_error_frames;
+        public int bus_off_events;
+        public int dtc_total;
+        public int dtc_active;
+        public int dtc_cleared;
+        public int dtc_linked_to_service_events;
+        public string note;
+    }
+
+    [Serializable]
+    public class UnitCalibration
+    {
+        public int firmware_versions_installed;
+        public string firmware_first;
+        public string firmware_last;
+        public int calibration_map_changes;
+        public int sensor_recalibrations;
+    }
+
+    [Serializable]
+    public class HealthIndicator
+    {
+        public string id;
+        public string label;
+        public int value_pct;
+        public string detail;
+    }
+
+    /// <summary>v0.13 — per-component end-of-use verdict. The mass-weighted share
+    /// of the "reuse*" verdicts is the functional reuse yield Sc4 declares [A].</summary>
+    [Serializable]
+    public class ReuseVerdict
+    {
+        public string component_id;       // -> components[].id
+        public string name;
+        public float mass_g;
+        public string verdict;            // reuse | reuse_after_test | material_recovery | consumable
+        public string reason;
+    }
+
+    [Serializable]
+    public class UnitHealth
+    {
+        public int soh_pct;
+        public string soh_method;
+        public string soh_limiting_mechanism;
+        public List<HealthFinding> findings;
+        public List<HealthIndicator> indicators;
+        public List<ReuseVerdict> reuse_assessment;
+        public float reuse_fraction_by_mass;
+        public string reuse_note;
+    }
+
+    /// <summary>v0.13 — USE-PHASE TELEMETRY THE VCU RECORDS ABOUT ITSELF.
+    /// Replaces the vehicle usage map (dropped 2026-08-06): a product passport
+    /// describes the product, not its owner's movements.</summary>
+    [Serializable]
+    public class UnitUsePhase
+    {
+        public UnitExposure exposure;
+        public UnitElectrical electrical;
+        public UnitCompute compute;
+        public UnitDiagnostics diagnostics;
+        public UnitCalibration calibration;
+        public UnitHealth health;
+        public string basis;
+        public string note;
     }
 
     [Serializable]
@@ -83,6 +231,7 @@ namespace DPP.Models
         public Service service;                               // v0.6 — T6 #12 #15
         public UsageHistory usage_history;                    // v0.6 — T6 #19
         public RepairHistory repair_history;                  // v0.6 — T6 #20
+        public UnitUsePhase unit_use_phase;                   // v0.13 — the unit's own use-phase record
         public Disassembly disassembly;
         public EndOfLife end_of_life;
         public PhysicalUnit physical_unit;                    // v0.8 - the demonstrator, not the product
@@ -145,7 +294,14 @@ namespace DPP.Models
     [Serializable]
     public class Specifications
     {
-        public string size_mm;            // "200 x 150 x 60"
+        public string size_mm;            // "166 x 121 x 41" — the Bosch product
+
+        /// <summary>v0.14 — WHICH BODY <see cref="size_mm"/> describes. The project
+        /// holds two: the Bosch MS 50.4 product (166 × 121 × 41, 660 g) and the NX
+        /// demonstrator the AR model is built from (200 × 150 × 60). RB2.0 put the
+        /// demonstrator's measured size here beside the product's mass — the mix
+        /// spec 00 §8 forbids. The passport declares the PRODUCT (spec 04c §1.1).</summary>
+        public string size_basis;
         public float? weight_g;
         public string protection_class;   // "IP67"
         public string supply_voltage;     // "5-18 V"
@@ -187,6 +343,15 @@ namespace DPP.Models
     {
         public string id;
         public string name;
+
+        /// <summary>v0.14 — "part" or "board_material".
+        ///
+        /// A PART is a body a dismantler can pick up: it has an NX drawing and is
+        /// a hit target in Product specs. A BOARD_MATERIAL is a material spread
+        /// over the board — solder, coating, passives, TIM. No drawing exists for
+        /// one and none should; they are rendered inert (spec 04c §4.3).</summary>
+        public string group;
+
         public string material;
         public float weight_g;
         public string recycling_code;
@@ -194,8 +359,26 @@ namespace DPP.Models
         public bool hazardous;
         public bool high_value;
         public string basis;              // DppBasis
+
+        /// <summary>Sprite stem under Assets/Resources/dwg — `&lt;id&gt;_dwg` and
+        /// `&lt;id&gt;_iso`. Null for every board material.</summary>
+        public string drawing_id;
+
+        /// <summary>VCU_BOM_v4.xlsx Table 1 row numbers this entry came from.</summary>
+        public List<int> bom_rows;
+
+        /// <summary>The BOM entries behind a REGROUPED row, shown verbatim in the
+        /// component detail page. Two groups are regroupings, not 1:1 copies
+        /// (spec 04c §3.3): the housing is BOM row 1 split by shell area, and
+        /// ic_1..ic_4 carry BOM rows 5–11 allocated to the four CAD blocks by
+        /// footprint. `ic_1` is NOT a single processor and the passport must not
+        /// imply it is — this string is how the regrouping stays visible.</summary>
+        public string represents;
+
         public List<MaterialShare> material_breakdown;
         public string material_breakdown_basis;
+
+        public bool IsPart => group == null || group == "part";
     }
 
     /// <summary>v0.6 — Table 6 #5 and #6, the two hardest mandatory attributes.
@@ -470,6 +653,10 @@ namespace DPP.Models
     {
         public string date;
         public string description;
+        public string scope;              // v0.13 - "unit" (the VCU) or "vehicle"
+        public string category;           // maintenance | repair | inspection | fault
+        public string system;             // affected system, e.g. "12 V electrical"
+        public int? odometer_km;          // vehicle reading at the event
         public List<string> exchanged_component_ids;
         public float? cost_eur;
         public string image_url;

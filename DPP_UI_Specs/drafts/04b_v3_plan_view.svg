@@ -1,0 +1,52 @@
+<svg width="100%" viewBox="0 0 980 760" role="img" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="980" height="760" fill="#f4f6fa"/>
+<title>Super panel — plan view, toe-in geometry</title>
+<desc>Top-down view of the three canvases arranged around the user at 0.75 m, each rotated to face the eye.</desc>
+<text x="24" y="36" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#0a1f44" font-weight="bold">SUPER PANEL — PLAN VIEW (from above)</text>
+<text x="24" y="56" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">three canvases on one rig · each yawed to face the eye · assembly centred on the forward axis</text>
+<path d="M490.0 660 L210.0 175.0 A560 560 0 0 1 770.0 175.0 Z" fill="#9fb3d1" opacity="0.20"/>
+<path d="M490.0 660 L48.7 315.2 A560 560 0 0 1 931.3 315.2 Z" fill="#c9d3e2" opacity="0.20"/>
+<text x="240.0" y="190" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6a7a92">±30° comfortable reading</text>
+<text x="610.0" y="330" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#8a97ab">±52° peripheral</text>
+<path d="M100.0 660 A390.0 390.0 0 0 1 880.0 660" fill="none" stroke="#c3ccd9" stroke-dasharray="4 5"/>
+<text x="874.0" y="646" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6a7a92" text-anchor="end">0.75 m</text>
+<g transform="translate(313.7,312.1) rotate(-26.9)">
+<rect x="-57.2" y="-7" width="114.4" height="14" rx="4" fill="#081733"/>
+<rect x="-57.2" y="-7" width="114.4" height="14" rx="4" fill="none" stroke="#5dcaa5" stroke-width="1.4"/>
+<line x1="0" y1="0" x2="0" y2="-26" stroke="#5dcaa5" stroke-width="1.2"/>
+<path d="M-4 -22 L0 -30 L4 -22" fill="none" stroke="#5dcaa5" stroke-width="1.2"/>
+</g>
+<text x="295.6551389288722" y="272.4246163069845" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold" text-anchor="middle">Rail</text>
+<text x="295.6551389288722" y="287.4246163069845" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#33445e" text-anchor="middle">220 wide · yaw -26.9°</text>
+<line x1="490.0" y1="660" x2="313.7" y2="312.1" stroke="#5dcaa5" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.8"/>
+<g transform="translate(438.5,273.4) rotate(-7.6)">
+<rect x="-88.4" y="-7" width="176.8" height="14" rx="4" fill="none" stroke="#f08a3c" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="0" y1="0" x2="0" y2="-26" stroke="#f08a3c" stroke-width="1.2"/>
+<path d="M-4 -22 L0 -30 L4 -22" fill="none" stroke="#f08a3c" stroke-width="1.2"/>
+</g>
+<text x="433.1696003608623" y="229.77200270646708" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold" text-anchor="middle">Stage</text>
+<text x="433.1696003608623" y="244.77200270646708" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#33445e" text-anchor="middle">340 wide · yaw -7.6°</text>
+<line x1="490.0" y1="660" x2="438.5" y2="273.4" stroke="#f08a3c" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.8"/>
+<g transform="translate(626.4,294.6) rotate(20.5)">
+<rect x="-109.2" y="-7" width="218.4" height="14" rx="4" fill="#0a1f44"/>
+<rect x="-109.2" y="-7" width="218.4" height="14" rx="4" fill="none" stroke="#1d9e75" stroke-width="1.4"/>
+<line x1="0" y1="0" x2="0" y2="-26" stroke="#1d9e75" stroke-width="1.2"/>
+<path d="M-4 -22 L0 -30 L4 -22" fill="none" stroke="#1d9e75" stroke-width="1.2"/>
+</g>
+<text x="640.3942911642317" y="253.15814866723656" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold" text-anchor="middle">Data</text>
+<text x="640.3942911642317" y="268.15814866723656" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#33445e" text-anchor="middle">420 wide · yaw +20.5°</text>
+<line x1="490.0" y1="660" x2="626.4" y2="294.6" stroke="#1d9e75" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.8"/>
+<circle cx="438.5" cy="295.4" r="15" fill="#f08a3c" opacity="0.20"/>
+<circle cx="438.5" cy="295.4" r="7" fill="#f08a3c"/>
+<text x="438.456149164503" y="323.42111873377246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#f08a3c" font-weight="bold" text-anchor="middle">model sits here</text>
+<path d="M318.5 283.4 L558.5 283.4 L588.5 570.0 L288.5 570.0 Z" fill="#f08a3c" opacity="0.10"/>
+<path d="M318.5 283.4 L558.5 283.4 L588.5 570.0 L288.5 570.0 Z" fill="none" stroke="#f08a3c" stroke-width="1" stroke-dasharray="5 5"/>
+<text x="438.456149164503" y="556" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#f08a3c" font-weight="bold" text-anchor="middle">freed-model volume — never behind the side canvases</text>
+<circle cx="490.0" cy="660" r="9" fill="#0a1f44"/>
+<text x="490.0" y="686" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#0a1f44" font-weight="bold" text-anchor="middle">user</text>
+<text x="24" y="664" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">At 0.75 m the outer edges sit at ±33°; a FLAT 980 panel there is foreshortened to cos 33° = 0.84 of its width.</text>
+<text x="24" y="681" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">Yawing each canvas to face the eye removes that compression entirely — the readability gain, not a stylistic one.</text>
+<text x="24" y="698" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">Three canvases replace one canvas with a transparent hole: simpler raycasting, and nothing can bleed through the stage.</text>
+<text x="24" y="715" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">The stage is 100 mm left of the assembly centre, so the model sits ~8° off the forward axis. Imperceptible.</text>
+<text x="24" y="732" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">Distance is the trade: 0.60 m gives ±39° (head turns), 0.88 m gives ±29° (comfortable, smaller text). 0.75 m is the middle.</text>
+</svg>

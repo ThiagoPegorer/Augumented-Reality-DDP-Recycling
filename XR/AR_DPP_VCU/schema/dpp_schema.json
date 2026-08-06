@@ -238,7 +238,7 @@
       "type": "object"
     },
     "Compliance": {
-      "description": "Nullable until verified - UI shows an em-dash for None.",
+      "description": "Nullable until verified - UI shows an em-dash for None.\n\nv0.12, sourced from the Bosch EC/EU Declaration of Conformity (Operation\nManual VCU MS 50.4P pp. 132-134, dated 09 Oct 2020): ONLY 2014/30/EU (EMC)\nis declared; RoHS is out of scope for means of transport (rohs_applicable\nFalse, rohs stays None - 'not applicable' is not 'non-conformant').",
       "properties": {
         "ce": {
           "anyOf": [
@@ -251,66 +251,6 @@
           ],
           "default": null,
           "title": "Ce"
-        },
-        "rohs": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Rohs"
-        },
-        "reach": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Reach"
-        },
-        "weee_category": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Weee Category"
-        },
-        "basis": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Basis"
-        },
-        "declaration_of_conformity_doc_id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Declaration Of Conformity Doc Id"
         },
         "ce_scope": {
           "anyOf": [
@@ -348,6 +288,18 @@
           "default": null,
           "title": "Declaration Date"
         },
+        "rohs": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rohs"
+        },
         "rohs_applicable": {
           "anyOf": [
             {
@@ -360,12 +312,60 @@
           "default": null,
           "title": "Rohs Applicable"
         },
+        "reach": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reach"
+        },
+        "weee_category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weee Category"
+        },
         "declaration_notes": {
           "items": {
             "$ref": "#/$defs/DeclarationNote"
           },
           "title": "Declaration Notes",
           "type": "array"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basis"
+        },
+        "declaration_of_conformity_doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declaration Of Conformity Doc Id"
         }
       },
       "title": "Compliance",
@@ -829,6 +829,60 @@
         }
       },
       "title": "Environmental",
+      "type": "object"
+    },
+    "HealthIndicator": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "value_pct": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Pct"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "title": "HealthIndicator",
       "type": "object"
     },
     "Identity": {
@@ -1395,6 +1449,47 @@
           "default": null,
           "title": "Description"
         },
+        "scope": {
+          "default": "unit",
+          "title": "Scope",
+          "type": "string"
+        },
+        "category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Category"
+        },
+        "system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "System"
+        },
+        "odometer_km": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Odometer Km"
+        },
         "exchanged_component_ids": {
           "items": {
             "type": "string"
@@ -1447,6 +1542,73 @@
         }
       },
       "title": "RepairHistory",
+      "type": "object"
+    },
+    "ReuseVerdict": {
+      "description": "v0.13 - per-component end-of-use verdict. The mass-weighted share of the\n'reuse*' verdicts is the functional reuse yield that Sc4 declares [A].",
+      "properties": {
+        "component_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Component Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "mass_g": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mass G"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verdict"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "title": "ReuseVerdict",
       "type": "object"
     },
     "Service": {
@@ -1516,11 +1678,6 @@
           "title": "Waste Handling Services",
           "type": "array"
         },
-        "basis": {
-          "default": "not_provided",
-          "title": "Basis",
-          "type": "string"
-        },
         "software_updates": {
           "items": {
             "$ref": "#/$defs/SoftwareUpdate"
@@ -1531,6 +1688,11 @@
         "software_update_basis": {
           "default": "not_provided",
           "title": "Software Update Basis",
+          "type": "string"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
           "type": "string"
         }
       },
@@ -1944,11 +2106,6 @@
           "default": null,
           "title": "Above Threshold"
         },
-        "basis": {
-          "default": "not_provided",
-          "title": "Basis",
-          "type": "string"
-        },
         "symbol": {
           "anyOf": [
             {
@@ -1960,12 +2117,615 @@
           ],
           "default": null,
           "title": "Symbol"
+        },
+        "basis": {
+          "default": "not_provided",
+          "title": "Basis",
+          "type": "string"
         }
       },
       "required": [
         "name"
       ],
       "title": "SubstanceOfConcern",
+      "type": "object"
+    },
+    "TempBand": {
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Band"
+        },
+        "hours": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hours"
+        }
+      },
+      "title": "TempBand",
+      "type": "object"
+    },
+    "UnitCalibration": {
+      "properties": {
+        "firmware_versions_installed": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Firmware Versions Installed"
+        },
+        "firmware_first": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Firmware First"
+        },
+        "firmware_last": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Firmware Last"
+        },
+        "calibration_map_changes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calibration Map Changes"
+        },
+        "sensor_recalibrations": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sensor Recalibrations"
+        }
+      },
+      "title": "UnitCalibration",
+      "type": "object"
+    },
+    "UnitCompute": {
+      "properties": {
+        "cpu_hours_above_80pct": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Hours Above 80Pct"
+        },
+        "flash_write_cycles_used": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flash Write Cycles Used"
+        },
+        "flash_write_cycle_limit": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flash Write Cycle Limit"
+        },
+        "flash_endurance_remaining_pct": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flash Endurance Remaining Pct"
+        },
+        "ecc_corrected_errors": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ecc Corrected Errors"
+        },
+        "unexpected_resets": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unexpected Resets"
+        }
+      },
+      "title": "UnitCompute",
+      "type": "object"
+    },
+    "UnitDiagnostics": {
+      "properties": {
+        "can_error_frames": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Can Error Frames"
+        },
+        "bus_off_events": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bus Off Events"
+        },
+        "dtc_total": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dtc Total"
+        },
+        "dtc_active": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dtc Active"
+        },
+        "dtc_cleared": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dtc Cleared"
+        },
+        "dtc_linked_to_service_events": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dtc Linked To Service Events"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "UnitDiagnostics",
+      "type": "object"
+    },
+    "UnitElectrical": {
+      "properties": {
+        "voltage_transients_logged": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Voltage Transients Logged"
+        },
+        "transient_standard": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transient Standard"
+        },
+        "undervoltage_events": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Undervoltage Events"
+        },
+        "load_dump_events": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Load Dump Events"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "UnitElectrical",
+      "type": "object"
+    },
+    "UnitExposure": {
+      "description": "v0.13 - what the unit physically endured.",
+      "properties": {
+        "powered_hours": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Powered Hours"
+        },
+        "ignition_cycles": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ignition Cycles"
+        },
+        "thermal_cycles_major": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thermal Cycles Major"
+        },
+        "thermal_cycles_minor": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thermal Cycles Minor"
+        },
+        "thermal_cycle_budget": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thermal Cycle Budget"
+        },
+        "board_temp_max_c": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Board Temp Max C"
+        },
+        "board_temp_limit_c": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Board Temp Limit C"
+        },
+        "hours_above_limit": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hours Above Limit"
+        },
+        "temp_histogram_h": {
+          "items": {
+            "$ref": "#/$defs/TempBand"
+          },
+          "title": "Temp Histogram H",
+          "type": "array"
+        }
+      },
+      "title": "UnitExposure",
+      "type": "object"
+    },
+    "UnitHealth": {
+      "properties": {
+        "soh_pct": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Soh Pct"
+        },
+        "soh_method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Soh Method"
+        },
+        "indicators": {
+          "items": {
+            "$ref": "#/$defs/HealthIndicator"
+          },
+          "title": "Indicators",
+          "type": "array"
+        },
+        "reuse_assessment": {
+          "items": {
+            "$ref": "#/$defs/ReuseVerdict"
+          },
+          "title": "Reuse Assessment",
+          "type": "array"
+        },
+        "reuse_fraction_by_mass": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reuse Fraction By Mass"
+        },
+        "reuse_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reuse Note"
+        }
+      },
+      "title": "UnitHealth",
+      "type": "object"
+    },
+    "UnitUsePhase": {
+      "description": "v0.13 - USE-PHASE TELEMETRY THE VCU RECORDS ABOUT ITSELF.\n\nReplaces the vehicle-centric usage map (dropped 2026-08-06): a product\npassport describes the product, not its owner's movements. Every figure is\nderived from data already present in the passport.",
+      "properties": {
+        "exposure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitExposure"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "electrical": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitElectrical"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "compute": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitCompute"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "diagnostics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitDiagnostics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "calibration": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitCalibration"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "health": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitHealth"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "basis": {
+          "default": "simulated",
+          "title": "Basis",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "title": "UnitUsePhase",
       "type": "object"
     },
     "UsageHistory": {
@@ -2041,7 +2801,7 @@
       "type": "object"
     },
     "UsageProfile": {
-      "description": "DESIGNED service-life assumptions (a specification, not a measurement).\nMeasured use data belongs in usage_history - keep the two apart.",
+      "description": "The LCA use-phase model (S4) as shown on the Usage Profile page.\nMODELLED assumptions, not measurements - measured use data would belong in\nusage_history. v0.11 carries the S4 parameters + the per-year distance\nseries; car_energy_kwh_estimate is OUTSIDE the S4 boundary (own draw only)\nand is a plain average-BEV estimate, 17.5 kWh/100 km.",
       "properties": {
         "service_life_years": {
           "anyOf": [
@@ -2090,18 +2850,6 @@
           ],
           "default": null,
           "title": "Lifetime Energy Kwh"
-        },
-        "note": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Note"
         },
         "annual_distances": {
           "items": {
@@ -2186,6 +2934,18 @@
           "default": "not_provided",
           "title": "Basis",
           "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
         }
       },
       "title": "UsageProfile",
@@ -2308,6 +3068,17 @@
       "anyOf": [
         {
           "$ref": "#/$defs/RepairHistory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "unit_use_phase": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UnitUsePhase"
         },
         {
           "type": "null"

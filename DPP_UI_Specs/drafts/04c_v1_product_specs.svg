@@ -1,0 +1,333 @@
+<svg width="100%" viewBox="0 0 1060 1620" role="img" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="1060" height="1620" fill="#f4f6fa"/>
+<title>RB2.1 — Product specs tab, from the Miro routine</title>
+<desc>Product specifications tab in the super panel: an Identity sub-tab, a Mechanical and electrical sub-tab listing component groups, and a selected component showing its 2D drawing with the model highlighting it.</desc>
+<text x="20" y="42" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#0a1f44" font-weight="bold">PRODUCT SPECS · IDENTITY sub-tab</text>
+<rect x="40" y="76" width="220" height="430" rx="22" fill="#081733"/>
+<rect x="259" y="94" width="1" height="394" fill="#1a335f"/>
+<g opacity="1.0">
+<rect x="58" y="110" width="184" height="68" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<rect x="58" y="124" width="4" height="40" rx="2" fill="#5dcaa5"/>
+<g stroke="#5dcaa5" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 138 L89 132 L100 138 L89 144 Z"/><path d="M78 138 L78 150 L89 156 L100 150 L100 138"/></g>
+<text x="112" y="140" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">Product</text>
+<text x="112" y="156" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">specs</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="190" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><circle cx="89" cy="224" r="11"/><path d="M89 216 L89 224 L95 228"/></g>
+<text x="112" y="220" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Usage &amp;</text>
+<text x="112" y="236" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">service</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="270" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><path d="M78 316 C78 301 93 292 100 292 C100 305 91 316 78 316 Z"/></g>
+<text x="112" y="300" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Environmental</text>
+<text x="112" y="316" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">impact</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="350" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 377 L89 372 L100 377 L89 382 Z"/><path d="M80 387 L89 383 L98 387 L89 391 Z"/></g>
+<text x="112" y="380" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Training</text>
+<text x="112" y="396" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">disassembly</text>
+</g>
+<rect x="58" y="448" width="184" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.5" fill="none" stroke-linejoin="round"><path d="M77 456 L83 458.5 L83 463 C83 466 77 468.5 77 468.5 C77 468.5 71 466 71 463 L71 458.5 Z"/></g>
+<text x="162" y="467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="270" y="86" width="320" height="410" rx="16" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="6 7" opacity="0.30"/>
+<g transform="translate(272,134) scale(0.85)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#8a5a3b" opacity="0.92"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#8a5a3b" stroke-width="1.4"/>
+<circle cx="56" cy="45" r="4" fill="#324a6d"/>
+<circle cx="148" cy="45" r="4" fill="#324a6d"/>
+<circle cx="240" cy="45" r="4" fill="#324a6d"/>
+<circle cx="332" cy="45" r="4" fill="#324a6d"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#2e7d4f" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#2e7d4f" stroke-width="1.4"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#4da3ff" opacity="0.92"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#4da3ff" opacity="0.92"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#4da3ff" opacity="0.92"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#8a5a3b" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#8a5a3b" stroke-width="1.4"/>
+</g>
+<text x="430" y="416" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle">real part colours · slow yaw</text>
+<circle cx="430" cy="448" r="20" fill="#13366b" stroke="#f0c879" stroke-width="1.4"/>
+<rect x="422" y="445" width="16" height="13" rx="3" fill="#f0c879"/>
+<path d="M425 445 L425 440 A5 5 0 0 1 435 440 L435 445" fill="none" stroke="#f0c879" stroke-width="2"/>
+<text x="430" y="482" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#f0c879" font-weight="bold" text-anchor="middle">LOCKED</text>
+<rect x="330" y="490" width="200" height="16" rx="8" fill="#0a0e16" stroke="#2a3344"/>
+<rect x="412" y="497" width="36" height="2" rx="1" fill="#6b7686"/>
+<rect x="600" y="76" width="420" height="430" rx="22" fill="#0a1f44"/>
+<text x="624" y="118" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Product specs</text>
+<text x="996" y="116" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">declared</text>
+<rect x="624" y="132" width="90" height="26" rx="13" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="669.0" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="middle">Identity</text>
+<rect x="724" y="132" width="190" height="26" rx="13" fill="#0e2950" stroke="#21407a"/>
+<text x="819.0" y="150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1" text-anchor="middle">Mechanical &amp; electrical</text>
+<rect x="624" y="168" width="372" height="1" fill="#1a335f"/>
+<rect x="624" y="438" width="130" height="46" rx="23" fill="#1a2740" stroke="#324a6d"/>
+<text x="689" y="467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="766" y="438" width="230" height="46" rx="23" fill="#1d9e75"/>
+<text x="875" y="467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Next</text>
+<g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M976 455 L982 461 L976 467"/></g>
+<text x="624" y="194" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">MANUFACTURER</text>
+<text x="996" y="194" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">Bosch Motorsport</text>
+<rect x="624" y="199" width="372" height="1" fill="#12294e"/>
+<text x="624" y="220" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">NAME</text>
+<text x="996" y="220" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">Vehicle Control Unit MS 50.4</text>
+<rect x="624" y="225" width="372" height="1" fill="#12294e"/>
+<text x="624" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">TYPE</text>
+<text x="996" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">F02U.V02.965-02</text>
+<rect x="624" y="251" width="372" height="1" fill="#12294e"/>
+<text x="624" y="272" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">SERIAL</text>
+<text x="996" y="272" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">VCU0001</text>
+<rect x="624" y="277" width="372" height="1" fill="#12294e"/>
+<text x="624" y="298" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">PRODUCED</text>
+<text x="996" y="298" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">2026-03-27</text>
+<rect x="624" y="303" width="372" height="1" fill="#12294e"/>
+<text x="624" y="324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">ORIGIN</text>
+<text x="996" y="324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">Germany (DE)</text>
+<rect x="624" y="329" width="372" height="1" fill="#12294e"/>
+<text x="624" y="350" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">CATEGORY</text>
+<text x="996" y="350" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">EEE · control unit · WEEE cat. 5</text>
+<rect x="624" y="355" width="372" height="1" fill="#12294e"/>
+<text x="624" y="376" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">SPECS</text>
+<rect x="624" y="384" width="56" height="18" rx="9.0" fill="#13366b"/><text x="652.0" y="396.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">660 g</text>
+<rect x="686" y="384" width="50" height="18" rx="9.0" fill="#13366b"/><text x="711.0" y="396.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">IP67</text>
+<rect x="742" y="384" width="62" height="18" rx="9.0" fill="#13366b"/><text x="773.0" y="396.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">5-18 V</text>
+<rect x="810" y="384" width="78" height="18" rx="9.0" fill="#13366b"/><text x="849.0" y="396.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">-20 to 80 °C</text>
+<text x="624" y="424" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#f08a3c">200 x 150 x 60 mm  ·  measured on the demonstrator, not the declared product size</text>
+<text x="20" y="542" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#0a1f44" font-weight="bold">PRODUCT SPECS · MECHANICAL &amp; ELECTRICAL — component groups</text>
+<rect x="40" y="576" width="220" height="430" rx="22" fill="#081733"/>
+<rect x="259" y="594" width="1" height="394" fill="#1a335f"/>
+<g opacity="1.0">
+<rect x="58" y="610" width="184" height="68" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<rect x="58" y="624" width="4" height="40" rx="2" fill="#5dcaa5"/>
+<g stroke="#5dcaa5" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 638 L89 632 L100 638 L89 644 Z"/><path d="M78 638 L78 650 L89 656 L100 650 L100 638"/></g>
+<text x="112" y="640" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">Product</text>
+<text x="112" y="656" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">specs</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="690" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><circle cx="89" cy="724" r="11"/><path d="M89 716 L89 724 L95 728"/></g>
+<text x="112" y="720" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Usage &amp;</text>
+<text x="112" y="736" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">service</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="770" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><path d="M78 816 C78 801 93 792 100 792 C100 805 91 816 78 816 Z"/></g>
+<text x="112" y="800" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Environmental</text>
+<text x="112" y="816" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">impact</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="850" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 877 L89 872 L100 877 L89 882 Z"/><path d="M80 887 L89 883 L98 887 L89 891 Z"/></g>
+<text x="112" y="880" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Training</text>
+<text x="112" y="896" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">disassembly</text>
+</g>
+<rect x="58" y="948" width="184" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.5" fill="none" stroke-linejoin="round"><path d="M77 956 L83 958.5 L83 963 C83 966 77 968.5 77 968.5 C77 968.5 71 966 71 963 L71 958.5 Z"/></g>
+<text x="162" y="967" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="270" y="586" width="320" height="410" rx="16" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="6 7" opacity="0.30"/>
+<g transform="translate(272,634) scale(0.85)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#8a5a3b" opacity="0.92"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#8a5a3b" stroke-width="1.4"/>
+<circle cx="56" cy="45" r="4" fill="#324a6d"/>
+<circle cx="148" cy="45" r="4" fill="#324a6d"/>
+<circle cx="240" cy="45" r="4" fill="#324a6d"/>
+<circle cx="332" cy="45" r="4" fill="#324a6d"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#2e7d4f" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#2e7d4f" stroke-width="1.4"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#4da3ff" opacity="0.92"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#4da3ff" opacity="0.92"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#4da3ff" opacity="0.92"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#3f7fb8" opacity="0.92"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#8a5a3b" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#8a5a3b" stroke-width="1.4"/>
+</g>
+<text x="430" y="916" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle">pinch a part, or pick from the list</text>
+<circle cx="430" cy="948" r="20" fill="#13366b" stroke="#f0c879" stroke-width="1.4"/>
+<rect x="422" y="945" width="16" height="13" rx="3" fill="#f0c879"/>
+<path d="M425 945 L425 940 A5 5 0 0 1 435 940 L435 945" fill="none" stroke="#f0c879" stroke-width="2"/>
+<text x="430" y="982" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#f0c879" font-weight="bold" text-anchor="middle">LOCKED</text>
+<rect x="330" y="990" width="200" height="16" rx="8" fill="#0a0e16" stroke="#2a3344"/>
+<rect x="412" y="997" width="36" height="2" rx="1" fill="#6b7686"/>
+<rect x="600" y="576" width="420" height="430" rx="22" fill="#0a1f44"/>
+<text x="624" y="618" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Product specs</text>
+<text x="996" y="616" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">11 components · 660 g</text>
+<rect x="624" y="632" width="90" height="26" rx="13" fill="#0e2950" stroke="#21407a"/>
+<text x="669.0" y="650" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1" text-anchor="middle">Identity</text>
+<rect x="724" y="632" width="190" height="26" rx="13" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="819.0" y="650" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="middle">Mechanical &amp; electrical</text>
+<rect x="624" y="668" width="372" height="1" fill="#1a335f"/>
+<rect x="624" y="938" width="130" height="46" rx="23" fill="#1a2740" stroke="#324a6d"/>
+<text x="689" y="967" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="766" y="938" width="230" height="46" rx="23" fill="#1d9e75"/>
+<text x="875" y="967" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Next</text>
+<g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M976 955 L982 961 L976 967"/></g>
+<rect x="624" y="684" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="702" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">Housing</text>
+<text x="856" y="702" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">344.0 g</text>
+<text x="982" y="702" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">AlSi die-cast</text>
+<rect x="624" y="715" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="733" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">Connectors</text>
+<text x="856" y="733" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">150.1 g</text>
+<text x="982" y="733" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">Al + Cu, Au/Ni plated</text>
+<rect x="624" y="746" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="764" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">PCB</text>
+<text x="856" y="764" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">63.0 g</text>
+<text x="982" y="764" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">FR-4 + copper</text>
+<rect x="624" y="777" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="795" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">Processors &amp; ICs</text>
+<text x="856" y="795" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">23.7 g</text>
+<text x="982" y="795" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">Si + epoxy + Cu</text>
+<rect x="624" y="808" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="826" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">Passives</text>
+<text x="856" y="826" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">47.5 g</text>
+<text x="982" y="826" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">ceramics + Ta</text>
+<rect x="624" y="839" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="857" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">Thermal interface</text>
+<text x="856" y="857" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">8.0 g</text>
+<text x="982" y="857" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">silicone TIM</text>
+<rect x="624" y="870" width="372" height="27" rx="9" fill="#0e2950" opacity="1"/>
+<text x="638" y="888" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold">Coating &amp; misc</text>
+<text x="856" y="888" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">8.0 g</text>
+<text x="982" y="888" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">polymer</text>
+<rect x="624" y="901" width="372" height="27" rx="9" fill="#0e2950" opacity="0.55"/>
+<text x="638" y="919" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#9fb3d1">Fasteners</text>
+<text x="856" y="919" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1" text-anchor="end">12.0 g</text>
+<text x="982" y="919" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8" text-anchor="end">steel — no drawing</text>
+<text x="20" y="1042" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#0a1f44" font-weight="bold">COMPONENT SELECTED — 2D drawing + data, model highlights the part</text>
+<rect x="40" y="1076" width="220" height="430" rx="22" fill="#081733"/>
+<rect x="259" y="1094" width="1" height="394" fill="#1a335f"/>
+<g opacity="1.0">
+<rect x="58" y="1110" width="184" height="68" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<rect x="58" y="1124" width="4" height="40" rx="2" fill="#5dcaa5"/>
+<g stroke="#5dcaa5" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 1138 L89 1132 L100 1138 L89 1144 Z"/><path d="M78 1138 L78 1150 L89 1156 L100 1150 L100 1138"/></g>
+<text x="112" y="1140" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">Product</text>
+<text x="112" y="1156" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">specs</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="1190" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><circle cx="89" cy="1224" r="11"/><path d="M89 1216 L89 1224 L95 1228"/></g>
+<text x="112" y="1220" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Usage &amp;</text>
+<text x="112" y="1236" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">service</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="1270" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><path d="M78 1316 C78 1301 93 1292 100 1292 C100 1305 91 1316 78 1316 Z"/></g>
+<text x="112" y="1300" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Environmental</text>
+<text x="112" y="1316" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">impact</text>
+</g>
+<g opacity="0.38">
+<rect x="58" y="1350" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 1377 L89 1372 L100 1377 L89 1382 Z"/><path d="M80 1387 L89 1383 L98 1387 L89 1391 Z"/></g>
+<text x="112" y="1380" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Training</text>
+<text x="112" y="1396" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">disassembly</text>
+</g>
+<rect x="58" y="1448" width="184" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.5" fill="none" stroke-linejoin="round"><path d="M77 1456 L83 1458.5 L83 1463 C83 1466 77 1468.5 77 1468.5 C77 1468.5 71 1466 71 1463 L71 1458.5 Z"/></g>
+<text x="162" y="1467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="270" y="1086" width="320" height="410" rx="16" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="6 7" opacity="0.30"/>
+<g transform="translate(272,1134) scale(0.85)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#16335f" opacity="0.92"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4"/>
+<circle cx="56" cy="45" r="4" fill="#16335f"/>
+<circle cx="148" cy="45" r="4" fill="#16335f"/>
+<circle cx="240" cy="45" r="4" fill="#16335f"/>
+<circle cx="332" cy="45" r="4" fill="#16335f"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#16335f" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#16335f" stroke-width="1.4"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#16335f" opacity="0.92"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#16335f" opacity="0.92"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#16335f" opacity="0.92"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#2e7d4f" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#16335f" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4"/>
+<circle cx="29" cy="142" r="30" fill="#5dcaa5" opacity="0.16"/><circle cx="29" cy="142" r="17" fill="#5dcaa5" opacity="0.30"/>
+<text x="29" y="106" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#5dcaa5" font-weight="bold" text-anchor="middle">Connectors</text>
+</g>
+<text x="430" y="1416" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle">the rest dims</text>
+<circle cx="430" cy="1448" r="20" fill="#13366b" stroke="#f0c879" stroke-width="1.4"/>
+<rect x="422" y="1445" width="16" height="13" rx="3" fill="#f0c879"/>
+<path d="M425 1445 L425 1440 A5 5 0 0 1 435 1440 L435 1445" fill="none" stroke="#f0c879" stroke-width="2"/>
+<text x="430" y="1482" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#f0c879" font-weight="bold" text-anchor="middle">LOCKED</text>
+<rect x="330" y="1490" width="200" height="16" rx="8" fill="#0a0e16" stroke="#2a3344"/>
+<rect x="412" y="1497" width="36" height="2" rx="1" fill="#6b7686"/>
+<rect x="600" y="1076" width="420" height="430" rx="22" fill="#0a1f44"/>
+<text x="624" y="1118" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Connectors</text>
+<text x="996" y="1116" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">3 of 11 · 150.1 g</text>
+<rect x="624" y="1132" width="90" height="26" rx="13" fill="#0e2950" stroke="#21407a"/>
+<text x="669.0" y="1150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1" text-anchor="middle">Identity</text>
+<rect x="724" y="1132" width="190" height="26" rx="13" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="819.0" y="1150" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="middle">Mechanical &amp; electrical</text>
+<rect x="624" y="1168" width="372" height="1" fill="#1a335f"/>
+<rect x="624" y="1438" width="130" height="46" rx="23" fill="#1a2740" stroke="#324a6d"/>
+<text x="689" y="1467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#9fb3d1" font-weight="bold" text-anchor="middle">All components</text>
+<rect x="766" y="1438" width="230" height="46" rx="23" fill="#1d9e75"/>
+<text x="875" y="1467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Next</text>
+<g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M976 1455 L982 1461 L976 1467"/></g>
+<rect x="624" y="1182" width="372" height="104" rx="10" fill="#07142c" stroke="#21407a"/>
+<g stroke="#5dcaa5" stroke-width="1.4" fill="none" opacity="0.9"><rect x="744" y="1208" width="80" height="52" rx="6"/><circle cx="784" cy="1234" r="18"/><circle cx="784" cy="1234" r="10"/><line x1="824" y1="1234" x2="862" y2="1234"/><rect x="862" y="1223" width="24" height="22" rx="3"/></g>
+<g stroke="#6f86a8" stroke-width="0.8" fill="none"><line x1="744" y1="1268" x2="824" y2="1268"/><line x1="744" y1="1264" x2="744" y2="1272"/><line x1="824" y1="1264" x2="824" y2="1272"/></g>
+<text x="784" y="1281" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#6f86a8" text-anchor="middle">M12 · screw-fixed</text>
+<text x="634" y="1198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#5dcaa5">2D DRAWING</text>
+<text x="986" y="1198" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="8.5" fill="#f08a3c" text-anchor="end">asset not authored yet</text>
+<rect x="624" y="1296" width="372" height="21" rx="7" fill="#0e2950"/>
+<text x="638" y="1310.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Material</text>
+<text x="982" y="1310.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="end">Aluminium shell + Cu contacts, Au/Ni plated</text>
+<rect x="624" y="1319" width="372" height="21" rx="7" fill="#0e2950"/>
+<text x="638" y="1333.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Mass</text>
+<text x="982" y="1333.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="end">150.1 g (3 units)</text>
+<rect x="624" y="1342" width="372" height="21" rx="7" fill="#0e2950"/>
+<text x="638" y="1356.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Recycling code</text>
+<text x="982" y="1356.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="end">ALU / mixed metals</text>
+<rect x="624" y="1365" width="372" height="21" rx="7" fill="#0e2950"/>
+<text x="638" y="1379.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Disassembly step</text>
+<text x="982" y="1379.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="end">2 — remove the connectors</text>
+<rect x="624" y="1388" width="372" height="21" rx="7" fill="#0e2950"/>
+<text x="638" y="1402.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Precious metals</text>
+<text x="982" y="1402.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="end">Au 91.7 mg plating · Ni 500 mg underplating</text>
+<rect x="624" y="1411" width="372" height="21" rx="7" fill="#0e2950"/>
+<text x="638" y="1425.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Verdict</text>
+<text x="982" y="1425.5" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="end">reuse after test</text>
+<text x="20" y="1548" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">Read from the Miro routine: SPECS sits inside IDENTITY; components are a THIRD level under Mechanical/Electrical;</text>
+<text x="20" y="1565" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">each component shows a 2D DRAWING except screws. Tabs renamed: Usage history -> Usage &amp; service.</text>
+<text x="20" y="1582" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">NEW ASSET COST: seven 2D component drawings do not exist. They are the only thing on this tab with no data behind it.</text>
+<text x="20" y="1599" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">11 components are grouped to 8 rows (PCB substrate + copper + solder = PCB; coating + misc merged) so the list fits one screen.</text>
+<text x="20" y="1616" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">The 200 x 150 x 60 size is the DEMONSTRATOR measured, not the declared product (166 x 121 x 41, Bosch sheet 234686731).</text>
+<text x="20" y="1633" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e">Recycler walkthrough: later tabs dimmed, CTA reads Next. Product user sees all four lit and Scan next product.</text>
+</svg>

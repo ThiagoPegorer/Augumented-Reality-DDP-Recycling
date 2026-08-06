@@ -33,7 +33,11 @@ Consequences, stated plainly because they cost work:
 | `01` | `01_welcome_page.md` | Welcome / Open App | Open App | ✅ **approved, ready to build** |
 | `02` | `02_scan_qr_code.md` | Scan QR + scan-failure loop | Open App | ✅ **approved, ready to build** |
 | `03` | `03_stakeholder_decision.md` | Stakeholder decision (**new screen**) | Open App | ✅ **draft** — blocked on card icons |
-| `04` | `04_DPP_page.md` | DPP page — 2×2 tabs, two roles, **absorbs Composition & impact** | DPP | ✅ **phase 1 built** 2026-08-04 — `+` targets are stubs |
+| `04` | `04_DPP_page.md` | DPP page — **980 × 430 super panel**, rail + model stage + data, two roles | DPP | ✅ **v2 specced** 2026-08-05 — not yet coded |
+| `04a` | `04a_use_phase.md` | Usage & service tab (`+` target) — VCU self-telemetry, SOH | DPP | ✅ **written** 2026-08-05 |
+| `04b` | — | Training disassembly tab (`+` target) | DPP | ⬜ |
+| `04c` | `04c_product_specs.md` | Product specs tab (`+` target) — Identity · Mechanical & electrical · component detail | DPP | ✅ **written** 2026-08-06 — mock approved, not yet coded |
+| `04d` | — | Environmental impact tab (`+` target) | DPP | ⬜ |
 | `05` | — | Digital model — floating object, lenses + per-part detail | DPP | ⬜ (no longer a separate *screen* — see `04` §2) |
 | `06` | — | Disassembly intro | Disassembly | ⬜ |
 | `07` | — | Disassembly steps 1–5 | Disassembly | ⬜ |
@@ -72,6 +76,15 @@ change in §3 → build → device-check.
 | 20 | Compliance: device-level badge in the header; SVHC per-part marking **not supported by the payload** (`component_id: null`, all `hazardous: false`) | data check 2026-08-04 | `04` §6 | ⬜ Thiago's call, open item #1 |
 | 21 | Chip standardised as the only content element on `04`: `card/blue`, h 18, **width = preferredWidth + 24 at runtime** | Thiago 2026-08-04 | `00` §5, `04` §3 | ✅ built |
 | 22 | Role-driven navigation on `04`: Product user keeps the header arrow + `Home`; Recycler drops the arrow and takes `Back` in the bottom bar | Thiago 2026-08-04 | `04` §4 | ✅ built |
+| 23 | **Super panel**: one 980 × 430 rig, 220 rail + 340 transparent model stage + 420 data, side panels toed in; model LOCK/UNLOCK | Thiago 2026-08-05 (*"the model was hide in the AR space"*) | `04` §2–3 | ✅ specified |
+| 24 | **Recycler walkthrough**: lands on Product specs, later tabs dimmed until visited, CTA `Next`; `Continue to disassembly` only on the Training tab | Thiago 2026-08-05 | `04` §6, `04c` §5 | ✅ specified |
+| 25 | `Usage History` → **`Usage & service`**; car-centric telemetry replaced by VCU self-telemetry | Thiago 2026-08-05 | `04a` | ✅ specified |
+| 26 | **The passport describes the Bosch MS 50.4**; the NX model is the AR mock. `size_mm` 200 × 150 × 60 → **166 × 121 × 41** | Thiago 2026-08-06 | `04c` §1.1 | ✅ specified, payload 0.14 |
+| 27 | Components **11 → 15 rows**, split `part` (8, with NX drawing) / `board_material` (7, none); every mass and material bound to `VCU_BOM_v4.xlsx` `By_Component` | Thiago 2026-08-06 (*"LCA and BOM_v4 is the source of truth"*) | `04c` §3 | ✅ specified, payload 0.14 |
+| 28 | Housing → two shells **108.4757 / 235.5243 g**, split by the BOM's own 637 cm² area basis | derivation 2026-08-06 | `04c` §3.3a | ✅ specified |
+| 29 | Four CAD IC blocks carry BOM rows 5–11 (23.70 g): P1 FCBGA + flash · P2 regulators + AFE · P3 power stages · P4 transceivers + IMU | Thiago 2026-08-06 | `04c` §3.3b | ✅ approved |
+| 30 | NX sheets stripped to **geometry + shaded view**; title block, frame and all sheet labels removed; 16 sprite assets generated | Thiago 2026-08-06 (*"forget the labels of the DWG"*) | `04c` §7 | ✅ assets built |
+| 31 | ⚠ **BOM defect found: 0.7 g tin double-count** (`BOM_v4.md` 3.9 g vs xlsx 4.6 g) + closure states 660 but sums 660.1565 | data check 2026-08-06 | `04c` §2 | ⬜ **Thiago's call, blocks the LCA write-up** |
 | — | **P03 (Domenik) usability items** | P03 session | per screen | ⬜ none on `01`/`02` — both approved as-is |
 
 ⚠ **Row "P03" is the gap.** Thiago's instruction is that Domenik's feedback gets *folded into
@@ -98,4 +111,4 @@ needs its own RB2.1 spec file (§1), but the *content* is a transcription, not a
 - Bosch datasheet / manual PDFs never enter the repo · participant data never reaches GitHub.
 - Git is manual: Claude edits files, Thiago commits and pushes.
 
-*Created 2026-08-01 · Rewritten 2026-08-04 for the numbering restart · Legacy: `../RB2_0/` · Registry: `../VERSIONS.md`*
+*Created 2026-08-01 · Rewritten 2026-08-04 for the numbering restart · `04a`–`04d` tab specs added 2026-08-06 · Legacy: `../RB2_0/` · Registry: `../VERSIONS.md`*

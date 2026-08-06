@@ -228,7 +228,14 @@ namespace DPP.UI
         }
 
         // ---- the four seams the per-tab phases plug into (spec 04 section 10) ----
-        public void OpenTab1() => Debug.Log("[DppPage] + Product specifications — phase 2, not built yet.");
+
+        /// <summary>Tab 1 "+" → Product specifications (spec 04c, RBv2_1/9).</summary>
+        public void OpenTab1()
+        {
+            if (router != null) router.ShowProductSpecs();
+            else Debug.LogWarning("[DppPage] No router — cannot open Product specifications.");
+        }
+
         public void OpenTab2() => Debug.Log("[DppPage] + Usage history — phase 3, not built yet.");
         public void OpenTab3() => Debug.Log("[DppPage] + Environmental impact — phase 4, not built yet.");
         public void OpenTab4() => Debug.Log("[DppPage] + Training disassembly — phase 5, not built yet.");

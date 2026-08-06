@@ -1,0 +1,239 @@
+<svg width="100%" viewBox="0 0 1180 1560" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>RB2.1 — 04a Usage history v1</title>
+<desc>The usage screen opens with two tab pills. Usage history shows the modelled use profile beside a floating DACH map whose orange traces are the driven corridors and whose dot sizes are kilometres attributed. Service history shows a ghost car with hotspots on the serviced systems; pinching one fills the panel with that system events.</desc>
+<text x="20" y="30" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">USAGE HISTORY — panel + floating DACH map</text>
+<rect x="20" y="46" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="84" r="19" fill="#13366b" stroke="#2e5aa0"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M69 77 L60 84 L69 91"/><path d="M60 84 L73 84"/></g>
+<text x="96" y="92" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">Usage history</text>
+<text x="636" y="90" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8" text-anchor="end">Apr 2011 – Mar 2026 · 15 years</text>
+<rect x="44" y="122" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="138" width="132" height="30" rx="15" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="110.0" y="158" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="middle">Usage history</text>
+<rect x="184" y="138" width="142" height="30" rx="15" fill="#0e2950" stroke="#21407a"/>
+<text x="255.0" y="158" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#9fb3d1" text-anchor="middle">Service history</text>
+<text x="44" y="192" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">SERVICE LIFE</text>
+<text x="44" y="210" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">15 years</text>
+<rect x="44" y="218" width="272" height="1" fill="#12294e"/>
+<text x="340" y="192" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">LIFETIME DISTANCE</text>
+<text x="340" y="210" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">225,000 km</text>
+<rect x="340" y="218" width="272" height="1" fill="#12294e"/>
+<text x="44" y="236" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">OPERATING HOURS</text>
+<text x="44" y="254" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">5,625 h</text>
+<rect x="44" y="262" width="272" height="1" fill="#12294e"/>
+<text x="340" y="236" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">OWN ENERGY USE</text>
+<text x="340" y="254" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">66.2 kWh</text>
+<rect x="340" y="262" width="272" height="1" fill="#12294e"/>
+<text x="44" y="280" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">AVERAGE SPEED</text>
+<text x="44" y="298" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">40 km/h</text>
+<rect x="44" y="306" width="272" height="1" fill="#12294e"/>
+<text x="340" y="280" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">OWN POWER DRAW</text>
+<text x="340" y="298" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">9 W</text>
+<rect x="340" y="306" width="272" height="1" fill="#12294e"/>
+<text x="44" y="324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">CHARGING EFFICIENCY</text>
+<text x="44" y="342" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">0.765</text>
+<rect x="44" y="350" width="272" height="1" fill="#12294e"/>
+<text x="340" y="324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">DAILY USE</text>
+<text x="340" y="342" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#ffffff" font-weight="bold">~30 km · ~45 min</text>
+<rect x="340" y="350" width="272" height="1" fill="#12294e"/>
+<text x="44" y="386" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">CAR ENERGY (outside the LCA boundary)</text>
+<text x="44" y="404" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="16" fill="#6f86a8" font-weight="bold">39,375 kWh</text>
+<text x="340" y="386" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">YEAR</text>
+<rect x="340" y="396" width="272" height="4" rx="2" fill="#16335f"/>
+<rect x="340" y="396" width="200" height="4" rx="2" fill="#f08a3c"/>
+<circle cx="540" cy="398" r="9" fill="#f08a3c"/>
+<text x="340" y="420" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8">2011</text>
+<text x="612" y="420" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="end">2026</text>
+<text x="540" y="420" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#ffffff" font-weight="bold" text-anchor="middle">2022</text>
+<rect x="700" y="46" width="440" height="430" rx="18" fill="#050f22" opacity="0.55"/>
+<rect x="700" y="46" width="440" height="430" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.75"/>
+<text x="920.0" y="36" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" font-weight="bold" text-anchor="middle">floating world-space object — not on the panel</text>
+<line x1="773.7" y1="460.0" x2="773.7" y2="62.0" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="825.9" y1="460.0" x2="825.9" y2="62.0" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="878.2" y1="460.0" x2="878.2" y2="62.0" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="930.5" y1="460.0" x2="930.5" y2="62.0" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="982.7" y1="460.0" x2="982.7" y2="62.0" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="1035.0" y1="460.0" x2="1035.0" y2="62.0" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="768.5" y1="443.6" x2="1071.5" y2="443.6" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="768.5" y1="361.5" x2="1071.5" y2="361.5" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="768.5" y1="279.5" x2="1071.5" y2="279.5" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="768.5" y1="197.4" x2="1071.5" y2="197.4" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<line x1="768.5" y1="115.3" x2="1071.5" y2="115.3" stroke="#1a335f" stroke-width="0.6" opacity="0.5"/>
+<path d="M967.2 176.1 Q933.2 163.0 871.2 182.0" fill="none" stroke="#f08a3c" stroke-width="3.25" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q936.6 138.9 878.0 133.8" fill="none" stroke="#f08a3c" stroke-width="2.47" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q967.7 184.3 940.2 224.5" fill="none" stroke="#f08a3c" stroke-width="2.67" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q950.7 223.0 906.3 301.9" fill="none" stroke="#f08a3c" stroke-width="3.01" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q964.6 127.9 934.1 111.7" fill="none" stroke="#f08a3c" stroke-width="3.38" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q919.5 209.5 843.8 275.0" fill="none" stroke="#f08a3c" stroke-width="1.70" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q985.5 190.2 975.9 236.4" fill="none" stroke="#f08a3c" stroke-width="2.25" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q1019.9 248.5 1044.7 353.0" fill="none" stroke="#f08a3c" stroke-width="1.83" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q926.0 236.9 856.9 329.7" fill="none" stroke="#f08a3c" stroke-width="2.81" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q903.3 274.4 811.5 404.7" fill="none" stroke="#f08a3c" stroke-width="2.03" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q976.6 256.7 958.0 369.4" fill="none" stroke="#f08a3c" stroke-width="3.50" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q957.3 250.0 919.4 355.9" fill="none" stroke="#f08a3c" stroke-width="2.70" opacity="0.75" stroke-linecap="round"/>
+<path d="M967.2 176.1 Q954.9 267.8 914.6 391.5" fill="none" stroke="#f08a3c" stroke-width="1.97" opacity="0.75" stroke-linecap="round"/>
+<circle cx="967.2" cy="176.1" r="34.0" fill="#f08a3c" opacity="0.13"/>
+<circle cx="967.2" cy="176.1" r="16.2" fill="#f08a3c"/>
+<text x="988.35832994939" y="179.56597938144324" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#ffffff" font-weight="bold">Berlin · 182,174 km</text>
+<circle cx="958.0" cy="369.4" r="11.6" fill="#f08a3c" opacity="0.13"/>
+<circle cx="958.0" cy="369.4" r="5.5" fill="#f08a3c"/>
+<text x="968.5575341331477" y="372.8626804123714" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Salzburg</text>
+<circle cx="934.1" cy="111.7" r="11.5" fill="#f08a3c" opacity="0.13"/>
+<circle cx="934.1" cy="111.7" r="5.5" fill="#f08a3c"/>
+<text x="944.5712318069955" y="115.22948453608248" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Rostock</text>
+<circle cx="871.2" cy="182.0" r="11.3" fill="#f08a3c" opacity="0.13"/>
+<circle cx="871.2" cy="182.0" r="5.4" fill="#f08a3c"/>
+<text x="881.5772188253798" y="185.51546391752584" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Hanover</text>
+<circle cx="906.3" cy="301.9" r="11.0" fill="#f08a3c" opacity="0.13"/>
+<circle cx="906.3" cy="301.9" r="5.2" fill="#f08a3c"/>
+<text x="916.556190687558" y="305.44886597938165" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Nuremberg</text>
+<circle cx="856.9" cy="329.7" r="10.7" fill="#f08a3c" opacity="0.13"/>
+<circle cx="856.9" cy="329.7" r="5.1" fill="#f08a3c"/>
+<text x="866.9322736670299" y="333.22680412371153" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Stuttgart</text>
+<circle cx="919.4" cy="355.9" r="10.5" fill="#f08a3c" opacity="0.13"/>
+<circle cx="919.4" cy="355.9" r="5.0" fill="#f08a3c"/>
+<text x="929.3774508501818" y="359.40453608247435" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Munich</text>
+<circle cx="940.2" cy="224.5" r="10.5" fill="#f08a3c" opacity="0.13"/>
+<circle cx="940.2" cy="224.5" r="5.0" fill="#f08a3c"/>
+<text x="950.2292385447557" y="227.98247422680407" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Leipzig</text>
+<circle cx="878.0" cy="133.8" r="10.2" fill="#f08a3c" opacity="0.13"/>
+<circle cx="878.0" cy="133.8" r="4.8" fill="#f08a3c"/>
+<text x="887.8782217433164" y="137.26309278350516" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Hamburg</text>
+<circle cx="975.9" cy="236.4" r="9.8" fill="#f08a3c" opacity="0.13"/>
+<circle cx="975.9" cy="236.4" r="4.7" fill="#f08a3c"/>
+<text x="985.5242361425758" y="239.8814432989693" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Dresden</text>
+<circle cx="811.5" cy="404.7" r="9.4" fill="#f08a3c" opacity="0.13"/>
+<circle cx="811.5" cy="404.7" r="4.5" fill="#f08a3c"/>
+<text x="820.9888712176602" y="408.1903092783507" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Bern</text>
+<circle cx="914.6" cy="391.5" r="9.3" fill="#f08a3c" opacity="0.13"/>
+<circle cx="914.6" cy="391.5" r="4.4" fill="#f08a3c"/>
+<text x="924.0066380533833" y="395.0193814432992" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Innsbruck</text>
+<circle cx="1044.7" cy="353.0" r="9.1" fill="#f08a3c" opacity="0.13"/>
+<circle cx="1044.7" cy="353.0" r="4.3" fill="#f08a3c"/>
+<text x="1054.0250101218408" y="356.4913402061858" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Vienna</text>
+<circle cx="843.8" cy="275.0" r="8.8" fill="#f08a3c" opacity="0.13"/>
+<circle cx="843.8" cy="275.0" r="4.2" fill="#f08a3c"/>
+<text x="852.9684496609394" y="278.45051546391767" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#9fb3d1">Frankfurt</text>
+<text x="720" y="76" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold">DACH · driven corridors</text>
+<text x="720" y="92" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">182,174 km local · 42,826 km trips</text>
+<text x="1120" y="458" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="end">dot size = km attributed</text>
+<text x="20" y="544" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">SERVICE HISTORY — panel + floating ghost car</text>
+<rect x="20" y="560" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="598" r="19" fill="#13366b" stroke="#2e5aa0"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M69 591 L60 598 L69 605"/><path d="M60 598 L73 598"/></g>
+<text x="96" y="606" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">Usage history</text>
+<text x="636" y="604" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8" text-anchor="end">13 events · 225,000 km</text>
+<rect x="44" y="636" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="652" width="132" height="30" rx="15" fill="#0e2950" stroke="#21407a"/>
+<text x="110.0" y="672" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#9fb3d1" text-anchor="middle">Usage history</text>
+<rect x="184" y="652" width="142" height="30" rx="15" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="255.0" y="672" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="middle">Service history</text>
+<text x="44" y="706" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">SYSTEMS WITH SERVICE RECORDS</text>
+<rect x="44" y="718" width="568" height="26" rx="8" fill="#0e2950" opacity="0.95"/>
+<circle cx="60" cy="731" r="4.5" fill="#f08a3c"/>
+<text x="74" y="735" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold">12 V electrical</text>
+<text x="360" y="735" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">2 events</text>
+<text x="600" y="735" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2012 · 2020</text>
+<rect x="44" y="748" width="568" height="26" rx="8" fill="#0e2950" opacity="0.95"/>
+<circle cx="60" cy="761" r="4.5" fill="#f08a3c"/>
+<text x="74" y="765" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold">Charging</text>
+<text x="360" y="765" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 event</text>
+<text x="600" y="765" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2018</text>
+<rect x="44" y="778" width="568" height="26" rx="8" fill="#0e2950" opacity="0.6"/>
+<circle cx="60" cy="791" r="4.5" fill="#9fb3d1"/>
+<text x="74" y="795" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff">Braking</text>
+<text x="360" y="795" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">2 events</text>
+<text x="600" y="795" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2014 · 2022</text>
+<rect x="44" y="808" width="568" height="26" rx="8" fill="#0e2950" opacity="0.6"/>
+<circle cx="60" cy="821" r="4.5" fill="#9fb3d1"/>
+<text x="74" y="825" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff">Tyres</text>
+<text x="360" y="825" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">2 events</text>
+<text x="600" y="825" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2017 · 2025</text>
+<rect x="44" y="838" width="568" height="26" rx="8" fill="#0e2950" opacity="0.6"/>
+<circle cx="60" cy="851" r="4.5" fill="#9fb3d1"/>
+<text x="74" y="855" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff">Thermal (vehicle)</text>
+<text x="360" y="855" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 event</text>
+<text x="600" y="855" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2021</text>
+<rect x="44" y="868" width="568" height="26" rx="8" fill="#0e2950" opacity="0.6"/>
+<circle cx="60" cy="881" r="4.5" fill="#9fb3d1"/>
+<text x="74" y="885" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff">HV battery</text>
+<text x="360" y="885" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 event</text>
+<text x="600" y="885" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2023</text>
+<rect x="44" y="898" width="568" height="26" rx="8" fill="#0e2950" opacity="0.6"/>
+<circle cx="60" cy="911" r="4.5" fill="#9fb3d1"/>
+<text x="74" y="915" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff">Cabin</text>
+<text x="360" y="915" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">1 event</text>
+<text x="600" y="915" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2015</text>
+<rect x="44" y="928" width="568" height="26" rx="8" fill="#0e2950" opacity="0.95"/>
+<circle cx="60" cy="941" r="4.5" fill="#f0c879"/>
+<text x="74" y="945" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold">VCU — this unit</text>
+<text x="360" y="945" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">3 events</text>
+<text x="600" y="945" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">2022 · 2024 · 2025</text>
+<rect x="700" y="560" width="440" height="430" rx="18" fill="#050f22" opacity="0.55"/>
+<rect x="700" y="560" width="440" height="430" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.75"/>
+<text x="920.0" y="550" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" font-weight="bold" text-anchor="middle">floating world-space object — not on the panel</text>
+<path d="M780 830 L790 770 Q795 755 820 752 L870 722 Q900 706 950 708 L1000 720 Q1035 736 1060 758 L1080 768 Q1095 774 1095 796 L1093 830 Z" fill="#5dcaa5" opacity="0.10" stroke="#5dcaa5" stroke-width="1.4"/>
+<circle cx="845" cy="830" r="26" fill="none" stroke="#5dcaa5" stroke-width="1.4" opacity="0.85"/>
+<circle cx="1025" cy="830" r="26" fill="none" stroke="#5dcaa5" stroke-width="1.4" opacity="0.85"/>
+<path d="M880 750 L915 726 L955 726 L960 750 Z" fill="#5dcaa5" opacity="0.10" stroke="#5dcaa5" stroke-width="1"/>
+<circle cx="810" cy="780" r="16" fill="#f08a3c" opacity="0.16"/>
+<circle cx="810" cy="780" r="7" fill="#f08a3c"/>
+<text x="810" y="760" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="middle">12 V</text>
+<circle cx="1080" cy="780" r="16" fill="#f08a3c" opacity="0.16"/>
+<circle cx="1080" cy="780" r="7" fill="#f08a3c"/>
+<text x="1080" y="760" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Charge</text>
+<circle cx="940" cy="814" r="12" fill="#9fb3d1" opacity="0.16"/>
+<circle cx="940" cy="814" r="5.5" fill="#9fb3d1"/>
+<text x="940" y="799" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1" text-anchor="middle">HV pack</text>
+<circle cx="845" cy="830" r="12" fill="#9fb3d1" opacity="0.16"/>
+<circle cx="845" cy="830" r="5.5" fill="#9fb3d1"/>
+<text x="845" y="815" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1" text-anchor="middle">Brakes</text>
+<circle cx="1025" cy="830" r="12" fill="#9fb3d1" opacity="0.16"/>
+<circle cx="1025" cy="830" r="5.5" fill="#9fb3d1"/>
+<text x="1025" y="815" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1" text-anchor="middle">Tyres</text>
+<circle cx="802" cy="806" r="12" fill="#9fb3d1" opacity="0.16"/>
+<circle cx="802" cy="806" r="5.5" fill="#9fb3d1"/>
+<text x="802" y="791" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#9fb3d1" text-anchor="middle">Coolant</text>
+<circle cx="925" cy="762" r="16" fill="#f0c879" opacity="0.16"/>
+<circle cx="925" cy="762" r="7" fill="#f0c879"/>
+<text x="925" y="742" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#ffffff" font-weight="bold" text-anchor="middle">VCU</text>
+<text x="720" y="590" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold">Serviced systems</text>
+<text x="720" y="606" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8">pinch a hotspot — the panel fills with its events</text>
+<text x="1120" y="972" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#f0c879" text-anchor="end">gold = the unit you are holding</text>
+<text x="20" y="1058" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">HOTSPOT SELECTED — the panel becomes the log, no overlay</text>
+<rect x="20" y="1074" width="640" height="430" rx="22" fill="#0a1f44"/>
+<circle cx="64" cy="1112" r="19" fill="#13366b" stroke="#2e5aa0"/>
+<g stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M69 1105 L60 1112 L69 1119"/><path d="M60 1112 L73 1112"/></g>
+<text x="96" y="1120" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="25" fill="#ffffff" font-weight="bold">12 V electrical</text>
+<text x="636" y="1118" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#6f86a8" text-anchor="end">2 events · vehicle system</text>
+<rect x="44" y="1150" width="592" height="1" fill="#1a335f"/>
+<rect x="44" y="1166" width="132" height="30" rx="15" fill="#0e2950" stroke="#21407a"/>
+<text x="110.0" y="1186" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#9fb3d1" text-anchor="middle">Usage history</text>
+<rect x="184" y="1166" width="142" height="30" rx="15" fill="#0d2a57" stroke="#2e5aa0"/>
+<text x="255.0" y="1186" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="middle">Service history</text>
+<rect x="44" y="1224" width="568" height="74" rx="12" fill="#0e2950" stroke="#21407a"/>
+<rect x="60" y="1238" width="84" height="18" rx="9.0" fill="#13366b"/><text x="102.0" y="1250.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">2012.09.18</text>
+<rect x="152" y="1238" width="88" height="18" rx="9.0" fill="#13366b"/><text x="196.0" y="1250.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">21,920 km</text>
+<circle cx="592" cy="1247" r="4.5" fill="#f08a3c"/>
+<text x="60" y="1276" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff" font-weight="bold">Auxiliary 12 V battery replaced</text>
+<text x="60" y="1292" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">vehicle would not wake from sleep</text>
+<rect x="44" y="1310" width="568" height="74" rx="12" fill="#0e2950" stroke="#21407a"/>
+<rect x="60" y="1324" width="84" height="18" rx="9.0" fill="#13366b"/><text x="102.0" y="1336.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">2020.02.11</text>
+<rect x="152" y="1324" width="88" height="18" rx="9.0" fill="#13366b"/><text x="196.0" y="1336.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">135,140 km</text>
+<circle cx="592" cy="1333" r="4.5" fill="#f08a3c"/>
+<text x="60" y="1362" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13" fill="#ffffff" font-weight="bold">Auxiliary 12 V battery replaced again</text>
+<text x="60" y="1378" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">root cause traced to charge management, fixed in v10.0</text>
+<text x="44" y="1404" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5dcaa5">Linked firmware</text>
+<rect x="44" y="1414" width="568" height="34" rx="10" fill="#0e2950" stroke="#21407a"/>
+<rect x="58" y="1422" width="54" height="18" rx="9.0" fill="#13366b"/><text x="85.0" y="1434.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">v10.0</text>
+<text x="124" y="1435" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">01 Apr 2020 · 12 V charge-management fix</text>
+<rect x="700" y="1074" width="440" height="430" rx="18" fill="#050f22" opacity="0.55"/>
+<rect x="700" y="1074" width="440" height="430" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.75"/>
+<text x="920.0" y="1064" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" font-weight="bold" text-anchor="middle">the car stays — only the panel changed</text>
+<text x="920.0" y="1289" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e" text-anchor="middle">ghost car, 12 V hotspot pulsing</text>
+<text x="20" y="1540" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Orange #f08a3c is NOT in the palette - 00 s.2 needs a route/trace token, or the traces use teal</text>
+<text x="20" y="1557" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Map geometry is generated from usage_map (14 cities, 53 route-years); local + trip km == 225,000</text>
+<text x="20" y="1574" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Country outlines are omitted here - the final asset needs a public-domain boundary (Natural Earth)</text>
+<text x="20" y="1591" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">No overlay anywhere: selecting a hotspot swaps the PANEL content, it does not float a modal</text>
+<text x="20" y="1608" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">A movement profile is personal data. Shown to both roles by decision 2026-08-06 - note it in Limitations</text>
+</svg>

@@ -79,6 +79,12 @@ class Identity(BaseModel):
 class Specifications(BaseModel):
     """Datasheet facts shown in the Identity category."""
     size_mm: Optional[str] = None             # e.g. "166 x 121 x 41"
+    # v0.14 - WHICH BODY this size describes. The project holds two: the Bosch
+    # MS 50.4 product (166 x 121 x 41, 660 g) and the NX demonstrator that the AR
+    # model is built from (200 x 150 x 60). RB2.0 put the demonstrator's measured
+    # size in this block next to the product's mass. The passport declares the
+    # PRODUCT; the demonstrator is the mock (spec 04c s.1.1).
+    size_basis: Optional[str] = None
     weight_g: Optional[float] = None
     protection_class: Optional[str] = None    # e.g. "IP67"
     supply_voltage: Optional[str] = None      # e.g. "5-18 V"
@@ -108,6 +114,9 @@ class DocumentRef(BaseModel):
     note: Optional[str] = None               # why not_applicable / where to get it
 
 
+COMPONENT_GROUPS = ("part", "board_material")
+
+
 class MaterialShare(BaseModel):
     """One material line inside a component. Weights must sum to weight_g."""
     material: str
@@ -115,8 +124,29 @@ class MaterialShare(BaseModel):
 
 
 class Component(BaseModel):
+    """One inventory row of the device.
+
+    v0.14 splits the flat 11-row list into 15 rows carrying a `group`:
+
+      "part"            a body a dismantler can physically pick up. Has an NX
+                        drawing (`drawing_id`) and is a hit target in the UI.
+      "board_material"  a material distributed over the board - solder, coating,
+                        passives, TIM. No drawing exists and none should: these
+                        are not discrete bodies. Rendered inert (spec 04c s.4.3).
+
+    `bom_rows` and `represents` carry provenance, because two rows of this list
+    are REGROUPINGS of VCU_BOM_v4.xlsx rather than 1:1 copies (spec 04c s.3.3):
+
+      housing_upper / housing_bottom   BOM row 1 split by shell area
+      ic_1 .. ic_4                     BOM rows 5-11 allocated to the four CAD
+                                       blocks by footprint
+
+    The passport must never claim `ic_1` IS a single processor - `represents`
+    is what the UI shows so the regrouping stays visible to the user.
+    """
     id: str
     name: str
+    group: str = "part"          # COMPONENT_GROUPS
     material: str
     weight_g: float
     recycling_code: str
@@ -124,6 +154,9 @@ class Component(BaseModel):
     hazardous: bool = False
     high_value: bool = False     # worth dedicated recovery
     basis: Optional[str] = None  # BASIS_VALUES - BOM transparency
+    drawing_id: Optional[str] = None   # Assets/Resources/dwg/<id>_dwg.png + _iso.png
+    bom_rows: List[int] = Field(default_factory=list)   # VCU_BOM_v4.xlsx Table 1 row numbers
+    represents: Optional[str] = None   # the BOM entries behind a regrouped row
     material_breakdown: List[MaterialShare] = Field(default_factory=list)
     material_breakdown_basis: Optional[str] = None
 
@@ -373,6 +406,10 @@ class UsageHistory(BaseModel):
 class RepairEvent(BaseModel):
     date: Optional[str] = None
     description: Optional[str] = None
+    scope: str = "unit"                      # v0.13 - "unit" (the VCU) or "vehicle"
+    category: Optional[str] = None           # maintenance | repair | inspection | fault
+    system: Optional[str] = None             # affected system, e.g. "12 V electrical"
+    odometer_km: Optional[int] = None        # vehicle reading at the event
     exchanged_component_ids: List[str] = Field(default_factory=list)
     cost_eur: Optional[float] = None
     image_url: Optional[str] = None
@@ -470,6 +507,136 @@ class RecoveryReport(BaseModel):
     co2_avoided_kg: Optional[float] = None
 
 
+
+class TempBand(BaseModel):
+    band: Optional[str] = None
+    hours: Optional[int] = None
+
+
+class DeltaTBand(BaseModel):
+    """v0.13 - thermal cycles binned by SWING AMPLITUDE. Cycle count alone is not a
+    wear measure: Coffin-Manson makes damage scale with dT^n, so a short errand and a
+    motorway run are not the same event."""
+    band: Optional[str] = None
+    delta_t_mid_c: Optional[int] = None
+    cycles: Optional[int] = None
+    cycles_to_failure: Optional[int] = None      # N_f at this dT
+    damage: Optional[float] = None               # cycles / N_f (Miner)
+
+
+class FatigueReference(BaseModel):
+    """v0.13 - the reference condition the damage model is anchored to. NOT a budget."""
+    model: str = "Coffin-Manson"
+    accumulation: str = "Miner's rule (linear damage)"
+    cycles_to_failure: Optional[int] = None
+    at_delta_t_c: Optional[int] = None
+    exponent_n: Optional[float] = None
+    basis: str = "assumed"
+    note: Optional[str] = None
+
+
+class UnitExposure(BaseModel):
+    """v0.13 - what the unit physically endured."""
+    powered_hours: Optional[int] = None
+    ignition_cycles: Optional[int] = None
+    thermal_cycles_logged: Optional[int] = None
+    delta_t_histogram: List[DeltaTBand] = Field(default_factory=list)
+    fatigue_reference: Optional[FatigueReference] = None
+    fatigue_consumed: Optional[float] = None      # 0-1, sum of Miner damage
+    fatigue_remaining_pct: Optional[int] = None
+    board_temp_max_c: Optional[int] = None
+    board_temp_limit_c: Optional[int] = None
+    hours_above_limit: Optional[int] = None
+    temp_histogram_h: List[TempBand] = Field(default_factory=list)
+
+
+class UnitElectrical(BaseModel):
+    voltage_transients_logged: Optional[int] = None
+    transient_standard: Optional[str] = None      # ISO 7637-2
+    undervoltage_events: Optional[int] = None
+    load_dump_events: Optional[int] = None
+    note: Optional[str] = None
+
+
+class UnitCompute(BaseModel):
+    cpu_hours_above_80pct: Optional[int] = None
+    flash_write_cycles_used: Optional[int] = None
+    flash_write_cycle_limit: Optional[int] = None
+    flash_endurance_remaining_pct: Optional[int] = None
+    ecc_corrected_errors: Optional[int] = None
+    unexpected_resets: Optional[int] = None
+
+
+class UnitDiagnostics(BaseModel):
+    can_error_frames: Optional[int] = None
+    bus_off_events: Optional[int] = None
+    dtc_total: Optional[int] = None
+    dtc_active: Optional[int] = None
+    dtc_cleared: Optional[int] = None
+    dtc_linked_to_service_events: Optional[int] = None
+    note: Optional[str] = None
+
+
+class UnitCalibration(BaseModel):
+    firmware_versions_installed: Optional[int] = None
+    firmware_first: Optional[str] = None
+    firmware_last: Optional[str] = None
+    calibration_map_changes: Optional[int] = None
+    sensor_recalibrations: Optional[int] = None
+
+
+class HealthIndicator(BaseModel):
+    id: Optional[str] = None
+    label: Optional[str] = None
+    value_pct: Optional[int] = None
+    detail: Optional[str] = None
+
+
+class ReuseVerdict(BaseModel):
+    """v0.13 - per-component end-of-use verdict. The mass-weighted share of the
+    'reuse*' verdicts is the functional reuse yield that Sc4 declares [A]."""
+    component_id: Optional[str] = None        # -> components[].id
+    name: Optional[str] = None
+    mass_g: Optional[float] = None
+    verdict: Optional[str] = None             # reuse | reuse_after_test | material_recovery | consumable
+    reason: Optional[str] = None
+
+
+class HealthFinding(BaseModel):
+    """v0.13 - reported but deliberately NOT scored."""
+    id: Optional[str] = None
+    label: Optional[str] = None
+    value: Optional[str] = None
+    note: Optional[str] = None
+
+
+class UnitHealth(BaseModel):
+    soh_pct: Optional[int] = None
+    soh_method: Optional[str] = None
+    soh_limiting_mechanism: Optional[str] = None
+    findings: List[HealthFinding] = Field(default_factory=list)
+    indicators: List[HealthIndicator] = Field(default_factory=list)
+    reuse_assessment: List[ReuseVerdict] = Field(default_factory=list)
+    reuse_fraction_by_mass: Optional[float] = None
+    reuse_note: Optional[str] = None
+
+
+class UnitUsePhase(BaseModel):
+    """v0.13 - USE-PHASE TELEMETRY THE VCU RECORDS ABOUT ITSELF.
+
+    Replaces the vehicle-centric usage map (dropped 2026-08-06): a product
+    passport describes the product, not its owner's movements. Every figure is
+    derived from data already present in the passport."""
+    exposure: Optional[UnitExposure] = None
+    electrical: Optional[UnitElectrical] = None
+    compute: Optional[UnitCompute] = None
+    diagnostics: Optional[UnitDiagnostics] = None
+    calibration: Optional[UnitCalibration] = None
+    health: Optional[UnitHealth] = None
+    basis: str = "simulated"
+    note: Optional[str] = None
+
+
 class DPP(BaseModel):
     """Top-level Digital Product Passport for a VCU."""
     product_id: str
@@ -489,5 +656,6 @@ class DPP(BaseModel):
     service: Optional[Service] = None
     usage_history: Optional[UsageHistory] = None
     repair_history: Optional[RepairHistory] = None
+    unit_use_phase: Optional[UnitUsePhase] = None   # v0.13
     indicators: Optional[Indicators] = None
     certifications: List[Certification] = Field(default_factory=list)

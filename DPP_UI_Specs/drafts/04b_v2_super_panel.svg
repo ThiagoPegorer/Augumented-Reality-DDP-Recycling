@@ -1,0 +1,309 @@
+<svg width="100%" viewBox="0 0 1060 2090" role="img" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="1060" height="2090" fill="#f4f6fa"/>
+<title>RB2.1 — DPP super panel 980x430</title>
+<desc>A 980 by 430 super panel in three zones: a 220 wide tab rail on the left, a 340 wide transparent zone holding the digital model in the middle, and a 420 wide data panel on the right. Locked, unlocked and a second tab are shown.</desc>
+<text x="20" y="42" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">LOCKED — model animates in the middle, no interaction</text>
+<rect x="40" y="76" width="220" height="430" rx="22" fill="#081733"/>
+<rect x="259" y="94" width="1" height="394" fill="#1a335f"/>
+<rect x="58" y="110" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 138 L89 132 L100 138 L89 144 Z"/><path d="M78 138 L78 150 L89 156 L100 150 L100 138"/></g>
+<text x="112" y="140" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Product</text>
+<text x="112" y="156" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">specifications</text>
+<circle cx="226" cy="124" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 124 L225.5 126.5 L229.5 121"/></g>
+<rect x="58" y="190" width="184" height="68" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<rect x="58" y="204" width="4" height="40" rx="2" fill="#5dcaa5"/>
+<g stroke="#5dcaa5" stroke-width="1.6" fill="none"><circle cx="89" cy="224" r="11"/><path d="M89 216 L89 224 L95 228"/></g>
+<text x="112" y="220" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">Usage</text>
+<text x="112" y="236" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">history</text>
+<circle cx="226" cy="204" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 204 L225.5 206.5 L229.5 201"/></g>
+<rect x="58" y="270" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><path d="M78 316 C78 301 93 292 100 292 C100 305 91 316 78 316 Z"/></g>
+<text x="112" y="300" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Environmental</text>
+<text x="112" y="316" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">impact</text>
+<rect x="58" y="350" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 377 L89 372 L100 377 L89 382 Z"/><path d="M80 387 L89 383 L98 387 L89 391 Z"/></g>
+<text x="112" y="380" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Training</text>
+<text x="112" y="396" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">disassembly</text>
+<rect x="58" y="448" width="184" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.5" fill="none" stroke-linejoin="round"><path d="M77 456 L83 458.5 L83 463 C83 466 77 468.5 77 468.5 C77 468.5 71 466 71 463 L71 458.5 Z"/></g>
+<text x="162" y="467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="270" y="86" width="320" height="410" rx="16" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="6 7" opacity="0.35"/>
+<text x="430" y="62" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e" font-weight="bold" text-anchor="middle">340 x 430 · fully transparent</text>
+<g transform="translate(272,134) scale(0.85)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#1d9e75" opacity="0.92"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#1d9e75" stroke-width="1.4" opacity="1"/>
+<circle cx="56" cy="45" r="4" fill="#1d9e75" opacity="0.92"/>
+<circle cx="148" cy="45" r="4" fill="#1d9e75" opacity="0.92"/>
+<circle cx="240" cy="45" r="4" fill="#1d9e75" opacity="0.92"/>
+<circle cx="332" cy="45" r="4" fill="#1d9e75" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#324a6d" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#324a6d" stroke-width="1.4" opacity="1"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#324a6d" opacity="0.92"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#324a6d" opacity="0.92"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#324a6d" opacity="0.92"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#324a6d" opacity="0.92"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#f0c879" opacity="0.92"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#f0c879" opacity="0.92"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#f0c879" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#1d9e75" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#1d9e75" stroke-width="1.4" opacity="1"/>
+</g>
+<circle cx="430" cy="448" r="20" fill="#13366b" stroke="#f0c879" stroke-width="1.4"/>
+<rect x="422" y="445" width="16" height="13" rx="3" fill="#f0c879"/>
+<path d="M425 445 L425 440 A5 5 0 0 1 435 440 L435 445" fill="none" stroke="#f0c879" stroke-width="2"/>
+<text x="430" y="482" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#f0c879" font-weight="bold" text-anchor="middle">LOCKED</text>
+<text x="430" y="416" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle">slow yaw · 12 s loop</text>
+<rect x="600" y="76" width="420" height="430" rx="22" fill="#0a1f44"/>
+<text x="624" y="122" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Usage history</text>
+<text x="996" y="120" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">48 % SOH · 5,625 h</text>
+<rect x="624" y="140" width="372" height="1" fill="#1a335f"/>
+<rect x="624" y="438" width="130" height="46" rx="23" fill="#1a2740" stroke="#324a6d"/>
+<text x="689" y="467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="766" y="438" width="230" height="46" rx="23" fill="#1d9e75"/>
+<text x="875" y="467" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Continue to disassembly</text>
+<g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M976 455 L982 461 L976 467"/></g>
+<text x="624" y="172" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#5dcaa5">STATE OF HEALTH</text>
+<text x="624" y="208" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="30" fill="#ffffff" font-weight="bold">48 %</text>
+<rect x="720" y="196" width="180" height="8" rx="4.0" fill="#16335f"/><rect x="720" y="196" width="86.4" height="8" rx="4.0" fill="#f0c879"/>
+<text x="720" y="218" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#6f86a8">limited by thermal fatigue</text>
+<text x="624" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Flash endurance remaining</text>
+<text x="996" y="246" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="end">55 %</text>
+<rect x="624" y="254" width="372" height="6" rx="3.0" fill="#16335f"/><rect x="624" y="254" width="204.6" height="6" rx="3.0" fill="#1d9e75"/>
+<text x="624" y="290" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#9fb3d1">Thermal fatigue life remaining</text>
+<text x="996" y="290" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="end">48 %</text>
+<rect x="624" y="298" width="372" height="6" rx="3.0" fill="#16335f"/><rect x="624" y="298" width="178.6" height="6" rx="3.0" fill="#f0c879"/>
+<rect x="624" y="338" width="372" height="1" fill="#12294e"/>
+<text x="624" y="364" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#5dcaa5">REUSE POTENTIAL BY MASS</text>
+<text x="624" y="390" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="22" fill="#1d9e75" font-weight="bold">0.767</text>
+<text x="696" y="384" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">506 g of 660 g</text>
+<text x="696" y="398" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#f0c879">inside the 0.5–0.9 Sc4 yield</text>
+<text x="20" y="618" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">UNLOCKED — the model detaches; the middle keeps its ghost, the layout does not reflow</text>
+<rect x="40" y="660" width="220" height="430" rx="22" fill="#081733"/>
+<rect x="259" y="678" width="1" height="394" fill="#1a335f"/>
+<rect x="58" y="694" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 722 L89 716 L100 722 L89 728 Z"/><path d="M78 722 L78 734 L89 740 L100 734 L100 722"/></g>
+<text x="112" y="724" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Product</text>
+<text x="112" y="740" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">specifications</text>
+<circle cx="226" cy="708" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 708 L225.5 710.5 L229.5 705"/></g>
+<rect x="58" y="774" width="184" height="68" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<rect x="58" y="788" width="4" height="40" rx="2" fill="#5dcaa5"/>
+<g stroke="#5dcaa5" stroke-width="1.6" fill="none"><circle cx="89" cy="808" r="11"/><path d="M89 800 L89 808 L95 812"/></g>
+<text x="112" y="804" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">Usage</text>
+<text x="112" y="820" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">history</text>
+<circle cx="226" cy="788" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 788 L225.5 790.5 L229.5 785"/></g>
+<rect x="58" y="854" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><path d="M78 900 C78 885 93 876 100 876 C100 889 91 900 78 900 Z"/></g>
+<text x="112" y="884" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Environmental</text>
+<text x="112" y="900" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">impact</text>
+<rect x="58" y="934" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 961 L89 956 L100 961 L89 966 Z"/><path d="M80 971 L89 967 L98 971 L89 975 Z"/></g>
+<text x="112" y="964" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Training</text>
+<text x="112" y="980" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">disassembly</text>
+<rect x="58" y="1032" width="184" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.5" fill="none" stroke-linejoin="round"><path d="M77 1040 L83 1042.5 L83 1047 C83 1050 77 1052.5 77 1052.5 C77 1052.5 71 1050 71 1047 L71 1042.5 Z"/></g>
+<text x="162" y="1051" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="270" y="670" width="320" height="410" rx="16" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="6 7" opacity="0.35"/>
+<text x="430" y="646" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e" font-weight="bold" text-anchor="middle">model removed — home outline stays</text>
+<g transform="translate(272,718) scale(0.85)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#16335f" opacity="0.28"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4" opacity="0.5"/>
+<circle cx="56" cy="45" r="4" fill="#16335f" opacity="0.28"/>
+<circle cx="148" cy="45" r="4" fill="#16335f" opacity="0.28"/>
+<circle cx="240" cy="45" r="4" fill="#16335f" opacity="0.28"/>
+<circle cx="332" cy="45" r="4" fill="#16335f" opacity="0.28"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#16335f" opacity="0.28"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#16335f" stroke-width="1.4" opacity="0.5"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#16335f" opacity="0.28"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#16335f" opacity="0.28"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#16335f" opacity="0.28"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.28"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#16335f" opacity="0.28"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#16335f" opacity="0.28"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#16335f" opacity="0.28"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#16335f" opacity="0.28"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4" opacity="0.5"/>
+</g>
+<text x="430" y="910" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle">return here to re-lock</text>
+<circle cx="430" cy="1032" r="20" fill="#13366b" stroke="#5dcaa5" stroke-width="1.4"/>
+<rect x="422" y="1029" width="16" height="13" rx="3" fill="#5dcaa5"/>
+<path d="M425 1029 L425 1024 A5 5 0 0 1 435 1024" fill="none" stroke="#5dcaa5" stroke-width="2"/>
+<text x="430" y="1066" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#5dcaa5" font-weight="bold" text-anchor="middle">UNLOCKED</text>
+<rect x="600" y="660" width="420" height="430" rx="22" fill="#0a1f44"/>
+<text x="624" y="706" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Usage history</text>
+<text x="996" y="704" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">48 % SOH · 5,625 h</text>
+<rect x="624" y="724" width="372" height="1" fill="#1a335f"/>
+<rect x="624" y="1022" width="130" height="46" rx="23" fill="#1a2740" stroke="#324a6d"/>
+<text x="689" y="1051" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="766" y="1022" width="230" height="46" rx="23" fill="#1d9e75"/>
+<text x="875" y="1051" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold" text-anchor="middle">Continue to disassembly</text>
+<g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M976 1039 L982 1045 L976 1051"/></g>
+<text x="624" y="756" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#5dcaa5">ACTIVE COMPONENTS</text>
+<rect x="624" y="768" width="120" height="18" rx="9.0" fill="#324a6d"/><text x="684.0" y="780.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">material recovery</text>
+<rect x="752" y="768" width="70" height="18" rx="9.0" fill="#13366b"/><text x="787.0" y="780.6" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#dbe4f0" text-anchor="middle">23.7 g</text>
+<text x="624" y="816" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff">Over-temperature failure logged 2025;</text>
+<text x="624" y="832" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff">replaced unit not re-qualified.</text>
+<rect x="624" y="858" width="372" height="26" rx="8" fill="#0e2950"/>
+<text x="640" y="875" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Peak board temperature</text>
+<text x="980" y="875" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="end">94 °C</text>
+<rect x="624" y="890" width="372" height="26" rx="8" fill="#0e2950"/>
+<text x="640" y="907" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Hours above the limit</text>
+<text x="980" y="907" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="end">41 h</text>
+<rect x="624" y="922" width="372" height="26" rx="8" fill="#0e2950"/>
+<text x="640" y="939" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Thermal cycles logged</text>
+<text x="980" y="939" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="end">11,250</text>
+<rect x="624" y="954" width="372" height="26" rx="8" fill="#0e2950"/>
+<text x="640" y="971" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Diagnostic codes</text>
+<text x="980" y="971" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="end">1 active</text>
+<rect x="276" y="1158" width="348" height="308" rx="18" fill="none" stroke="#5dcaa5" stroke-width="1.2" stroke-dasharray="7 6" opacity="0.7"/>
+<text x="450" y="1144" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e" font-weight="bold" text-anchor="middle">340 x 300 · free in the room · grab bar + two-hand gestures</text>
+<g transform="translate(284,1166) scale(0.78)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#16335f" opacity="0.92"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4" opacity="1"/>
+<circle cx="56" cy="45" r="4" fill="#16335f" opacity="0.92"/>
+<circle cx="148" cy="45" r="4" fill="#16335f" opacity="0.92"/>
+<circle cx="240" cy="45" r="4" fill="#16335f" opacity="0.92"/>
+<circle cx="332" cy="45" r="4" fill="#16335f" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#16335f" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#16335f" stroke-width="1.4" opacity="1"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#f08a3c" opacity="0.92"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#f08a3c" opacity="0.92"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#f08a3c" opacity="0.92"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#16335f" opacity="0.92"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#16335f" opacity="0.92"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#16335f" opacity="0.92"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#16335f" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#16335f" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#16335f" stroke-width="1.4" opacity="1"/>
+<circle cx="96" cy="140" r="26" fill="#f08a3c" opacity="0.18"/><circle cx="96" cy="140" r="15" fill="#f08a3c" opacity="0.35"/>
+<text x="96" y="108" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12" fill="#f08a3c" font-weight="bold" text-anchor="middle">selected</text>
+</g>
+<rect x="400" y="1458" width="100" height="14" rx="7" fill="#0a0e16" stroke="#2a3344"/>
+<rect x="436" y="1464" width="28" height="2" rx="1" fill="#6b7686"/>
+<text x="20" y="1528" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#0a1f44" font-weight="bold">ANOTHER TAB — the model re-reads for that tab · Continue stays locked until all four are visited</text>
+<rect x="40" y="1570" width="220" height="430" rx="22" fill="#081733"/>
+<rect x="259" y="1588" width="1" height="394" fill="#1a335f"/>
+<rect x="58" y="1604" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 1632 L89 1626 L100 1632 L89 1638 Z"/><path d="M78 1632 L78 1644 L89 1650 L100 1644 L100 1632"/></g>
+<text x="112" y="1634" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Product</text>
+<text x="112" y="1650" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">specifications</text>
+<circle cx="226" cy="1618" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 1618 L225.5 1620.5 L229.5 1615"/></g>
+<rect x="58" y="1684" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none"><circle cx="89" cy="1718" r="11"/><path d="M89 1710 L89 1718 L95 1722"/></g>
+<text x="112" y="1714" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Usage</text>
+<text x="112" y="1730" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">history</text>
+<circle cx="226" cy="1698" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 1698 L225.5 1700.5 L229.5 1695"/></g>
+<rect x="58" y="1764" width="184" height="68" rx="14" fill="#0d2a57" stroke="#2e5aa0"/>
+<rect x="58" y="1778" width="4" height="40" rx="2" fill="#5dcaa5"/>
+<g stroke="#5dcaa5" stroke-width="1.6" fill="none"><path d="M78 1810 C78 1795 93 1786 100 1786 C100 1799 91 1810 78 1810 Z"/></g>
+<text x="112" y="1794" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">Environmental</text>
+<text x="112" y="1810" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#ffffff" font-weight="bold">impact</text>
+<circle cx="226" cy="1778" r="7" fill="#1d9e75"/>
+<g stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M223 1778 L225.5 1780.5 L229.5 1775"/></g>
+<rect x="58" y="1844" width="184" height="68" rx="14" fill="#0e2950" stroke="#21407a"/>
+<g stroke="#9fb3d1" stroke-width="1.6" fill="none" stroke-linejoin="round"><path d="M78 1871 L89 1866 L100 1871 L89 1876 Z"/><path d="M80 1881 L89 1877 L98 1881 L89 1885 Z"/></g>
+<text x="112" y="1874" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">Training</text>
+<text x="112" y="1890" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#9fb3d1">disassembly</text>
+<rect x="58" y="1942" width="184" height="30" rx="15" fill="#0e2950" stroke="#e24b4a" stroke-width="1.4"/>
+<g stroke="#e24b4a" stroke-width="1.5" fill="none" stroke-linejoin="round"><path d="M77 1950 L83 1952.5 L83 1957 C83 1960 77 1962.5 77 1962.5 C77 1962.5 71 1960 71 1957 L71 1952.5 Z"/></g>
+<text x="162" y="1961" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#dbe4f0" text-anchor="middle">CE · REACH · WEEE 5 · IP67</text>
+<rect x="270" y="1580" width="320" height="410" rx="16" fill="none" stroke="#5dcaa5" stroke-width="1" stroke-dasharray="6 7" opacity="0.35"/>
+<text x="430" y="1556" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#33445e" font-weight="bold" text-anchor="middle">340 x 430 · fully transparent</text>
+<g transform="translate(272,1628) scale(0.85)">
+<rect x="40" y="18" width="300" height="54" rx="8" fill="#5dcaa5" opacity="0.92"/>
+<rect x="40" y="18" width="300" height="54" rx="8" fill="none" stroke="#5dcaa5" stroke-width="1.4" opacity="1"/>
+<circle cx="56" cy="45" r="4" fill="#9fb3d1" opacity="0.92"/>
+<circle cx="148" cy="45" r="4" fill="#9fb3d1" opacity="0.92"/>
+<circle cx="240" cy="45" r="4" fill="#9fb3d1" opacity="0.92"/>
+<circle cx="332" cy="45" r="4" fill="#9fb3d1" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="#c8c05e" opacity="0.92"/>
+<rect x="30" y="108" width="320" height="86" rx="6" fill="none" stroke="#c8c05e" stroke-width="1.4" opacity="1"/>
+<rect x="70" y="126" width="44" height="30" rx="4" fill="#f0c879" opacity="0.92"/>
+<rect x="126" y="126" width="38" height="30" rx="4" fill="#f0c879" opacity="0.92"/>
+<rect x="176" y="132" width="30" height="22" rx="4" fill="#f0c879" opacity="0.92"/>
+<rect x="228" y="126" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="250" y="126" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="272" y="126" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="228" y="146" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="250" y="146" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="272" y="146" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="228" y="166" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="250" y="166" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="272" y="166" width="14" height="9" rx="2" fill="#f0c879" opacity="0.92"/>
+<rect x="16" y="114" width="26" height="20" rx="5" fill="#f0c879" opacity="0.92"/>
+<rect x="16" y="142" width="26" height="20" rx="5" fill="#f0c879" opacity="0.92"/>
+<rect x="16" y="170" width="26" height="20" rx="5" fill="#f0c879" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="#5dcaa5" opacity="0.92"/>
+<rect x="40" y="230" width="300" height="54" rx="8" fill="none" stroke="#5dcaa5" stroke-width="1.4" opacity="1"/>
+</g>
+<circle cx="430" cy="1942" r="20" fill="#13366b" stroke="#f0c879" stroke-width="1.4"/>
+<rect x="422" y="1939" width="16" height="13" rx="3" fill="#f0c879"/>
+<path d="M425 1939 L425 1934 A5 5 0 0 1 435 1934 L435 1939" fill="none" stroke="#f0c879" stroke-width="2"/>
+<text x="430" y="1976" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#f0c879" font-weight="bold" text-anchor="middle">LOCKED</text>
+<text x="430" y="1910" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9.5" fill="#6f86a8" text-anchor="middle">materials tint · value glow</text>
+<rect x="600" y="1570" width="420" height="430" rx="22" fill="#0a1f44"/>
+<text x="624" y="1616" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="19" fill="#ffffff" font-weight="bold">Environmental impact</text>
+<text x="996" y="1614" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#6f86a8" text-anchor="end">EF 3.1 · sc1 baseline</text>
+<rect x="624" y="1634" width="372" height="1" fill="#1a335f"/>
+<rect x="624" y="1932" width="130" height="46" rx="23" fill="#1a2740" stroke="#324a6d"/>
+<text x="689" y="1961" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="13.5" fill="#9fb3d1" font-weight="bold" text-anchor="middle">Back</text>
+<rect x="766" y="1932" width="230" height="46" rx="23" fill="#1a2740"/>
+<text x="875" y="1961" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="12.5" fill="#5d7396" font-weight="bold" text-anchor="middle">Visit all four tabs</text>
+<rect x="624" y="1674" width="372" height="34" rx="10" fill="#0e2950"/>
+<text x="638" y="1696" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">CO2 Emissions</text>
+<text x="982" y="1696" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">73.43 kg CO2 eq</text>
+<rect x="624" y="1720" width="372" height="34" rx="10" fill="#0e2950"/>
+<text x="638" y="1742" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Minerals &amp; Metals</text>
+<text x="982" y="1742" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">0.01874 kg Sb eq</text>
+<rect x="624" y="1766" width="372" height="34" rx="10" fill="#0e2950"/>
+<text x="638" y="1788" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#9fb3d1">Eutroph. Freshwater</text>
+<text x="982" y="1788" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11.5" fill="#ffffff" font-weight="bold" text-anchor="end">0.11592 kg P eq</text>
+<rect x="624" y="1826" width="372" height="1" fill="#12294e"/>
+<text x="624" y="1852" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="9" fill="#5dcaa5">RECOVERY POTENTIAL</text>
+<text x="624" y="1876" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Minerals &amp; metals</text>
+<text x="996" y="1876" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" font-weight="bold" text-anchor="end">-47.3 %</text>
+<rect x="744" y="1870" width="190" height="5" rx="2.5" fill="#16335f"/><rect x="744" y="1870" width="179.7" height="5" rx="2.5" fill="#5dcaa5"/>
+<text x="624" y="1902" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Climate change</text>
+<text x="996" y="1902" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" font-weight="bold" text-anchor="end">-21.0 %</text>
+<rect x="744" y="1896" width="190" height="5" rx="2.5" fill="#16335f"/><rect x="744" y="1896" width="79.8" height="5" rx="2.5" fill="#5dcaa5"/>
+<text x="624" y="1928" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10" fill="#9fb3d1">Eutrophication</text>
+<text x="996" y="1928" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="10.5" fill="#5dcaa5" font-weight="bold" text-anchor="end">-25.7 %</text>
+<rect x="744" y="1922" width="190" height="5" rx="2.5" fill="#16335f"/><rect x="744" y="1922" width="97.7" height="5" rx="2.5" fill="#5dcaa5"/>
+<text x="20" y="2032" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">980 x 430 BREAKS 00 s.1 "one footprint, always" — the standard must be edited to admit it, not silently violated</text>
+<text x="20" y="2049" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">FOV: 0.98 m wide at the current 0.6 m placement subtends ~78 deg. Comfortable reading is roughly +/-30 deg,</text>
+<text x="20" y="2066" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">so the outer thirds sit outside it. Default placement should move to ~0.85-0.9 m (~57 deg) or the panel curves.</text>
+<text x="20" y="2083" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">The 388 px primary CTA does not fit a 420 column: bottom bar becomes 150 + 210. Primary still right (00 s.5).</text>
+<text x="20" y="2100" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Compliance badge moved into the rail — it is global, not per tab, and the right header has no room for it.</text>
+<text x="20" y="2117" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Unlocked state does NOT reflow the layout: the middle keeps a ghost outline so no hit target ever moves.</text>
+<text x="20" y="2134" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">Visited ticks + a locked CTA are how "surf all pages first" is enforced. This is a COMPLETION requirement,</text>
+<text x="20" y="2151" font-family="-apple-system,'SF Pro Display','SF Pro Text',Helvetica,Arial,sans-serif" font-size="11" fill="#33445e">not the RB2.0 confirmation gate that was deleted on 2026-08-01 — different mechanic, different purpose.</text>
+</svg>
