@@ -171,7 +171,14 @@ namespace DPP.EditorTools
         {
             var root = TLCenter(name, parent, cx, cy, w, h);
 
-            // Hover-only white outline, behind everything, off at rest (00 §4).
+            // 00 §4.1 — the elevation kit. Adding it HERE rather than at the call
+            // sites gives Welcome, the first-run prompt, the QR error panel and the
+            // legacy DPP page the same depth in one edit, and guarantees a future
+            // screen built with this helper cannot forget it.
+            AddShadow(root, w, h, DPPSpriteFactory.RoundedR13);
+
+            // The white outline is retired (00 §4) but still built, so the ring can
+            // be switched back on via HoverHighlight.useOutline for a comparison.
             var outline = AddImage(CenterIn("HoverOutline", root, w + HoverHalo, h + HoverHalo),
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
@@ -189,6 +196,8 @@ namespace DPP.EditorTools
                                           : DPPTheme.SecondaryButtonFill;
             var fill = AddImage(CenterIn("Fill", root, w, h), DPPSpriteFactory.RoundedR13,
                 fillColor, sliced: true, raycast: true);
+
+            AddGloss(root, w, h, DPPSpriteFactory.RoundedR13);
 
             AddText(Stretch("Label", root), label, labelSize,
                 (primary || destructive) ? DPPTheme.TextOnNavy : DPPTheme.TextSecondary,

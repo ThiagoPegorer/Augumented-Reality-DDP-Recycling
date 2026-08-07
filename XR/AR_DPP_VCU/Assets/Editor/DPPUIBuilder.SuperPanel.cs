@@ -344,6 +344,7 @@ namespace DPP.EditorTools
             out TMP_Text l1, out TMP_Text l2, out Image icon)
         {
             root = TL($"Tab{i}", rail, 18f, SpTabTop + i * 80f, 184f, 68f);
+            AddShadow(root, 184f, 68f, DPPSpriteFactory.RoundedR13);
 
             var outline = AddImage(CenterIn("HoverOutline", root, 184f + HoverHalo, 68f + HoverHalo),
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
@@ -353,6 +354,7 @@ namespace DPP.EditorTools
                 DPPTheme.RowStroke, sliced: true);
             fill = AddImage(CenterIn("Fill", root, 182f, 66f), DPPSpriteFactory.RoundedR13,
                 DPPTheme.RowFill, sliced: true, raycast: true);
+            AddGloss(root, 184f, 68f, DPPSpriteFactory.RoundedR13);
 
             accent = AddImage(TL("Accent", root, 0f, 14f, 4f, 40f), DPPSpriteFactory.RoundedR3,
                 DPPTheme.TealLight, sliced: true);
@@ -369,9 +371,25 @@ namespace DPP.EditorTools
             l1 = AddText(TL("Line1", root, 54f, 18f, 124f, 16f), SpTabL1[i], 12.5f, DPPTheme.TextSecondary, bold: false);
             l2 = AddText(TL("Line2", root, 54f, 34f, 124f, 16f), SpTabL2[i], 12.5f, DPPTheme.TextSecondary, bold: false);
 
-            // Visited marker — a teal tick, top-right (spec §3.1).
-            var tickRT = TLCenter("Tick", root, 168f, 14f, 16f, 16f);
-            AddImage(CenterIn("Dot", tickRT, 14f, 14f), DPPSpriteFactory.Circle64, DPPTheme.TealAccent);
+            // Visited marker — the check icon, small, in the top-right corner
+            // (Thiago, 2026-08-06). It replaces a plain teal dot, which said
+            // "something is here" rather than "you have read this". Shown for the
+            // RECYCLER ONLY: the Product user has no walkthrough, so a progress
+            // marker on tabs that were never gated would invent a sequence that
+            // does not exist.
+            var tickRT = TLCenter("Tick", root, 170f, 13f, 15f, 15f);
+            var tickImg = tickRT.gameObject.AddComponent<Image>();
+            tickImg.preserveAspect = true;
+            tickImg.raycastTarget = false;
+            var tickSprite = LoadPageIcon("ic_visited");
+            if (tickSprite != null) tickImg.sprite = tickSprite;
+            else
+            {
+                // Without a sprite an Image draws a solid quad, which reads as a
+                // rendering fault rather than a missing asset.
+                tickImg.enabled = false;
+                Debug.LogWarning("[DPPUIBuilder] Icon 'ic_visited' not found — visited ticks will not show.");
+            }
             tick = tickRT.gameObject;
             tick.SetActive(false);
 
@@ -393,6 +411,8 @@ namespace DPP.EditorTools
             out TMP_Text label, out Image icon)
         {
             var root = TL("CertEntry", rail, 18f, 24f, 184f, 44f);
+            AddShadow(root, 184f, 44f, DPPSpriteFactory.RoundedR13);
+
             var outline = AddImage(CenterIn("HoverOutline", root, 184f + HoverHalo, 44f + HoverHalo),
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);
@@ -401,6 +421,7 @@ namespace DPP.EditorTools
                 DPPTheme.Hex("#e24b4a"), sliced: true);
             fill = AddImage(CenterIn("Fill", root, 181f, 41f), DPPSpriteFactory.RoundedR13,
                 DPPTheme.RowFill, sliced: true, raycast: true);
+            AddGloss(root, 184f, 44f, DPPSpriteFactory.RoundedR13);
 
             var iconRT = TL("Icon", root, 20f, 13f, 18f, 18f);
             icon = iconRT.gameObject.AddComponent<Image>();
@@ -516,6 +537,8 @@ namespace DPP.EditorTools
             out Image glyph, out TMP_Text label)
         {
             var root = TLCenter("LockButton", stage, SpStageW * 0.5f, 372f, 52f, 52f);
+            AddShadow(root, 43f, 43f, DPPSpriteFactory.Circle64);
+
             var outline = AddImage(CenterIn("HoverOutline", root, 40f + HoverHalo, 40f + HoverHalo),
                 DPPSpriteFactory.Circle64, Color.white);
             outline.gameObject.SetActive(false);

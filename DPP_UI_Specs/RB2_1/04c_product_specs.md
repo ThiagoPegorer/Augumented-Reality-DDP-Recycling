@@ -83,10 +83,10 @@ is a refinement of the 11, not a new inventory: every mass below traces to a BOM
 | 2 | Bottom housing | **235.5243** | Aluminium 235.5243 | 1 (area share) | 5 |
 | 3 | Bare PCB, 4-layer | **63.00** | glass fibre 29.0 · polymers 20.0 · Cu 14.0 | 3 | 3 |
 | 4 | Connector AS018-35 (× 3) | **150.06** | Al 95.0 · Cu 35.0 · polymers 15.0 · silicone 4.5 · Ni 0.5 · **Au 0.06** | 4 | 2 |
-| 5 | Processor 1 | **8.00** | polymers 4.00 · Cu 1.95 · Si 1.05 · Sn 0.70 · other 0.30 | 5 + 6 | 4 |
-| 6 | Processor 2 | **4.20** | polymers 2.20 · Cu 1.60 · Si 0.40 | 9 + 11 | 4 |
-| 7 | Processor 3 | **9.00** | Cu 4.50 · polymers 3.60 · Si 0.90 | 8 | 4 |
-| 8 | Processor 4 | **2.50** | polymers 0.85 · Cu 0.70 · ceramics 0.60 · Si 0.35 | 10 + 7 | 4 |
+| 5 | Processors 2x FCBGA + flash 2x 4 GB | **8.00** | polymers 4.00 · Cu 1.95 · Si 1.05 · Sn 0.70 · other 0.30 | 5 + 6 | 4 |
+| 6 | Regulators + analog front-end | **4.20** | polymers 2.20 · Cu 1.60 · Si 0.40 | 9 + 11 | 4 |
+| 7 | Power stages 6x (DPAK) | **9.00** | Cu 4.50 · polymers 3.60 · Si 0.90 | 8 | 4 |
+| 8 | Comm transceivers + MEMS sensors | **2.50** | polymers 0.85 · Cu 0.70 · ceramics 0.60 · Si 0.35 | 10 + 7 | 4 |
 | | **subtotal** | **580.7600** | | | |
 
 Housing masses carry four decimals in the payload because the area split is exact; the UI
@@ -146,20 +146,32 @@ so the mass split is the BOM's own geometry basis re-read, not a new number:
 **(b) Actives → the four CAD blocks, by footprint.** BOM rows 5–11 are seven entries totalling
 23.70 g; the demonstrator carries four IC blocks. Approved by Thiago 2026-08-06:
 
-| CAD block | Footprint | Represents (BOM rows) | Mass |
-|---|---|---|---|
-| Processor 1 | 70 × 40 × 5 | 2× FCBGA processor + 2× 4 GB flash | 8.00 |
-| Processor 2 | 50 × 30 × 5 | regulators ~10× + analog front-end 4–8× | 4.20 |
-| Processor 3 | 60 × 40 × 5 | power stages 6× (DPAK class) | 9.00 |
-| Processor 4 | 40 × 10 × 5 | comm transceivers ~10× + MEMS IMU/pressure | 2.50 |
-| | | | **23.70** ✔ |
+| CAD block | Displayed name | Footprint | BOM rows | Mass |
+|---|---|---|---|---|
+| `ic_1` | **Processors 2x FCBGA + flash 2x 4 GB** | 70 × 40 × 5 | 5 + 6 | 8.00 |
+| `ic_2` | **Regulators + analog front-end** | 50 × 30 × 5 | 9 + 11 | 4.20 |
+| `ic_3` | **Power stages 6x (DPAK)** | 60 × 40 × 5 | 8 | 9.00 |
+| `ic_4` | **Comm transceivers + MEMS sensors** | 40 × 10 × 5 | 10 + 7 | 2.50 |
+| | | | | **23.70** ✔ |
 
-Processor 1 taking the FCBGAs is the one non-arbitrary assignment — FCBGA is the largest
-package class on the board, so it belongs on the largest footprint. The other three are a
-modelling choice and must be declared as such in the thesis. **Each block's detail page names
-the BOM entries it represents** — the passport never claims the block *is* a single processor.
+⚠ **RENAMED 2026-08-06, and this closes open item 2.** They were `Processor 1…4` — the CAD
+sheet titles — on the instruction to keep the existing names. On device that produced four
+identical-looking rows saying nothing, and the thesis would still have had to explain that a VCU
+does not contain four processors. Thiago: *"rename the components to fit the same name of the LCA,
+not be just generic Processor 1."*
+
+The names are now the **BOM_v4 row names**, so a reader can move between the passport, the BOM and
+the LCA without a lookup table. `ic_1` taking the FCBGAs remains the one non-arbitrary assignment —
+FCBGA is the largest package class on the board, so it belongs on the largest footprint. The other
+three are a modelling choice and are still declared as such. `represents` continues to name the
+underlying BOM entries on the detail page.
 
 ## 4. Layout
+
+> ⚠ **§4.1–4.5 are the PRE-BUILD draft.** They were written before the tab was coded and three
+> device tests have overtaken them: there is no page title, no SPECS chip row, no board-material
+> rows, no iso inset and no zoom controls. **§4.6 is what is on the headset.** Read 4.1–4.5 for
+> the reasoning; build from 4.6.
 
 Super panel geometry, toe-in and placement are inherited from `04` §2 unchanged. This spec
 governs the **420 × 430 data canvas** only; the 220 rail and the 340 stage behave as `04` §3.1
@@ -230,6 +242,118 @@ Two 28 px circular controls at (338, 330) and (372, 330): `−` and `+`, zoom on
 
 **Why this state exists:** at 0.75 m a 372-unit-wide preview cannot carry `Ø23,4` legibly. Either
 the drawing gets the panel or the drawing is decoration. Verify on device (open item 1).
+
+### 4.6 As built — RBv2.1.1, after the 2026-08-06 device tests
+
+Four states in the 420 × 430 data canvas. Geometry constants live in
+`DPPUIBuilder.ProductSpecs.cs` (`Ps*`); this table is the intent, that file is the truth.
+
+| State | Header | Content band (76 → 360) | Bottom bar |
+|---|---|---|---|
+| **Product ID** | pills `Product ID` / `Component ID`, caption blank | 7 key/value rows, 34 pitch, value auto-shrinks 12.5 → 8 pt | `Back` · `Next` |
+| **Component ID** | same, second pill active | 8 part rows, 348 × 30, 35 pitch, in a `PinchScrollArea` | `Back` · tab-primary |
+| **Detail** | same, **no caption** | **1 × 2 grid, proportional** — drawing card 372 × *h*, then one merged chart column (see 4.6.1) | `All parts` · **`i`**, no Next |
+| **Drawing** | same, caption **blank** | drawing card 372 × 284, contain-fit, 14 pad, **nothing else** | `Back to data` **alone** |
+
+#### 4.6.1 The proportional split
+
+    lower   = 14 (heads) + rows × 20
+    drawing = 284 − 10 − lower,   clamped to [114, 240]
+
+Unclamped the two close **exactly** on the band bottom, which is why none of the constants is
+round. 1 material → 240 of drawing · 3 → 200 · 4 → 180 · 5 → 160 · 6 → 140. The clamp bites past
+7 materials and `LayoutDetail` **warns** rather than sliding the table under the button row.
+
+⚠ **Nothing is reserved under the last row.** The first cut kept a 26-unit strip there for the
+`i`; on device that read as empty navy on all eight components. The `i` moved to the button line
+and every part got those 26 units back as drawing.
+
+Implementation: the drawing card is one `RectTransform` whose *height* the view sets; its stroke,
+fill, the drawing and the `View` pill are all anchor-stretched or corner-anchored inside it, so
+one assignment moves everything. The lower block's `y` is the only other thing that moves.
+
+#### 4.6.2 One chart column, two axes
+
+| Column | x (content-local) | Content |
+|---|---|---|
+| MATERIAL | 0 → 96 | `Short(material)`, white at ≥ 1 % impact, `text/secondary` below |
+| MASS | → 104, right | mg under a gram, else 1 dp |
+| chart | 112, track 152 | **impact** bar 7 high at y 2 (log, 1e-6 %…100 %) · **rate** bar 5 high at y 11 (linear) |
+| IMP % | → 316, right | `#2eb086`, gold rows in `accent/gold` bold |
+| REC % | → 372, right | `#1f77b4`; `text/tip` at 0 %; `heat` `?` when null |
+
+**The column heads are the legend** — each in its bar's colour, repeated by the % column beneath.
+No key row.
+
+⚠ **The two axes are not comparable and the panel must keep saying so.** Three decade ticks sit at
+25/50/75 % of the track, drawn **over** the impact bar (dark where covered, light where not) — the
+only mark on the row distinguishing a log length from a linear one. On the connector, impact 98.5 %
+and rate 94 % end four units apart; that is a coincidence of two scales. Remove the ticks or the
+modal and the chart lies quietly.
+
+#### 4.6.3 The `i`, and the button line in this state
+
+**`All parts` · … · `i`. No Next.** Detail and Drawing are leaves of the drill, and the only move
+that makes sense from a leaf is back up it — Next there offered to leave the whole tab from its
+deepest screen. Product ID and the list keep theirs, so the tab still has a way forward.
+
+The `i` takes the slot Next vacated: a 22-unit dot in a 44 × 50 root at the far right of the
+button line, same hit height as every other button on that line. It replaced the 372-wide footnote
+that stated both formulas — true, unreadable at 0.75 m, permanently on screen. It opens a
+344 × 214 modal on the page's own canvas (so `00` §4.2's modal-depth rule does not apply); the
+scrim, a **grey `Back`** and **any state change** all close it. The modal is also where
+`Drawing dimensions in mm` lives.
+
+⚠ **Why it is built on the state root and not inside the lower block.** It was inside the block at
+first, and `LayoutDetail` moved it per component — but `HoverHighlight.OnEnable` calls `Apply()`,
+which writes `lift.localPosition = _restPos`, the pose captured the **first** time that object was
+enabled. Activating the Detail root therefore undid the move every single time, and the `i` landed
+beside an arbitrary row. **Rule: a RectTransform that HoverHighlight lifts must not also be moved
+at runtime** — either give `HoverHighlight.lift` a child to raise, or keep the element fixed. This
+one is fixed.
+
+#### 4.6.3b No text in this state
+
+Only the drawing and the table. The `Sc4 reuse eligible` badge is gone from the panel; the flag
+and its note stay in the payload and in the LCA, and **04d** declares the reuse set. `View` also
+shrank to 46 × 26 at 10.5 pt — **inside an unchanged 50-unit hit root** (`00` §4.2: shrink what is
+drawn, never what can be pressed).
+
+#### 4.6.4 Rules fixed by the earlier passes
+
+Four rules this revision fixed, all from the same device test:
+
+1. **The second pill never relabels itself.** It reads `Component ID` in all four states. It used
+   to take the open component's name; on device that read as the tab moving under the hand. See
+   `00` §4.3 — this is now an app-wide rule, not a decision local to this tab.
+2. **The enlarged drawing carries only the drawing.** No component name inside the card, no
+   `scale 1:1 · mm` caption. The name is redundant (the user tapped it out of a list one screen
+   ago) and the scale claim was false — the drawing is contain-fit to the card, not to size.
+3. **No `Next` in the enlarged drawing.** The whole button hides, not just its label, so its
+   ~50-unit hit area stops swallowing pinches in the lower right. From the deepest screen in the
+   tab the only offered move is back.
+4. **No page title, no SPECS chips, no board-material rows** (carried from the earlier passes).
+
+#### 4.6.5 Two things the chart cannot fix
+
+1. **On 5 of the 8 parts one material carries 100.0 % of the impact** — both housings (aluminium
+   alone) and the three IC groups (copper alone; polymers, silicon and ceramics have no EF 3.1
+   factor at all). A full-width 100 % bar there is trivially true and reads as a finding. The
+   chart earns its keep on the **connector** (gold: 0.04 % of mass, 98.5 % of impact) and **ic_1**
+   (tin 80.9 %). That is the thesis argument, visible on 2 of 8 screens. **Open item.**
+2. ⚠ Board materials — 79.4 g, **all** the tantalum and most of the on-board precious metals — are
+   still undeclared anywhere in the UI. They are in the payload and in the LCA. **04d owns this.**
+
+#### 4.6.6 Payload v0.16 — why `—` and `<0.01 %` are different answers
+
+v0.15 stored `impact_share_pct` rounded to 4 dp. Connector aluminium **has** an EF 3.1 factor and a
+real 3.28e-6 % share, but it stored as `0.0` — indistinguishable from polymers, which have **no**
+factor — and the panel rendered both as `—`. v0.16 stores the share to 6 significant figures, and
+`ShareLabel` decides *characterised vs not* from `impact_kg_sb_eq`, never from the share, so the
+distinction survives an old payload too.
+
+  * `—` = not characterised (no factor)
+  * `<0.01 %` = characterised and negligible
 
 ## 5. Roles
 
@@ -314,9 +438,9 @@ from the payload, not from the sheets.
 
 1. **Device check at 0.75 m** — is the 372 × 122 drawing preview readable enough to be worth a
    tap, or should the enlarged state be the only drawing state? Gates §4.5.
-2. **`Processor 1…4` in the thesis.** The names are kept on Thiago's instruction and the
-   detail page names the BOM entries behind each. The write-up must still state that the four
-   blocks are a geometric proxy for seven BOM entries, not four physical processors.
+2. ~~`Processor 1…4` in the thesis~~ — **CLOSED 2026-08-06.** The four blocks now carry their
+   BOM_v4 row names (§3.3b). The write-up must still state that four CAD blocks are a geometric
+   proxy for **seven** BOM entries, but it no longer has to explain away four "processors".
 3. **Tin double-count, 3.9 vs 4.6 g** (§2) — the only substantive BOM defect this spec found.
    Blocks nothing in the UI, blocks the LCA write-up. Decide before the Results chapter.
 4. **BOM closure 660.1565 vs "closes at 660 ✔"** (§2) — restate or rebalance.
@@ -330,4 +454,4 @@ from the payload, not from the sheets.
 
 ---
 
-*Last updated: 2026-08-06 · Status: specced, not coded · Parent: 04_DPP_page.md*
+*Last updated: 2026-08-06 · Status: §4.6 coded (payload v0.16), awaiting device test · §4.1–4.5 superseded draft · Parent: 04_DPP_page.md*

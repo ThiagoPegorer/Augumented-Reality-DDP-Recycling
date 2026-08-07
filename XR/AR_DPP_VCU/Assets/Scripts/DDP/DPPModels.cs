@@ -232,6 +232,7 @@ namespace DPP.Models
         public UsageHistory usage_history;                    // v0.6 — T6 #19
         public RepairHistory repair_history;                  // v0.6 — T6 #20
         public UnitUsePhase unit_use_phase;                   // v0.13 — the unit's own use-phase record
+        public MaterialReference material_reference;          // v0.15 — ADP + recovery constants
         public Disassembly disassembly;
         public EndOfLife end_of_life;
         public PhysicalUnit physical_unit;                    // v0.8 - the demonstrator, not the product
@@ -336,6 +337,48 @@ namespace DPP.Models
     {
         public string material;          // e.g. "brass (Cu-Zn)"
         public float weight_g;
+
+        /// <summary>v0.15 — mass × the EF 3.1 ADP factor for this element.</summary>
+        public float? impact_kg_sb_eq;
+
+        /// <summary>v0.15 — that as a share of the COMPONENT's minerals &amp; metals
+        /// total. This is the number that inverts the mass ranking: on the
+        /// connector, gold is 0.04 % of the mass and 98.5 % of the impact.</summary>
+        public float? impact_share_pct;
+
+        /// <summary>v0.15 — Sc3/Sc4 NET recovery, arrival × downstream yield
+        /// (LCA_framework_v4 Sc3 parameter table). 0 is a real answer, not a gap:
+        /// nickel, tantalum and tin are credited in no scenario.</summary>
+        public float? recovery_pct;
+    }
+
+    /// <summary>v0.15 — one material's constants, carried with the passport.</summary>
+    [Serializable]
+    public class MaterialReferenceEntry
+    {
+        public string material;
+        public float adp_kg_sb_eq_per_kg;
+        public float recovery_pct;
+        public string recovery_basis;
+    }
+
+    /// <summary>
+    /// v0.15 — the basis behind every number on the Component ID panel.
+    ///
+    /// It travels WITH the passport instead of living in the client, so the app
+    /// and the thesis quote the same constants and a reader can check them
+    /// without the source. <see cref="caveat"/> is load-bearing: mass × factor is
+    /// a recovery PRIORITY indicator, not an openLCA contribution result.
+    /// </summary>
+    [Serializable]
+    public class MaterialReference
+    {
+        public string adp_method;
+        public string adp_source;
+        public string recovery_scenario;
+        public string recovery_source;
+        public string caveat;
+        public List<MaterialReferenceEntry> materials;
     }
 
     [Serializable]
@@ -377,6 +420,29 @@ namespace DPP.Models
 
         public List<MaterialShare> material_breakdown;
         public string material_breakdown_basis;
+
+        /// <summary>v0.15 — this component's minerals &amp; metals footprint.</summary>
+        public float? minerals_impact_kg_sb_eq;
+
+        /// <summary>v0.15 — in Sc4's 17 g reuse-eligible set (processors + flash,
+        /// power stages). Everything else has a material-recovery route only.</summary>
+        public bool reuse_eligible;
+        public string reuse_note;
+
+        /// <summary>
+        /// v0.17 — the glTF node names in `Assets/CAD model/VCU_assembly.gltf` that ARE
+        /// this component, and the bridge between the data tabs and the stage model.
+        ///
+        /// ⚠ IT IS NOT 1:1 AND CANNOT BE. The passport groups by BOM row, the CAD groups
+        /// by body: three `connector*` bodies are one row, three red `component4*` DPAK
+        /// bodies are one row, one gold `component1` is a row that represents four chips,
+        /// and the fourteen screws are a single `board_material` row. Any selection in
+        /// either direction resolves through this list.
+        ///
+        /// Verified both ways 2026-08-07: all 26 mesh-bearing nodes are claimed exactly
+        /// once, and every name here exists in the glTF.
+        /// </summary>
+        public List<string> mesh_nodes;
 
         public bool IsPart => group == null || group == "part";
     }

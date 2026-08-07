@@ -189,8 +189,11 @@ namespace DPP.UI
                     tabStrokes[i].color = Fade(on ? tabActiveStroke : tabRestStroke, reachable);
                 if (tabAccents != null && i < tabAccents.Length && tabAccents[i] != null)
                     tabAccents[i].gameObject.SetActive(on);
+                // Recycler only (Thiago, 2026-08-06). The Product user has every tab
+                // open from the start, so a "you have been here" mark would imply a
+                // sequence that does not exist for them.
                 if (tabTicks != null   && i < tabTicks.Length   && tabTicks[i] != null)
-                    tabTicks[i].SetActive(_visited[i] && !on);
+                    tabTicks[i].SetActive(Walkthrough && _visited[i] && !on);
 
                 Color label = Fade(on ? textOnNavy : textSecondary, reachable);
                 if (tabLine1 != null && i < tabLine1.Length && tabLine1[i] != null) tabLine1[i].color = label;

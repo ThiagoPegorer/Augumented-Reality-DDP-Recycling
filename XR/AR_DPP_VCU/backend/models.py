@@ -118,9 +118,31 @@ COMPONENT_GROUPS = ("part", "board_material")
 
 
 class MaterialShare(BaseModel):
-    """One material line inside a component. Weights must sum to weight_g."""
+    """One material line inside a component. Weights must sum to weight_g.
+
+    v0.16 stores impact_share_pct to 6 significant figures. v0.15 rounded it to
+    4 dp, which collapsed connector aluminium's real 3.28e-6 % share to 0.0 - the
+    same value polymers carry because they have NO characterisation factor at all.
+    The panel could not then tell "negligible" from "not characterised" and showed
+    both as an em dash. Clients decide which it is from impact_kg_sb_eq, but the
+    share still has to carry enough precision to draw a log bar.
+
+    v0.15 adds the three fields the Component ID panel renders directly, so the
+    client never does LCA arithmetic:
+
+      impact_kg_sb_eq   mass x the EF 3.1 ADP factor for this element
+      impact_share_pct  that as a share of the COMPONENT's minerals total
+      recovery_pct      Sc3/Sc4 NET recovery = arrival x downstream yield
+
+    Why it is precomputed: the factors are method constants and the recovery
+    chain is two multiplications with per-material sources. Doing that in C#
+    would put a copy of the LCA in the client, where nobody would ever audit it.
+    """
     material: str
     weight_g: float
+    impact_kg_sb_eq: Optional[float] = None
+    impact_share_pct: Optional[float] = None
+    recovery_pct: Optional[float] = None
 
 
 class Component(BaseModel):
@@ -159,6 +181,47 @@ class Component(BaseModel):
     represents: Optional[str] = None   # the BOM entries behind a regrouped row
     material_breakdown: List[MaterialShare] = Field(default_factory=list)
     material_breakdown_basis: Optional[str] = None
+
+    # v0.15 - minerals & metals footprint of this component, and whether Sc4's
+    # component-reuse route applies to it (only the processors/flash and the
+    # power stages are in the 17 g eligible set).
+    minerals_impact_kg_sb_eq: Optional[float] = None
+    reuse_eligible: bool = False
+    reuse_note: Optional[str] = None
+
+    # v0.17 - the glTF node names in Assets/CAD model/VCU_assembly.gltf that ARE this
+    # component. Not 1:1 and never will be: the passport groups by BOM row while the
+    # CAD groups by body, so 3 connector bodies are one row, 3 red DPAK bodies are one
+    # row, and the 14 screws are one board_material row. Selection in either direction
+    # goes through this list, so it is data, not a lookup table compiled into the app.
+    #
+    # Verified both ways on 2026-08-07: all 26 mesh-bearing nodes are claimed exactly
+    # once, and every name here exists in the glTF.
+    mesh_nodes: List[str] = Field(default_factory=list)
+
+
+class MaterialReferenceEntry(BaseModel):
+    """One material's characterisation and recovery constants, with provenance."""
+    material: str
+    adp_kg_sb_eq_per_kg: float
+    recovery_pct: float
+    recovery_basis: str
+
+
+class MaterialReference(BaseModel):
+    """v0.15 - the basis behind every number on the Component ID panel.
+
+    It travels WITH the passport rather than living in the client, so the app and
+    the thesis quote the same constants and a reader can check them without the
+    source code. `caveat` is not decoration: mass x characterisation factor is a
+    recovery PRIORITY indicator, not an openLCA contribution result.
+    """
+    adp_method: str
+    adp_source: str
+    recovery_scenario: str
+    recovery_source: str
+    caveat: str
+    materials: List[MaterialReferenceEntry] = Field(default_factory=list)
 
 
 class SubstanceOfConcern(BaseModel):

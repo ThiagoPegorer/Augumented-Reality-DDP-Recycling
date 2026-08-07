@@ -55,7 +55,23 @@ namespace DPP.EditorTools
                 // Re-running RBv2_0/Legacy rebuilds the legacy canva and does NOT restore
                 // this reference — /1 is the phase to re-run.
                 new Wire("ScreenRouter", "dppCanva",            "RBv2_1/8"),
-                new Wire("ScreenRouter", "modelExploration",    "RBv2_0/Legacy"),
+
+                // ---- RB2.0 screens that are STILL ON THE PATH ----
+                // The Recycler's "Continue to disassembly" runs straight into these.
+                // They are legacy in NUMBERING only; spec 04b replaces them, and until
+                // it does, an unset reference here means the teardown dead-ends.
+                //
+                // WARNING: RBv2_1/1 is DESTRUCTIVE - it deletes DPPPanelCanvas and
+                // every screen under it, so re-running it always empties these four.
+                // That is the whole reason this map exists.
+                //
+                // `modelExploration` was here and is RETIRED (2026-08-06). Spec 04 v2
+                // put the model in the super panel stage, so the standalone exploration
+                // screen has no route in and nothing calls it. The field and
+                // ShowModelExploration() survive only because serialized UnityEvents on
+                // the legacy DppCanva still point at the method - deleting it would log
+                // missing-method errors rather than be silently unused. Kill both in the
+                // RB2.0 retirement pass.
                 new Wire("ScreenRouter", "disassemblyIntro",    "RBv2_0/4"),
                 new Wire("ScreenRouter", "stepFlow",            "RBv2_0/5"),
                 new Wire("ScreenRouter", "completionSummary",   "RBv2_0/6"),
@@ -109,16 +125,19 @@ namespace DPP.EditorTools
                 new Wire("ProductSpecsView", "subIdLabel",   "RBv2_1/9"),
                 new Wire("ProductSpecsView", "subCompFill",  "RBv2_1/9"),
                 new Wire("ProductSpecsView", "subCompLabel", "RBv2_1/9"),
-                new Wire("ProductSpecsView", "caption",      "RBv2_1/9"),
                 new Wire("ProductSpecsView", "backLabel",    "RBv2_1/9"),
                 new Wire("ProductSpecsView", "primaryLabel", "RBv2_1/9"),
+                new Wire("ProductSpecsView", "primaryButton","RBv2_1/9"),
                 new Wire("ProductSpecsView", "identityRoot", "RBv2_1/9"),
                 new Wire("ProductSpecsView", "partsRoot",    "RBv2_1/9"),
                 new Wire("ProductSpecsView", "detailRoot",   "RBv2_1/9"),
                 new Wire("ProductSpecsView", "drawingRoot",  "RBv2_1/9"),
                 new Wire("ProductSpecsView", "listContent",  "RBv2_1/9"),
+                new Wire("ProductSpecsView", "drawingCard",  "RBv2_1/9"),
                 new Wire("ProductSpecsView", "detailDrawing","RBv2_1/9"),
-                new Wire("ProductSpecsView", "detailIso",    "RBv2_1/9"),
+                new Wire("ProductSpecsView", "lowerBlock",   "RBv2_1/9"),
+                new Wire("ProductSpecsView", "infoModal",    "RBv2_1/9"),
+                new Wire("ProductSpecsView", "viewButton",   "RBv2_1/9"),
                 new Wire("ProductSpecsView", "drawingLarge", "RBv2_1/9"),
                 // `owner` is NOT listed: RBv2_1_1/2 sets it, and it is legitimately
                 // null while the page runs standalone on DPPPanelCanvas.

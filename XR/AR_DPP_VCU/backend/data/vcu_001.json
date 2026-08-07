@@ -121,10 +121,19 @@
       "material_breakdown": [
         {
           "material": "Aluminium",
-          "weight_g": 108.4757
+          "weight_g": 108.4757,
+          "impact_kg_sb_eq": 1.18e-10,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 77.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 1.18e-10,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "housing_upper"
+      ]
     },
     {
       "id": "housing_bottom",
@@ -144,10 +153,19 @@
       "material_breakdown": [
         {
           "material": "Aluminium",
-          "weight_g": 235.5243
+          "weight_g": 235.5243,
+          "impact_kg_sb_eq": 2.57e-10,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 77.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 2.57e-10,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "housing_bottom"
+      ]
     },
     {
       "id": "pcb",
@@ -167,18 +185,33 @@
       "material_breakdown": [
         {
           "material": "Glass fibre",
-          "weight_g": 29.0
+          "weight_g": 29.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Polymers/epoxy",
-          "weight_g": 20.0
+          "weight_g": 20.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Copper",
-          "weight_g": 14.0
+          "weight_g": 14.0,
+          "impact_kg_sb_eq": 1.918e-05,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 89.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 1.918e-05,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "pcb"
+      ]
     },
     {
       "id": "connectors",
@@ -198,34 +231,60 @@
       "material_breakdown": [
         {
           "material": "Aluminium",
-          "weight_g": 95.0
+          "weight_g": 95.0,
+          "impact_kg_sb_eq": 1.04e-10,
+          "impact_share_pct": 3.28285e-06,
+          "recovery_pct": 77.0
         },
         {
           "material": "Copper",
-          "weight_g": 35.0
+          "weight_g": 35.0,
+          "impact_kg_sb_eq": 4.795e-05,
+          "impact_share_pct": 1.51358,
+          "recovery_pct": 89.0
         },
         {
           "material": "Polymers/epoxy",
-          "weight_g": 15.0
+          "weight_g": 15.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Silicone",
-          "weight_g": 4.5
+          "weight_g": 4.5,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Nickel",
-          "weight_g": 0.5
+          "weight_g": 0.5,
+          "impact_kg_sb_eq": 3.265e-08,
+          "impact_share_pct": 0.00103062,
+          "recovery_pct": 0.0
         },
         {
           "material": "Gold",
-          "weight_g": 0.06
+          "weight_g": 0.06,
+          "impact_kg_sb_eq": 0.00312,
+          "impact_share_pct": 98.4854,
+          "recovery_pct": 94.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 0.003167982754,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "connector",
+        "connector001",
+        "connector002"
+      ]
     },
     {
       "id": "ic_1",
-      "name": "Processor 1",
+      "name": "Processors 2x FCBGA + flash 2x 4 GB",
       "group": "part",
       "material": "Semiconductor packages (Si + epoxy + Cu)",
       "weight_g": 8.0,
@@ -242,30 +301,51 @@
       "material_breakdown": [
         {
           "material": "Polymers/epoxy",
-          "weight_g": 4.0
+          "weight_g": 4.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Copper",
-          "weight_g": 1.95
+          "weight_g": 1.95,
+          "impact_kg_sb_eq": 2.6715e-06,
+          "impact_share_pct": 19.0665,
+          "recovery_pct": 89.0
         },
         {
           "material": "Silicon",
-          "weight_g": 1.05
+          "weight_g": 1.05,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Tin (solder)",
-          "weight_g": 0.7
+          "weight_g": 0.7,
+          "impact_kg_sb_eq": 1.134e-05,
+          "impact_share_pct": 80.9335,
+          "recovery_pct": 0.0
         },
         {
           "material": "Other",
-          "weight_g": 0.3
+          "weight_g": 0.3,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 1.40115e-05,
+      "reuse_eligible": true,
+      "reuse_note": "Sc4 reuse-eligible (processors + flash) - 52.6 % of eligible mass reused as a component",
+      "mesh_nodes": [
+        "component1"
+      ]
     },
     {
       "id": "ic_2",
-      "name": "Processor 2",
+      "name": "Regulators + analog front-end",
       "group": "part",
       "material": "Semiconductor packages (Si + epoxy + Cu)",
       "weight_g": 4.2,
@@ -282,22 +362,37 @@
       "material_breakdown": [
         {
           "material": "Polymers/epoxy",
-          "weight_g": 2.2
+          "weight_g": 2.2,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Copper",
-          "weight_g": 1.6
+          "weight_g": 1.6,
+          "impact_kg_sb_eq": 2.192e-06,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 89.0
         },
         {
           "material": "Silicon",
-          "weight_g": 0.4
+          "weight_g": 0.4,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 2.192e-06,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "component3"
+      ]
     },
     {
       "id": "ic_3",
-      "name": "Processor 3",
+      "name": "Power stages 6x (DPAK)",
       "group": "part",
       "material": "Semiconductor packages (Si + epoxy + Cu)",
       "weight_g": 9.0,
@@ -313,22 +408,39 @@
       "material_breakdown": [
         {
           "material": "Copper",
-          "weight_g": 4.5
+          "weight_g": 4.5,
+          "impact_kg_sb_eq": 6.165e-06,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 89.0
         },
         {
           "material": "Polymers/epoxy",
-          "weight_g": 3.6
+          "weight_g": 3.6,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Silicon",
-          "weight_g": 0.9
+          "weight_g": 0.9,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 6.165e-06,
+      "reuse_eligible": true,
+      "reuse_note": "Sc4 reuse-eligible (power stages) - 52.6 % of eligible mass reused as a component",
+      "mesh_nodes": [
+        "component4",
+        "component001",
+        "component002"
+      ]
     },
     {
       "id": "ic_4",
-      "name": "Processor 4",
+      "name": "Comm transceivers + MEMS sensors",
       "group": "part",
       "material": "Semiconductor packages + ceramic MEMS",
       "weight_g": 2.5,
@@ -345,22 +457,40 @@
       "material_breakdown": [
         {
           "material": "Polymers/epoxy",
-          "weight_g": 0.85
+          "weight_g": 0.85,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Copper",
-          "weight_g": 0.7
+          "weight_g": 0.7,
+          "impact_kg_sb_eq": 9.59e-07,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 89.0
         },
         {
           "material": "Ceramics",
-          "weight_g": 0.6
+          "weight_g": 0.6,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Silicon",
-          "weight_g": 0.35
+          "weight_g": 0.35,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 9.59e-07,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "component2"
+      ]
     },
     {
       "id": "passives",
@@ -380,38 +510,65 @@
       "material_breakdown": [
         {
           "material": "Ceramics",
-          "weight_g": 25.0
+          "weight_g": 25.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Mixed terminations",
-          "weight_g": 10.0
+          "weight_g": 10.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Steel/Fe",
-          "weight_g": 5.0
+          "weight_g": 5.0,
+          "impact_kg_sb_eq": 2.62e-10,
+          "impact_share_pct": 1.52192e-05,
+          "recovery_pct": 98.0
         },
         {
           "material": "Aluminium",
-          "weight_g": 3.3
+          "weight_g": 3.3,
+          "impact_kg_sb_eq": 4e-12,
+          "impact_share_pct": 2.32354e-07,
+          "recovery_pct": 77.0
         },
         {
           "material": "Polymers/epoxy",
-          "weight_g": 1.6
+          "weight_g": 1.6,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Gold",
-          "weight_g": 0.0317
+          "weight_g": 0.0317,
+          "impact_kg_sb_eq": 0.0016484,
+          "impact_share_pct": 95.7529,
+          "recovery_pct": 94.0
         },
         {
           "material": "Silver",
-          "weight_g": 0.0593
+          "weight_g": 0.0593,
+          "impact_kg_sb_eq": 6.9974e-05,
+          "impact_share_pct": 4.06468,
+          "recovery_pct": 93.0
         },
         {
           "material": "Palladium",
-          "weight_g": 0.0055
+          "weight_g": 0.0055,
+          "impact_kg_sb_eq": 3.1405e-06,
+          "impact_share_pct": 0.182427,
+          "recovery_pct": 95.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 0.001721514766,
+      "reuse_eligible": false,
+      "reuse_note": null
     },
     {
       "id": "ta_caps",
@@ -431,14 +588,23 @@
       "material_breakdown": [
         {
           "material": "Polymers/epoxy",
-          "weight_g": 1.6
+          "weight_g": 1.6,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         },
         {
           "material": "Tantalum",
-          "weight_g": 0.9
+          "weight_g": 0.9,
+          "impact_kg_sb_eq": 3.654e-08,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 3.654e-08,
+      "reuse_eligible": false,
+      "reuse_note": null
     },
     {
       "id": "solder",
@@ -458,10 +624,16 @@
       "material_breakdown": [
         {
           "material": "Tin (solder)",
-          "weight_g": 3.9
+          "weight_g": 3.9,
+          "impact_kg_sb_eq": 6.318e-05,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 6.318e-05,
+      "reuse_eligible": false,
+      "reuse_note": null
     },
     {
       "id": "tim",
@@ -481,10 +653,16 @@
       "material_breakdown": [
         {
           "material": "Silicone",
-          "weight_g": 8.0
+          "weight_g": 8.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 0.0,
+      "reuse_eligible": false,
+      "reuse_note": null
     },
     {
       "id": "coating",
@@ -504,10 +682,16 @@
       "material_breakdown": [
         {
           "material": "Polymers/epoxy",
-          "weight_g": 3.0
+          "weight_g": 3.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 0.0,
+      "reuse_eligible": false,
+      "reuse_note": null
     },
     {
       "id": "misc",
@@ -527,10 +711,16 @@
       "material_breakdown": [
         {
           "material": "Polymers/epoxy",
-          "weight_g": 5.0
+          "weight_g": 5.0,
+          "impact_kg_sb_eq": 0.0,
+          "impact_share_pct": 0.0,
+          "recovery_pct": 0.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 0.0,
+      "reuse_eligible": false,
+      "reuse_note": null
     },
     {
       "id": "fasteners",
@@ -550,10 +740,32 @@
       "material_breakdown": [
         {
           "material": "Steel/Fe",
-          "weight_g": 12.0
+          "weight_g": 12.0,
+          "impact_kg_sb_eq": 6.29e-10,
+          "impact_share_pct": 100.0,
+          "recovery_pct": 98.0
         }
       ],
-      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md"
+      "material_breakdown_basis": "[A] declared assumptions - VCU_BOM_v4.xlsx (2026-07-25) sheet By_Component; see LCA_Analysis/Docs/BOM_v4.md",
+      "minerals_impact_kg_sb_eq": 6.29e-10,
+      "reuse_eligible": false,
+      "reuse_note": null,
+      "mesh_nodes": [
+        "housing_screws",
+        "housing_screws001",
+        "housing_screws002",
+        "housing_screws003",
+        "connector_screw",
+        "connector_screw001",
+        "connector_screw002",
+        "connector_screw003",
+        "connector_screw004",
+        "connector_screw005",
+        "pcb_screws",
+        "pcb_screws001",
+        "pcb_screws002",
+        "pcb_screws003"
+      ]
     }
   ],
   "substances_of_concern": [
@@ -1513,7 +1725,7 @@
         },
         {
           "component_id": "ic_1",
-          "name": "Processor 1",
+          "name": "Processors 2x FCBGA + flash 2x 4 GB",
           "mass_g": 23.7,
           "verdict": "material_recovery",
           "reason": "over-temperature failure logged 2025; replaced unit not re-qualified",
@@ -1521,7 +1733,7 @@
         },
         {
           "component_id": "ic_2",
-          "name": "Processor 2",
+          "name": "Regulators + analog front-end",
           "mass_g": 23.7,
           "verdict": "material_recovery",
           "reason": "over-temperature failure logged 2025; replaced unit not re-qualified",
@@ -1529,7 +1741,7 @@
         },
         {
           "component_id": "ic_3",
-          "name": "Processor 3",
+          "name": "Power stages 6x (DPAK)",
           "mass_g": 23.7,
           "verdict": "material_recovery",
           "reason": "over-temperature failure logged 2025; replaced unit not re-qualified",
@@ -1537,7 +1749,7 @@
         },
         {
           "component_id": "ic_4",
-          "name": "Processor 4",
+          "name": "Comm transceivers + MEMS sensors",
           "mass_g": 23.7,
           "verdict": "material_recovery",
           "reason": "over-temperature failure logged 2025; replaced unit not re-qualified",
@@ -1615,5 +1827,110 @@
     "basis": "simulated",
     "note": "Use-phase telemetry a vehicle control unit would record about ITSELF. Every figure is derived from data already in this passport: powered hours and distance from environmental.usage_profile, DTC counts from repair_history.events, firmware from service.software_updates. Component ids match components[]."
   },
-  "schema_version": "0.14"
+  "schema_version": "0.17",
+  "material_reference": {
+    "adp_method": "EF 3.1 (adapted), Resource use minerals and metals, kg Sb eq",
+    "adp_source": "openLCA LCIA Methods 2.4.0, category b2ad6494-c78d-11e6-9d9d-cec0c932ce01",
+    "recovery_scenario": "Sc3/Sc4 net = arrival x downstream yield",
+    "recovery_source": "LCA_framework_v4.md Sc3 parameter table; S-4 Bigum 2012 Table 8, S-5 Lee 2012, S-6 Cui & Zhang 2008",
+    "caveat": "priority = mass x characterisation factor. It is a RECOVERY PRIORITY INDICATOR, not an openLCA contribution result: it ignores ore grade, process losses and the market processes the model uses.",
+    "materials": [
+      {
+        "material": "Gold",
+        "adp_kg_sb_eq_per_kg": 52.0,
+        "recovery_pct": 94.0,
+        "recovery_basis": "96 % arrival [S-5] x 98 % refinery [S-4]"
+      },
+      {
+        "material": "Silver",
+        "adp_kg_sb_eq_per_kg": 1.18,
+        "recovery_pct": 93.0,
+        "recovery_basis": "Sc3 credit 54.9 mg of 59 mg"
+      },
+      {
+        "material": "Palladium",
+        "adp_kg_sb_eq_per_kg": 0.571,
+        "recovery_pct": 95.0,
+        "recovery_basis": "Sc3 credit 5.2 mg of 5.5 mg"
+      },
+      {
+        "material": "Tin (solder)",
+        "adp_kg_sb_eq_per_kg": 0.0162,
+        "recovery_pct": 0.0,
+        "recovery_basis": "not in any scenario credit list"
+      },
+      {
+        "material": "Copper",
+        "adp_kg_sb_eq_per_kg": 0.00137,
+        "recovery_pct": 89.0,
+        "recovery_basis": "94 % arrival [S-5] x 95 % refinery [S-4], connector Cu-scrap route"
+      },
+      {
+        "material": "Nickel",
+        "adp_kg_sb_eq_per_kg": 6.53e-05,
+        "recovery_pct": 0.0,
+        "recovery_basis": "never credited in any scenario - no downstream yield adopted"
+      },
+      {
+        "material": "Tantalum",
+        "adp_kg_sb_eq_per_kg": 4.06e-05,
+        "recovery_pct": 0.0,
+        "recovery_basis": "no at-scale route [S-6]; Sc3 enables separation but credits 0"
+      },
+      {
+        "material": "Steel/Fe",
+        "adp_kg_sb_eq_per_kg": 5.24e-08,
+        "recovery_pct": 98.0,
+        "recovery_basis": "98 % arrival [S-5] x 100 % [S-4]"
+      },
+      {
+        "material": "Aluminium",
+        "adp_kg_sb_eq_per_kg": 1.09e-09,
+        "recovery_pct": 77.0,
+        "recovery_basis": "98 % arrival [S-5] x 79 % remelt [S-4]"
+      },
+      {
+        "material": "Silicon",
+        "adp_kg_sb_eq_per_kg": 1.4e-11,
+        "recovery_pct": 0.0,
+        "recovery_basis": "slag"
+      },
+      {
+        "material": "Polymers/epoxy",
+        "adp_kg_sb_eq_per_kg": 0.0,
+        "recovery_pct": 0.0,
+        "recovery_basis": "incineration - energy, no material credit"
+      },
+      {
+        "material": "Silicone",
+        "adp_kg_sb_eq_per_kg": 0.0,
+        "recovery_pct": 0.0,
+        "recovery_basis": "incineration - energy, no material credit"
+      },
+      {
+        "material": "Ceramics",
+        "adp_kg_sb_eq_per_kg": 0.0,
+        "recovery_pct": 0.0,
+        "recovery_basis": "slag"
+      },
+      {
+        "material": "Mixed terminations",
+        "adp_kg_sb_eq_per_kg": 0.0,
+        "recovery_pct": 0.0,
+        "recovery_basis": "slag"
+      },
+      {
+        "material": "Glass fibre",
+        "adp_kg_sb_eq_per_kg": 0.0,
+        "recovery_pct": 0.0,
+        "recovery_basis": "slag"
+      },
+      {
+        "material": "Other",
+        "adp_kg_sb_eq_per_kg": 0.0,
+        "recovery_pct": 0.0,
+        "recovery_basis": "slag"
+      }
+    ]
+  }
 }

@@ -101,19 +101,30 @@ namespace DPP.EditorTools
             // (teal primary). RBv2.0 had "Retry" teal on the LEFT and "Scan again" dark
             // on the right, which put the go-forward action on the wrong side and
             // offered two buttons that both re-attempted the fetch.
+            // ⚠ These two were hand-rolled and had NO HoverHighlight at all — they
+            // never responded to the pointer in RB2.0 or RB2.1 and nobody noticed,
+            // because the ring was the only feedback and its absence reads as "the
+            // ray missed". Both now carry the elevation kit and the hover rise
+            // (00 §4, §4.1).
             var closeRT = TLCenter("CloseAppButton", error, 145, 186, 140, 32);
+            AddShadow(closeRT, 140, 32, DPPSpriteFactory.RoundedR13);
             var closeFill = AddImage(CenterIn("Fill", closeRT, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.SafetyStroke, sliced: true, raycast: true);
+            AddGloss(closeRT, 140, 32, DPPSpriteFactory.RoundedR13);
             AddText(Stretch("Label", closeRT), "Close app", 12.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
             var closeBtn = closeRT.gameObject.AddComponent<Button>();
             closeBtn.transition = Selectable.Transition.None;
             closeBtn.targetGraphic = closeFill;
+            closeRT.gameObject.AddComponent<HoverHighlight>();
 
             var againRT = TLCenter("ScanAgainButton", error, 295, 186, 140, 32);
+            AddShadow(againRT, 140, 32, DPPSpriteFactory.RoundedR13);
             var againFill = AddImage(CenterIn("Fill", againRT, 140, 32), DPPSpriteFactory.RoundedR13, DPPTheme.TealAccent, sliced: true, raycast: true);
+            AddGloss(againRT, 140, 32, DPPSpriteFactory.RoundedR13);
             AddText(Stretch("Label", againRT), "Scan again", 12.5f, DPPTheme.TextOnNavy, bold: true, align: TextAlignmentOptions.Center);
             var againBtn = againRT.gameObject.AddComponent<Button>();
             againBtn.transition = Selectable.Transition.None;
             againBtn.targetGraphic = againFill;
+            againRT.gameObject.AddComponent<HoverHighlight>();
             error.gameObject.SetActive(false);
 
             // ================= wiring =================

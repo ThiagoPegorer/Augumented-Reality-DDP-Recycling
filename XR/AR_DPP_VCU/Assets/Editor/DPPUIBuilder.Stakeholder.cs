@@ -25,7 +25,19 @@ namespace DPP.EditorTools
     public static partial class DPPUIBuilder
     {
         // Panel-local geometry, straight off the approved mock.
-        private const float StkCardW = 290f, StkCardH = 170f, StkCardY = 134f;
+        // Cards 290 -> 280 with the gutter 12 -> 32 (device test 2026-08-06).
+        //
+        // The geometry was already symmetric: each hover outline is HoverHalo/2 = 3
+        // wider than its card on every side, so both gutters measured 9. But the
+        // panel is flat and sits left of the user's forward axis, so the LEFT card's
+        // right gutter and the RIGHT card's left gutter are seen at different
+        // angles — and 9 units of perspective-foreshortened gap reads as "almost
+        // touching" on one side and fine on the other. Widening the gutter to 26
+        // after the halo makes it unambiguous from any viewing angle.
+        //
+        // 280 + 32 + 280 = 592 = the panel's 640 less the two 24 margins.
+        private const float StkCardW = 280f, StkCardH = 170f, StkCardY = 134f;
+        private const float StkCardGap = 32f;
         private const float StkIcon = 48f;      // 40 was too small: the recycling
                                                 // arrows close up below ~44 px at
                                                 // panel scale (same call as the 96 px logo)
@@ -66,14 +78,21 @@ namespace DPP.EditorTools
             var userBtn = BuildRoleCard(screen, "ProductUserCard", 24f, "ic_product_user",
                 "Product user",
                 "Digital Product Passport access only – product data, materials, impact and more");
-            var recBtn = BuildRoleCard(screen, "RecyclerCard", 326f, "ic_recycler",
+            var recBtn = BuildRoleCard(screen, "RecyclerCard", 24f + StkCardW + StkCardGap, "ic_recycler",
                 "Recycler",
                 "Digital Product Passport access and Dismantling assist steps");
 
-            // Destructive pill in the standard LEFT slot — identical geometry to the
-            // Welcome canvas' Close app, so the hit target never moves (00 §5).
-            var quitBtn = BuildPillButton(screen, "QuitButton", cx: 114, cy: 376, w: 180, h: 52,
-                label: "Quit", labelSize: 16, primary: false, chevron: false, destructive: true);
+            // Destructive pill in the standard LEFT slot, now at the DATA-PANEL size
+            // (Thiago, 2026-08-06): 110 wide, drawn 34 high inside a 50 hit root.
+            //
+            // ⚠ This deliberately breaks the "identical geometry to Welcome's Close
+            // app" rule the old comment claimed. That rule existed so the hit target
+            // never moved between screens — but Welcome and this screen are never
+            // seen back to back on the same surface, and the bottom bar the user
+            // actually repeats is the DPP page's. Matching the one they see four
+            // times beats matching the one they see once.
+            var quitBtn = PsSmallPill(screen, "QuitButton", 24f + 55f, 110f, "Quit",
+                primary: false, out _, cy: 380f, destructive: true);
 
             // ---- wiring ----
             SetRef(select, "router", router);
@@ -101,6 +120,8 @@ namespace DPP.EditorTools
         {
             var card = TL(name, parent, x, StkCardY, StkCardW, StkCardH);
 
+            AddShadow(card, StkCardW, StkCardH, DPPSpriteFactory.RoundedR20);
+
             var outline = AddImage(CenterIn("HoverOutline", card, StkCardW + HoverHalo, StkCardH + HoverHalo),
                 DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
             outline.gameObject.SetActive(false);                       // hover only (00 §4)
@@ -109,6 +130,7 @@ namespace DPP.EditorTools
                 DPPSpriteFactory.RoundedR13, DPPTheme.Hex("#21407a"), sliced: true);
             var fill = AddImage(CenterIn("Fill", card, StkCardW, StkCardH),
                 DPPSpriteFactory.RoundedR13, DPPTheme.RowFill, sliced: true, raycast: true);
+            AddGloss(card, StkCardW, StkCardH, DPPSpriteFactory.RoundedR20);
 
             // Authored PNG, rendered as drawn — both icons are already green, so no tint.
             var iconRT = TL("Icon", card, StkPad, StkTop, StkIcon, StkIcon);

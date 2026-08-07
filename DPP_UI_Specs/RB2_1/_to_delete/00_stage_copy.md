@@ -172,69 +172,11 @@ capsule bars, never typed** (§5).
 
 ## 4. Interaction rules (non-negotiable)
 
-**Hover — the element RISES. RBv2.1.1 retires the white outline.** Thiago, 2026-08-06: *"the
-white border is a bit old school and not a modern method… create a highlight that gives the idea
-the button is jumping a bit."* A ring is a flat-screen convention; in a headset the surface has
-real depth, so hover is a physical response, not a decoration:
-
-| | while hovered | why |
-|---|---|---|
-| Position | **−6 units along the canvas normal** (toward the user) | the actual elevation cue |
-| Scale | **× 1.03** | supports the rise; alone it reads as a zoom |
-| Shadow | drops **3 units** further, alpha **+0.12** | what sells "off the surface" — the rise is invisible without it |
-| Fill | **+0.09** on each RGB channel | as if catching more light |
-| Ease | ease-out over **0.09 s** | a snap reads as a state change, a rise as a response |
-
-All four live in `HoverHighlight`; **no builder wires them.** The ring survives behind
-`useOutline = false` so it can be switched back on for a participant comparison.
-
-*Corollary that governs layout:* **chrome = touchable.** A card border around static content
-reads as a button — RB2.0 user feedback, and the reason the detail pages carry chrome on scroll
-windows only. **RBv2.1.1 adds a second corollary: elevation = touchable.** Nothing that cannot be
-pressed gets a shadow.
-
-### 4.1 The elevation kit — every clickable surface, no exceptions
-
-Three pieces, always in this child order:
-
-| Child | Geometry | Colour |
-|---|---|---|
-| **`Shadow`** | visual box **+3**, offset **+3 down**, FIRST child | black **α 0.32** |
-| *the element* | its own stroke / fill / icon / label | per §5 |
-| **`Gloss`** | see below — after the fill, before the label | white **α 0.10** / **0.05** |
-
-**The sheen does NOT scale with the element**, and that is the point:
-
-| element height | gloss | alpha | position |
-|---|---|---|---|
-| ≤ 40 (buttons, pills, rows) | **40 %** of the height | 0.10 | centred on the upper third |
-| > 40 (tabs, cards, entries) | **18 %, capped at 12** | 0.05 | pinned 3 under the top edge |
-
-40 % of a 34-unit pill is light falling across a curved top. 40 % of a 170-unit role card is a
-68-unit grey slab — a big flat card has no curve for light to fall on, only a lit top EDGE.
-Device test 2026-08-06: *"the glow in the tabs might be too much… the small buttons are okay."*
-
-Built by `AddShadow()` and `AddGloss()`. ⚠ **The names `Shadow` and `Fill` are load-bearing** —
-`HoverHighlight` resolves them from the children by name, so a hand-rolled button renders fine and
-silently does not respond to hover.
-
-Two rules the pieces themselves encode:
-
-- **The shadow is sized from the VISUAL box, never the hit box.** A shadow around an invisible
-  50-unit hit area is a grey halo in mid-air.
-- **The gloss is inset 12 units.** A highlight that reaches the edge reads as a second border
-  rather than as light.
-
-### 4.2 Corners — `Pill` is not a capsule
-
-⚠ `DPPSpriteFactory.Pill` is a **400 × 44 rounded rect with a ZERO 9-slice border**, authored to
-be *stretched* at 200 × 22 for the grabber bar. Drawn at any other aspect its corners stretch into
-ellipses — at 110 × 34 the radius becomes 6 units wide by 17 tall, which reads as an angular
-corner. This was the "buttons are a bit angulate" defect of 2026-08-06.
-
-**Use `Capsule(img, visualHeight)`**: it swaps in the 9-sliced r22 sprite and sets
-`pixelsPerUnitMultiplier = 24 / (h / 2)`, landing the corner radius exactly on half the height at
-any size, from one sprite.
+**Hover.** The white highlight outline appears **only** while the pinch-ray is over an
+interactive element. Resting state is the element's normal fill. Nothing is permanently
+highlighted. *Corollary that governs layout:* **chrome = touchable.** A card border around static
+content reads as a button — RB2.0 user feedback, and the reason the detail pages carry chrome on
+scroll windows only.
 
 **Hit areas ≥ 50 px.** Any hand-ray target gets an invisible hit area of ≥ ~50 px with a smaller
 visual inside (pattern: 52 px hit circle, 15–40 px visual). Visual size is a design choice; hit
@@ -250,47 +192,6 @@ never reliably draw "in front of" the model. When a modal opens over the zone: t
 handle and gesture column **hide**, gestures pause, the modal sits on the canvas plane. Closing
 restores everything.
 
-### 4.3 A selector never relabels itself
-
-**A tab, pill or segmented control shows the same label in every state it can reach.** It names a
-DESTINATION, not the current contents. The moment it renames itself to whatever is on screen it
-stops being a landmark and becomes a readout — and on a hand-tracked panel, a control whose label
-changes under the hand reads as the control having MOVED.
-
-This was the "the pill says `Upper housing shell (HPDC)`" defect of 2026-08-06 in 04c: the second
-sub-tab took the open component's name three levels deep, which was defensible on paper (the
-selector keeps naming what is below it) and wrong on the headset.
-
-**Where the varying text goes instead:** the caption line, which is already right-aligned on the
-rule under the pills and blank by default. Position, mass, `n of 8` — all fine there. If the
-caption cannot carry it, the state needs a title, not a mutating tab.
-
-**Corollary — hide the button, don't blank it.** When an action does not exist in a state, disable
-the whole GameObject. A label set to `""` leaves a ≥ 50-unit invisible hit area (§4.2) that eats
-pinches aimed at whatever is behind it, and that failure is silent.
-
-### 4.4 Never move a RectTransform that HoverHighlight lifts
-
-`HoverHighlight.OnEnable` calls `Apply()`, and `Apply()` writes `lift.localPosition = _restPos` —
-the resting pose captured the **first** time that object was enabled. So any layout code that
-repositions the same transform is silently undone the next time its parent state is activated.
-
-This cost a device round in 04c: the `i` was positioned per component by `LayoutDetail`, then
-reset to its build-time pose every time the Detail state came back on, and it appeared beside an
-arbitrary row.
-
-**Two ways out, pick one per element:**
-
-1. **Keep it fixed** and let something else absorb the variation. (04c: the `i` moved to the
-   button line, which never moves.)
-2. **Give `HoverHighlight.lift` a CHILD to raise.** The outer transform is then free to be moved
-   by layout, and only the inner visual rises. Wire `shadow` and `fill` explicitly when doing
-   this — the by-name lookup only searches direct children.
-
-The capture is deliberate and must not be made lazy: capturing on first hover would record an
-already-raised pose if the pointer were over the element on the frame it was enabled, and the
-button would never come back down.
-
 ## 5. Recurring components
 
 - **Primary CTA** — `teal/accent` pill, height 52, white bold 16, `›` chevron drawn as two
@@ -300,12 +201,7 @@ button would never come back down.
   `text/secondary`, no chevron.
 - **Destructive button** — the secondary slot in solid `safety/stroke` `#e24b4a`, white bold
   label, no chevron. Session-ending actions only (§2.1).
-- **Small button row (RBv2.1.1, the 420 data canvas and the stakeholder screen)** — left slot
-  **110 × 34**, primary **150 × 34**, both drawn inside a **50-unit hit root** so §4's hit-area
-  rule still holds while the button looks half the size. The primary is still on the right.
-  ⚠ This deliberately breaks "keep these coordinates across screens" below: the bar a user
-  repeats four times (one per DPP tab) beats the bar they see once.
-- **Standard button row (RB2.0 screens)** — left slot 180 × 52 at cx 114, primary 388 × 52 at cx 422, both cy 376.
+- **Standard button row** — left slot 180 × 52 at cx 114, primary 388 × 52 at cx 422, both cy 376.
   **Keep these coordinates across screens** so hit targets do not move under the user.
   **The primary is always on the right.** A screen that puts the go-forward action on the left
   teaches the opposite reflex to every other screen — this was wrong on the RB2.0 scan-error
