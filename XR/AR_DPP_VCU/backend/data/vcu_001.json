@@ -433,9 +433,7 @@
       "reuse_eligible": true,
       "reuse_note": "Sc4 reuse-eligible (power stages) - 52.6 % of eligible mass reused as a component",
       "mesh_nodes": [
-        "component4",
-        "component001",
-        "component002"
+        "component2"
       ]
     },
     {
@@ -489,7 +487,9 @@
       "reuse_eligible": false,
       "reuse_note": null,
       "mesh_nodes": [
-        "component2"
+        "component4",
+        "component001",
+        "component002"
       ]
     },
     {
@@ -1827,7 +1827,7 @@
     "basis": "simulated",
     "note": "Use-phase telemetry a vehicle control unit would record about ITSELF. Every figure is derived from data already in this passport: powered hours and distance from environmental.usage_profile, DTC counts from repair_history.events, firmware from service.software_updates. Component ids match components[]."
   },
-  "schema_version": "0.17",
+  "schema_version": "0.18",
   "material_reference": {
     "adp_method": "EF 3.1 (adapted), Resource use minerals and metals, kg Sb eq",
     "adp_source": "openLCA LCIA Methods 2.4.0, category b2ad6494-c78d-11e6-9d9d-cec0c932ce01",

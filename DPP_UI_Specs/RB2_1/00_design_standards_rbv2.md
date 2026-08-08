@@ -438,6 +438,56 @@ Tools: Allen key (hex 2.5 mm) · ~5 min · 5 steps.
 Prototype outer size **200 × 150 × 60 mm**; the datasheet product is **166 × 121 × 41 mm**. These
 are different objects and the passport must not confuse them.
 
+### 8.1 CAD ↔ passport map — the one table three specs depend on
+
+`VCU_assembly.gltf` carries **41 nodes, 26 of them with meshes**. The passport carries **8 parts
+and 7 board materials**. They do not correspond, and pretending otherwise is how the model link,
+the training teardown and the step nomenclature all end up disagreeing with each other.
+
+The map lives in the **payload** (`components[].mesh_nodes`, schema v0.17), not in code — the BOM
+is the source of truth and a lookup table compiled into the app would be a second one.
+
+| passport id | display name | glTF nodes | CAD colour |
+|---|---|---|---|
+| `housing_upper` | Upper housing shell (HPDC) | `housing_upper` | `#989898` grey |
+| `housing_bottom` | Bottom housing shell (HPDC) | `housing_bottom` | `#989898` grey |
+| `pcb` | Bare PCB, 4-layer FR-4 | `pcb` | `#00592C` green |
+| `connectors` | Connectors 3× AS018-35 | `connector`, `connector001`, `connector002` | `#363636` near-black |
+| `ic_1` | Processors 2× FCBGA + flash 2× 4 GB | `component1` | **`#E0C14A` gold** |
+| `ic_2` | Regulators + analog front-end | `component3` | **`#003C99` blue** |
+| `ic_3` | Power stages 6× (DPAK) | `component2` | **`#CB3636` red** |
+| `ic_4` | Comm transceivers + MEMS sensors | `component4`, `component001`, `component002` | **`#8F5110` brown** |
+| `fasteners` | Fasteners (~12 × M3) | 14 screw nodes (4 housing · 6 connector · 4 PCB) | `#989898` grey |
+
+Confirmed by Thiago 2026-08-07 from the CAD colours; the four IC assignments were proposed from
+body size, count and board position and accepted. **All 26 mesh-bearing nodes are claimed exactly
+once**, checked in both directions.
+
+> ⚠ **`ic_3` ↔ `ic_4` corrected on device, 2026-08-09 (payload v0.18).** The 2026-08-07 table had
+> the red `component4` family on `ic_3` and `component2` on `ic_4`. Round-7 device testing showed
+> the LAST Component-ID row (ic_4) highlighting the RED bodies — the two assignments were crossed.
+> `mesh_nodes` swapped in `vcu_001.json` (both copies); the highlight is the arbiter, not the
+> proposal. The colour column above now records what the glTF actually renders.
+
+**Three consequences that are easy to get wrong:**
+
+1. **One passport row can be several bodies.** Selecting `connectors` must highlight all three;
+   selecting `ic_4` must highlight all three of its bodies. A single-node highlight is a bug.
+2. **One body can stand for several real devices.** `component1` is *one* gold body representing
+   2 × FCBGA + 2 × 4 GB flash. The mock CAD is a stand-in for the Bosch unit (§8), and the
+   passport describes the Bosch unit.
+3. **The screws belong to the TEARDOWN, not to Component ID.** `fasteners` is a
+   `board_material`, and Component ID lists parts only — so a screw has no passport page to open.
+   In the model link they should be non-selectable; in `04b` they are the whole point.
+
+⚠ **Two open discrepancies, both harmless to the UI and both citable in the thesis:**
+
+* **Screw count.** §8 and the CAD both say **14**; the BOM row says **~12 × M3**, 12.000 g.
+* **Colour.** §8 describes the *printed* prototype (bottom brown, upper yellow, connectors green);
+  the *CAD* has both housings grey and the connectors near-black. Participants see the printed
+  object and the on-screen model at the same time — check on device that this does not read as a
+  different product.
+
 ## 9. Spec numbering (RB2.1)
 
 | # | Screen | Routine |

@@ -355,6 +355,47 @@ distinction survives an old payload too.
   * `—` = not characterised (no factor)
   * `<0.01 %` = characterised and negligible
 
+### 4.7 The model link (RBv2.1.1, 2026-08-07)
+
+`ModelLinkController` sits on `ModelPivot` and bridges the stage model to this tab. The
+component ↔ node map is the payload's `mesh_nodes` (`00` §8.1) — never a table in code.
+
+**LINKED** (the state the passport opens in, labelled `LINKED`, formerly `LOCKED`)
+
+* The model explodes **once, on entry**, and stays exploded. **The idle yaw is gone**: a body
+  that drifts between the aim and the pinch cannot be hit reliably, and a highlight that rotates
+  away from its row stops reading as the same object.
+* Opening a component → its bodies keep their real-life colour, everything else darkens to 35 %.
+* Pinching a body → the rail switches to Product specs and that component's page opens.
+* Screws refuse the pinch: `fasteners` is a board material with no page (`00` §8.1).
+
+**FREE** (formerly `UNLOCKED`)
+
+Yaw, zoom, reposition — unchanged from RB2.1. The link is **cut both ways**. Re-linking snaps
+home, re-explodes and re-selects whatever the data canvas is showing, so LINKED always means one
+thing however the user left it.
+
+**Three implementation notes that are not optional:**
+
+1. **The model is re-fitted for the EXPLODED envelope.** `RBv2_1_1/1` fits by *assembled* bounds;
+   an exploded VCU is much larger and would push through the rail and data canvases — the exact
+   2026-08-06 overlap defect. `FitExploded` measures the exploded pose and rescales.
+2. **The explode is authored per group, not radial.** `ExplosionController` pushes each child
+   along its own position vector; `component3` and `component4` sit at almost the same point and
+   would land on top of each other, and an occluded body cannot be pinched. Directions: upper
+   housing +Y, bottom −Y, PCB is the datum, connectors along the detected bore, ICs fanned in the
+   board plane and lifted clear, screws travelling with the part they hold.
+3. **Dimming darkens `_BaseColor` through a MaterialPropertyBlock, it does not fade alpha.** The
+   model runs opaque URP Lit; alpha would need a transparent queue and brings sorting risk on
+   PICO. Same technique `ConstrainedTeardownModel` already uses.
+
+⚠ `RBv2_1_1/1` used to **disable every collider** on the stage clone. It now leaves them enabled,
+and `ModelLinkController` re-enables them defensively — a disabled collider registers fine and
+then silently never raycasts, which would have looked like the pick logic being wrong.
+
+⚠ **Untested on device.** Nothing here has run yet: the explode distances, the fan directions and
+the 35 % dim are all first guesses.
+
 ## 5. Roles
 
 Inherited from `04` §5. Differences that belong to this tab:
@@ -441,7 +482,10 @@ from the payload, not from the sheets.
 2. ~~`Processor 1…4` in the thesis~~ — **CLOSED 2026-08-06.** The four blocks now carry their
    BOM_v4 row names (§3.3b). The write-up must still state that four CAD blocks are a geometric
    proxy for **seven** BOM entries, but it no longer has to explain away four "processors".
-3. **Tin double-count, 3.9 vs 4.6 g** (§2) — the only substantive BOM defect this spec found.
+3. **Fastener count, 12 vs 14** — BOM row `fasteners` says "~12 × M3", 12.000 g; `00` §8 and
+   `VCU_assembly.gltf` both have **14** (4 housing, 6 connector, 4 PCB). Affects no UI number, but
+   `04b` counts screws out loud in its step text. Decide before that text is written.
+4. **Tin double-count, 3.9 vs 4.6 g** (§2) — the only substantive BOM defect this spec found.
    Blocks nothing in the UI, blocks the LCA write-up. Decide before the Results chapter.
 4. **BOM closure 660.1565 vs "closes at 660 ✔"** (§2) — restate or rebalance.
 5. **`BOM_v4.md` ↔ `VCU_BOM_v4.xlsx` divergence** on FCBGA split and passives mass (§2) —

@@ -129,6 +129,30 @@ namespace DPP.UI
         public void OnPointerExit(PointerEventData eventData)
             => _hoverCount = Mathf.Max(0, _hoverCount - 1);
 
+        /// <summary>
+        /// ⚠ RBv2.1.1 device round 1 (2026-08-07): state code and this hover FIGHT
+        /// over the same Graphic. The step-flow status circles (red ✗ / green ✓)
+        /// and the confirm fill are tinted by StepFlowController, but Apply()
+        /// repaints from <c>_restFillColor</c> — captured ONCE at Awake — on every
+        /// frame of the ease and on every enable/disable. On device the circle
+        /// turned green for exactly as long as the hand still hovered it, then
+        /// snapped back to red as the ray left: the ✓ mark (a GameObject toggle)
+        /// survived, the colour (a Graphic write) did not — a red circle with a
+        /// check mark, a state that ApplyTaskVisual cannot even produce.
+        ///
+        /// This is `00` §4.4 again, in colour: never move a RectTransform that
+        /// HoverHighlight lifts, and never tint a Graphic that HoverHighlight
+        /// brightens — without telling the hover. Any code that owns a
+        /// hover-brightened fill's colour must hand the new colour through here
+        /// instead of writing the Graphic alone.
+        /// </summary>
+        public void SetRestFillColor(Color c)
+        {
+            Capture();
+            _restFillColor = c;
+            if (fill != null) Apply();   // repaint NOW at the current hover ease
+        }
+
         private void OnEnable()
         {
             Capture();

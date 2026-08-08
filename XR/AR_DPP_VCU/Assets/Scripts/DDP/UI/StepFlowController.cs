@@ -80,6 +80,13 @@ namespace DPP.UI
         private readonly List<int> _stepSplits = new List<int>();  // per-step seconds (summary v3 + report)
         private readonly bool[] _done = new bool[2];
 
+        // The HoverHighlight on each status button. Resolved from the fill at
+        // RUNTIME, not serialized — the scene wiring is untouched, so this fix
+        // needs no phase re-run (re-running RBv2_0/5 after RBv2_1_1/1 is the
+        // forbidden order: its active-only animator Find can grab the stage clone).
+        private HoverHighlight _task1Hover, _task2Hover;
+        private bool _hoversResolved;
+
         // Status + accent colors (spec 04 v3).
         private static readonly Color PendingRed = DPPTheme.Hex("#e24b4a");
         private static readonly Color DoneGreen  = DPPTheme.TealAccent;
@@ -241,13 +248,33 @@ namespace DPP.UI
             // a.icon is no longer read: the circle is a status light, not a glyph slot.
         }
 
+        /// <summary>
+        /// ⚠ THE COLOUR GOES THROUGH HoverHighlight, NOT ONLY THE Image (device
+        /// round 1, 2026-08-07). The status button carries a HoverHighlight whose
+        /// name-resolved `fill` IS this circle, and its Apply() repaints the rest
+        /// colour it captured at Awake — red — on every ease frame and every
+        /// enable/disable. Writing `fill.color = green` alone therefore survived
+        /// only while the hand still hovered the button: the ✓ appeared, the
+        /// circle stayed red. SetRestFillColor updates the colour the hover
+        /// restores, which is the colour that actually persists.
+        /// </summary>
         private void ApplyTaskVisual(int i)
         {
+            if (!_hoversResolved)
+            {
+                _hoversResolved = true;
+                if (task1Fill != null) _task1Hover = task1Fill.GetComponentInParent<HoverHighlight>();
+                if (task2Fill != null) _task2Hover = task2Fill.GetComponentInParent<HoverHighlight>();
+            }
+
             Image fill = i == 0 ? task1Fill : task2Fill;
             GameObject cross = i == 0 ? task1Cross : task2Cross;
             GameObject check = i == 0 ? task1Check : task2Check;
+            HoverHighlight hover = i == 0 ? _task1Hover : _task2Hover;
 
-            if (fill != null) fill.color = _done[i] ? DoneGreen : PendingRed;
+            Color c = _done[i] ? DoneGreen : PendingRed;
+            if (fill != null) fill.color = c;                 // kept for a row with no hover
+            if (hover != null) hover.SetRestFillColor(c);     // the write that persists
             if (cross != null) cross.SetActive(!_done[i]);
             if (check != null) check.SetActive(_done[i]);
         }
@@ -255,12 +282,22 @@ namespace DPP.UI
         private void ApplyConfirmState()
         {
             bool unlocked = _done[0] && _done[1];
+            Color fillColor = unlocked ? DPPTheme.TealAccent : DPPTheme.SecondaryButtonFill;
+
             if (confirmButton != null) confirmButton.interactable = unlocked;
-            if (confirmFill != null) confirmFill.color = unlocked ? DPPTheme.TealAccent : DPPTheme.SecondaryButtonFill;
+            if (confirmFill != null) confirmFill.color = fillColor;
             if (confirmLabel != null) confirmLabel.color = unlocked ? DPPTheme.TextOnNavy : LockedText;
             if (confirmChevron1 != null) confirmChevron1.color = unlocked ? Color.white : LockedText;
             if (confirmChevron2 != null) confirmChevron2.color = unlocked ? Color.white : LockedText;
-            if (confirmHover != null) confirmHover.enabled = unlocked;
+
+            // Same trap as the status circles: the hover's OnEnable/OnDisable
+            // snap-repaints its captured rest colour over whatever this method
+            // just wrote. Hand it the state colour FIRST, then toggle it.
+            if (confirmHover != null)
+            {
+                confirmHover.SetRestFillColor(fillColor);
+                confirmHover.enabled = unlocked;
+            }
         }
 
         private IEnumerator AnimateProgress(float targetH)

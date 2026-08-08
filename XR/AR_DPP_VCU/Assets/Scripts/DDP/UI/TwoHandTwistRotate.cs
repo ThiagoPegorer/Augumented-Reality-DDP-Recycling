@@ -93,6 +93,12 @@ namespace DPP.UI
         [Tooltip("Restore the model's default facing AND default zoom every time the zone screen opens.")]
         [SerializeField] private bool resetOnEnable = true;
 
+        [Header("RBv2.1.1 stage (leave empty on the zone)")]
+        [Tooltip("Additional grab handles that must win over the gesture. The zone's own handle is " +
+                 "found in children automatically; the stage rig needs this because the FREED model's " +
+                 "grab bar lives on a SIBLING root the child-search can never reach.")]
+        [SerializeField] private PanelGrabHandle[] extraBlockingHandles;
+
         [Header("Debug")]
         [Tooltip("Raw dev readout at the bottom of the zone canvas. Superseded by the gesture HUD column (v4.3) — keep OFF unless debugging.")]
         [SerializeField] private bool debugOverlay = false;
@@ -101,10 +107,15 @@ namespace DPP.UI
         private Quaternion _initialLocalRot;
         private bool _initialCaptured;
 
-        // Base scale = the anchor's scale AFTER ExplodedZoneInteraction's fit
-        // (captured lazily on the first gesture frame, when init is done).
-        private Vector3 _baseScale;
-        private bool _baseScaleCaptured;
+        // ⚠ ZOOM IS APPLIED RELATIVELY (device round 4, 2026-08-08). The old code
+        // captured an absolute base scale and wrote `base × zoom`. The stage model
+        // lives under a canvas at 0.001 scale; FREEING it reparents world-pose-
+        // preserving, which compensates its localScale by ~1000× — and the next
+        // zoom frame stomped that compensation with the stale stage-frame base.
+        // Result on device: one pinch-spread and the model filled the room.
+        // Multiplying by zoomNew/zoomOld instead is parent-frame agnostic: the
+        // same gesture works under the stage, under the free root, and after any
+        // number of round trips. The zone never reparents, so it feels no change.
         private float _zoom = 1f;               // current zoom, 1..maxZoom
 
         private bool _armed;
@@ -137,14 +148,48 @@ namespace DPP.UI
 
         private void OnEnable()
         {
-            if (resetOnEnable && _initialCaptured)
-            {
-                target.localRotation = _initialLocalRot;
-                _zoom = 1f;
-                if (_baseScaleCaptured) target.localScale = _baseScale;
-            }
+            if (resetOnEnable && _initialCaptured) ResetPose();
             _armed = false;
             _inZoomBand = false;
+        }
+
+        /// <summary>
+        /// RBv2.1.1 (stage): restore the default facing and zoom, and — the part
+        /// that actually matters — SYNC THE INTERNAL ZOOM COUNTER. SuperPanelView's
+        /// re-lock lerp restores the pose on its own, but `_zoom` survived it, so
+        /// the next zoom-band entry wrote `base × staleZoom` on its first frame and
+        /// the model JUMPED to the old size before the glide caught up. Called on
+        /// tab change and on every re-link; safe mid-snap because the snap lerp
+        /// overwrites the pose next Update anyway and targets the same home state.
+        /// </summary>
+        public void ResetPose()
+        {
+            if (!_initialCaptured || target == null) return;
+            target.localRotation = _initialLocalRot;
+            // Undo the zoom RELATIVELY — dividing out works in whatever parent
+            // frame the target currently lives in (stage or free root).
+            if (_zoom > 1e-5f && !Mathf.Approximately(_zoom, 1f))
+                target.localScale /= _zoom;
+            _zoom = 1f;
+            _armed = false;
+            _inZoomBand = false;
+        }
+
+        /// <summary>Multiply the target's scale by newZoom/oldZoom — never write
+        /// an absolute scale (see the _zoom comment for the device failure).</summary>
+        private void ApplyZoom(float newZoom)
+        {
+            if (_zoom > 1e-5f && !Mathf.Approximately(newZoom, _zoom))
+                target.localScale *= newZoom / _zoom;
+            _zoom = newZoom;
+        }
+
+        private bool AnyExtraGrabbing()
+        {
+            if (extraBlockingHandles == null) return false;
+            foreach (var h in extraBlockingHandles)
+                if (h != null && h.IsGrabbing) return true;
+            return false;
         }
 
         // ------------------------------------------------------------------
@@ -221,7 +266,7 @@ namespace DPP.UI
 
             bool lPinch = IsPinching(leftHand);
             bool rPinch = IsPinching(rightHand);
-            bool panelBusy = _panelHandle != null && _panelHandle.IsGrabbing;
+            bool panelBusy = (_panelHandle != null && _panelHandle.IsGrabbing) || AnyExtraGrabbing();
 
             // HUD state: chips always live, even when the gesture won't act.
             LeftPinching = lPinch;
@@ -259,12 +304,6 @@ namespace DPP.UI
                 _armSep = sep;
                 _armZoom = _zoom;
                 _inZoomBand = sep > zoomThreshold;      // start in whichever band the hands are in
-                if (!_baseScaleCaptured)
-                {
-                    // Anchor scale is now post-fit (zone init ran) → safe base.
-                    _baseScale = target.localScale;
-                    _baseScaleCaptured = true;
-                }
                 ShowDebug($"ARMED  sep {sep:0.00}m");
                 return;
             }
@@ -300,8 +339,7 @@ namespace DPP.UI
                     float dialed = Mathf.Lerp(1f, maxZoom, t);
                     // Glide, don't snap — matters when re-entering the band
                     // while the model is at a different zoom level.
-                    _zoom = Mathf.MoveTowards(_zoom, dialed, zoomResponse * Time.deltaTime * Mathf.Max(0.25f, Mathf.Abs(dialed - _zoom)));
-                    target.localScale = _baseScale * _zoom;
+                    ApplyZoom(Mathf.MoveTowards(_zoom, dialed, zoomResponse * Time.deltaTime * Mathf.Max(0.25f, Mathf.Abs(dialed - _zoom))));
                 }
                 ShowDebug($"ZOOM band  sep {sep:0.00}m  zoom {_zoom:0.00}×");
             }
@@ -324,10 +362,7 @@ namespace DPP.UI
                     target.Rotate(0f, delta * gain, 0f, Space.World);
             }
             if (enableScale)
-            {
-                _zoom = Mathf.Clamp(_armZoom * (sep / _armSep), 1f, maxZoom);
-                target.localScale = _baseScale * _zoom;
-            }
+                ApplyZoom(Mathf.Clamp(_armZoom * (sep / _armSep), 1f, maxZoom));
             ShowDebug($"ACTIVE  yaw {target.localEulerAngles.y:0}°  zoom {_zoom:0.00}×  sep {sep:0.00}m");
         }
 

@@ -78,6 +78,34 @@ namespace DPP.UI
         [SerializeField] private GameObject ghostOutline;
         [SerializeField] private GameObject freeModelGrabber;
         [SerializeField] private TMP_Text lockLabel;
+
+        [Tooltip("RBv2.1.1 — the model link. LINKED explodes and follows the data canvas; FREE cuts " +
+                 "the connection both ways. Null is fine: the stage then behaves as it did before.")]
+        [SerializeField] private ModelLinkController modelLink;
+
+        [Tooltip("RBv2.1.1 stage gestures (twist yaw + dial zoom, live in BOTH states). Reset on " +
+                 "tab change and on re-link so LINKED always means one pose family. Null is fine.")]
+        [SerializeField] private TwoHandTwistRotate stageGestures;
+
+        [Tooltip("Device round 4: the gesture column follows the FREED model (zone §3.2 behaviour) " +
+                 "and parks back on the stage on re-link. Null is fine.")]
+        [SerializeField] private StageGestureHudFollower hudFollower;
+
+        [Header("Gesture column (round 5 — collapsed while LINKED)")]
+        [Tooltip("The column's backplate, anchored TOP so it grows downward.")]
+        [SerializeField] private RectTransform hudBackplate;
+        [Tooltip("Everything below the lock: hand lights + YAW/DIST/ZOOM. Hidden while LINKED.")]
+        [SerializeField] private GameObject hudExtras;
+        [SerializeField] private float hudCollapsedHeight = 70f;
+        [SerializeField] private float hudExpandedHeight = 180f;
+        [SerializeField] private float hudExpandSeconds = 0.2f;
+
+        [Header("FREE transition (round 5)")]
+        [Tooltip("Seconds to ease the freed model upright — pitch 25° → 0°, yaw back to 205°.")]
+        [SerializeField] private float uprightSeconds = 0.35f;
+        [Tooltip("World rotation of the FREED model. Round 7: 0°/180° — upright, connector face " +
+                 "square to the user, no iso offset.")]
+        [SerializeField] private Vector3 freeEuler = new Vector3(0f, 180f, 0f);
         [SerializeField] private Image lockGlyph;
         [SerializeField] private Sprite lockedSprite;
         [SerializeField] private Sprite unlockedSprite;
@@ -103,6 +131,7 @@ namespace DPP.UI
         private bool _certOpen;
         private readonly bool[] _visited = new bool[TabCount];
         private bool _unlocked;
+        private Coroutine _freeSeq;
         private float _snapT = -1f;
         private Vector3 _snapFromPos;
         private Quaternion _snapFromRot;
@@ -129,6 +158,16 @@ namespace DPP.UI
             _certOpen = false;
 
             if (_unlocked) ReLock(instant: true);
+            else if (model != null)
+            {
+                // Round 7 (Thiago, 2026-08-09): every DPP-page entry starts the
+                // showcase at the HOME pose (25°/205°). The idle spin accumulates
+                // on the pivot and used to survive leaving the passport, so a
+                // re-entry started wherever the last visit happened to stop.
+                model.localPosition = Vector3.zero;
+                model.localRotation = Quaternion.identity;
+                model.localScale = _homeScale;
+            }
             SelectTab(0);
         }
 
@@ -155,9 +194,30 @@ namespace DPP.UI
                 return;
             }
 
-            // Locked idle: a slow yaw, no input accepted. Unlocked, the user owns
-            // the transform and this must not fight them.
-            if (!_unlocked) model.Rotate(Vector3.up, lockedYawSpeed * Time.deltaTime, Space.Self);
+            // IDLE YAW IS BACK (round 5, Thiago 2026-08-08) — scenario 1: after the
+            // entry teardown finishes, the exploded model turns slowly about its own
+            // middle axis at the iso tilt, a showcase the user selects from. It was
+            // removed in RBv2.1.1 because a drifting body is harder to pinch; Thiago
+            // overruled with the routine design. At 30°/s (12 s loop) picking is
+            // slow-moving, not static — if study pilots show missed pinches, the
+            // fallback is pausing the spin while the ray hovers the model.
+            // Gated on OpenDone: the spin starts AFTER the show, never during it.
+            if (!_unlocked && lockedYawSpeed > 0f && (modelLink == null || modelLink.OpenDone))
+                model.Rotate(Vector3.up, lockedYawSpeed * Time.deltaTime, Space.Self);
+
+            // FREE STAYS UPRIGHT — ENFORCED, not just eased (device round 6: the
+            // model sat back at 25° after the sequence; the free grab bar's
+            // billboard re-orients the free ROOT toward the eye, which re-tilted
+            // the pivot the moment it activated). Scenario 2's contract is "no
+            // inclination", so every frame in FREE the pivot's pitch and roll are
+            // flattened while its yaw — the user's twist — is kept.
+            if (_unlocked && _freeSeq == null)
+            {
+                Vector3 fwd = model.forward;
+                fwd.y = 0f;
+                if (fwd.sqrMagnitude > 1e-6f)
+                    model.rotation = Quaternion.LookRotation(fwd.normalized, Vector3.up);
+            }
         }
 
         // =================================================================
@@ -175,7 +235,9 @@ namespace DPP.UI
 
             // Changing tab re-locks the model (spec §3.2). Each tab re-reads the
             // model differently, so a freed model would otherwise keep showing a
-            // tint that belongs to the tab the user just left.
+            // tint that belongs to the tab the user just left. (Round 5: no
+            // gesture reset in the LINKED branch — gestures are disabled while
+            // LINKED, and a ResetPose here would snap the idle spin's yaw.)
             if (_unlocked) ReLock(instant: false);
 
             for (int i = 0; i < TabCount; i++)
@@ -361,6 +423,14 @@ namespace DPP.UI
             if (_unlocked) ReLock(instant: false); else Unlock();
         }
 
+        /// <summary>
+        /// Round 5 — FREE is a SEQUENCE, not a switch (Thiago, 2026-08-08):
+        /// the lock turns green at once, the spin stops, the model eases upright
+        /// (25°/205° → 0°/205°) while the parts REASSEMBLE — the user then floats
+        /// the closed, real-size unit, as if holding the physical one — the column
+        /// extends to show the gesture readouts, and only THEN the grab bar
+        /// appears. Gestures (twist/zoom) enable at the end, with the drag.
+        /// </summary>
         private void Unlock()
         {
             if (freeModelRoot == null)
@@ -368,7 +438,7 @@ namespace DPP.UI
                 Debug.LogWarning("[SuperPanel] No freeModelRoot — the model cannot leave the stage.");
                 return;
             }
-            _unlocked = true;
+            _unlocked = true;   // also stops the idle spin — Update checks it
             _snapT = -1f;
 
             // Re-parent WORLD-POSE-PRESERVING so the release is invisible: the
@@ -378,14 +448,75 @@ namespace DPP.UI
             model.SetParent(freeModelRoot, worldPositionStays: true);
 
             if (ghostOutline != null) ghostOutline.SetActive(true);
+            // FREE cuts the link BOTH ways — no highlight follows the data canvas and
+            // no pinch on a body navigates (Thiago, 2026-08-07). Also undims.
+            if (modelLink != null) modelLink.SetLinked(false);
+            Paint(false);   // green immediately — the click must answer instantly
+
+            if (_freeSeq != null) StopCoroutine(_freeSeq);
+            _freeSeq = StartCoroutine(FreeSequence());
+        }
+
+        private System.Collections.IEnumerator FreeSequence()
+        {
+            // 1 + 2 in parallel: ease upright while the parts come home.
+            if (modelLink != null) modelLink.PlayReassemble();
+            float reassemble = modelLink != null ? modelLink.ReassembleSeconds : 0f;
+
+            Quaternion from = model.rotation;
+            Quaternion to = Quaternion.Euler(freeEuler);
+            float t = 0f;
+            while (t < uprightSeconds)
+            {
+                t += Time.deltaTime;
+                float e = 1f - (1f - Mathf.Clamp01(t / uprightSeconds)) * (1f - Mathf.Clamp01(t / uprightSeconds));
+                model.rotation = Quaternion.Slerp(from, to, e);
+                yield return null;
+            }
+            model.rotation = to;
+
+            // Wait out whatever the reassembly still owes.
+            float remaining = reassemble - uprightSeconds;
+            if (remaining > 0f) yield return new WaitForSeconds(remaining);
+
+            // 3. The column extends: lock stays, the readout rows fade in below.
+            if (hudExtras != null) hudExtras.SetActive(true);
+            if (hudBackplate != null)
+            {
+                float h0 = hudBackplate.sizeDelta.y;
+                t = 0f;
+                while (t < hudExpandSeconds)
+                {
+                    t += Time.deltaTime;
+                    float h = Mathf.Lerp(h0, hudExpandedHeight, Mathf.Clamp01(t / hudExpandSeconds));
+                    hudBackplate.sizeDelta = new Vector2(hudBackplate.sizeDelta.x, h);
+                    yield return null;
+                }
+                hudBackplate.sizeDelta = new Vector2(hudBackplate.sizeDelta.x, hudExpandedHeight);
+            }
+
+            // 4. Only now: the drag affordance, the follower, and the gestures.
             if (freeModelGrabber != null) freeModelGrabber.SetActive(true);
-            Paint(false);
+            if (hudFollower != null) hudFollower.SetFree(true);
+            if (stageGestures != null) stageGestures.enabled = true;
+            _freeSeq = null;
         }
 
         private void ReLock(bool instant)
         {
             _unlocked = false;
             if (model == null) return;
+
+            // Round 5: tear the FREE state down in reverse — kill a half-finished
+            // free sequence, silence the gestures, collapse the column, hide the
+            // drag affordance. The snap home + instant re-explode below restate
+            // scenario 1, and the idle spin resumes on its own (OpenDone).
+            if (_freeSeq != null) { StopCoroutine(_freeSeq); _freeSeq = null; }
+            if (stageGestures != null) stageGestures.enabled = false;
+            if (hudFollower != null) hudFollower.SetFree(false);
+            if (hudExtras != null) hudExtras.SetActive(false);
+            if (hudBackplate != null)
+                hudBackplate.sizeDelta = new Vector2(hudBackplate.sizeDelta.x, hudCollapsedHeight);
 
             if (stageModelHome != null)
                 model.SetParent(stageModelHome, worldPositionStays: !instant);
@@ -410,16 +541,44 @@ namespace DPP.UI
 
             if (ghostOutline != null) ghostOutline.SetActive(false);
             if (freeModelGrabber != null) freeModelGrabber.SetActive(false);
+            // Re-linking RESTATES the model: snapped home above, re-exploded here, and
+            // re-selected to whatever the data canvas is currently showing. LINKED then
+            // always means the same thing, however the user left it.
+            if (modelLink != null) modelLink.SetLinked(true);
+            // Sync the gesture's internal zoom to the restored scale. The snap lerp
+            // owns the visible pose; without this the NEXT zoom gesture started
+            // from the stale zoom value and the model jumped a frame (see
+            // TwoHandTwistRotate.ResetPose).
+            if (stageGestures != null) stageGestures.ResetPose();
             Paint(true);
         }
 
+        /// <summary>
+        /// ⚠ THE WORDS ARE "LINKED" AND "FREE", not LOCKED/UNLOCKED (Thiago,
+        /// 2026-08-07). Once LOCKED came to mean "exploded, tappable, driving the
+        /// passport", the old label said the opposite of what the state does, and a
+        /// participant who reads LOCK as "nothing works here" never tries the one
+        /// interaction the state exists for. The field names keep the old spelling so
+        /// the scene wiring survives; only the words the user reads changed.
+        /// </summary>
         private void Paint(bool locked)
         {
-            if (lockLabel != null) lockLabel.text = locked ? "LOCKED" : "UNLOCKED";
+            // Round 6 (Thiago, 2026-08-09): the padlock artwork itself carries the
+            // state — orange closed lock for LINKED, green open lock for FREE
+            // (Thiago's own icons, white keyhole). The glyph is NEVER tinted; only
+            // the word underneath takes the state colour.
+            Color state = locked ? new Color32(0xF2, 0x8C, 0x28, 0xFF)    // orange
+                                 : new Color32(0x27, 0xC4, 0x6C, 0xFF);   // green
+            if (lockLabel != null)
+            {
+                lockLabel.text = locked ? "LINKED" : "FREE";
+                lockLabel.color = state;
+            }
             if (lockGlyph != null)
             {
                 var s = locked ? lockedSprite : unlockedSprite;
                 if (s != null) lockGlyph.sprite = s;
+                lockGlyph.color = Color.white;   // the sprite is pre-coloured
             }
         }
 

@@ -66,6 +66,11 @@ namespace DPP.UI
                  "out of it; when it is null the page behaves as the standalone screen RBv2_1/9 built.")]
         [SerializeField] private SuperPanelView owner;
 
+        [Tooltip("RBv2.1.1 — the stage model. Opening a component highlights it there; picking a " +
+                 "body there calls back into OpenComponentById. Null is fine: the page then behaves " +
+                 "exactly as it did before the model link existed.")]
+        [SerializeField] private ModelLinkController modelLink;
+
         [Header("Sub-tab selector — this IS the page's title")]
         [SerializeField] private Image subIdFill;
         [SerializeField] private Image subIdStroke;
@@ -302,6 +307,27 @@ namespace DPP.UI
             _selected = index;
             FillDetail(_parts[index]);
             Show(State.Detail);
+            if (modelLink != null) modelLink.SelectComponent(_parts[index].id);
+        }
+
+        /// <summary>
+        /// The MODEL side of the link (`00` §8.1). A pinch on a body resolves through
+        /// the payload's `mesh_nodes` to a component id, and lands here.
+        ///
+        /// Returns false rather than throwing when the id is not a part row — screws
+        /// map to `fasteners`, which is a board material with no page, and that is a
+        /// legitimate outcome of a pinch, not an error.
+        /// </summary>
+        public bool OpenComponentById(string componentId)
+        {
+            if (string.IsNullOrEmpty(componentId)) return false;
+            for (int i = 0; i < _parts.Count; i++)
+                if (_parts[i] != null && _parts[i].id == componentId)
+                {
+                    OpenPart(i);
+                    return true;
+                }
+            return false;
         }
 
         /// <summary>
@@ -574,7 +600,12 @@ namespace DPP.UI
         // Button targets
         // =================================================================
 
-        public void ShowIdentity() => Show(State.Identity);
+        public void ShowIdentity()
+        {
+            _selected = -1;
+            Show(State.Identity);
+            if (modelLink != null) modelLink.ClearSelection();
+        }
 
         /// <summary>The second pill. From a component detail it steps back to the
         /// list rather than re-opening the same part.</summary>
@@ -582,6 +613,9 @@ namespace DPP.UI
         {
             _selected = -1;
             Show(State.Parts);
+            // Leaving a component clears the model's highlight. A dim that outlives the
+            // page that caused it is the model disagreeing with the panel.
+            if (modelLink != null) modelLink.ClearSelection();
         }
 
         /// <summary>The "i" under the chart. It replaced a 372-wide footnote that stated

@@ -142,6 +142,16 @@ namespace DPP.EditorTools
                 // `owner` is NOT listed: RBv2_1_1/2 sets it, and it is legitimately
                 // null while the page runs standalone on DPPPanelCanvas.
             },
+            [typeof(ModelLinkController)] = new[]
+            {
+                new Wire("ModelLinkController", "modelRoot",    "RBv2_1_1/1"),
+                new Wire("ModelLinkController", "productSpecs", "RBv2_1_1/2"),
+                new Wire("ModelLinkController", "owner",        "RBv2_1_1/2"),
+                // Stage gestures (2026-08-08): the pick-vs-gesture arbitration.
+                new Wire("ModelLinkController", "gestures",     "RBv2_1_1/1"),
+                // `handBridge` is NOT listed: it is resolved at runtime when unset, and
+                // it is legitimately absent in an editor scene with no PICO rig.
+            },
             [typeof(SuperPanelView)] = new[]
             {
                 new Wire("SuperPanelView", "router",         "RBv2_1_1/1"),
@@ -152,9 +162,15 @@ namespace DPP.EditorTools
                 // `model` is deliberately absent: it is null when VCU_assembly is
                 // not in the scene, and that is a warning at build time, not a
                 // wiring fault the verifier should re-report every run.
-                new Wire("SuperPanelView", "ghostOutline",   "RBv2_1_1/1"),
+                // `ghostOutline` was REMOVED round 8 (with the StageFrame) — the
+                // field survives null-safe in the view; a wire here would report a
+                // fault no phase can fix.
                 new Wire("SuperPanelView", "lockLabel",      "RBv2_1_1/1"),
                 new Wire("SuperPanelView", "placeholderPage","RBv2_1_1/1"),
+                // Stage gestures (2026-08-08): reset on tab change / re-link.
+                new Wire("SuperPanelView", "stageGestures",  "RBv2_1_1/1"),
+                // Round 4: the gesture column follows the FREED model.
+                new Wire("SuperPanelView", "hudFollower",    "RBv2_1_1/1"),
             },
             [typeof(DPP.DPPManager)] = new[]
             {

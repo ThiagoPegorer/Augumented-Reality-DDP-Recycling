@@ -59,7 +59,9 @@ namespace DPP.EditorTools
             { "ic_product_specs", "ic_usage_history", "ic_environmental", "ic_training" };
 
         /// <summary>First tab's y, pushed down to clear the certificates entry.
-        /// 24 + 44 + 16 = 84; four tabs at 80 pitch then end at 392 of 430.</summary>
+        /// 24 + 44 + 16 = 84; four tabs at 80 pitch then end at 392 of 430.
+        /// (The round-3 compression for a sixth rail tile was REVERTED in round 4:
+        /// the LINKED/FREE control moved into the stage's gesture column instead.)</summary>
         private const float SpTabTop = 84f;
 
         [MenuItem("RBv2_1_1/1 — Super panel rig", false, 1)]
@@ -135,32 +137,69 @@ namespace DPP.EditorTools
 
             var router = SpFindRouter();
             WireClick(certBtn, view, nameof(SuperPanelView.ShowCertificates));
+            // (Round 4: the LINKED/FREE control lives in the stage's gesture
+            // column — see SpGestureHud. The round-3 rail tile lasted one build.)
 
             // ---------------- stage ----------------
             // NO background image. The stage is empty space between two canvases,
             // not a transparent hole in one — nothing can bleed through it and
             // there is no raycast target to suppress (spec §2.4).
-            AddImage(CenterIn("StageFrame", stage, SpStageW - 20f, SpH - 20f),
-                DPPSpriteFactory.RoundedR22, new Color(0.36f, 0.79f, 0.65f, 0.16f), sliced: true);
+            // Round 8 (Thiago, 2026-08-09): NO StageFrame, NO GhostOutline. The
+            // teal frame tinted the whole stage green through the passthrough, and
+            // the 300×300 "return here to re-lock" square read as a broken panel,
+            // not an affordance. The stage is now genuinely empty space — the
+            // model IS the stage — and re-locking is carried by the padlock alone.
+            // (SuperPanelView.ghostOutline stays null-safe; nothing to wire.)
 
-            var ghost = CenterIn("GhostOutline", stage, 300f, 300f);
-            AddImage(ghost, DPPSpriteFactory.RoundedR22, new Color(0.36f, 0.79f, 0.65f, 0.20f), sliced: true);
-            AddText(TL("GhostLabel", ghost, 0f, 308f, 300f, 16f), "return here to re-lock",
-                9.5f, DPPTheme.TextTip, bold: false, align: TextAlignmentOptions.Center);
-            ghost.gameObject.SetActive(false);
-
-            var lockBtn = SpLockButton(stage, view, out var lockGlyph, out var lockLabel);
+            // (The lock button left the stage 2026-08-08 — the LINKED/FREE control
+            // is now the rail's Model-link tile, wired above.)
 
             // The model's home: an empty transform at the stage centre, on the
             // stage's own plane. The model parents here when locked.
             var homeGO = new GameObject("ModelHome");
             var home = homeGO.transform;
             home.SetParent(stage, false);
-            home.localPosition = new Vector3(0f, 20f, -40f);   // canvas units; slightly toward the user
-            home.localRotation = Quaternion.identity;
+            // y +20 → −10 (device round 3, Thiago 2026-08-08): the exploded pose
+            // should sit toward the BOTTOM of the stage — together with the link's
+            // open-pose re-centre this stops the lid riding the frame's top edge.
+            home.localPosition = new Vector3(0f, -10f, -40f);  // canvas units; slightly toward the user
+            // The POSE lives on the HOME, not the clone or the pivot — ReLock snaps
+            // the pivot's localRotation back to identity, so anything baked below
+            // the home would be silently undone on every re-lock.
+            //
+            //   · 180° yaw (round 2): the raw glTF faces the connector side AWAY
+            //     from the user.
+            //   · +25° pitch, +25° extra yaw (round 3): Thiago asked for a 3D
+            //     ISOMETRIC presentation instead of the flat front elevation —
+            //     seen slightly from above and off-axis, so depth reads.
+            //     TUNE IN PLAY MODE by rotating ModelHome, then tell the builder
+            //     the numbers. The teardown is unaffected: its part offsets are
+            //     local to the clone and turn with it.
+            home.localRotation = Quaternion.Euler(25f, 205f, 0f);
             home.localScale = Vector3.one;
 
             var model = SpBuildStageModel(home);
+
+            // ---- Stage gestures (action-zone parity, mock 04_stage_gestures_v1,
+            // decisions 1–3 agreed 2026-08-08) ----
+            // The zone's own TwoHandTwistRotate, re-targeted at the pivot. It lives
+            // on the RIG root so its child-search finds the RigGrabber's handle
+            // ("panel drag wins", spec 10 §6.4); the freed model's bar is a SIBLING
+            // root, wired below via extraBlockingHandles. maxZoom 1.5, not the
+            // zone's 2 — at 2× the 173 mm open model reaches both side canvases.
+            var twist = rigGO.AddComponent<TwoHandTwistRotate>();
+            if (model != null) SetRef(twist, "target", model);
+            // Round 5: gestures exist ONLY in FREE — SuperPanelView enables the
+            // component at the end of the free sequence and disables it on re-lock.
+            // resetOnEnable OFF: the view eases the freed model upright itself; a
+            // reset on enable would snap that pose back to identity.
+            SetBool(twist, "m_Enabled", false);
+            SetBool(twist, "resetOnEnable", false);
+            // Round 7: cap back to the zone's 2× — gestures are FREE-only now, so
+            // the stage-containment argument that set 1.5× no longer applies.
+            SetFloat(twist, "maxZoom", 2f);
+            var hudFollower = SpGestureHud(stage, twist, view, model,
+                out var lockGlyph, out var lockLabel);
 
             // One grabber under the stage moves the WHOLE rig (spec §2.3).
             SpGrabber(stage, rig, "RigGrabber", DPPTheme.GrabberGrip, spawnDistance: SpDistance);
@@ -181,6 +220,20 @@ namespace DPP.EditorTools
             var freeBar = SpGrabber(freeRT, freeRootGO.transform, "FreeModelGrabber",
                 DPPTheme.TealLight, spawnDistance: SpDistance, recenter: false);
             freeBar.anchoredPosition = new Vector2(120f, -9f);      // centred in its own 240 × 40 canvas
+            // Dragging the FREED model must also silence the twist/zoom — its
+            // handle is on a sibling root the gesture's child-search cannot see.
+            SetRefArray(twist, "extraBlockingHandles",
+                new Object[] { freeBar.GetComponent<PanelGrabHandle>() });
+            // Round 7: the drag bar HANGS UNDER the freed model and yaw-billboards
+            // to the user — it used to keep the pose the free root happened to
+            // have, which put it lateral after a few moves. Same follower as the
+            // gesture column, in below/always mode; the canvas is only active
+            // while FREE, so "always" is exactly the FREE window.
+            var barFollow = freeCanvas.AddComponent<StageGestureHudFollower>();
+            if (model != null) SetRef(barFollow, "model", model);
+            SetBool(barFollow, "followBelow", true);
+            SetBool(barFollow, "alwaysFollow", true);
+            SetFloat(barFollow, "gap", 0.06f);
 
             // ---------------- data canvas ----------------
             AddImage(Stretch("DataBG", data), DPPSpriteFactory.RoundedR22, DPPTheme.NavyPanel, sliced: true);
@@ -190,6 +243,24 @@ namespace DPP.EditorTools
                 "not built yet", 14f, DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Center);
             placeholderLbl.textWrappingMode = TextWrappingModes.Normal;
 
+            // ---- tab 3: Training disassembly ----
+            // 04b is not written yet, but "Continue to disassembly" LIVES on that tab —
+            // so with the tab unbuilt there is no route into the teardown at all
+            // (Thiago, 2026-08-07). This is the button, on its own page, ahead of the
+            // spec: an unreachable half of the Recycler journey blocks every test.
+            var trainingPage = Stretch("TrainingPage", data);
+            AddText(TL("Title", trainingPage, 24f, 96f, 372f, 24f),
+                "Guided teardown", 15f, DPPTheme.TextOnNavy, bold: true,
+                align: TextAlignmentOptions.Center);
+            var trainingBody = AddText(TL("Body", trainingPage, 24f, 132f, 372f, 96f),
+                "Five steps, about five minutes, with the unit in front of you. " +
+                "The passport stays open while you work.",
+                11.5f, DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Top);
+            trainingBody.textWrappingMode = TextWrappingModes.Normal;
+
+            var goBtn = PsSmallPill(trainingPage, "ContinueButton", 24f + 372f * 0.5f, 220f,
+                "Continue to disassembly", primary: true, out _, cy: 300f, fontSize: 12f);
+
             // Tab pages are filled in by their own phases. Product specs is
             // RBv2_1_1/2, which re-parents the page RBv2_1/9 already built.
             var certPage = SpCertPage(data, view);
@@ -197,6 +268,7 @@ namespace DPP.EditorTools
             var tabPages = new GameObject[SuperPanelView.TabCount];
             var existing = SpFind("ProductSpecsPage");
             if (existing != null) tabPages[0] = existing;
+            tabPages[3] = trainingPage.gameObject;      // 04b's route in, ahead of 04b
 
             // ---------------- wiring ----------------
             SetRef(view, "router", router);
@@ -218,17 +290,35 @@ namespace DPP.EditorTools
             SetRef(view, "certIcon", certIcon);
             SetRef(view, "certButton", certBtn);
             SetRef(view, "certPage", certPage.gameObject);
+            var routerForGo = SpFindRouter();
+            if (routerForGo != null) WireClick(goBtn, routerForGo, nameof(ScreenRouter.ShowDisassembly));
+            else Debug.LogWarning("[DPPUIBuilder] No ScreenRouter — \"Continue to disassembly\" is inert. " +
+                                  "Run RBv2_1/1 first.");
+
             SetRef(view, "placeholderPage", placeholder.gameObject);
             SetRef(view, "placeholderLabel", placeholderLbl);
+            var stageLink = home != null ? home.GetComponentInChildren<ModelLinkController>(true) : null;
+            if (stageLink != null)
+            {
+                SetRef(view, "modelLink", stageLink);
+                SetRef(stageLink, "owner", view);
+                // Two pinching hands are a gesture, not a selection (§6.4 family).
+                SetRef(stageLink, "gestures", twist);
+            }
+            else Debug.LogWarning("[DPPUIBuilder] No ModelLinkController under the stage — the model and the " +
+                                  "data canvas will not talk to each other. Is VCU_assembly in the scene?");
+
             SetRef(view, "stageModelHome", home);
             SetRef(view, "freeModelRoot", freeRootGO.transform);
             SetRef(view, "model", model);
-            SetRef(view, "ghostOutline", ghost.gameObject);
             SetRef(view, "freeModelGrabber", freeCanvas);
-            SetRef(view, "lockedSprite", LoadPageIcon("ic_lock"));
-            SetRef(view, "unlockedSprite", LoadPageIcon("ic_unlock"));
+            // Round 6: Thiago's pre-coloured padlocks (orange closed / green open).
+            SetRef(view, "lockedSprite", LoadPageIcon("ic_lock_linked"));
+            SetRef(view, "unlockedSprite", LoadPageIcon("ic_lock_free"));
             SetRef(view, "lockLabel", lockLabel);
             SetRef(view, "lockGlyph", lockGlyph);
+            SetRef(view, "stageGestures", twist);
+            SetRef(view, "hudFollower", hudFollower);
 
             if (router != null)
             {
@@ -291,8 +381,19 @@ namespace DPP.EditorTools
             var view = rig.GetComponent<SuperPanelView>();
             if (view != null)
             {
+                // ⚠ MERGE, NEVER OVERWRITE (device round 6, 2026-08-09). The old
+                // code replaced the whole array with only [0] set, wiping the
+                // training page /1 had put in [3]. Unmanaged by ShowPage, that
+                // page stayed permanently ACTIVE underneath the others — and its
+                // invisible ≥50-unit "Continue to disassembly" hit root sat
+                // exactly over parts-list row 7: pinching the penultimate
+                // component opened the disassembly INTRO and the row never
+                // hovered. 00 §4.3's invisible-hit-area lesson, third sighting.
                 var pages = new GameObject[SuperPanelView.TabCount];
                 pages[0] = page;
+                var training = SpFind("TrainingPage");
+                if (training != null) pages[3] = training;
+                else Debug.LogWarning("[DPPUIBuilder] No TrainingPage found — tab 3 will show the placeholder.");
                 SetRefArray(view, "tabPages", pages);
             }
 
@@ -301,6 +402,24 @@ namespace DPP.EditorTools
             var ps = page.GetComponent<ProductSpecsView>();
             if (ps != null) SetRef(ps, "owner", view);
 
+            // ---- close the model link, BOTH ways (00 §8.1) ----
+            // This is the last phase that can do it: /1 builds the controller before the
+            // page exists, and /9 builds the page before the rig exists. Neither can see
+            // the other, so the cross-reference has to be made here or not at all.
+            var link = rig.GetComponentInChildren<ModelLinkController>(true);
+            if (link != null && ps != null)
+            {
+                SetRef(link, "productSpecs", ps);
+                SetRef(ps, "modelLink", link);
+                SetRef(link, "owner", view);
+                SetInt(link, "productSpecsTab", 0);
+                Debug.Log("[DPPUIBuilder] Model link closed: Product specs ↔ stage model.");
+            }
+            else Debug.LogWarning("[DPPUIBuilder] Could not close the model link — " +
+                                  (link == null ? "no ModelLinkController under the rig (re-run RBv2_1_1/1 " +
+                                                  "with VCU_assembly in the scene)."
+                                                : "the page has no ProductSpecsView."));
+
             // ScreenRouter must stop treating the page as a sibling screen — it is
             // a child of the rig now, and Show() deactivating it would blank the
             // data canvas the moment the rig appeared.
@@ -308,8 +427,9 @@ namespace DPP.EditorTools
             if (router != null) SetRef(router, "productSpecs", null);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1_1/2 — Product specs re-parented into the data canvas. " +
-                      "ScreenRouter.productSpecs cleared (it is no longer a sibling screen). SAVE THE SCENE.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/2 — Product specs re-parented into the data canvas, " +
+                      "model link closed. ScreenRouter.productSpecs cleared (it is no longer a sibling " +
+                      "screen). SAVE THE SCENE.");
         }
 
         // =================================================================
@@ -533,10 +653,116 @@ namespace DPP.EditorTools
             return btn;
         }
 
+        /// <summary>
+        /// The zone's gesture HUD (spec 10 §3.2) on the stage. Round 4 (Thiago,
+        /// 2026-08-08): the TOP SLOT is the LINKED/FREE toggle — a padlock, GREY
+        /// when linked, GREEN when free — replacing the [?] help button (removed
+        /// with its guide modal; the round-3 rail tile lasted one build). While
+        /// the model is FREE the whole column FOLLOWS it via
+        /// StageGestureHudFollower, the zone's §3.2 behaviour. Decisions 1–2
+        /// stand: no [+] part list, no ⟲ regroup. Reuses ZoneGestureHUD with its
+        /// help refs left null (every path through them is null-guarded).
+        /// </summary>
+        private static StageGestureHudFollower SpGestureHud(RectTransform stage,
+            TwoHandTwistRotate twist, SuperPanelView view, Transform model,
+            out Image lockGlyph, out TMP_Text lockLabel)
+        {
+            // TLCenter, not TL: the follower repositions by the column's CENTRE.
+            // y 218 → 178 (round 8, Thiago): the lock rides higher on the stage.
+            var col = TLCenter("GestureHud", stage, 370f, 178f, 44f, 180f);
+
+            // ⚠ OWN NESTED CANVAS — the zone's "on-plane rule" (spec 10 §3.2),
+            // learned the hard way twice (device round 6): PicoHandUIBridge
+            // resolves pointer hits against CANVAS PLANES, so a child graphic
+            // floated off its parent's plane (the follower, while FREE) never
+            // lines up with where the ray points — the column looked right and
+            // was untouchable. A nested canvas gives the column its own plane
+            // wherever it travels; the bridge finds canvases dynamically.
+            col.gameObject.AddComponent<Canvas>();
+            col.gameObject.AddComponent<GraphicRaycaster>();
+
+            // Round 5: the column is COLLAPSED while LINKED — one orange padlock
+            // on the dark disc, nothing else. The backplate is TOP-ANCHORED (TL
+            // pivot) at the collapsed 70, so SuperPanelView's expansion grows it
+            // DOWNWARD to 180 while the lock stays put.
+            var plate = TL("Backplate", col, 0f, 0f, 44f, 70f);
+            AddImage(plate, DPPSpriteFactory.RoundedR13,
+                new Color(0.180f, 0.353f, 0.627f, 0.627f), sliced: true);   // #2e5aa0 @ 160/255
+
+            // LINKED/FREE toggle — 44 hit, 30 visual (00 §4.2). Orange = LINKED.
+            var lockRT = TLCenter("LockToggle", col, 22f, 22f, 44f, 44f);
+            var lockFill = AddImage(CenterIn("Fill", lockRT, 30f, 30f), DPPSpriteFactory.Circle64,
+                DPPTheme.Hex("#0a1f44"), sliced: false, raycast: true);
+            var glyphRT = CenterIn("Glyph", lockRT, 16f, 16f);
+            lockGlyph = glyphRT.gameObject.AddComponent<Image>();
+            lockGlyph.preserveAspect = true;
+            lockGlyph.raycastTarget = false;
+            // Round 6: Thiago's own padlock artwork carries the state colours
+            // (orange closed / green open, white keyhole) — the glyph is NOT
+            // tinted any more; Paint swaps sprites and leaves the colour white.
+            lockGlyph.color = Color.white;
+            var lockedIcon = LoadPageIcon("ic_lock_linked");
+            if (lockedIcon != null) lockGlyph.sprite = lockedIcon;
+            else { lockGlyph.enabled = false; Debug.LogWarning("[DPPUIBuilder] Icon 'ic_lock_linked' not found in Assets/Textures/Icons — the lock toggle shows its word only."); }
+            var lockBtn = lockRT.gameObject.AddComponent<Button>();
+            lockBtn.transition = Selectable.Transition.None;
+            lockBtn.targetGraphic = lockFill;
+            lockRT.gameObject.AddComponent<HoverHighlight>();
+            WireClick(lockBtn, view, nameof(SuperPanelView.ToggleLock));
+
+            lockLabel = AddText(TLCenter("State", col, 22f, 46f, 44f, 9f), "LINKED",
+                6.5f, DPPTheme.Hex("#f28c28"), bold: true, align: TextAlignmentOptions.Center);
+
+            // Everything below the lock lives in Extras — hidden while LINKED,
+            // revealed by the free sequence's expansion (scenario 2).
+            var extras = Stretch("Extras", col);
+
+            // Hand lights: solid green = pinching, dark disc = open.
+            var lOn  = AddImage(TLCenter("LOn",  extras, 14f, 62f, 11f, 11f), DPPSpriteFactory.Circle64, DPPTheme.Hex("#27c46c"));
+            var lOff = AddImage(TLCenter("LOff", extras, 14f, 62f, 11f, 11f), DPPSpriteFactory.Circle64, DPPTheme.Hex("#23406e"));
+            var rOn  = AddImage(TLCenter("ROn",  extras, 30f, 62f, 11f, 11f), DPPSpriteFactory.Circle64, DPPTheme.Hex("#27c46c"));
+            var rOff = AddImage(TLCenter("ROff", extras, 30f, 62f, 11f, 11f), DPPSpriteFactory.Circle64, DPPTheme.Hex("#23406e"));
+
+            TMP_Text Cap(string n, float y, string txt) =>
+                AddText(TLCenter(n, extras, 22f, y, 42f, 10f), txt, 6.5f, DPPTheme.Hex("#5d7396"),
+                    bold: true, align: TextAlignmentOptions.Center);
+            TMP_Text Val(string n, float y) =>
+                AddText(TLCenter(n, extras, 22f, y, 42f, 12f), "—", 8.5f, DPPTheme.Hex("#dbe4f0"),
+                    bold: false, align: TextAlignmentOptions.Center);
+
+            var yawCap  = Cap("YawCap", 80f, "YAW");    var yawVal  = Val("YawVal", 92f);
+            var distCap = Cap("DistCap", 110f, "DIST"); var distVal = Val("DistVal", 122f);
+            var zoomCap = Cap("ZoomCap", 140f, "ZOOM"); var zoomVal = Val("ZoomVal", 152f);
+
+            extras.gameObject.SetActive(false);
+            SetRef(view, "hudBackplate", plate);
+            SetRef(view, "hudExtras", extras.gameObject);
+
+            var hud = col.gameObject.AddComponent<ZoneGestureHUD>();
+            SetRef(hud, "twist", twist);
+            SetRef(hud, "leftOn", lOn.gameObject);   SetRef(hud, "leftOff", lOff.gameObject);
+            SetRef(hud, "rightOn", rOn.gameObject);  SetRef(hud, "rightOff", rOff.gameObject);
+            SetRef(hud, "yawCap", yawCap);   SetRef(hud, "yawValue", yawVal);
+            SetRef(hud, "distCap", distCap); SetRef(hud, "distValue", distVal);
+            SetRef(hud, "zoomCap", zoomCap); SetRef(hud, "zoomValue", zoomVal);
+            // helpButton / helpModal / modalCloseButton stay null — removed round 4.
+
+            var follower = col.gameObject.AddComponent<StageGestureHudFollower>();
+            if (model != null) SetRef(follower, "model", model);
+            return follower;
+        }
+
+        /// <summary>RETIRED 2026-08-08 — replaced by <see cref="SpModelLinkTile"/>
+        /// in the rail. Kept ONE session for A/B rollback; delete in the next
+        /// retirement pass (and remove this note from RETIREMENT_PLAN's radar).</summary>
         private static Button SpLockButton(RectTransform stage, SuperPanelView view,
             out Image glyph, out TMP_Text label)
         {
-            var root = TLCenter("LockButton", stage, SpStageW * 0.5f, 372f, 52f, 52f);
+            // Bottom-centre → UPPER RIGHT (device round 3, Thiago 2026-08-08):
+            // the exploded model now sits toward the stage's bottom, and a button
+            // under it competed with the model for the same space. The label moves
+            // with it, BELOW the circle so the pair stays one glance.
+            var root = TLCenter("LockButton", stage, SpStageW - 40f, 40f, 52f, 52f);
             AddShadow(root, 43f, 43f, DPPSpriteFactory.Circle64);
 
             var outline = AddImage(CenterIn("HoverOutline", root, 40f + HoverHalo, 40f + HoverHalo),
@@ -557,7 +783,7 @@ namespace DPP.EditorTools
             // The LOCKED/UNLOCKED word below carries the state either way.
             else { glyph.enabled = false; Debug.LogWarning("[DPPUIBuilder] Icon 'ic_lock' not found — the lock button shows its label only."); }
 
-            label = AddText(TLCenter("Label", stage, SpStageW * 0.5f, 406f, 120f, 16f), "LOCKED",
+            label = AddText(TLCenter("Label", stage, SpStageW - 40f, 74f, 120f, 16f), "LOCKED",
                 9f, DPPTheme.Hex("#f0c879"), bold: true, align: TextAlignmentOptions.Center);
 
             var btn = root.gameObject.AddComponent<Button>();
@@ -633,8 +859,22 @@ namespace DPP.EditorTools
 
             var clone = Object.Instantiate(animator.gameObject, pivot);
             clone.name = "StageModel";
-            foreach (var a in clone.GetComponentsInChildren<DisassemblyAnimator>(true)) Object.DestroyImmediate(a);
-            foreach (var c in clone.GetComponentsInChildren<Collider>(true)) c.enabled = false;
+
+            // ⚠ THE ANIMATOR STAYS. It used to be stripped here ("nothing drives it"),
+            // which was true while the stage was a spinning picture. From RBv2.1.1 the
+            // stage OPENS on entry using the same teardown the disassembly intro plays
+            // (Thiago, 2026-08-07), and ModelLinkController drives this clone's copy.
+            // Anything that would drive it on its OWN schedule has to go, though, or the
+            // stage and the intro fight over the same animation.
+            foreach (var loop in clone.GetComponentsInChildren<TeardownPreviewLoop>(true))
+                Object.DestroyImmediate(loop);
+            foreach (var ex in clone.GetComponentsInChildren<ExplosionController>(true))
+                Object.DestroyImmediate(ex);
+            // ⚠ COLLIDERS STAY. They were disabled when the stage was only a spinning
+            // picture; from RBv2.1.1 the model is a SELECTION SURFACE and every body
+            // needs something for the hand ray to hit. ModelLinkController re-enables
+            // them anyway, but leaving them off here made that a silent dependency.
+            foreach (var c in clone.GetComponentsInChildren<Collider>(true)) c.enabled = true;
             SetLayerRecursiveEditor(clone.transform, 0);   // back onto Default so the main camera sees it
 
             var t = clone.transform;
@@ -653,7 +893,7 @@ namespace DPP.EditorTools
             float span = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
             if (span > 1e-9f)
             {
-                float targetWorld = 260f * SpScale;                 // 0.26 m on screen
+                float targetWorld = 200f * SpScale;                 // 0.200 m — REAL SIZE, device round 4
                 float k = t.localScale.x * (targetWorld / span);
                 t.localScale = Vector3.one * k;
                 Debug.Log($"[DPPUIBuilder] Stage model: world span {span * 1000f:0.##} mm at scale " +
@@ -668,6 +908,20 @@ namespace DPP.EditorTools
             t.localPosition -= centreLocal;
             Debug.Log($"[DPPUIBuilder] Stage model re-centred by {(-centreLocal * 1000f)} mm (pivot-local) — " +
                       "the idle yaw now turns it on the spot.");
+
+            // RBv2.1.1 — the bridge to the data canvas (00 §8.1). It lives on the PIVOT
+            // so it travels with the model into the free root and back, and it takes the
+            // CLONE as its root because that is what carries the glTF node names and the
+            // scale it has to correct for the exploded envelope.
+            var link = pivotGO.AddComponent<ModelLinkController>();
+            SetRef(link, "modelRoot", t);
+            SetRef(link, "animator", clone.GetComponentInChildren<DisassemblyAnimator>(true));
+            SetRef(link, "handBridge", Object.FindFirstObjectByType<PicoHandUIBridge>(FindObjectsInactive.Include));
+            // Round 4 (Thiago 2026-08-08): zoom 1.00 = REAL SIZE. The fit target is
+            // now the CLOSED model's longest side = the physical unit's 200 mm
+            // (printed mock 200 × 150 × 60), replacing the open-envelope shrink
+            // chain (0.26 → ÷1.2 → ÷1.5) that made the closed model read as a toy.
+            SetFloat(link, "realWorldSpan", 0.200f);
 
             return pivot;
         }
@@ -728,6 +982,15 @@ namespace DPP.EditorTools
         // =================================================================
         // Serialized-value helper (SetRef only handles Object references)
         // =================================================================
+
+        private static void SetInt(Object target, string fieldName, int value)
+        {
+            var so = new SerializedObject(target);
+            var prop = so.FindProperty(fieldName);
+            if (prop == null) { Debug.LogWarning($"[DPPUIBuilder] Int field '{fieldName}' not found on {target.GetType().Name}."); return; }
+            prop.intValue = value;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
 
         private static void SetFloat(Object target, string fieldName, float value)
         {
