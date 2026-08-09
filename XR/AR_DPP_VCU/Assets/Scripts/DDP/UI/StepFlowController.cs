@@ -82,7 +82,7 @@ namespace DPP.UI
 
         // The HoverHighlight on each status button. Resolved from the fill at
         // RUNTIME, not serialized — the scene wiring is untouched, so this fix
-        // needs no phase re-run (re-running RBv2_0/5 after RBv2_1_1/1 is the
+        // needs no phase re-run (re-running RBv2_1_1/06 after RBv2_1_1/10 is the
         // forbidden order: its active-only animator Find can grab the stage clone).
         private HoverHighlight _task1Hover, _task2Hover;
         private bool _hoversResolved;

@@ -56,14 +56,14 @@ namespace DPP.UI
         public enum State { Identity, Parts, Detail, Drawing }
 
         // =================================================================
-        // Wiring (set by RBv2_1/9)
+        // Wiring (set by RBv2_1_1/09)
         // =================================================================
         [Header("Routing")]
         [SerializeField] private ScreenRouter router;
 
-        [Tooltip("RBv2.1.1 — the super panel that owns this page, set by RBv2_1_1/2. When it is " +
+        [Tooltip("RBv2.1.1 — the super panel that owns this page, set by RBv2_1_1/11. When it is " +
                  "present the bottom bar walks the passport (previous/next tab) instead of routing " +
-                 "out of it; when it is null the page behaves as the standalone screen RBv2_1/9 built.")]
+                 "out of it; when it is null the page behaves as the standalone screen RBv2_1_1/09 built.")]
         [SerializeField] private SuperPanelView owner;
 
         [Tooltip("RBv2.1.1 — the stage model. Opening a component highlights it there; picking a " +
@@ -201,7 +201,7 @@ namespace DPP.UI
                 var mgr = FindFirstObjectByType<DPP.DPPManager>(FindObjectsInactive.Include);
                 if (mgr != null && mgr.Latest != null) Populate(mgr.Latest);
                 else Debug.LogWarning("[ProductSpecs] No payload — showing baked previews. " +
-                                      "Check DPPManager.productSpecs (RBv2_1/9) and that the backend is up.");
+                                      "Check DPPManager.productSpecs (RBv2_1_1/09) and that the backend is up.");
             }
 
             Show(State.Identity);
@@ -285,7 +285,7 @@ namespace DPP.UI
 
             if (_parts.Count > listRows.Length)
                 Debug.LogWarning($"[ProductSpecs] {_parts.Count} parts but only {listRows.Length} row slots — " +
-                                 "re-run RBv2_1/9 to build more.");
+                                 "re-run RBv2_1_1/09 to build more.");
 
             for (int i = slot; i < listRows.Length; i++)
                 if (listRows[i] != null) listRows[i].gameObject.SetActive(false);
@@ -360,7 +360,7 @@ namespace DPP.UI
             int shown = Mathf.Min(mats.Count, DetailSlots);
             if (mats.Count > DetailSlots)
                 Debug.LogWarning($"[ProductSpecs] {c.name} declares {mats.Count} materials but only " +
-                                 $"{DetailSlots} row slots exist — re-run RBv2_1/9 with a bigger PsDetailSlots.");
+                                 $"{DetailSlots} row slots exist — re-run RBv2_1_1/09 with a bigger PsDetailSlots.");
 
             for (int slot = 0; slot < shown; slot++)
             {

@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_0/6 builder — Screen 09: Completion summary (spec 09 v3, 2026-07-14).
+    /// RBv2_1_1/07 builder — Screen 09: Completion summary (spec 09 v3, 2026-07-14).
     ///
     /// v3 (approved mock 09_summary_v3_2.svg): eyebrow (model · serial) and ALL
     /// non-button boxes removed. Layout: check + title, one big total-time
@@ -32,7 +32,7 @@ namespace DPP.EditorTools
             ("5 · Sort the housing",       "aluminium shells 363 g · labels & adhesive 15 g",            "378 g"),
         };
 
-        [MenuItem("RBv2_0/6 — Completion summary", false, 6)]
+        [MenuItem("RBv2_1_1/07 — Completion summary", false, 7)]
         public static void Build6_CompletionSummary()
         {
             DPPSpriteFactory.GenerateAll();
@@ -41,7 +41,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1_1/01 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -158,16 +158,16 @@ namespace DPP.EditorTools
             if (router != null) SetRef(router, "completionSummary", screen.gameObject);
             if (manager != null) SetRef(manager, "completionSummary", view);
 
-            // StepFlowController hand-off (summary ref) — wire if RBv2_0/5 is built.
+            // StepFlowController hand-off (summary ref) — wire if RBv2_1_1/06 is built.
             var controller = canvasRT.GetComponentInChildren<StepFlowController>(true);
             if (controller != null) SetRef(controller, "summary", view);
-            else Debug.LogWarning("[DPPUIBuilder] StepFlowController not found — run RBv2_0/5, then re-run RBv2_0/6 to wire the hand-off.");
+            else Debug.LogWarning("[DPPUIBuilder] StepFlowController not found — run RBv2_1_1/06, then re-run RBv2_1_1/07 to wire the hand-off.");
 
             screen.gameObject.SetActive(false);
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_0/6 — Completion Summary v3 built. Save the scene.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/07 — Completion Summary v3 built. Save the scene.");
         }
 
         /// <summary>Post-report modal (loop routine 2026-07-21): after the

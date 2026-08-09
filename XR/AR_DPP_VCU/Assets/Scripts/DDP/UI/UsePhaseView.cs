@@ -23,7 +23,7 @@ namespace DPP.UI
     {
         public const int LensCount = 3;   // Thermal Data · Electrical Data · Software
 
-        [Header("Wiring (RBv2_1_1/3)")]
+        [Header("Wiring (RBv2_1_1/12)")]
         [SerializeField] private SuperPanelView owner;
         [SerializeField] private ModelLinkController modelLink;
 
@@ -238,8 +238,10 @@ namespace DPP.UI
                     lensFills[i].color = fill;
                 if (_lensHovers != null && i < _lensHovers.Length && _lensHovers[i] != null)
                     _lensHovers[i].SetRestFillColor(fill);   // trap 1 — the write that persists
+                // No green border on the active pill (Thiago, 2026-08-09) — the
+                // brighter fill + white label carry the state; the stroke is constant.
                 if (lensStrokes != null && i < lensStrokes.Length && lensStrokes[i] != null)
-                    lensStrokes[i].color = on ? DPPTheme.TealAccent : DPPTheme.Hex("#21407a");
+                    lensStrokes[i].color = DPPTheme.Hex("#21407a");
                 if (lensLabels != null && i < lensLabels.Length && lensLabels[i] != null)
                     lensLabels[i].color = on ? Color.white : DPPTheme.TextSecondary;
             }

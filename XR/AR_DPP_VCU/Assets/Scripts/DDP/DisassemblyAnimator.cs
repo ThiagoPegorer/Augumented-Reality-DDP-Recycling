@@ -467,6 +467,96 @@ namespace DPP
             return m;
         }
 
+        // ---------- guided disassembly mode (RBv2.1.1 spec 10, 2026-08-09) ----------
+        // The super panel's guided flow drives the STAGE CLONE through the
+        // physical state of the run. Additive only — nothing above changes.
+
+        /// <summary>Top-level part groups the COMPLETION of a step takes off the
+        /// stage. Step 3 removes only its screws — the board and the chips stay
+        /// visible (risen) because step 4 works ON them; step 4 then retires the
+        /// chips AND the bare board (both leave the housing's story).</summary>
+        private IEnumerable<Transform> RemovedByStep(int step)
+        {
+            switch (step)
+            {
+                case 1:
+                    foreach (var t in lidScrews) yield return t;
+                    if (lid != null) yield return lid;
+                    break;
+                case 2:
+                    foreach (var t in connectorScrews) yield return t;
+                    foreach (var t in connectors) yield return t;
+                    break;
+                case 3:
+                    foreach (var t in pcbScrews) yield return t;
+                    break;
+                case 4:
+                    foreach (var t in chips) yield return t;
+                    if (pcb != null) yield return pcb;
+                    break;
+                // step 5 (bottom shell) removes nothing that a later view needs gone.
+            }
+        }
+
+        /// <summary>
+        /// Snap the model to the VIEW state of guided step n (1–5): parts removed
+        /// by steps 1..n−1 HIDDEN (the model matches the half-dismantled unit in
+        /// the participant's hands), step n's parts at true materials, the rest
+        /// ghosted via <see cref="SetStepFocus"/>. Step 4 shows the board + chips
+        /// risen out of the housing (step 3's end pose) since that is where its
+        /// work happens.
+        ///
+        /// Round 2: <paramref name="completed"/> = a revisited, finished step —
+        /// its own parts hide too (they are off the physical unit) and the focus
+        /// CLEARS instead of highlighting hidden bodies: with the keep set
+        /// invisible, SetStepFocus would ghost every part still on screen and the
+        /// whole model read as a hologram of itself.
+        /// </summary>
+        public void SetGuidedStepState(int step, bool completed = false)
+        {
+            StopAllCoroutines();
+            ResetInstant();
+            foreach (Transform c in transform) c.gameObject.SetActive(true);
+            int hideThrough = completed ? step : step - 1;
+            for (int s = 1; s <= hideThrough; s++)
+                foreach (var t in RemovedByStep(s))
+                    if (t != null) t.gameObject.SetActive(false);
+            // Board + chips out of the housing: viewing step 4, or step 3 after
+            // its completion (the lift already happened physically).
+            if (step == 4 || (step == 3 && completed)) ApplyStepInstant(3);
+            if (completed) ClearFocus();
+            else SetStepFocus(step);
+        }
+
+        /// <summary>Round 2 (feedback 2): the current step's removed parts VANISH
+        /// the moment both tasks are ticked — and return if a tick is undone.
+        /// Show/hide only; poses stay wherever the entry explode left them.</summary>
+        public void SetStepPartsHidden(int step, bool hidden)
+        {
+            foreach (var t in RemovedByStep(step))
+                if (t != null) t.gameObject.SetActive(!hidden);
+        }
+
+        /// <summary>Everything visible, true materials, assembled pose. The exit
+        /// path of the guided mode — and the precondition for
+        /// <see cref="ApplyOpenInstant"/>.</summary>
+        public void ClearGuidedState()
+        {
+            StopAllCoroutines();
+            foreach (Transform c in transform) c.gameObject.SetActive(true);
+            ClearFocus();
+            ResetInstant();
+        }
+
+        /// <summary>Instant full-open showcase pose with every part visible — the
+        /// guided mode's Intro/Summary bookends. Part poses only; the pivot's
+        /// accumulated showcase yaw is deliberately untouched.</summary>
+        public void ApplyOpenInstant()
+        {
+            ClearGuidedState();
+            for (int s = 1; s <= 5; s++) ApplyStepInstant(s);
+        }
+
         // ---------- editor test buttons (enter Play mode first) ----------
         [ContextMenu("Test / Full teardown")] void _tFull()  => PlayFullTeardown();
         [ContextMenu("Test / Reassemble")]    void _tBack()  => Reassemble();

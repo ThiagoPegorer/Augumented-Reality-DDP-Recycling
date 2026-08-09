@@ -11,13 +11,13 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_1/9 — 04c: THE PRODUCT SPECIFICATIONS TAB (spec `04c_product_specs.md`,
+    /// RBv2_1_1/09 — 04c: THE PRODUCT SPECIFICATIONS TAB (spec `04c_product_specs.md`,
     /// mock `drafts/04c_v3_product_specs.svg`, revised on the 2026-08-06 device test).
     ///
     /// Four states in one 420 × 430 page: Product ID · component list · component
     /// detail · drawing enlarged.
     ///
-    /// AUTHORED AT 420 WIDE, NOT AT THE PANEL'S WIDTH, so `RBv2_1_1/2` moves it
+    /// AUTHORED AT 420 WIDE, NOT AT THE PANEL'S WIDTH, so `RBv2_1_1/11` moves it
     /// into the super panel's data canvas with a re-parent instead of a rebuild.
     ///
     /// NO PAGE TITLE (2026-08-06). The two sub-tab pills say what is on screen, so
@@ -46,8 +46,13 @@ namespace DPP.EditorTools
         private const float PsBandTop = 76f, PsBandBottom = 360f;        // 284 of content
 
         // Bottom bar: visual 34 inside a 50 hit root (see the class note).
-        private const float PsBtnCy = 389f, PsBtnVisualH = 34f, PsBtnHitH = 50f;
-        private const float PsBackW = 110f, PsPrimaryW = 150f;
+        // Geometry standardized across ALL DPP data tabs (Thiago, 2026-08-09,
+        // Environmental impact is the reference): Back cx 69 / w 90, Next cx 321 /
+        // w 150, cy 402, 11 pt — the buttons must not appear to move as the user
+        // walks the tabs. cy 389 → 402 moves the InfoButton with them (it shares
+        // the default), keeping the specs page's own bar on one line.
+        private const float PsBtnCy = 402f, PsBtnVisualH = 34f, PsBtnHitH = 50f;
+        private const float PsBackW = 90f, PsPrimaryW = 150f;
 
         /// <summary>Width reserved for the identity key column. Values start here
         /// and auto-shrink rather than running under the key.</summary>
@@ -126,7 +131,7 @@ namespace DPP.EditorTools
             "— no payload —", "— no payload —", "— no payload —", "— no payload —"
         };
 
-        [MenuItem("RBv2_1/9 — Product specs tab", false, 9)]
+        [MenuItem("RBv2_1_1/09 — Product specs tab", false, 9)]
         public static void Build_ProductSpecs()
         {
             AssetDatabase.Refresh();
@@ -137,7 +142,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1_1/01 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -163,10 +168,10 @@ namespace DPP.EditorTools
 
             // ---------------- bottom bar ----------------
             var backBtn = PsSmallPill(screen, "BackButton", PsMargin + PsBackW * 0.5f, PsBackW, "Back",
-                primary: false, out var backLbl);
+                primary: false, out var backLbl, fontSize: 11f);
             var primaryBtn = PsSmallPill(screen, "PrimaryButton",
                 PsMargin + PsContentW - PsPrimaryW * 0.5f, PsPrimaryW, "Next",
-                primary: true, out var primaryLbl);
+                primary: true, out var primaryLbl, fontSize: 11f);
 
             // ---------------- state 1: Product ID ----------------
             var identity = TL("StateIdentity", screen, 0f, 0f, PsW, PsH);
@@ -443,8 +448,8 @@ namespace DPP.EditorTools
             screen.gameObject.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1/9 — Product specs tab built (420 × 430). " +
-                      "Run RBv2_1_1/2 to move it into the data canvas, then Verify wiring, then SAVE THE SCENE.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/09 — Product specs tab built (420 × 430). " +
+                      "Run RBv2_1_1/11 to move it into the data canvas, then Verify wiring, then SAVE THE SCENE.");
         }
 
         // =================================================================

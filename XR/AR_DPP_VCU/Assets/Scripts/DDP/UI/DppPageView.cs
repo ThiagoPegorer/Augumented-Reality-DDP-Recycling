@@ -37,7 +37,7 @@ namespace DPP.UI
     public class DppPageView : MonoBehaviour
     {
         // =================================================================
-        // Wiring (set by RBv2_1/8)
+        // Wiring (set by RBv2_1_1/08)
         // =================================================================
         [Header("Routing")]
         [SerializeField] private ScreenRouter router;
@@ -229,7 +229,7 @@ namespace DPP.UI
 
         // ---- the four seams the per-tab phases plug into (spec 04 section 10) ----
 
-        /// <summary>Tab 1 "+" → Product specifications (spec 04c, RBv2_1/9).</summary>
+        /// <summary>Tab 1 "+" → Product specifications (spec 04c, RBv2_1_1/09).</summary>
         public void OpenTab1()
         {
             if (router != null) router.ShowProductSpecs();

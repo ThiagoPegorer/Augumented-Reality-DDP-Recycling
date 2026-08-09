@@ -26,7 +26,7 @@ namespace DPP.UI
         public const int StageCount = 5;    // S1..S5 (explorer); Per stage charts S1..S4 only
         public const int CategoryCount = 3; // minerals · climate · eutrophication (freshwater)
 
-        [Header("Wiring (RBv2_1_1/4)")]
+        [Header("Wiring (RBv2_1_1/13)")]
         [SerializeField] private SuperPanelView owner;
 
         [Header("Sub-tab pills")]
@@ -272,8 +272,10 @@ namespace DPP.UI
                     tabFills[i].color = fill;
                 if (_tabHovers != null && i < _tabHovers.Length && _tabHovers[i] != null)
                     _tabHovers[i].SetRestFillColor(fill);   // trap 1 — the write that persists
+                // No green border on the active pill (Thiago, 2026-08-09) — the
+                // brighter fill + white label carry the state; the stroke is constant.
                 if (tabStrokes != null && i < tabStrokes.Length && tabStrokes[i] != null)
-                    tabStrokes[i].color = on ? DPPTheme.TealAccent : DPPTheme.Hex("#21407a");
+                    tabStrokes[i].color = DPPTheme.Hex("#21407a");
                 if (tabLabels != null && i < tabLabels.Length && tabLabels[i] != null)
                     tabLabels[i].color = on ? Color.white : DPPTheme.TextSecondary;
             }

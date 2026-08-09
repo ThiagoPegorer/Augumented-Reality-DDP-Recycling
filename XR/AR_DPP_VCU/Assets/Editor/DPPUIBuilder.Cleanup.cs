@@ -9,7 +9,7 @@ namespace DPP.EditorTools
     /// RBv2.0 housekeeping — removes RBv1.0 leftovers from an EXISTING scene
     /// without rebuilding anything.
     ///
-    /// Why this exists: RBv2_1/1 is destructive (it deletes DPPPanelCanvas and
+    /// Why this exists: RBv2_1_1/01 is destructive (it deletes DPPPanelCanvas and
     /// every screen under it), so it is the wrong tool for "get rid of the old
     /// main page". This is the safe, in-place path.
     ///
@@ -20,7 +20,7 @@ namespace DPP.EditorTools
     ///                       DPPManager.mainPage only feeds a null-guard warning,
     ///                       so removing it changes no behaviour.
     ///   · InformationTab  — the RBv1.0 passport screen, split into DppCanva +
-    ///                       ModelExploration by RBv2_0/Legacy.
+    ///                       ModelExploration by RBv2_1_1/Legacy.
     ///   · DashboardCanvas — the pre-Canva colloquium dashboard, if any scene
     ///                       still carries one.
     ///
@@ -28,7 +28,7 @@ namespace DPP.EditorTools
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        [MenuItem("RBv2_0/Tools/Clean RBv1.0 leftovers", false, 40)]
+        [MenuItem("RBv2_1_1/Tools/Clean RBv1.0 leftovers", false, 103)]
         public static void CleanRBv1Leftovers()
         {
             int removed = 0;

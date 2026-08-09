@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_0/5 builder — Screens 04–08: the guided step flow (spec 04 v3, 2026-07-10).
+    /// RBv2_1_1/06 builder — Screens 04–08: the guided step flow (spec 04 v3, 2026-07-10).
     ///
     /// v3 changes (approved mock 04_step1_v3.svg):
     ///   - Header eyebrow ("DISASSEMBLY · MS 50.4") + "Step n of 5" REMOVED —
@@ -29,7 +29,7 @@ namespace DPP.EditorTools
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        [MenuItem("RBv2_0/5 — Step flow + action zone", false, 5)]
+        [MenuItem("RBv2_1_1/06 — Step flow + action zone", false, 6)]
         public static void Build5_StepFlowAndZone()
         {
             DPPSpriteFactory.GenerateAll();
@@ -38,7 +38,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1_1/01 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -188,7 +188,7 @@ namespace DPP.EditorTools
             var manager = Object.FindFirstObjectByType<DPPManager>();
             if (manager != null) SetRef(manager, "stepFlow", controller);
 
-            // SELF-HEALING WIRE (see the note in RBv2_1/2). RBv2_0/6 sets
+            // SELF-HEALING WIRE (see the note in RBv2_1_1/03). RBv2_1_1/07 sets
             // StepFlowController.summary; rebuilding the step flow destroys that
             // controller, so running /5 after /6 would leave "Finish & see summary"
             // unable to hand the session over. Re-point it here.
@@ -200,7 +200,7 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_0/5 — Step Flow v3 + ExplodedCanvas built. Save the scene.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/06 — Step Flow v3 + ExplodedCanvas built. Save the scene.");
         }
 
         /// <summary>Confirmation modal over the step screen: dim overlay (blocks
@@ -257,7 +257,7 @@ namespace DPP.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        /// <summary>The shared preview camera (created by RBv2_0/4; recreated here if missing).</summary>
+        /// <summary>The shared preview camera (created by RBv2_1_1/05; recreated here if missing).</summary>
         private static Camera FindOrCreatePreviewCamera()
         {
             foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())

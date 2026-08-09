@@ -40,7 +40,7 @@ namespace DPP
         [SerializeField] private DPP.UI.DppPageView dppPage;
 
         [Tooltip("Screen 04c — Product specifications tab. Populated with components[], " +
-                 "split into parts and board materials. Built by RBv2_1/9.")]
+                 "split into parts and board materials. Built by RBv2_1_1/09.")]
         [SerializeField] private DPP.UI.ProductSpecsView productSpecs;
 
         [Tooltip("Screen 03 — Disassembly intro view (Canva design). Populated with tools/time/scope/recover stats.")]

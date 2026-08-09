@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_0/4 builder — Screen 03: Disassembly intro (spec 03 v3, 2026-07-10).
+    /// RBv2_1_1/05 builder — Screen 03: Disassembly intro (spec 03 v3, 2026-07-10).
     ///
     /// v3 changes (approved mock 03_intro_v3.svg):
     ///   - 2×2 stat-card matrix REMOVED (boxes read as buttons). Left half is
@@ -46,7 +46,7 @@ namespace DPP.EditorTools
             "14 screws",
         };
 
-        [MenuItem("RBv2_0/4 — Disassembly intro", false, 4)]
+        [MenuItem("RBv2_1_1/05 — Disassembly intro", false, 5)]
         public static void Build4_DisassemblyIntro()
         {
             DPPSpriteFactory.GenerateAll();
@@ -145,7 +145,7 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = screen.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_0/4 — Disassembly Intro v3 built. Save the scene.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/05 — Disassembly Intro v3 built. Save the scene.");
         }
 
         /// <summary>One unboxed overview row: grey label at x24, bold white value at x112.</summary>

@@ -46,7 +46,7 @@ namespace DPP.UI
         public const int CertTab = 3;
 
         // =================================================================
-        // Wiring (set by RBv2_1_1/1)
+        // Wiring (set by RBv2_1_1/10)
         // =================================================================
         [Header("Routing")]
         [SerializeField] private ScreenRouter router;
@@ -85,6 +85,11 @@ namespace DPP.UI
         [Tooltip("RBv2.1.1 — the model link. LINKED explodes and follows the data canvas; FREE cuts " +
                  "the connection both ways. Null is fine: the stage then behaves as it did before.")]
         [SerializeField] private ModelLinkController modelLink;
+
+        [Tooltip("RBv2.1.1 spec 10 — the guided disassembly mode (built by RBv2_1_1/14). When set, " +
+                 "the gate CTA swaps this rig's rail + data content in place instead of routing to " +
+                 "the RB2_0 flat screens. Null is fine: the CTA falls back to router.ShowDisassembly().")]
+        [SerializeField] private DisassemblyModeController disassembly;
 
         [Tooltip("RBv2.1.1 stage gestures (twist yaw + dial zoom, live in BOTH states). Reset on " +
                  "tab change and on re-link so LINKED always means one pose family. Null is fine.")]
@@ -165,6 +170,16 @@ namespace DPP.UI
             for (int i = 0; i < TabCount; i++) _visited[i] = false;
             _ctaHint = null;   // coroutines died with the disable; drop the stale handle
 
+            // A guided run never survives a disable (DisassemblyModeController's
+            // OnDisable resets the model and the link) — restore the passport
+            // chrome unconditionally so a re-entry can't inherit a hidden rail.
+            _guided = false;
+            _guidedSpin = false;
+            for (int i = 0; tabRoots != null && i < tabRoots.Length; i++)
+                if (tabRoots[i] != null) tabRoots[i].gameObject.SetActive(true);
+            if (railCtaButton != null) railCtaButton.gameObject.SetActive(true);
+            ShowGestureColumn(true);
+
             if (_unlocked) ReLock(instant: true);
             else if (model != null)
             {
@@ -210,7 +225,11 @@ namespace DPP.UI
             // slow-moving, not static — if study pilots show missed pinches, the
             // fallback is pausing the spin while the ray hovers the model.
             // Gated on OpenDone: the spin starts AFTER the show, never during it.
-            if (!_unlocked && lockedYawSpeed > 0f && (modelLink == null || modelLink.OpenDone))
+            // Guided mode owns the spin decision (spec 10): the showcase turns on
+            // the Intro/Summary bookends and holds still during steps, where the
+            // participant is matching the model to the unit in their hands.
+            bool spinOk = _guided ? _guidedSpin : (modelLink == null || modelLink.OpenDone);
+            if (!_unlocked && lockedYawSpeed > 0f && spinOk)
                 model.Rotate(Vector3.up, lockedYawSpeed * Time.deltaTime, Space.Self);
 
             // FREE STAYS UPRIGHT — ENFORCED, not just eased (device round 6: the
@@ -347,6 +366,10 @@ namespace DPP.UI
                 _ctaHint = StartCoroutine(CtaHint());
                 return;
             }
+            // Spec 10: the guided mode swaps THIS rig's rail + data in place — the
+            // model never leaves the screen. The RB2_0 flat-screen route survives
+            // as the fallback until RBv2_1_1/14 has run (and as the rollback).
+            if (disassembly != null) { disassembly.EnterMode(); return; }
             if (router != null) router.ShowDisassembly();
             else Debug.LogWarning("[SuperPanel] No router — cannot start the disassembly.");
         }
@@ -376,7 +399,7 @@ namespace DPP.UI
             {
                 text = "Continue to disassembly";
                 fill = new Color32(0x27, 0xC4, 0x6C, 0xFF);    // green — same as FREE
-                label = new Color32(0x08, 0x33, 0x1C, 0xFF);
+                label = Color.white;                           // Thiago, 2026-08-09: white, not dark
                 bold = true;
             }
             else
@@ -446,18 +469,13 @@ namespace DPP.UI
         public void SelectTab2() => SelectTab(2);
         public void SelectTab3() => SelectTab(3);
 
-        /// <summary>Called by a tab page's primary CTA. Recycler: the next tab —
-        /// the certificates tab is the end of the chain, and the teardown is ONLY
-        /// reachable through the rail gate. Product user: the next unit.</summary>
+        /// <summary>Called by a tab page's primary CTA — the next tab, for BOTH
+        /// roles (Thiago, 2026-08-09: the product user's Next also advances tabs;
+        /// scanning another unit goes rail Back → stakeholders → scan). On the
+        /// last tab the rail CTA / rail Back are the only doors on.</summary>
         public void NextTab()
         {
-            if (!Walkthrough)
-            {
-                if (scanner != null) scanner.BeginNewScan();
-                else Debug.LogWarning("[SuperPanel] No QRScanController — cannot start a new scan.");
-                return;
-            }
-            if (_active >= TabCount - 1) return;   // last tab: the rail CTA is the only door on
+            if (_active >= TabCount - 1) return;
             SelectTab(_active + 1);
         }
 
@@ -485,14 +503,77 @@ namespace DPP.UI
         /// button — the rail gate is the only way forward.</summary>
         public bool IsLastTab => _active >= TabCount - 1;
 
-        /// <summary>04e round 2 (Thiago): every page primary reads "Next" — the
-        /// certificates tab is a normal step in the chain now, and the teardown
-        /// CTA lives on the rail, not on a page.</summary>
-        public string PrimaryLabel => !Walkthrough ? "Scan next product" : "Next";
+        /// <summary>Every page primary reads "Next" for BOTH roles (Thiago,
+        /// 2026-08-09 — "Scan next product" wrongly restarted the scan for the
+        /// product user). The teardown CTA lives on the rail, not on a page.</summary>
+        public string PrimaryLabel => "Next";
 
         /// <summary>Both roles read "Back": it leaves the passport for the role
         /// fork, which is one step back, not an exit (00 §5).</summary>
         public string BackLabel => "Back";
+
+        // =================================================================
+        // Guided disassembly support (spec 10) — called by DisassemblyModeController
+        // =================================================================
+
+        private bool _guided, _guidedSpin;
+
+        /// <summary>Hide (or restore) the passport chrome: the four tabs, the gate
+        /// CTA and the active data page. The guided rail/pages are the controller's
+        /// own objects — this method only ever touches what THIS view owns, so the
+        /// two cannot fight over the same GameObjects.</summary>
+        public void SetGuidedChrome(bool on)
+        {
+            _guided = on;
+            for (int i = 0; tabRoots != null && i < tabRoots.Length; i++)
+                if (tabRoots[i] != null) tabRoots[i].gameObject.SetActive(!on);
+            if (railCtaButton != null) railCtaButton.gameObject.SetActive(!on);
+
+            if (on)
+            {
+                for (int i = 0; tabPages != null && i < tabPages.Length; i++)
+                    if (tabPages[i] != null) tabPages[i].SetActive(false);
+                if (placeholderPage != null) placeholderPage.SetActive(false);
+            }
+            else
+            {
+                _guidedSpin = false;
+                SelectTab(_active);   // repaint the rail, reopen the active page
+            }
+        }
+
+        /// <summary>Spin override while guided: true on the Intro/Summary
+        /// bookends, false during steps.</summary>
+        public void SetGuidedSpin(bool on) => _guidedSpin = on;
+
+        /// <summary>Instant re-link if the model is FREE — steps are LINKED-only
+        /// (a FREE model REASSEMBLES, the opposite of a half-dismantled unit).</summary>
+        public void ForceRelock()
+        {
+            if (_unlocked) ReLock(instant: true);
+        }
+
+        /// <summary>Ease the PIVOT back to its home pose over <see cref="snapSeconds"/> —
+        /// reuses the re-lock snap machinery. Guided mode's Start press: the
+        /// showcase spin accumulates on the pivot, and easing it home while the
+        /// parts reassemble is what turns "the model froze at a random angle"
+        /// (device round 2, feedback 1) into a readable transition.</summary>
+        public void SnapModelHome()
+        {
+            if (model == null) return;
+            _snapFromPos = model.localPosition;
+            _snapFromRot = model.localRotation;
+            _snapFromScale = model.localScale;
+            _snapT = 0f;
+        }
+
+        /// <summary>Show/hide the whole gesture column (padlock included). The
+        /// column root is the backplate's parent — wired by /10 as hudBackplate.</summary>
+        public void ShowGestureColumn(bool show)
+        {
+            if (hudBackplate != null && hudBackplate.parent != null)
+                hudBackplate.parent.gameObject.SetActive(show);
+        }
 
         // =================================================================
         // Lock / unlock
@@ -502,7 +583,7 @@ namespace DPP.UI
         {
             if (model == null)
             {
-                Debug.LogWarning("[SuperPanel] No model wired — nothing to unlock. Re-run RBv2_1_1/1.");
+                Debug.LogWarning("[SuperPanel] No model wired — nothing to unlock. Re-run RBv2_1_1/10.");
                 return;
             }
             if (_unlocked) ReLock(instant: false); else Unlock();

@@ -21,7 +21,7 @@ namespace DPP.UI
     /// point were removed. Their only callers were the two-card Main Page and the
     /// tab pills, neither of which exists any more. If the console ever reports a
     /// missing method on this class, some serialized UnityEvent still points at
-    /// the old API — run RBv2_0/Tools/Clean RBv1.0 leftovers.
+    /// the old API — run RBv2_1_1/Tools/Clean RBv1.0 leftovers.
     /// </summary>
     /// <summary>Who is using the app this session (RBv2.1 spec 03). `None` until
     /// the user chooses — the screen cannot be skipped.</summary>
@@ -29,8 +29,8 @@ namespace DPP.UI
 
     public class ScreenRouter : MonoBehaviour
     {
-        [Header("Passport screens — DPP page + certificates by RBv2_1/8, legacy exploration by RBv2_0/Legacy")]
-        [Tooltip("RBv2.1 spec 03 — the role fork, opened by a successful scan. Built by RBv2_1/7.")]
+        [Header("Passport screens — DPP page + certificates by RBv2_1_1/08, legacy exploration by RBv2_1_1/Legacy")]
+        [Tooltip("RBv2.1 spec 03 — the role fork, opened by a successful scan. Built by RBv2_1_1/04.")]
         [SerializeField] private GameObject stakeholderDecision;
         [Tooltip("Product info — the app's main screen in RBv2.0. Back goes to the Welcome canvas.")]
         [SerializeField] private GameObject dppCanva;
@@ -39,17 +39,17 @@ namespace DPP.UI
 
         [Tooltip("RBv2.1 spec 04 §5 — Certificates & safety. A full SCREEN, not a modal: it covers " +
                  "the whole panel anyway, and an overlay sharing this canvas plane with live controls " +
-                 "lets clicks resolve to the buttons underneath it. Built by RBv2_1/8.")]
+                 "lets clicks resolve to the buttons underneath it. Built by RBv2_1_1/08.")]
         [SerializeField] private GameObject certificates;
 
         [Tooltip("RBv2.1 spec 04c — the Product specifications tab as a SIBLING screen on this canvas. " +
-                 "Set by RBv2_1/9 and CLEARED by RBv2_1_1/2, which re-parents the page into the super " +
+                 "Set by RBv2_1_1/09 and CLEARED by RBv2_1_1/11, which re-parents the page into the super " +
                  "panel's data canvas. Non-null only while the rig does not exist.")]
         [SerializeField] private GameObject productSpecs;
 
         [Header("RBv2.1.1 — the super panel (spec 04 v2)")]
         [Tooltip("The three-canvas rig, a SCENE ROOT rather than a child of this canvas. Built by " +
-                 "RBv2_1_1/1. When it is assigned it replaces the flat DPP page: ShowDppCanva() routes " +
+                 "RBv2_1_1/10. When it is assigned it replaces the flat DPP page: ShowDppCanva() routes " +
                  "here so every existing caller keeps working unchanged.")]
         [SerializeField] private GameObject dppSuperPanel;
 
@@ -114,7 +114,7 @@ namespace DPP.UI
             {
                 // Never strand a participant on a missing screen — fall through to
                 // the passport, which is what both roles see first anyway.
-                Debug.LogWarning("[ScreenRouter] Stakeholder screen not assigned — run RBv2_1/7. Opening the passport directly.");
+                Debug.LogWarning("[ScreenRouter] Stakeholder screen not assigned — run RBv2_1_1/04. Opening the passport directly.");
                 ShowDppCanva();
                 return;
             }
@@ -128,7 +128,7 @@ namespace DPP.UI
         {
             if (certificates == null)
             {
-                Debug.LogWarning("[ScreenRouter] Certificates page not assigned — run RBv2_1/8.");
+                Debug.LogWarning("[ScreenRouter] Certificates page not assigned — run RBv2_1_1/08.");
                 return;
             }
             Show(certificates, "Certificates & safety");
@@ -141,7 +141,7 @@ namespace DPP.UI
         {
             if (productSpecs == null)
             {
-                Debug.LogWarning("[ScreenRouter] Product specs page not assigned — run RBv2_1/9.");
+                Debug.LogWarning("[ScreenRouter] Product specs page not assigned — run RBv2_1_1/09.");
                 return;
             }
             Show(productSpecs, "Product specifications");
@@ -159,7 +159,7 @@ namespace DPP.UI
             if (dppSuperPanel != null) { Show(dppSuperPanel, "DPP super panel"); return; }
             if (dppCanva == null)
             {
-                Debug.LogWarning("[ScreenRouter] DPP page not assigned — run RBv2_1/8.");
+                Debug.LogWarning("[ScreenRouter] DPP page not assigned — run RBv2_1_1/08.");
                 return;
             }
             Show(dppCanva, "DPP Canva");
@@ -170,7 +170,7 @@ namespace DPP.UI
         {
             if (dppSuperPanel == null)
             {
-                Debug.LogWarning("[ScreenRouter] Super panel not assigned — run RBv2_1_1/1.");
+                Debug.LogWarning("[ScreenRouter] Super panel not assigned — run RBv2_1_1/10.");
                 return;
             }
             Show(dppSuperPanel, "DPP super panel");
@@ -181,7 +181,7 @@ namespace DPP.UI
         {
             if (modelExploration == null)
             {
-                Debug.LogWarning("[ScreenRouter] Model exploration not assigned — run RBv2_0/Legacy.");
+                Debug.LogWarning("[ScreenRouter] Model exploration not assigned — run RBv2_1_1/Legacy.");
                 return;
             }
             Show(modelExploration, "Model exploration");
@@ -191,7 +191,7 @@ namespace DPP.UI
         {
             if (disassemblyIntro == null)
             {
-                Debug.LogWarning("[ScreenRouter] Disassembly intro not assigned — run RBv2_0/4.");
+                Debug.LogWarning("[ScreenRouter] Disassembly intro not assigned — run RBv2_1_1/05.");
                 return;
             }
             Show(disassemblyIntro, "Disassembly intro");
@@ -206,7 +206,7 @@ namespace DPP.UI
         {
             if (stepFlow == null)
             {
-                Debug.LogWarning("[ScreenRouter] Step flow not assigned — run RBv2_0/5.");
+                Debug.LogWarning("[ScreenRouter] Step flow not assigned — run RBv2_1_1/06.");
                 return;
             }
             Show(stepFlow, "Step flow");
@@ -217,7 +217,7 @@ namespace DPP.UI
         {
             if (completionSummary == null)
             {
-                Debug.LogWarning("[ScreenRouter] Completion summary not assigned — run RBv2_0/6.");
+                Debug.LogWarning("[ScreenRouter] Completion summary not assigned — run RBv2_1_1/07.");
                 return;
             }
             Show(completionSummary, "Completion summary");

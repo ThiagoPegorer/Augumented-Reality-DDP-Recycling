@@ -3,7 +3,7 @@
   "dpp_meta": {
     "schema_version": "0.13",
     "reference_framework": "CIRPASS D2.2 Table 6 (pp. 41-42)",
-    "last_updated": "2026-08-08",
+    "last_updated": "2026-08-09",
     "completeness_note": "Prototype passport for a Master's thesis user study. Impact figures are the openLCA v4 / EF 3.1 deterministic centrals; material splits remain assumed pending VCU_BOM_v4 reconciliation. Attributes with basis/status 'not_provided' have no source yet - coverage against CIRPASS Table 6 is in DPP_UI_Specs/13b_information_model.md."
   },
   "identity": {
@@ -724,7 +724,7 @@
     },
     {
       "id": "fasteners",
-      "name": "Fasteners (~12 x M3)",
+      "name": "Fasteners (14 x M3)",
       "group": "board_material",
       "material": "Stainless steel",
       "weight_g": 12.0,
@@ -736,7 +736,7 @@
       "bom_rows": [
         2
       ],
-      "represents": null,
+      "represents": "BOM row 2 budgets ~12 x M3 (12.0 g); the CAD model and the printed mock carry 14 (4 lid + 6 connector + 4 board). The passport shows the count a dismantler will physically verify; the mass stays the BOM figure and the thesis reconciles the delta.",
       "material_breakdown": [
         {
           "material": "Steel/Fe",
@@ -1502,13 +1502,13 @@
       "Allen key (hex 2.5 mm)"
     ],
     "parts": [
-      "VCU case",
-      "PCB board",
-      "2 processors",
-      "1 CPU",
-      "3 sensors",
-      "3 connectors",
-      "14 screws"
+      "Housing shells 2x (HPDC aluminium)",
+      "Bare PCB, 4-layer FR-4",
+      "Processors 2x FCBGA + flash 2x 4 GB",
+      "Power stages 6x (DPAK)",
+      "Regulators + AFE / transceivers + MEMS",
+      "Connectors 3x AS018-35",
+      "Fasteners 14x M3"
     ],
     "steps": [
       {
@@ -1526,7 +1526,7 @@
             "value": false
           },
           {
-            "title": "Lift off the top cover",
+            "title": "Lift off the upper housing shell",
             "subtitle": "Locating lip disengages · exposes the PCB",
             "icon": "up",
             "value": false
@@ -1542,14 +1542,14 @@
         ],
         "actions": [
           {
-            "title": "Unscrew the 3 round connectors",
+            "title": "Unscrew the 3 connectors AS018-35",
             "subtitle": "2 screws each · gold-plated contacts · recover",
             "icon": "pins",
             "value": true
           },
           {
             "title": "Pull each connector out of its bore",
-            "subtitle": "Set aside · reusable parts",
+            "subtitle": "Set aside · reuse after contact test",
             "icon": "up",
             "value": false
           }
@@ -1576,7 +1576,7 @@
           },
           {
             "title": "Lift the PCB out flat",
-            "subtitle": "Carries the processors & passives",
+            "subtitle": "Bare PCB, 4-layer FR-4 · carries the ICs & passives",
             "icon": "board",
             "value": false
           }
@@ -1594,14 +1594,14 @@
         ],
         "actions": [
           {
-            "title": "Locate the processors, CPU & sensors",
-            "subtitle": "2 processors + 1 CPU + 3 sensors in the board pockets",
+            "title": "Locate the four IC groups",
+            "subtitle": "Processors 2x FCBGA + flash · regulators + AFE · power stages 6x DPAK · transceivers + MEMS",
             "icon": "magnify",
             "value": false
           },
           {
-            "title": "Pop the parts out of their pockets",
-            "subtitle": "High-value silicon · reuse stream",
+            "title": "Pop the packages out of their pockets",
+            "subtitle": "Reuse-eligible: processors + flash, power stages",
             "icon": "chip",
             "value": true
           }
@@ -1618,14 +1618,14 @@
         ],
         "actions": [
           {
-            "title": "Shells into the aluminium stream",
-            "subtitle": "Die-cast AlSi · 344 g · highest CO2 credit",
+            "title": "Separate the bottom shell",
+            "subtitle": "Last housing part · set aside with the upper shell",
             "icon": "recycle",
             "value": false
           },
           {
-            "title": "Peel labels & adhesive residue",
-            "subtitle": "Mixed polymer · separate bin",
+            "title": "Remove the QR code sticker",
+            "subtitle": "Peel off · separate bin",
             "icon": "label",
             "value": false
           }
@@ -1936,7 +1936,7 @@
         },
         {
           "component_id": "fasteners",
-          "name": "Fasteners (~12 x M3)",
+          "name": "Fasteners (14 x M3)",
           "mass_g": 12.0,
           "verdict": "reuse",
           "reason": "replaced once in service; within torque spec"

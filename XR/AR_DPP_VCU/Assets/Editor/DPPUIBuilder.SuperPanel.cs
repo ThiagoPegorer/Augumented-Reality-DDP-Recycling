@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_1_1/1 — THE SUPER PANEL RIG (spec `04_DPP_page.md` v2).
+    /// RBv2_1_1/10 — THE SUPER PANEL RIG (spec `04_DPP_page.md` v2).
     ///
     /// Builds `DppSuperPanel`: one rig carrying three toed-in world-space
     /// canvases — rail 220, stage 340, data 420 — plus the model and one grab bar.
@@ -64,10 +64,9 @@ namespace DPP.EditorTools
         /// <summary>04e round 2 rail order: FOUR equal tabs from the top (band
         /// 34–342), then the gated CTA at 356–396 — top and bottom margins both 34.</summary>
         private const float SpTabTop = 34f;
-        private const float SpCertY = 276f;   // retired with SpCertEntry — kept one session
         private const float SpCtaY = 356f;
 
-        [MenuItem("RBv2_1_1/1 — Super panel rig", false, 1)]
+        [MenuItem("RBv2_1_1/10 — Super panel rig", false, 10)]
         public static void Build_SuperPanel()
         {
             AssetDatabase.Refresh();
@@ -76,6 +75,23 @@ namespace DPP.EditorTools
 
             RemoveByName("DppSuperPanel");
             RemoveByName("DppFreeModel");
+
+            // Name-trap defusal (2026-08-09): RBv2_1_1/08's legacy certificates screen
+            // on DPPPanelCanvas shared the rig page's "CertificatesPage" name, and a
+            // global find once put the flat-canvas screen into tabPages[3]. /8 now
+            // builds it as "CertificatesScreen_RB2_1_legacy"; this renames any
+            // pre-rename scene object so the old name can only mean the rig's page.
+            var legacyCanvas = SpFind("DPPPanelCanvas");
+            if (legacyCanvas != null)
+            {
+                var legacyCert = legacyCanvas.transform.Find("CertificatesPage");
+                if (legacyCert != null)
+                {
+                    legacyCert.gameObject.name = "CertificatesScreen_RB2_1_legacy";
+                    Debug.Log("[DPPUIBuilder] Legacy certificates screen renamed " +
+                              "'CertificatesScreen_RB2_1_legacy' (name-trap defusal).");
+                }
+            }
 
             var rigGO = new GameObject("DppSuperPanel");
             Undo.RegisterCreatedObjectUndo(rigGO, "Build super panel");
@@ -145,22 +161,15 @@ namespace DPP.EditorTools
             // into the teardown now that the Training tab is gone. PRODUCT USER:
             // the same slot reads "Back" → stakeholder fork. The VIEW paints all
             // states (PaintRailCta); the builder ships the grey rest pose.
-            var ctaRoot = TL("RailCta", rail, 18f, SpCtaY, 184f, 40f);
-            AddShadow(ctaRoot, 184f, 40f, DPPSpriteFactory.Pill);
-            var ctaOutline = AddImage(CenterIn("HoverOutline", ctaRoot, 184f + HoverHalo, 40f + HoverHalo),
-                DPPSpriteFactory.Pill, Color.white, sliced: true);
-            ctaOutline.gameObject.SetActive(false);
-            var ctaFill = AddImage(CenterIn("Fill", ctaRoot, 184f, 40f), DPPSpriteFactory.Pill,
-                DPPTheme.Hex("#2b3a52"), sliced: true, raycast: true);
-            AddGloss(ctaRoot, 184f, 40f, DPPSpriteFactory.Pill);
-            var ctaLabel = AddText(Stretch("Label", ctaRoot), "Continue to disassembly", 11.5f,
-                DPPTheme.TextSecondary, bold: false, align: TextAlignmentOptions.Center);
-            var ctaBtn = ctaRoot.gameObject.AddComponent<Button>();
-            ctaBtn.transition = Selectable.Transition.None;
-            ctaBtn.targetGraphic = ctaFill;
+            // Built with PsSmallPill — the raw Pill sprite is NOT a capsule (00
+            // §4.2, and the corner bug Thiago photographed 2026-08-09); PsSmallPill
+            // capsules every layer and keeps the 50-unit hit root. The view
+            // repaints the fill/label per state via targetGraphic.
+            var ctaBtn = PsSmallPill(rail, "RailCta", SpRailW * 0.5f, 184f,
+                "Continue to disassembly", primary: false, out var ctaLabel,
+                cy: SpCtaY + 20f, visualH: 40f, fontSize: 11.5f);
             WireClick(ctaBtn, view, nameof(SuperPanelView.OnRailCta));
-            var ctaHover = ctaRoot.gameObject.AddComponent<HoverHighlight>();
-            SetRef(ctaHover, "highlightOutline", ctaOutline.gameObject);
+            var ctaFill = ctaBtn.targetGraphic as Image;
 
             // ---------------- stage ----------------
             // NO background image AND NO frame (device round 8, Thiago: "the
@@ -262,7 +271,7 @@ namespace DPP.EditorTools
             // orphaned TrainingPage can survive a re-run: trap 4 satisfied.)
 
             // Tab pages are filled in by their own phases. Product specs is
-            // RBv2_1_1/2, which re-parents the page RBv2_1/9 already built.
+            // RBv2_1_1/11, which re-parents the page RBv2_1_1/09 already built.
             var certPage = SpCertPage(data, view);
 
             var tabPages = new GameObject[SuperPanelView.TabCount];
@@ -335,30 +344,30 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = rigGO;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log($"[DPPUIBuilder] RBv2_1_1/1 — super panel built at {SpDistance} m. " +
+            Debug.Log($"[DPPUIBuilder] RBv2_1_1/10 — super panel built at {SpDistance} m. " +
                       $"Yaw: rail {SpYaw(SpRailCx * SpScale):0.0}°, stage 0°, data {SpYaw(SpDataCx * SpScale):0.0}°. " +
-                      "Now run RBv2_1_1/2, then RBv2_1/Tools/Verify wiring, then SAVE THE SCENE.");
+                      "Now run RBv2_1_1/11, then RBv2_1_1/Tools/Verify wiring, then SAVE THE SCENE.");
         }
 
         // =================================================================
-        // RBv2_1_1/2 — move the Product specs page into the data canvas
+        // RBv2_1_1/11 — move the Product specs page into the data canvas
         // =================================================================
 
         /// <summary>
-        /// RBv2_1/9 authored Product specs as a 420 × 430 root precisely so this
+        /// RBv2_1_1/09 authored Product specs as a 420 × 430 root precisely so this
         /// step is a re-parent and not a rebuild. Nothing inside the page moves:
         /// the data canvas is exactly the size the page was drawn at.
         /// </summary>
-        [MenuItem("RBv2_1_1/2 — Product specs into the data canvas", false, 2)]
+        [MenuItem("RBv2_1_1/11 — Product specs into the data canvas", false, 11)]
         public static void Build_ProductSpecsIntoRig()
         {
             var rig = SpFind("DppSuperPanel");
-            if (rig == null) { Debug.LogError("[DPPUIBuilder] No DppSuperPanel — run RBv2_1_1/1 first."); return; }
+            if (rig == null) { Debug.LogError("[DPPUIBuilder] No DppSuperPanel — run RBv2_1_1/10 first."); return; }
             var data = rig.transform.Find("DataCanvas") as RectTransform;
-            if (data == null) { Debug.LogError("[DPPUIBuilder] DppSuperPanel has no DataCanvas — re-run RBv2_1_1/1."); return; }
+            if (data == null) { Debug.LogError("[DPPUIBuilder] DppSuperPanel has no DataCanvas — re-run RBv2_1_1/10."); return; }
 
             var page = SpFind("ProductSpecsPage");
-            if (page == null) { Debug.LogError("[DPPUIBuilder] No ProductSpecsPage — run RBv2_1/9 first."); return; }
+            if (page == null) { Debug.LogError("[DPPUIBuilder] No ProductSpecsPage — run RBv2_1_1/09 first."); return; }
 
             Undo.SetTransformParent(page.transform, data, "Move Product specs into the data canvas");
             var rt = (RectTransform)page.transform;
@@ -390,7 +399,7 @@ namespace DPP.EditorTools
                 if (usage != null) pages[1] = usage;
                 var envPage = SpFind("EnvironmentalPage");
                 if (envPage != null) pages[2] = envPage;
-                // data.Find, NOT SpFind: RBv2_1/8's legacy screen on DPPPanelCanvas
+                // data.Find, NOT SpFind: RBv2_1_1/08's legacy screen on DPPPanelCanvas
                 // is ALSO named "CertificatesPage", and a global find grabbed it —
                 // tab 3 then activated the flat-canvas screen at its own world pose
                 // while the rig's page stayed dark (device, 2026-08-08).
@@ -418,7 +427,7 @@ namespace DPP.EditorTools
                 Debug.Log("[DPPUIBuilder] Model link closed: Product specs ↔ stage model.");
             }
             else Debug.LogWarning("[DPPUIBuilder] Could not close the model link — " +
-                                  (link == null ? "no ModelLinkController under the rig (re-run RBv2_1_1/1 " +
+                                  (link == null ? "no ModelLinkController under the rig (re-run RBv2_1_1/10 " +
                                                   "with VCU_assembly in the scene)."
                                                 : "the page has no ProductSpecsView."));
 
@@ -429,7 +438,7 @@ namespace DPP.EditorTools
             if (router != null) SetRef(router, "productSpecs", null);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1_1/2 — Product specs re-parented into the data canvas, " +
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/11 — Product specs re-parented into the data canvas, " +
                       "model link closed. ScreenRouter.productSpecs cleared (it is no longer a sibling " +
                       "screen). SAVE THE SCENE.");
         }
@@ -523,49 +532,12 @@ namespace DPP.EditorTools
             return btn;
         }
 
-        /// <summary>RETIRED 2026-08-08 (04e round 2) — certificates became a full
-        /// standard tab (SpRailTab index 3, red identity painted by the view).
-        /// Kept ONE session for A/B rollback; delete with SpLockButton in the next
-        /// retirement pass.</summary>
-        private static Button SpCertEntry(RectTransform rail, out Image fill, out Image stroke,
-            out TMP_Text label, out Image icon)
-        {
-            var root = TL("CertEntry", rail, 18f, SpCertY, 184f, 44f);
-            AddShadow(root, 184f, 44f, DPPSpriteFactory.RoundedR13);
-
-            var outline = AddImage(CenterIn("HoverOutline", root, 184f + HoverHalo, 44f + HoverHalo),
-                DPPSpriteFactory.RoundedR13, Color.white, sliced: true);
-            outline.gameObject.SetActive(false);
-
-            stroke = AddImage(CenterIn("Stroke", root, 184f, 44f), DPPSpriteFactory.RoundedR13,
-                DPPTheme.Hex("#e24b4a"), sliced: true);
-            fill = AddImage(CenterIn("Fill", root, 181f, 41f), DPPSpriteFactory.RoundedR13,
-                DPPTheme.RowFill, sliced: true, raycast: true);
-            AddGloss(root, 184f, 44f, DPPSpriteFactory.RoundedR13);
-
-            var iconRT = TL("Icon", root, 20f, 13f, 18f, 18f);
-            icon = iconRT.gameObject.AddComponent<Image>();
-            icon.preserveAspect = true;
-            icon.raycastTarget = false;
-            icon.color = DPPTheme.TextSecondary;
-            var sprite = LoadPageIcon("ic_certificates");
-            if (sprite != null) icon.sprite = sprite;
-            else icon.enabled = false;
-
-            label = AddText(TL("Label", root, 50f, 14f, 128f, 16f), "Certificates & safety",
-                11.5f, DPPTheme.TextSecondary, bold: false);
-
-            var btn = root.gameObject.AddComponent<Button>();
-            btn.transition = Selectable.Transition.None;
-            btn.targetGraphic = fill;
-            var hover = root.gameObject.AddComponent<HoverHighlight>();
-            SetRef(hover, "highlightOutline", outline.gameObject);
-            return btn;
-        }
+        // (SpCertEntry DELETED 2026-08-09 in the retirement pass — certificates is
+        // SpRailTab index 3 since 04e round 2.)
 
         /// <summary>
         /// Certificates &amp; safety as a PAGE IN THE DATA CANVAS, replacing the
-        /// sibling screen RBv2_1/8 built. Four rows over the standard content band,
+        /// sibling screen RBv2_1_1/08 built. Four rows over the standard content band,
         /// and one button: with a single action there is nothing for 00 §5's
         /// primary-always-right to arbitrate, so the action IS the primary.
         /// </summary>
@@ -613,47 +585,18 @@ namespace DPP.EditorTools
             // same 50-unit hit root as every other bottom-bar button.
             // 04e round 2: the page is TAB 3 now, so Back = previous tab, like
             // every other page (CloseCertificates survives only as a wrapper).
-            var back = PsSmallPill(page, "BackButton", 24f + 110f * 0.5f, 110f, "Back",
-                primary: false, out _);
+            // Standardized bar geometry (Thiago, 2026-08-09): Back cx 69 / w 90 /
+            // cy 402 / 11 pt on every data tab, Environmental as the reference.
+            var back = PsSmallPill(page, "BackButton", 24f + 45f, 90f, "Back",
+                primary: false, out _, cy: 402f, fontSize: 11f);
             WireClick(back, view, nameof(SuperPanelView.PrevTab));
 
             page.gameObject.SetActive(false);
             return page;
         }
 
-        private static Button SpComplianceBadge(RectTransform rail)
-        {
-            var root = TL("ComplianceBadge", rail, 18f, 372f, 184f, 30f);
-            var outline = AddImage(CenterIn("HoverOutline", root, 184f + HoverHalo, 30f + HoverHalo),
-                DPPSpriteFactory.Pill, Color.white, sliced: true);
-            outline.gameObject.SetActive(false);
-
-            // 00 §2.1 meaning 4 — regulatory marking: outline and glyph only,
-            // never fill, and the label always names what it marks.
-            AddImage(CenterIn("Stroke", root, 184f, 30f), DPPSpriteFactory.Pill,
-                DPPTheme.Hex("#e24b4a"), sliced: true);
-            var fill = AddImage(CenterIn("Fill", root, 181f, 27f), DPPSpriteFactory.Pill,
-                DPPTheme.RowFill, sliced: true, raycast: true);
-
-            var icon = TLCenter("Icon", root, 26f, 15f, 16f, 16f);
-            var sprite = LoadPageIcon("ic_certificates");
-            if (sprite != null)
-            {
-                var img = icon.gameObject.AddComponent<Image>();
-                img.sprite = sprite; img.preserveAspect = true; img.raycastTarget = false;
-            }
-            else Object.DestroyImmediate(icon.gameObject);
-
-            AddText(TL("Label", root, 42f, 7f, 136f, 16f), "CE · REACH · WEEE 5 · IP67",
-                9f, DPPTheme.Hex("#dbe4f0"), bold: false, align: TextAlignmentOptions.Center);
-
-            var btn = root.gameObject.AddComponent<Button>();
-            btn.transition = Selectable.Transition.None;
-            btn.targetGraphic = fill;
-            var hover = root.gameObject.AddComponent<HoverHighlight>();
-            SetRef(hover, "highlightOutline", outline.gameObject);
-            return btn;
-        }
+        // (SpComplianceBadge DELETED 2026-08-09 in the retirement pass — the rail
+        // badge died 2026-08-06 when certificates became a rail entry; no callers.)
 
         /// <summary>
         /// The zone's gesture HUD (spec 10 §3.2) on the stage. Round 4 (Thiago,
@@ -750,48 +693,8 @@ namespace DPP.EditorTools
             return follower;
         }
 
-        /// <summary>RETIRED 2026-08-08 — replaced by <see cref="SpModelLinkTile"/>
-        /// in the rail. Kept ONE session for A/B rollback; delete in the next
-        /// retirement pass (and remove this note from RETIREMENT_PLAN's radar).</summary>
-        private static Button SpLockButton(RectTransform stage, SuperPanelView view,
-            out Image glyph, out TMP_Text label)
-        {
-            // Bottom-centre → UPPER RIGHT (device round 3, Thiago 2026-08-08):
-            // the exploded model now sits toward the stage's bottom, and a button
-            // under it competed with the model for the same space. The label moves
-            // with it, BELOW the circle so the pair stays one glance.
-            var root = TLCenter("LockButton", stage, SpStageW - 40f, 40f, 52f, 52f);
-            AddShadow(root, 43f, 43f, DPPSpriteFactory.Circle64);
-
-            var outline = AddImage(CenterIn("HoverOutline", root, 40f + HoverHalo, 40f + HoverHalo),
-                DPPSpriteFactory.Circle64, Color.white);
-            outline.gameObject.SetActive(false);
-            AddImage(CenterIn("Ring", root, 43f, 43f), DPPSpriteFactory.Circle64, DPPTheme.Hex("#f0c879"));
-            var fill = AddImage(CenterIn("Fill", root, 40f, 40f), DPPSpriteFactory.Circle64,
-                DPPTheme.CardBlue, sliced: false, raycast: true);
-
-            var glyphRT = CenterIn("Glyph", root, 18f, 18f);
-            glyph = glyphRT.gameObject.AddComponent<Image>();
-            glyph.preserveAspect = true;
-            glyph.raycastTarget = false;
-            glyph.color = DPPTheme.Hex("#f0c879");
-            var locked = LoadPageIcon("ic_lock");
-            if (locked != null) glyph.sprite = locked;
-            // A sprite-less Image draws a solid gold quad, which reads as a bug.
-            // The LOCKED/UNLOCKED word below carries the state either way.
-            else { glyph.enabled = false; Debug.LogWarning("[DPPUIBuilder] Icon 'ic_lock' not found — the lock button shows its label only."); }
-
-            label = AddText(TLCenter("Label", stage, SpStageW - 40f, 74f, 120f, 16f), "LOCKED",
-                9f, DPPTheme.Hex("#f0c879"), bold: true, align: TextAlignmentOptions.Center);
-
-            var btn = root.gameObject.AddComponent<Button>();
-            btn.transition = Selectable.Transition.None;
-            btn.targetGraphic = fill;
-            var hover = root.gameObject.AddComponent<HoverHighlight>();
-            SetRef(hover, "highlightOutline", outline.gameObject);
-            WireClick(btn, view, nameof(SuperPanelView.ToggleLock));
-            return btn;
-        }
+        // (SpLockButton DELETED 2026-08-09 in the retirement pass — the LINKED/FREE
+        // control lives in the stage's gesture column since 2026-08-08.)
 
         /// <summary>
         /// A standard 200 × 22 grabber (00 §5) whose <c>panelRoot</c> is an
@@ -821,7 +724,7 @@ namespace DPP.EditorTools
         /// <summary>
         /// The stage model is a CLONE, and it has to be.
         ///
-        /// `RBv2_0/5` puts the original VCU_assembly on the "DPPPreview" layer and
+        /// `RBv2_1_1/06` puts the original VCU_assembly on the "DPPPreview" layer and
         /// strips that layer from the main camera, so the original is invisible to
         /// the user by design — it exists to be filmed into the intro and how-to
         /// RenderTextures. Re-parenting it into the stage would have produced an
@@ -836,7 +739,7 @@ namespace DPP.EditorTools
             if (animator == null)
             {
                 Debug.LogWarning("[DPPUIBuilder] No DisassemblyAnimator in the scene (VCU_assembly missing?) — " +
-                                 "the stage is empty. Import the model and re-run RBv2_1_1/1.");
+                                 "the stage is empty. Import the model and re-run RBv2_1_1/10.");
                 return null;
             }
 
@@ -939,7 +842,7 @@ namespace DPP.EditorTools
         ///
         /// <c>GameObject.Find</c> skips inactive objects, and every screen this
         /// builder makes is left deactivated — so phase 2 could not see the rig
-        /// phase 1 had just built and reported "run RBv2_1_1/1 first" immediately
+        /// phase 1 had just built and reported "run RBv2_1_1/10 first" immediately
         /// after it had been run.
         /// </summary>
         private static GameObject SpFind(string name)

@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_1_1/3 — 06: USAGE &amp; SERVICE into the data canvas (spec
+    /// RBv2_1_1/12 — 06: USAGE &amp; SERVICE into the data canvas (spec
     /// `RB2_1_1/06_usage_service.md` v2, mock 04a_v6 approved 2026-08-09).
     ///
     /// Three lenses — Thermal Data (default) · Electrical Data · Software — as
@@ -31,16 +31,16 @@ namespace DPP.EditorTools
     {
         private const float UpMargin = 24f, UpW = 372f;   // content column on the 420-wide canvas
 
-        [MenuItem("RBv2_1_1/3 — Usage & service into the data canvas", false, 3)]
+        [MenuItem("RBv2_1_1/12 — Usage & service into the data canvas", false, 12)]
         public static void Build_UsePhaseIntoRig()
         {
             DPPSpriteFactory.GenerateAll();
             ResolveFonts();
 
             var rig = SpFind("DppSuperPanel");
-            if (rig == null) { Debug.LogError("[DPPUIBuilder] No DppSuperPanel — run RBv2_1_1/1 first."); return; }
+            if (rig == null) { Debug.LogError("[DPPUIBuilder] No DppSuperPanel — run RBv2_1_1/10 first."); return; }
             var data = rig.transform.Find("DataCanvas") as RectTransform;
-            if (data == null) { Debug.LogError("[DPPUIBuilder] DppSuperPanel has no DataCanvas — re-run RBv2_1_1/1."); return; }
+            if (data == null) { Debug.LogError("[DPPUIBuilder] DppSuperPanel has no DataCanvas — re-run RBv2_1_1/10."); return; }
             var view = rig.GetComponent<SuperPanelView>();
 
             var old = data.Find("UsagePage");
@@ -282,7 +282,7 @@ namespace DPP.EditorTools
                 pages[1] = page.gameObject;
                 var envPage = SpFind("EnvironmentalPage");   // 04e: Training is gone; env is tab 2
                 if (envPage != null) pages[2] = envPage;
-                // data.Find, NOT SpFind — RBv2_1/8's legacy flat-canvas screen
+                // data.Find, NOT SpFind — RBv2_1_1/08's legacy flat-canvas screen
                 // shares the "CertificatesPage" name (device bug, 2026-08-08).
                 var certs = data.Find("CertificatesPage");
                 if (certs != null) pages[3] = certs.gameObject;
@@ -293,8 +293,8 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = page.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1_1/3 — Usage & service built into the data canvas. " +
-                      "Run RBv2_1/Tools/Verify wiring, then SAVE THE SCENE.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/12 — Usage & service built into the data canvas. " +
+                      "Run RBv2_1_1/Tools/Verify wiring, then SAVE THE SCENE.");
         }
 
         /// <summary>One label/value row of the Usage page: grey label left, white value right.</summary>

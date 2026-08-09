@@ -17,10 +17,10 @@ namespace DPP.EditorTools
     ///   · BuildPhase2            — the screen builder
     ///   · MakeTabHeader / BuildTabPill — the tab bar (cut in RBv2.0)
     ///   · BuildCategoryCards / MakeCategoryCard / CardParts — superseded by
-    ///     MakeDppCard (RBv2_0/Legacy, 290×110 cards)
+    ///     MakeDppCard (RBv2_1_1/Legacy, 290×110 cards)
     ///   · BuildLcaModal          — the LCA is a screen now, not a modal
     ///
-    /// What remains is used by RBv2_0/Legacy (DPPUIBuilder.DppCanva.cs) to build the
+    /// What remains is used by RBv2_1_1/Legacy (DPPUIBuilder.DppCanva.cs) to build the
     /// four category modals, whose content is unchanged from spec 02 v3 §5.1.
     /// Suggested file name: RBv2_0_ModalChrome.cs.
     /// </summary>

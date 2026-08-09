@@ -48,7 +48,7 @@ namespace DPP.UI
     /// ghosting and the zone's part isolation already run on device — because a
     /// darker-tint dim read as "shadowed", not "de-emphasised". The SELECTED body
     /// keeps its exact real-life materials, because the point of
-    /// `RBv2_1/Tools/Apply real-life colors` is that the model and the printed
+    /// `RBv2_1_1/Tools/Apply real-life colors` is that the model and the printed
     /// part in the user's hand read as one object. Device-build caveat: the fade
     /// shader (URP Lit / Standard) must be in Always Included Shaders.
     /// </summary>
@@ -79,7 +79,7 @@ namespace DPP.UI
 
         [Header("Per-tab pick routing (spec 06, Thiago 2026-08-09)")]
         [Tooltip("The Usage & service view. While its tab is active, a pinch opens the part's " +
-                 "USAGE RECORD instead of Component ID. Set by RBv2_1_1/3.")]
+                 "USAGE RECORD instead of Component ID. Set by RBv2_1_1/12.")]
         [SerializeField] private UsePhaseView usePhase;
         [Tooltip("Rail index of the Usage & service tab.")]
         [SerializeField] private int usageTab = 1;
@@ -161,7 +161,7 @@ namespace DPP.UI
                 animator = modelRoot.GetComponentInChildren<DPP.DisassemblyAnimator>(true);
             if (animator == null)
                 Debug.LogWarning("[ModelLink] No DisassemblyAnimator on the stage model — it cannot open. " +
-                                 "Re-run RBv2_1_1/1 (it used to strip the animator from the clone).");
+                                 "Re-run RBv2_1_1/10 (it used to strip the animator from the clone).");
 
             if (handBridge == null)
                 handBridge = FindFirstObjectByType<PicoHandUIBridge>(FindObjectsInactive.Include);
@@ -270,7 +270,7 @@ namespace DPP.UI
             float k = realWorldSpan / closed;
             modelRoot.localScale *= k;
 
-            // Re-centre for the OPEN pose (device round 3, 2026-08-08). RBv2_1_1/1
+            // Re-centre for the OPEN pose (device round 3, 2026-08-08). RBv2_1_1/10
             // centres the CLOSED model on the pivot, but the teardown grows mostly
             // UPWARD — lid and screws rise, only the bottom shell drops — so the
             // exploded model rode high and clipped the stage frame's top edge on
@@ -308,7 +308,7 @@ namespace DPP.UI
         {
             if (modelRoot == null)
             {
-                Debug.LogError("[ModelLink] No modelRoot — run RBv2_1_1/1.");
+                Debug.LogError("[ModelLink] No modelRoot — run RBv2_1_1/10.");
                 return;
             }
             if (data == null || data.components == null) return;
@@ -356,7 +356,7 @@ namespace DPP.UI
 
                     // A pinch needs something to hit.
                     //
-                    // ⚠ RBv2_1_1/1 USED TO DISABLE every collider on the stage clone —
+                    // ⚠ RBv2_1_1/10 USED TO DISABLE every collider on the stage clone —
                     // they were dead weight when the stage was a spinning picture. A
                     // disabled collider registers here perfectly well and then silently
                     // never raycasts, which reads as the pick logic being broken. So:
@@ -458,6 +458,13 @@ namespace DPP.UI
         /// </summary>
         private void ApplyGhosting()
         {
+            // Guided disassembly mode (spec 10): the DisassemblyAnimator's step
+            // focus owns every renderer's materials while the guided flow runs.
+            // Writing originals/ghosts here — e.g. from the payload's async
+            // Build() retry landing mid-run — would silently undo the step
+            // highlight. SetGuided(false) re-applies the passport state.
+            if (_guided) return;
+
             bool any = !string.IsNullOrEmpty(_selected) && _linked;
             foreach (var g in _groups)
             {
@@ -540,7 +547,7 @@ namespace DPP.UI
 
         public void HandlePick(Collider col)
         {
-            if (!isActiveAndEnabled || !_linked || col == null) return;
+            if (!isActiveAndEnabled || !_linked || _guided || col == null) return;
             // Two hands pinching = a twist/zoom posture, not a selection. Without
             // this, starting a rotation with the ray over a body opened that
             // body's page mid-gesture. (The first pinch of a two-hand gesture can
@@ -598,6 +605,25 @@ namespace DPP.UI
             }
             SetSelected(_selected, instant: false);
         }
+
+        /// <summary>
+        /// Guided disassembly mode (RBv2.1.1 spec 10). While guided the link
+        /// STANDS DOWN without being cut: picks are refused (the stage is
+        /// guidance, not navigation — the physical unit is the task) and the
+        /// ghost/tint writer stops touching materials, because the animator's
+        /// step focus owns them for the duration. Distinct from FREE: the link
+        /// state survives, so leaving the mode restates the passport's selection
+        /// exactly as it was left.
+        /// </summary>
+        public void SetGuided(bool guided)
+        {
+            if (_guided == guided) return;
+            _guided = guided;
+            Debug.Log($"[ModelLink] Guided mode {(guided ? "ON — picks inert, materials owned by the animator" : "OFF — passport state re-applied")}.");
+            if (!guided) ApplyGhosting();
+        }
+
+        private bool _guided;
 
         // =================================================================
         // Helpers

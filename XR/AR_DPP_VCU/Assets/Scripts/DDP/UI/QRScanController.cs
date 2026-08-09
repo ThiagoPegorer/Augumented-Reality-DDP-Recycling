@@ -148,7 +148,7 @@ namespace DPP.UI
         }
 
         /// <summary>Error panel, LEFT button - the routine CONTINUE APP? = No.
-        /// Self-contained (not routed through WelcomeController) because RBv2_1/2
+        /// Self-contained (not routed through WelcomeController) because RBv2_1_1/03
         /// builds BEFORE the Welcome canvas exists, so there is nothing to wire to.</summary>
         public void CloseApp()
         {

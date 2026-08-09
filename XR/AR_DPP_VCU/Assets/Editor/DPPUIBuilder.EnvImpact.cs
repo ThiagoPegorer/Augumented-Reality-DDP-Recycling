@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_1_1/4 — 07: ENVIRONMENTAL IMPACT into the data canvas (spec
+    /// RBv2_1_1/13 — 07: ENVIRONMENTAL IMPACT into the data canvas (spec
     /// `RB2_1_1/07_environmental_impact.md` v1, mock 04d_v2 approved 2026-08-08).
     ///
     /// Four sub-tabs — LCA explorer (default) · Main impacts · Per stage ·
@@ -31,16 +31,16 @@ namespace DPP.EditorTools
     {
         private const float EnvMargin = 24f, EnvW = 372f;   // content column on the 420-wide canvas
 
-        [MenuItem("RBv2_1_1/4 — Environmental impact into the data canvas", false, 4)]
+        [MenuItem("RBv2_1_1/13 — Environmental impact into the data canvas", false, 13)]
         public static void Build_EnvImpactIntoRig()
         {
             DPPSpriteFactory.GenerateAll();
             ResolveFonts();
 
             var rig = SpFind("DppSuperPanel");
-            if (rig == null) { Debug.LogError("[DPPUIBuilder] No DppSuperPanel — run RBv2_1_1/1 first."); return; }
+            if (rig == null) { Debug.LogError("[DPPUIBuilder] No DppSuperPanel — run RBv2_1_1/10 first."); return; }
             var data = rig.transform.Find("DataCanvas") as RectTransform;
-            if (data == null) { Debug.LogError("[DPPUIBuilder] DppSuperPanel has no DataCanvas — re-run RBv2_1_1/1."); return; }
+            if (data == null) { Debug.LogError("[DPPUIBuilder] DppSuperPanel has no DataCanvas — re-run RBv2_1_1/10."); return; }
             var view = rig.GetComponent<SuperPanelView>();
 
             var old = data.Find("EnvironmentalPage");
@@ -304,7 +304,7 @@ namespace DPP.EditorTools
                 var usage = SpFind("UsagePage");
                 if (usage != null) pages[1] = usage;
                 pages[2] = page.gameObject;
-                // data.Find, NOT SpFind — RBv2_1/8's legacy flat-canvas screen
+                // data.Find, NOT SpFind — RBv2_1_1/08's legacy flat-canvas screen
                 // shares the "CertificatesPage" name (device bug, 2026-08-08).
                 var certs = data.Find("CertificatesPage");
                 if (certs != null) pages[3] = certs.gameObject;
@@ -315,8 +315,8 @@ namespace DPP.EditorTools
 
             Selection.activeGameObject = page.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1_1/4 — Environmental impact built into the data canvas. " +
-                      "Run RBv2_1/Tools/Verify wiring, then SAVE THE SCENE.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/13 — Environmental impact built into the data canvas. " +
+                      "Run RBv2_1_1/Tools/Verify wiring, then SAVE THE SCENE.");
         }
     }
 }

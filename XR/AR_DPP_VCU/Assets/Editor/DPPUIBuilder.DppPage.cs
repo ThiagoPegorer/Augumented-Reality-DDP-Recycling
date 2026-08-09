@@ -9,7 +9,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_1/8 — Screen 04: THE DPP PAGE (spec `04_DPP_page.md`, mock
+    /// RBv2_1_1/08 — Screen 04: THE DPP PAGE (spec `04_DPP_page.md`, mock
     /// `drafts/04_v11_dpp_canva.svg`).
     ///
     /// One panel, four tabs, two roles. Merges RB2.0's spec 13 (DPP Canva) and
@@ -33,7 +33,7 @@ namespace DPP.EditorTools
         private const float DpBandTop = 48f, DpBandBottom = 110f;   // content band inside a tile
         private const float DpChipH = 18f, DpChipGap = 6f, DpChipPad = 24f;
 
-        [MenuItem("RBv2_1/8 — DPP page", false, 8)]
+        [MenuItem("RBv2_1_1/08 — DPP page", false, 8)]
         public static void Build_DppPage()
         {
             // Icons dropped onto disk outside Unity are not in the AssetDatabase
@@ -46,7 +46,7 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1_1/01 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
@@ -107,7 +107,12 @@ namespace DPP.EditorTools
                 label: "Continue to disassembly", labelSize: 16f, primary: true, chevron: true);
 
             // ---------------- certificates: a SIBLING SCREEN, not a modal ----------------
+            // Renamed 2026-08-09 (name-trap defusal): "CertificatesPage" now means
+            // the RIG's tab-3 page and nothing else — a global find on the shared
+            // name once put THIS screen into the rig's tabPages[3]. Both names are
+            // destroyed so a re-run cleans up scenes built before the rename.
             DestroyChild(canvasRT, "CertificatesPage");
+            DestroyChild(canvasRT, "CertificatesScreen_RB2_1_legacy");
             var cert = DpCertificatesPage(canvasRT, router);
 
             // ---------------- wiring ----------------
@@ -155,8 +160,8 @@ namespace DPP.EditorTools
             screen.gameObject.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1/8 — DPP page built. The RB2.0 canva is retired, not deleted. " +
-                      "Run RBv2_1/Tools/Verify wiring, then SAVE THE SCENE.");
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/08 — DPP page built. The RB2.0 canva is retired, not deleted. " +
+                      "Run RBv2_1_1/Tools/Verify wiring, then SAVE THE SCENE.");
         }
 
         // =================================================================
@@ -324,7 +329,7 @@ namespace DPP.EditorTools
         /// </summary>
         private static RectTransform DpCertificatesPage(RectTransform canvasRT, ScreenRouter router)
         {
-            var modal = Stretch("CertificatesPage", canvasRT);
+            var modal = Stretch("CertificatesScreen_RB2_1_legacy", canvasRT);
             Undo.RegisterCreatedObjectUndo(modal.gameObject, "Build Certificates page");
             // Same navy as the main panel (Thiago, 2026-08-05) - the darker
             // modal/panel fill read as a different surface material on device.

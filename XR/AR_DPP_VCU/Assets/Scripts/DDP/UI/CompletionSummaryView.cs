@@ -51,6 +51,11 @@ namespace DPP.UI
 
         private QRScanController _scanController;
 
+        /// <summary>Spec 10 (guided mode): the mode controller wraps the action
+        /// button — Send runs here, Done exits the mode — and needs to know which
+        /// of the two states the button is in.</summary>
+        public bool Sent => _sent;
+
         private DPPData _data;
         private int _elapsedS;
         private int _stepsCompleted;

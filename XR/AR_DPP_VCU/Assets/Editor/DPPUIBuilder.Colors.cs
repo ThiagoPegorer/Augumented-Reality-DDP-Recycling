@@ -37,11 +37,11 @@ namespace DPP.EditorTools
         private const string GreenHex  = "#2e7d4f";   // connectors + PCB
         private const string MatFolder = "Assets/Materials/DPPRealColors";
 
-        [MenuItem("RBv2_1/Tools/Apply real-life colors", false, 30)]
+        [MenuItem("RBv2_1_1/Tools/Apply real-life colors", false, 101)]
         public static void ApplyRealLifeColors()
         {
             // ⚠ ALL animators, not FindFirstObjectByType (device round 1, 2026-08-07).
-            // Since RBv2_1_1/1 the scene holds TWO DisassemblyAnimators — the original
+            // Since RBv2_1_1/10 the scene holds TWO DisassemblyAnimators — the original
             // VCU_assembly (filmed into the intro/how-to RTs, on the DPPPreview layer)
             // and the super-panel stage clone, which KEEPS its animator. Recolouring
             // REPLACES renderer.sharedMaterials on the object it walks, so a

@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_1/3 builder — ReBuilt v2.0 Open App routine (spec 12, mocks
+    /// RBv2_1_1/02 builder — ReBuilt v2.0 Open App routine (spec 12, mocks
     /// drafts/12_v2_welcome_canvas.svg + drafts/12b_v2_first_run.svg).
     ///
     /// Builds TWO independent world-space canvases:
@@ -30,11 +30,11 @@ namespace DPP.EditorTools
     /// (00 §4 global hover rule) via HoverHighlight.
     ///
     /// Does NOT touch DPPPanelCanvas — safe to re-run at any time; it only
-    /// destroys and rebuilds its own two canvases. Run RBv2_1/1 first.
+    /// destroys and rebuilds its own two canvases. Run RBv2_1_1/01 first.
     /// </summary>
     public static partial class DPPUIBuilder
     {
-        [MenuItem("RBv2_1/3 — Welcome + first run", false, 3)]
+        [MenuItem("RBv2_1_1/02 — Welcome + first run", false, 2)]
         public static void Build3_WelcomeFirstRun()
         {
             DPPSpriteFactory.GenerateAll();
@@ -43,17 +43,17 @@ namespace DPP.EditorTools
             var mainGO = GameObject.Find("DPPPanelCanvas");
             if (mainGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1_1/01 first.");
                 return;
             }
             var router = mainGO.GetComponent<ScreenRouter>();
             // MUST include inactive objects: the scan canvas deactivates itself at
             // launch (waitForWelcome) and stays inactive in a saved scene, so a plain
             // FindFirstObjectByType returns NULL and Continue silently wires to nothing.
-            // That made RBv2_1/3 depend on being run right after RBv2_1/2. It no longer does.
+            // That made RBv2_1_1/02 depend on being run right after RBv2_1_1/03. It no longer does.
             var scanner = FindAnyIncludingInactive<QRScanController>();
             if (scanner == null)
-                Debug.LogWarning("[DPPUIBuilder] No QRScanController in the scene — run RBv2_1/2 first, then re-run RBv2_1/3 to wire Continue.");
+                Debug.LogWarning("[DPPUIBuilder] No QRScanController in the scene — run RBv2_1_1/03 first, then re-run RBv2_1_1/02 to wire Continue.");
 
             RemoveByName("WelcomeCanvas");
             RemoveByName("FirstRunCanvas");
@@ -77,7 +77,7 @@ namespace DPP.EditorTools
 
             Undo.RegisterCreatedObjectUndo(welcomeGO, "Build Welcome Canvas");
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_1/3 — Welcome + First Run built. " +
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/02 — Welcome + First Run built. " +
                       "QRScanController.waitForWelcome enabled (entry is now Welcome → Continue → scan). " +
                       "RB2.1: first-run prompt removed, Close app is red. Save the scene.");
         }

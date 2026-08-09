@@ -10,7 +10,7 @@ using DPP.UI;
 namespace DPP.EditorTools
 {
     /// <summary>
-    /// RBv2_0/Legacy — the two passport screens (specs 13 v2 + 14 v2, mocks
+    /// RBv2_1_1/Legacy — the two passport screens (specs 13 v2 + 14 v2, mocks
     /// drafts/13_v2_C_dpp_canva.svg and drafts/14_v4_composition_impact.svg).
     ///
     ///   DppCanva          — Identity hero + four declaration tiles. Back → Welcome.
@@ -31,7 +31,7 @@ namespace DPP.EditorTools
     /// Populate() overwrites. Spec 13 v2 §4 — no hardcoded data survives a fetch.
     /// RBv1.0 shipped three static subtitles and two of them disagreed with the payload.
     ///
-    /// Run RBv2_1/1 first (needs DPPPanelCanvas), then RBv2_1/2 → /6, then this.
+    /// Run RBv2_1_1/01 first (needs DPPPanelCanvas), then RBv2_1_1/03 → /6, then this.
     /// Safe to re-run. ⚠ It deletes any leftover RBv1.0 "InformationTab".
     /// </summary>
     public static partial class DPPUIBuilder
@@ -53,7 +53,7 @@ namespace DPP.EditorTools
         private const float ScenarioBarH = 52f;
         private const float RecoveryTrackW = 240f;
 
-        [MenuItem("RBv2_0/Legacy — DPP Canva + Model Exploration (superseded by RBv2_1/8)", false, 90)]
+        [MenuItem("RBv2_1_1/Legacy — DPP Canva + Model Exploration (superseded by RBv2_1_1/08)", false, 120)]
         public static void Build7_DppCanvaAndExploration()
         {
             DPPSpriteFactory.GenerateAll();
@@ -62,20 +62,20 @@ namespace DPP.EditorTools
             var canvasGO = GameObject.Find("DPPPanelCanvas");
             if (canvasGO == null)
             {
-                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1/1 first.");
+                Debug.LogError("[DPPUIBuilder] DPPPanelCanvas not found — run RBv2_1_1/01 first.");
                 return;
             }
             var canvasRT = (RectTransform)canvasGO.transform;
             var router = canvasGO.GetComponent<ScreenRouter>();
             if (router == null)
             {
-                Debug.LogError("[DPPUIBuilder] No ScreenRouter on DPPPanelCanvas — re-run RBv2_0/1.");
+                Debug.LogError("[DPPUIBuilder] No ScreenRouter on DPPPanelCanvas — re-run RBv2_1_1/01.");
                 return;
             }
 
             var welcome = FindAnyIncludingInactive<WelcomeController>();
             if (welcome == null)
-                Debug.LogWarning("[DPPUIBuilder] No WelcomeController — run RBv2_1/3, then re-run this to wire Back and Quit.");
+                Debug.LogWarning("[DPPUIBuilder] No WelcomeController — run RBv2_1_1/02, then re-run this to wire Back and Quit.");
 
             DestroyChild(canvasRT, "DppCanva");
             DestroyChild(canvasRT, "ModelExploration");
@@ -258,14 +258,14 @@ namespace DPP.EditorTools
             else Debug.LogWarning("[DPPUIBuilder] No DPPManager in scene — the passport screens are not bound to backend data.");
 
             if (FindAnyIncludingInactive<ExplodedZoneInteraction>() == null)
-                Debug.LogWarning("[DPPUIBuilder] No ExplodedZoneInteraction — run RBv2_0/5 so the exploration screen has a model beside it.");
+                Debug.LogWarning("[DPPUIBuilder] No ExplodedZoneInteraction — run RBv2_1_1/06 so the exploration screen has a model beside it.");
 
             canva.gameObject.SetActive(false);
             explore.gameObject.SetActive(false);
 
             Selection.activeGameObject = canva.gameObject;
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-            Debug.Log("[DPPUIBuilder] RBv2_0/Legacy — DPP Canva + Composition & impact + gate built. " +
+            Debug.Log("[DPPUIBuilder] RBv2_1_1/Legacy — DPP Canva + Composition & impact + gate built. " +
                       "Detail shells are chrome-only by design. Save the scene.");
         }
 
@@ -768,7 +768,7 @@ namespace DPP.EditorTools
         // Slim header (v3) — caption + rule, no arrow, no product title.
         //
         // DPP CANVA LANDING ONLY. MakeScreenHeader below is shared with the
-        // disassembly intro (RBv2_0/4) and the Composition & impact landing, and
+        // disassembly intro (RBv2_1_1/05) and the Composition & impact landing, and
         // MakeShellPage builds its own copy of the same arrow, so the arrow must
         // NOT be stripped there — those screens still need a one-step-back edge.
         // Here the back edge lives in the bottom bar as "Home".
@@ -783,7 +783,7 @@ namespace DPP.EditorTools
         }
 
         // =================================================================
-        // Screen header (RBv2.0) — also used by RBv2_0/4 (disassembly intro).
+        // Screen header (RBv2.0) — also used by RBv2_1_1/05 (disassembly intro).
         // =================================================================
         private static void MakeScreenHeader(RectTransform parent, string eyebrow, string title,
             string rightCaption, Object backTarget, string backMethod)
