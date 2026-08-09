@@ -77,6 +77,13 @@ namespace DPP.UI
                  "another page while the user is just turning the model.")]
         [SerializeField] private TwoHandTwistRotate gestures;
 
+        [Header("Per-tab pick routing (spec 06, Thiago 2026-08-09)")]
+        [Tooltip("The Usage & service view. While its tab is active, a pinch opens the part's " +
+                 "USAGE RECORD instead of Component ID. Set by RBv2_1_1/3.")]
+        [SerializeField] private UsePhaseView usePhase;
+        [Tooltip("Rail index of the Usage & service tab.")]
+        [SerializeField] private int usageTab = 1;
+
         [Header("Fit")]
         [Tooltip("World metres of the CLOSED model's longest side at zoom 1.00 — the REAL device " +
                  "(the printed mock is 200 × 150 × 60 mm), so 1.00× reads as 1:1 with the unit on " +
@@ -109,6 +116,15 @@ namespace DPP.UI
         private readonly List<Group> _groups = new List<Group>();
         private readonly Dictionary<Collider, Group> _byCollider = new Dictionary<Collider, Group>();
         private readonly Dictionary<Material, Material> _ghostCache = new Dictionary<Material, Material>();
+
+        // ---- lens tint state (spec 06 §5: the lenses re-tint the model) ----
+        private Dictionary<string, Color> _lensTints;
+        private Color _lensNeutral;
+        private bool _lensActive;
+        private MaterialPropertyBlock _tintMpb;
+        private static readonly int TintBaseColorId   = Shader.PropertyToID("_BaseColor");
+        private static readonly int TintColorId       = Shader.PropertyToID("_Color");
+        private static readonly int TintBaseFactorId  = Shader.PropertyToID("baseColorFactor");   // glTFast
         private bool _built, _fitted, _pinchHooked, _linked = true;
         private bool _openDone;
         private Coroutine _openCo;
@@ -434,6 +450,11 @@ namespace DPP.UI
         /// Material swap, not MPB: alpha needs a transparent queue, which an
         /// opaque material ignores whatever an MPB says. Device-build caveat
         /// (spec 10 §7): the fade shader must be in Always Included Shaders.
+        ///
+        /// Spec 06 adds the LENS TINT on top: an MPB colour per group (all three
+        /// property names — trap 2). Ghost and tint COMPOSE: a ghosted body keeps
+        /// the ghost's alpha under the tint, or the tint write would silently
+        /// turn a transparent ghost opaque.
         /// </summary>
         private void ApplyGhosting()
         {
@@ -441,13 +462,56 @@ namespace DPP.UI
             foreach (var g in _groups)
             {
                 bool ghost = any && g.id != _selected;
+
+                Color? tint = null;
+                if (_lensActive && _linked)
+                    tint = (_lensTints != null && _lensTints.TryGetValue(g.id, out var c)) ? c : _lensNeutral;
+
                 for (int i = 0; i < g.renderers.Count; i++)
                 {
                     var r = g.renderers[i];
                     if (r == null) continue;
                     r.sharedMaterials = ghost ? g.ghosts[i] : g.originals[i];
+
+                    if (tint.HasValue)
+                    {
+                        if (_tintMpb == null) _tintMpb = new MaterialPropertyBlock();
+                        Color t = tint.Value;
+                        t.a = ghost ? ghostAlpha : 1f;
+                        r.GetPropertyBlock(_tintMpb);
+                        _tintMpb.SetColor(TintBaseColorId, t);
+                        _tintMpb.SetColor(TintColorId, t);
+                        _tintMpb.SetColor(TintBaseFactorId, t);
+                        r.SetPropertyBlock(_tintMpb);
+                    }
+                    else
+                    {
+                        r.SetPropertyBlock(null);   // clear any lens tint
+                    }
                 }
             }
+        }
+
+        // =================================================================
+        // Lens tint — spec 06 (Usage & service): pills re-tint the model
+        // =================================================================
+
+        /// <summary>Tint each mapped group with its lens colour and everything
+        /// else with `neutral`. Cleared by <see cref="ClearLensTint"/> or by
+        /// cutting the link.</summary>
+        public void SetLensTint(Dictionary<string, Color> tints, Color neutral)
+        {
+            _lensTints = tints;
+            _lensNeutral = neutral;
+            _lensActive = true;
+            ApplyGhosting();
+        }
+
+        public void ClearLensTint()
+        {
+            _lensActive = false;
+            _lensTints = null;
+            ApplyGhosting();
         }
 
         /// <summary>
@@ -483,12 +547,29 @@ namespace DPP.UI
             // still slip through — device-tune item, same family as zone §6.4.)
             if (gestures != null && gestures.LeftPinching && gestures.RightPinching) return;
             if (!_byCollider.TryGetValue(col, out var g)) return;      // screws land here and stop
-            if (!g.selectable || productSpecs == null) return;
+            if (!g.selectable) return;
             Debug.Log($"[ModelLink] Pick → '{g.id}'.");
 
-            // The rail may be on another tab. Switch first, then open — the other order
-            // opens a page the user cannot see.
-            if (owner != null) owner.SelectTab(productSpecsTab);
+            // PER-TAB ROUTING (spec 06 + 04e round 2, Thiago 2026-08-08): on the
+            // Usage tab a pinch opens the part's USAGE RECORD in place; on the
+            // Product specs tab it opens Component ID. On EVERY OTHER TAB a pick
+            // does NOTHING — it used to jump the user to Product specs, which
+            // yanked them out of the tab they were reading (and, for the recycler,
+            // out of the walkthrough position they had reached).
+            if (usePhase != null && owner != null && owner.ActiveTab == usageTab)
+            {
+                if (!usePhase.OpenComponentById(g.id))
+                    Debug.LogWarning($"[ModelLink] Picked '{g.id}' but Usage & service has no verdict for it.");
+                return;
+            }
+
+            if (owner != null && owner.ActiveTab != productSpecsTab)
+            {
+                Debug.Log($"[ModelLink] Pick '{g.id}' ignored — tab {owner.ActiveTab} has no pick target.");
+                return;
+            }
+
+            if (productSpecs == null) return;
             if (!productSpecs.OpenComponentById(g.id))
                 Debug.LogWarning($"[ModelLink] Picked '{g.id}' but Product specs has no such part row.");
         }

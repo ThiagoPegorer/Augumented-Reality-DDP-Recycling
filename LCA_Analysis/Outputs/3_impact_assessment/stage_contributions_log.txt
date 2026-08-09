@@ -1,0 +1,22 @@
+Method: 'EF 3.1 Method (adapted)'
+  VCU S1 -> 'VCU S1 Materials & Construction'
+  VCU S2 -> 'VCU S2 Hardware Assembly'
+  VCU S3 -> 'VCU S3 Distribution'
+  VCU S4 -> 'VCU S4 Use Phase'
+  product system OK for VCU S1
+  product system OK for VCU S2
+  product system OK for VCU S3
+  product system OK for VCU S4
+calculating cumulative VCU S1 ...
+calculating cumulative VCU S2 ...
+calculating cumulative VCU S3 ...
+calculating cumulative VCU S4 ...
+calculating Sc1 (full cradle-to-grave) ...
+Drift check: 0 categories over 0.5 % (25 compared).
+-> C:\Claude\Projects\AR_DPP\LCA_Analysis\Outputs\3_impact_assessment\impact_stage_contributions.csv (25 categories)
+  Resource use minerals and metals         S1 0.01833 | S2 8.338e-05 | S3 6.226e-08 | S4 0.0003207 | S5 2.997e-08 kg Sb eq
+  Climate change                           S1 38.49 | S2 0.4409 | S3 0.02792 | S4 34.3 | S5 0.1765 kg CO2 eq
+  Eutrophication freshwater                S1 0.06253 | S2 0.0005687 | S3 1.806e-06 | S4 0.05282 | S5 2.166e-06 kg P eq
+  -> injected into C:\Claude\Projects\AR_DPP\XR\AR_DPP_VCU\backend\data\vcu_001.json
+  -> injected into C:\Claude\Projects\AR_DPP\backend\data\vcu_001.json
+DONE - CSV written, both payloads injected. Send stage_contributions_log.txt.

@@ -37,7 +37,13 @@ namespace DPP.UI
     /// </summary>
     public class SuperPanelView : MonoBehaviour
     {
+        // 04e v2 (2026-08-08): Training disassembly is GONE — repetitive with the
+        // guided flow that follows. 04e round 2 (same day): Certificates & safety
+        // is a REAL FOURTH TAB — same size, same sequential walkthrough rule
+        // (reachable only after Environmental impact), red regulatory styling.
+        // The teardown route is the gated rail-bottom CTA (OnRailCta).
         public const int TabCount = 4;
+        public const int CertTab = 3;
 
         // =================================================================
         // Wiring (set by RBv2_1_1/1)
@@ -47,7 +53,7 @@ namespace DPP.UI
         [SerializeField] private WelcomeController welcome;
         [SerializeField] private QRScanController scanner;
 
-        [Header("Rail — four tab buttons")]
+        [Header("Rail — four tab buttons (tab 3 = Certificates & safety, red)")]
         [SerializeField] private RectTransform[] tabRoots;
         [SerializeField] private Image[] tabFills;
         [SerializeField] private Image[] tabStrokes;
@@ -58,16 +64,13 @@ namespace DPP.UI
         [SerializeField] private Image[] tabIcons;
         [SerializeField] private Button[] tabButtons;
 
-        [Header("Rail — certificates, a fifth entry above the four tabs")]
-        [SerializeField] private Image certFill;
-        [SerializeField] private Image certStroke;
-        [SerializeField] private TMP_Text certLabel;
-        [SerializeField] private Image certIcon;
-        [SerializeField] private Button certButton;
+        [Header("Rail — bottom CTA (04e v2): recycler gate / product-user Back")]
+        [SerializeField] private Button railCtaButton;
+        [SerializeField] private Image railCtaFill;
+        [SerializeField] private TMP_Text railCtaLabel;
 
         [Header("Data canvas — one page per tab, index-aligned with the rail")]
-        [SerializeField] private GameObject[] tabPages;
-        [SerializeField] private GameObject certPage;
+        [SerializeField] private GameObject[] tabPages;   // [3] = CertificatesPage (04e round 2)
         [SerializeField] private GameObject placeholderPage;
         [SerializeField] private TMP_Text placeholderLabel;
 
@@ -128,7 +131,8 @@ namespace DPP.UI
         [SerializeField] private float dimmedAlpha = 0.38f;
 
         private int _active;
-        private bool _certOpen;
+        private Coroutine _ctaHint;
+        private HoverHighlight _ctaHover;   // trap 1 — state colours go through SetRestFillColor
         private readonly bool[] _visited = new bool[TabCount];
         private bool _unlocked;
         private Coroutine _freeSeq;
@@ -143,6 +147,10 @@ namespace DPP.UI
         /// tabs are lit from the start (spec §6).</summary>
         private bool Walkthrough => router != null && router.Mode == StakeholderMode.Recycler;
 
+        /// <summary>Spec 06: the model link routes a pinch by the ACTIVE tab
+        /// (Usage tab → usage record; anywhere else → Component ID).</summary>
+        public int ActiveTab => _active;
+
         // =================================================================
         // Lifecycle
         // =================================================================
@@ -155,7 +163,7 @@ namespace DPP.UI
             // in passes through OnEnable, so participant 2 can never inherit
             // participant 1's progress.
             for (int i = 0; i < TabCount; i++) _visited[i] = false;
-            _certOpen = false;
+            _ctaHint = null;   // coroutines died with the disable; drop the stale handle
 
             if (_unlocked) ReLock(instant: true);
             else if (model != null)
@@ -231,7 +239,6 @@ namespace DPP.UI
 
             _active = index;
             _visited[index] = true;
-            _certOpen = false;
 
             // Changing tab re-locks the model (spec §3.2). Each tab re-reads the
             // model differently, so a freed model would otherwise keep showing a
@@ -245,10 +252,23 @@ namespace DPP.UI
                 bool on = i == index;
                 bool reachable = !Walkthrough || IsReachable(i);
 
+                // ⚠ The "stroke" is a FULL rounded rect UNDER the fill — the 1 px
+                // border look exists only because the opaque fill covers the rest.
+                // Alpha-fading the fill of an unreachable tab therefore lets the
+                // rect bleed through, and with a RED rect the whole tile read
+                // solid red (device, 2026-08-08). Cert tab: the fill stays OPAQUE;
+                // its dim state is a dark red stroke + faded label/icon instead.
+                Color fillC = on ? tabActiveFill : tabRestFill;
                 if (tabFills != null   && i < tabFills.Length   && tabFills[i] != null)
-                    tabFills[i].color = Fade(on ? tabActiveFill : tabRestFill, reachable);
+                    tabFills[i].color = i == CertTab ? fillC : Fade(fillC, reachable);
+                // Tab 3 keeps its regulatory red identity in EVERY state (00 §2.1
+                // meaning 4): bright red when reachable, dark red when dimmed.
+                Color strokeC = i == CertTab
+                    ? (Color)(reachable ? new Color32(0xE2, 0x4B, 0x4A, 0xFF)
+                                        : new Color32(0x5C, 0x16, 0x22, 0xFF))
+                    : Fade(on ? tabActiveStroke : tabRestStroke, reachable);
                 if (tabStrokes != null && i < tabStrokes.Length && tabStrokes[i] != null)
-                    tabStrokes[i].color = Fade(on ? tabActiveStroke : tabRestStroke, reachable);
+                    tabStrokes[i].color = strokeC;
                 if (tabAccents != null && i < tabAccents.Length && tabAccents[i] != null)
                     tabAccents[i].gameObject.SetActive(on);
                 // Recycler only (Thiago, 2026-08-06). The Product user has every tab
@@ -261,7 +281,9 @@ namespace DPP.UI
                 if (tabLine1 != null && i < tabLine1.Length && tabLine1[i] != null) tabLine1[i].color = label;
                 if (tabLine2 != null && i < tabLine2.Length && tabLine2[i] != null) tabLine2[i].color = label;
                 if (tabIcons != null && i < tabIcons.Length && tabIcons[i] != null)
-                    tabIcons[i].color = Fade(on ? new Color32(0x5D, 0xCA, 0xA5, 0xFF) : textSecondary, reachable);
+                    tabIcons[i].color = Fade(on ? (i == CertTab ? Color.white
+                                                                : (Color)new Color32(0x5D, 0xCA, 0xA5, 0xFF))
+                                                : textSecondary, reachable);
 
                 // Not-yet-reached tabs are dimmed AND refuse the click. Dimming
                 // alone would be a lie: the target would still fire.
@@ -269,48 +291,114 @@ namespace DPP.UI
                     tabButtons[i].interactable = reachable;
             }
 
-            PaintCert();
+            PaintRailCta();
             ShowPage(index);
         }
 
         // =================================================================
-        // Certificates & safety — a rail entry, not a screen
+        // Certificates & safety — tab 3 since 04e round 2 (2026-08-08)
         // =================================================================
 
-        /// <summary>
-        /// Thiago, 2026-08-06: *"add it on the top of the tabs and when it clicked,
-        /// make it open the information on the data canva as well, no more a
-        /// separate panel"* — so compliance stops being a detour and becomes the
-        /// fifth thing the rail can put in the data canvas.
-        ///
-        /// It is NOT part of the Recycler walkthrough. It is a reference page about
-        /// the product, always reachable, and inserting it into the Back/Next chain
-        /// would make the number of Nexts depend on whether the user happened to
-        /// read it (spec §6).
-        /// </summary>
-        public void ShowCertificates()
+        /// <summary>History: a fifth entry above the tabs (2026-08-06), then the
+        /// fourth slot outside the walkthrough (04e v2), now a FULL TAB — same
+        /// size, same sequential rule as the others, reachable only after
+        /// Environmental impact. These two wrappers survive because serialized
+        /// UnityEvents in older scenes may still point at them (the
+        /// modelExploration lesson: deleting the method logs missing-method
+        /// errors instead of being silently unused).</summary>
+        public void ShowCertificates() => SelectTab(CertTab);
+
+        /// <summary>The certificates page's Back — one step back, like every page.</summary>
+        public void CloseCertificates() => PrevTab();
+
+        // =================================================================
+        // Rail-bottom CTA — the teardown gate (04e v2, approved 2026-08-08)
+        // =================================================================
+
+        /// <summary>The gate: all four tabs visited (certificates is tab 3 since
+        /// 04e round 2). Visiting counts — anything stricter (scroll depth, dwell
+        /// time) is unverifiable and punishes study participants.</summary>
+        private bool GateOpen
         {
-            _certOpen = true;
-            PaintCert();
-            ShowPage(_active);
+            get
+            {
+                for (int i = 0; i < TabCount; i++) if (!_visited[i]) return false;
+                return true;
+            }
         }
 
-        /// <summary>The certificates page's own button — back to whichever tab was
-        /// active when it was opened, never to a fixed tab.</summary>
-        public void CloseCertificates()
+        /// <summary>One button, one slot, two roles: RECYCLER sees "Continue to
+        /// disassembly" (grey + inert until <see cref="GateOpen"/>, then green);
+        /// PRODUCT USER sees a plain "Back" to the stakeholder fork — they never
+        /// enter the teardown, so there is nothing to gate.</summary>
+        public void OnRailCta()
         {
-            _certOpen = false;
-            PaintCert();
-            ShowPage(_active);
+            if (!Walkthrough)
+            {
+                if (router != null) router.ShowStakeholder();
+                else Debug.LogWarning("[SuperPanel] No router — cannot return to the stakeholder screen.");
+                return;
+            }
+            if (!GateOpen)
+            {
+                // A dead-feeling button is a bug report waiting to happen: the
+                // locked press answers ON the pill, naming what is missing.
+                if (_ctaHint != null) StopCoroutine(_ctaHint);
+                _ctaHint = StartCoroutine(CtaHint());
+                return;
+            }
+            if (router != null) router.ShowDisassembly();
+            else Debug.LogWarning("[SuperPanel] No router — cannot start the disassembly.");
         }
 
-        private void PaintCert()
+        private System.Collections.IEnumerator CtaHint()
         {
-            if (certFill != null)   certFill.color   = _certOpen ? tabActiveFill : tabRestFill;
-            if (certLabel != null)  certLabel.color  = _certOpen ? textOnNavy : textSecondary;
-            if (certIcon != null)   certIcon.color   = _certOpen ? textOnNavy : textSecondary;
-            // certStroke keeps its red: 00 §2.1 meaning 4 marks this as regulatory
-            // whether or not it is the open page, and the label names what it marks.
+            if (railCtaLabel != null)
+                railCtaLabel.text = "Visit every tab first";
+            yield return new WaitForSeconds(1.8f);
+            _ctaHint = null;
+            PaintRailCta();
+        }
+
+        private void PaintRailCta()
+        {
+            if (railCtaFill == null && railCtaLabel == null) return;
+            if (_ctaHint != null) { StopCoroutine(_ctaHint); _ctaHint = null; }
+
+            Color fill, label;
+            string text;
+            bool bold;
+            if (!Walkthrough)
+            {
+                text = "Back"; fill = tabRestFill; label = textSecondary; bold = false;
+            }
+            else if (GateOpen)
+            {
+                text = "Continue to disassembly";
+                fill = new Color32(0x27, 0xC4, 0x6C, 0xFF);    // green — same as FREE
+                label = new Color32(0x08, 0x33, 0x1C, 0xFF);
+                bold = true;
+            }
+            else
+            {
+                text = "Continue to disassembly";
+                fill = new Color32(0x2B, 0x3A, 0x52, 0xFF);    // grey — visibly not ready
+                label = new Color32(0x7C, 0x8B, 0xA1, 0xFF);
+                bold = false;
+            }
+
+            if (railCtaFill != null) railCtaFill.color = fill;
+            // Trap 1: the pill is hover-brightened, so the state colour must go
+            // through SetRestFillColor or the next hover ease repaints the old one.
+            if (_ctaHover == null && railCtaFill != null)
+                _ctaHover = railCtaFill.GetComponentInParent<HoverHighlight>();
+            if (_ctaHover != null) _ctaHover.SetRestFillColor(fill);
+            if (railCtaLabel != null)
+            {
+                railCtaLabel.text = text;
+                railCtaLabel.color = label;
+                railCtaLabel.fontStyle = bold ? FontStyles.Bold : FontStyles.Normal;
+            }
         }
 
         /// <summary>Visited tabs stay selectable so the recycler can re-read at any
@@ -331,13 +419,11 @@ namespace DPP.UI
 
         private void ShowPage(int index)
         {
-            if (certPage != null) certPage.SetActive(_certOpen);
-
-            bool built = !_certOpen && tabPages != null && index < tabPages.Length && tabPages[index] != null;
+            bool built = tabPages != null && index < tabPages.Length && tabPages[index] != null;
             for (int i = 0; tabPages != null && i < tabPages.Length; i++)
                 if (tabPages[i] != null) tabPages[i].SetActive(i == index && built);
 
-            bool showPlaceholder = !_certOpen && !built;
+            bool showPlaceholder = !built;
             if (placeholderPage != null) placeholderPage.SetActive(showPlaceholder);
             if (showPlaceholder && placeholderLabel != null)
                 placeholderLabel.text = $"{TabName(index)}\n\nnot built yet — RBv2.1.1 phase 2";
@@ -350,7 +436,7 @@ namespace DPP.UI
                 case 0: return "Product specifications";
                 case 1: return "Usage & service";
                 case 2: return "Environmental impact";
-                default: return "Training disassembly";
+                default: return "Certificates & safety";
             }
         }
 
@@ -360,8 +446,9 @@ namespace DPP.UI
         public void SelectTab2() => SelectTab(2);
         public void SelectTab3() => SelectTab(3);
 
-        /// <summary>Called by a tab page's primary CTA. Recycler: the next tab, or
-        /// the teardown from tab 4. Product user: the next unit.</summary>
+        /// <summary>Called by a tab page's primary CTA. Recycler: the next tab —
+        /// the certificates tab is the end of the chain, and the teardown is ONLY
+        /// reachable through the rail gate. Product user: the next unit.</summary>
         public void NextTab()
         {
             if (!Walkthrough)
@@ -370,11 +457,7 @@ namespace DPP.UI
                 else Debug.LogWarning("[SuperPanel] No QRScanController — cannot start a new scan.");
                 return;
             }
-            if (_active >= TabCount - 1)
-            {
-                if (router != null) router.ShowDisassembly();
-                return;
-            }
+            if (_active >= TabCount - 1) return;   // last tab: the rail CTA is the only door on
             SelectTab(_active + 1);
         }
 
@@ -398,12 +481,14 @@ namespace DPP.UI
             SelectTab(_active - 1);
         }
 
-        /// <summary>True on the last tab of the walkthrough, where the CTA becomes
-        /// `Continue to disassembly`. Tab pages read this to label their button.</summary>
+        /// <summary>True on the last tab (certificates). Its page has no primary
+        /// button — the rail gate is the only way forward.</summary>
         public bool IsLastTab => _active >= TabCount - 1;
 
-        public string PrimaryLabel =>
-            !Walkthrough ? "Scan next product" : (IsLastTab ? "Continue to disassembly" : "Next");
+        /// <summary>04e round 2 (Thiago): every page primary reads "Next" — the
+        /// certificates tab is a normal step in the chain now, and the teardown
+        /// CTA lives on the rail, not on a page.</summary>
+        public string PrimaryLabel => !Walkthrough ? "Scan next product" : "Next";
 
         /// <summary>Both roles read "Back": it leaves the passport for the role
         /// fork, which is one step back, not an exit (00 §5).</summary>

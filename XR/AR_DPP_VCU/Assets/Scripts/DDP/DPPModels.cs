@@ -7,6 +7,13 @@ namespace DPP.Models
     // schema/dpp_schema.json is GENERATED from it (backend/export_schema.py).
     // Keep this file in sync with models.py by hand.
     //
+    // v0.19 (2026-08-08) — 04d Environmental impact (spec RB2_1_1/07).
+    //   LifecycleStage regains content: description (LCA-explorer card text) and
+    //   impacts[] (new StageImpact) — per-stage values for the three reporting-set
+    //   categories, filled by LCA_Analysis stage_contributions.py. Until that
+    //   openLCA run happens the payload ships value=null + basis "not_provided",
+    //   and the UI must render "[pending openLCA]" — never a number.
+    //
     // v0.7 (2026-07-30) — openLCA v4 / EF 3.1 swap.
     //   Environmental gains impact_recovery[]: per impact category, the baseline and
     //   each EoL scenario's net / saving / reduction. Populated for the three
@@ -480,12 +487,28 @@ namespace DPP.Models
         public float mass_mg;
     }
 
+    /// <summary>v0.19 — one impact category's value for one life-cycle stage
+    /// (04d Per stage). value null + basis "not_provided" = the openLCA per-stage
+    /// run has not happened yet; the UI renders "[pending openLCA]", never a
+    /// number. stage_contributions.py fills value and flips basis to "modelled".</summary>
+    [Serializable]
+    public class StageImpact
+    {
+        public string category;           // EF 3.1 category name, verbatim
+        public string unit;
+        public float? value;
+        public string basis;              // DppBasis
+    }
+
     [Serializable]
     public class LifecycleStage
     {
-        public string id;                 // "S1".."S4"
+        public string id;                 // "S1".."S5"
         public string name;
-        public float co2_kg;
+        public float co2_kg;              // legacy climate mirror; 0.0 while pending
+        // v0.19 — 04d: LCA-explorer card text + per-stage reporting-set values.
+        public string description;
+        public List<StageImpact> impacts;
         public string note;
     }
 

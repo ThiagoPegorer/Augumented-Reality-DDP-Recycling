@@ -1,8 +1,12 @@
 # DPP UI Spec — 05: The Digital Model Panel (the stage)
 
-> **Living spec** — RBv2.1.1. Current version: **v1.1 (2026-08-08) — the round-5 two-scenario
-> routine; v1.0 (four device-validated rounds) is its baseline.** What is described here is what
-> is in the build, not what is planned.
+> **Living spec** — RBv2.1.1. Current version: **v1.2 (2026-08-08) — 04e round 2 pick-routing
+> change on top of v1.1's two-scenario routine.** What is described here is what is in the
+> build, not what is planned.
+> **v1.2 delta:** a pinch on a body acts ONLY on Product specs (opens Component ID) and on
+> Usage & service (opens the part's usage record). On every other tab the pick is INERT — the
+> old fall-through jumped the user to Product specs from wherever they were, which broke the
+> walkthrough position (`ModelLinkController.HandlePick`; `04e_rail_gate.md` v1.1).
 > Shared standards: `RB2_1/00_design_standards_rbv2.md` (§4 hover, §4.2 hit areas, §8.1 CAD↔passport
 > map). Parent layout: `RB2_1/04_DPP_page.md` (the super panel). Gesture family source:
 > `RB2_0/10_action_zone.md` v4.6.2. Approved interaction mock: `drafts/04_stage_gestures_v1.svg`

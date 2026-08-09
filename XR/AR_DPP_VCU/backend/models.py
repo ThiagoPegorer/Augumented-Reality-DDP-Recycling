@@ -254,10 +254,25 @@ class PreciousMetal(BaseModel):
     mass_mg: float
 
 
+class StageImpact(BaseModel):
+    """v0.19 - one impact category's value for one life-cycle stage (04d Per stage).
+    value None + basis 'not_provided' = the openLCA per-stage run has not happened yet;
+    the UI renders a placeholder, never a number. stage_contributions.py fills value
+    and flips basis to 'modelled'."""
+    category: str                            # EF 3.1 category name, verbatim
+    unit: str
+    value: Optional[float] = None
+    basis: str = "not_provided"              # BASIS_VALUES
+
+
 class LifecycleStage(BaseModel):
-    id: str             # "S1".."S4"
-    name: str           # e.g. "Raw material extraction"
-    co2_kg: float
+    id: str             # "S1".."S5"
+    name: str           # e.g. "Materials & construction"
+    co2_kg: float       # legacy climate mirror; kept for back-compat, 0.0 while pending
+    # v0.19 - 04d Environmental impact: the LCA-explorer card text and the per-stage
+    # values for the three reporting-set categories (impact_stage_contributions.csv).
+    description: Optional[str] = None
+    impacts: List[StageImpact] = Field(default_factory=list)
     note: Optional[str] = None
 
 

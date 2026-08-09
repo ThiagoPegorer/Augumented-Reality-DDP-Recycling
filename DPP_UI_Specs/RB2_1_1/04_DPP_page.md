@@ -5,9 +5,32 @@
 > Standards: `00_design_standards_rbv2.md` · Prev: `03` · Children: `04a` (use phase), `04b`–`04d`
 > Mocks: `../drafts/04b_v2_super_panel.svg` (front), `../drafts/04b_v3_plan_view.svg` (geometry)
 > Builder: `RBv2_1/8` · View: `DppPageView.cs`
-> **Status: v2 specified, not built. v1 is on the device and still runs.**
+> **Status: BUILT and device-validated (rounds through 2026-08-08). ⚠ Every §4–§6 mention of
+> the Training tab, the certificates badge/entry, or the tab-4 CTA is SUPERSEDED by
+> `04e_rail_gate.md` v1.1 — read §0 below first.**
 
 ---
+
+## 0. 2026-08-08 delta — 04e rail restructure (BUILT · canonical: `04e_rail_gate.md` v1.1)
+
+- **Training disassembly is GONE** (repetitive with the guided flow that follows).
+  `TabCount = 4`: Product specifications · Usage & service · Environmental impact ·
+  **Certificates & safety**.
+- **Certificates & safety is tab 3** — full 184 × 68 tab, sequential like the others
+  (reachable only after Environmental impact), red regulatory identity: opaque fill, bright
+  red stroke when reachable, dark red `#5c1622` when dimmed. The fill is never alpha-faded on
+  this tab — the red under-rect bleeds through a faded fill (device, 2026-08-08). Its page is
+  `tabPages[3]`; the RBv2_1/8 flat-canvas screen of the SAME NAME still exists (retirement
+  list) — page lookups must be `data.Find`, never a global find.
+- **The teardown route is the rail-bottom CTA** (184 × 40, y 356): recycler reads
+  "Continue to disassembly", grey + inert until ALL FOUR tabs are visited, then green →
+  `ShowDisassembly`; a locked press swaps the label to "Visit every tab first" for 1.8 s.
+  Product user reads "Back" → stakeholder decision. Every page primary reads **"Next"**;
+  the certificates page has Back only.
+- **Model picks are INERT outside Product specs (Component ID) and Usage (record)** — no
+  tab-yanking (`ModelLinkController.HandlePick`; also spec 05 v1.2).
+- Rail geometry: tabs from y 34 at 80 pitch (band ends 342); CTA 356–396. The pre-04e
+  44-high cert entry above the tabs is retired with `SpCertEntry`/`SpLockButton`.
 
 ## 1. Why v1 is being replaced
 

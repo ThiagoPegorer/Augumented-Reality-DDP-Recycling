@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1420" viewBox="0 0 1680 1420" font-family="'Segoe UI','SF Pro Display',Arial,sans-serif">
+  <rect width="1680" height="1420" fill="#0a1526"/>
+
+  <text x="60" y="50" font-size="21" font-weight="700" fill="#dbe4f0">04d · ENVIRONMENTAL IMPACT — v1 mock (four sub-tabs)</text>
+  <text x="60" y="76" font-size="13" fill="#8ba3c7">The impact of the DEVICE · single source of truth: LCA_explorer.ipynb + ecoinvent/openLCA — payload values GENERATED from the notebook outputs, never typed · no page title (general rule) · 2026-08-09</text>
+  <text x="60" y="94" font-size="11" fill="#f0c879">⚠ Values marked [notebook] are NOT drawn to scale here — the standing rule: no invented numbers. Verified values (your own chart + Session 17) are drawn true.</text>
+
+  <!-- ================= TAB 1: LCA EXPLORER ================= -->
+  <rect x="60" y="120" width="780" height="560" rx="24" fill="#0d2144" stroke="#1a335f" stroke-width="1.5"/>
+  <!-- pills -->
+  <g font-size="9.5" text-anchor="middle">
+    <rect x="88" y="142" width="88" height="30" rx="15" fill="#16305c" stroke="#2eb086" stroke-width="1.5"/>
+    <text x="132" y="161" fill="#ffffff" font-weight="700">LCA explorer</text>
+    <rect x="182" y="142" width="88" height="30" rx="15" fill="#0E2950" stroke="#21407a"/>
+    <text x="226" y="161" fill="#8ba3c7">Main impacts</text>
+    <rect x="276" y="142" width="88" height="30" rx="15" fill="#0E2950" stroke="#21407a"/>
+    <text x="320" y="161" fill="#8ba3c7">Per stage</text>
+    <rect x="370" y="142" width="88" height="30" rx="15" fill="#0E2950" stroke="#21407a"/>
+    <text x="414" y="161" fill="#8ba3c7">Recycling</text>
+  </g>
+
+  <!-- cycle: ring + 5 stage chips (buildable: ring sprite + rotated arrow caps) -->
+  <circle cx="450" cy="420" r="120" fill="none" stroke="#2e5aa0" stroke-width="14" stroke-dasharray="118 36" stroke-linecap="round" transform="rotate(-80 450 420)"/>
+  <g font-size="9.5" fill="#dbe4f0" text-anchor="middle">
+    <rect x="380" y="238" width="140" height="34" rx="12" fill="#16305c" stroke="#2e5aa0"/>
+    <text x="450" y="252">Stage 1 · Materials &amp;</text><text x="450" y="265">construction</text>
+    <rect x="560" y="330" width="140" height="34" rx="12" fill="#16305c" stroke="#2e5aa0"/>
+    <text x="630" y="344">Stage 2 · Hardware</text><text x="630" y="357">assembly</text>
+    <rect x="540" y="500" width="140" height="30" rx="12" fill="#16305c" stroke="#2e5aa0"/>
+    <text x="610" y="519">Stage 3 · Distribution</text>
+    <rect x="230" y="500" width="130" height="30" rx="12" fill="#16305c" stroke="#2e5aa0"/>
+    <text x="295" y="519">Stage 4 · Use phase</text>
+    <rect x="200" y="330" width="130" height="30" rx="12" fill="#16305c" stroke="#2e5aa0"/>
+    <text x="265" y="349">Stage 5 · End-of-life</text>
+  </g>
+  <text x="450" y="416" font-size="11" fill="#8ba3c7" text-anchor="middle">cradle → grave</text>
+  <text x="450" y="432" font-size="9" fill="#5d7396" text-anchor="middle">225,000 km · 15 y · DE grid</text>
+  <text x="88" y="620" font-size="10" fill="#8ba3c7">Five LCA stages as the passport's framing page. Static diagram in v1 (decision 3) — the ring is a</text>
+  <text x="88" y="636" font-size="10" fill="#8ba3c7">dashed-arc sprite + five chips, no bespoke art. Stage colours stay navy/blue family (00 palette).</text>
+  <text x="88" y="660" font-size="9" fill="#5d7396">Footnote line: "EF 3.1 · openLCA · ecoinvent — basis: LCA_framework_v4"</text>
+
+  <!-- ================= TAB 2: MAIN IMPACTS (pareto) ================= -->
+  <rect x="880" y="120" width="740" height="560" rx="24" fill="#0d2144" stroke="#1a335f" stroke-width="1.5"/>
+  <text x="908" y="150" font-size="12" font-weight="700" fill="#2eb086">MAIN IMPACTS — EF 3.1 screening pareto (horizontal bars)</text>
+  <text x="908" y="168" font-size="9.5" fill="#8ba3c7">% relevance of the three headline categories across the whole LCA (normalised + weighted screening)</text>
+
+  <g font-size="10.5" fill="#dbe4f0">
+    <text x="908" y="216">Resource use, minerals &amp; metals</text>
+    <rect x="908" y="226" width="440" height="22" rx="6" fill="#2eb086"/>
+    <text x="1360" y="242" font-weight="700">72.5 %</text>
+    <text x="908" y="290">Climate change</text>
+    <rect x="908" y="300" width="150" height="22" rx="6" fill="#1f77b4"/>
+    <text x="1070" y="316" fill="#f0c879">[notebook] %</text>
+    <text x="908" y="364">Eutrophication, freshwater</text>
+    <rect x="908" y="374" width="70" height="22" rx="6" fill="#4da3ff"/>
+    <text x="990" y="390" fill="#f0c879">[notebook] %</text>
+    <text x="908" y="438" fill="#8ba3c7">Everything else</text>
+    <rect x="908" y="448" width="40" height="22" rx="6" fill="#3a4a63"/>
+    <text x="960" y="464" fill="#f0c879">[notebook] %</text>
+  </g>
+  <text x="908" y="510" font-size="10" fill="#8ba3c7">72.5 % is the verified Session-17 screening share for minerals — THE thesis argument: for this</text>
+  <text x="908" y="526" font-size="10" fill="#8ba3c7">device, resource depletion dwarfs climate. The other shares are read from the notebook, not typed.</text>
+  <text x="908" y="550" font-size="9" fill="#5d7396">Bars: teal = minerals (the passport's colour for impact, as 04c) · blues per 00 chart colours.</text>
+  <text x="908" y="640" font-size="9.5" fill="#f0c879">DATA: needs payload v0.19 `environmental.lca.screening_shares[]` — generated from the notebook (decision 1/2).</text>
+
+  <!-- ================= TAB 3: PER STAGE ================= -->
+  <rect x="60" y="720" width="780" height="560" rx="24" fill="#0d2144" stroke="#1a335f" stroke-width="1.5"/>
+  <text x="88" y="750" font-size="12" font-weight="700" fill="#1f77b4">PER STAGE — the three categories across the five stages</text>
+  <text x="88" y="768" font-size="9.5" fill="#8ba3c7">grouped bars per stage; heights below are LAYOUT ONLY — real values from the notebook outputs</text>
+
+  <!-- grouped bars: 5 groups x 3 bars, illustrative -->
+  <g>
+    <line x1="100" y1="1080" x2="800" y2="1080" stroke="#1a335f" stroke-width="1.5"/>
+    <!-- group S1 -->
+    <rect x="130" y="880" width="26" height="200" fill="#2eb086"/><rect x="160" y="920" width="26" height="160" fill="#1f77b4"/><rect x="190" y="1000" width="26" height="80" fill="#4da3ff"/>
+    <text x="173" y="1102" font-size="10" fill="#dbe4f0" text-anchor="middle">S1</text>
+    <!-- S2 -->
+    <rect x="260" y="960" width="26" height="120" fill="#2eb086"/><rect x="290" y="940" width="26" height="140" fill="#1f77b4"/><rect x="320" y="1020" width="26" height="60" fill="#4da3ff"/>
+    <text x="303" y="1102" font-size="10" fill="#dbe4f0" text-anchor="middle">S2</text>
+    <!-- S3 -->
+    <rect x="390" y="1040" width="26" height="40" fill="#2eb086"/><rect x="420" y="1030" width="26" height="50" fill="#1f77b4"/><rect x="450" y="1060" width="26" height="20" fill="#4da3ff"/>
+    <text x="433" y="1102" font-size="10" fill="#dbe4f0" text-anchor="middle">S3</text>
+    <!-- S4 -->
+    <rect x="520" y="1000" width="26" height="80" fill="#2eb086"/><rect x="550" y="900" width="26" height="180" fill="#1f77b4"/><rect x="580" y="1030" width="26" height="50" fill="#4da3ff"/>
+    <text x="563" y="1102" font-size="10" fill="#dbe4f0" text-anchor="middle">S4</text>
+    <!-- S5 -->
+    <rect x="650" y="1050" width="26" height="30" fill="#2eb086"/><rect x="680" y="1055" width="26" height="25" fill="#1f77b4"/><rect x="710" y="1064" width="26" height="16" fill="#4da3ff"/>
+    <text x="693" y="1102" font-size="10" fill="#dbe4f0" text-anchor="middle">S5</text>
+  </g>
+  <text x="380" y="840" font-size="60" fill="#f0c879" opacity="0.18" font-weight="700">[notebook]</text>
+  <g font-size="9" fill="#8ba3c7">
+    <rect x="130" y="1130" width="14" height="10" fill="#2eb086"/><text x="150" y="1139">minerals &amp; metals (kg Sb eq)</text>
+    <rect x="330" y="1130" width="14" height="10" fill="#1f77b4"/><text x="350" y="1139">climate (kg CO2 eq)</text>
+    <rect x="490" y="1130" width="14" height="10" fill="#4da3ff"/><text x="510" y="1139">eutrophication (kg P eq)</text>
+  </g>
+  <text x="88" y="1170" font-size="9.5" fill="#8ba3c7">Three units on one axis: bars are drawn as % OF THAT CATEGORY'S TOTAL per stage (each colour sums</text>
+  <text x="88" y="1186" font-size="9.5" fill="#8ba3c7">to 100 % across S1–S5) — otherwise kg CO2 vs kg Sb eq shares an axis dishonestly (decision 4).</text>
+  <text x="88" y="1214" font-size="9.5" fill="#f0c879">DATA: payload v0.19 `environmental.lca.stages[]` — 5 stages × 3 categories, generated from impact_*.csv.</text>
+
+  <!-- ================= TAB 4: RECYCLING ================= -->
+  <rect x="880" y="720" width="740" height="560" rx="24" fill="#0d2144" stroke="#1a335f" stroke-width="1.5"/>
+  <text x="908" y="750" font-size="12" font-weight="700" fill="#2eb086">RECYCLING — the four end-of-life scenarios (VERIFIED values, your chart)</text>
+
+  <g font-size="9.5" fill="#8ba3c7">
+    <text x="908" y="778"><tspan fill="#dbe4f0" font-weight="700">Sc1</tspan> — no recycling: landfill + incineration (baseline)</text>
+    <text x="908" y="796"><tspan fill="#dbe4f0" font-weight="700">Sc2</tspan> — current practice: bulk shredding</text>
+    <text x="1260" y="778"><tspan fill="#dbe4f0" font-weight="700">Sc3</tspan> — guided dismantling (AR-DPP)</text>
+    <text x="1260" y="796"><tspan fill="#dbe4f0" font-weight="700">Sc4</tspan> — component reuse</text>
+  </g>
+
+  <!-- three mini stacked charts, drawn TRUE to the verified percentages -->
+  <!-- minerals: gross 0.0187; credits 10/32/47% of gross -->
+  <g>
+    <text x="948" y="836" font-size="9.5" fill="#dbe4f0" font-weight="700">Minerals &amp; metals</text>
+    <text x="948" y="850" font-size="8" fill="#5d7396">kg Sb eq · gross 0.0187</text>
+    <line x1="940" y1="1010" x2="1120" y2="1010" stroke="#1a335f"/>
+    <rect x="948" y="860" width="28" height="150" fill="#1f77b4"/>
+    <rect x="988" y="875" width="28" height="135" fill="#1f77b4"/><rect x="988" y="860" width="28" height="15" fill="#2eb086"/>
+    <rect x="1028" y="908" width="28" height="102" fill="#1f77b4"/><rect x="1028" y="860" width="28" height="48" fill="#2eb086"/>
+    <rect x="1068" y="930" width="28" height="80" fill="#1f77b4"/><rect x="1068" y="860" width="28" height="70" fill="#2eb086"/>
+    <g font-size="8" fill="#2eb086" text-anchor="middle">
+      <text x="1002" y="856">−10%</text><text x="1042" y="856">−32%</text><text x="1082" y="856">−47%</text>
+    </g>
+    <g font-size="8" fill="#8ba3c7" text-anchor="middle">
+      <text x="962" y="1022">Sc1</text><text x="1002" y="1022">Sc2</text><text x="1042" y="1022">Sc3</text><text x="1082" y="1022">Sc4</text>
+    </g>
+  </g>
+  <!-- climate: 73.4 gross; 6/11/21% -->
+  <g>
+    <text x="1178" y="836" font-size="9.5" fill="#dbe4f0" font-weight="700">Climate change</text>
+    <text x="1178" y="850" font-size="8" fill="#5d7396">kg CO2 eq · gross 73.4</text>
+    <line x1="1170" y1="1010" x2="1350" y2="1010" stroke="#1a335f"/>
+    <rect x="1178" y="860" width="28" height="150" fill="#1f77b4"/>
+    <rect x="1218" y="869" width="28" height="141" fill="#1f77b4"/><rect x="1218" y="860" width="28" height="9" fill="#2eb086"/>
+    <rect x="1258" y="877" width="28" height="133" fill="#1f77b4"/><rect x="1258" y="860" width="28" height="17" fill="#2eb086"/>
+    <rect x="1298" y="892" width="28" height="118" fill="#1f77b4"/><rect x="1298" y="860" width="28" height="32" fill="#2eb086"/>
+    <g font-size="8" fill="#2eb086" text-anchor="middle">
+      <text x="1232" y="856">−6%</text><text x="1272" y="856">−11%</text><text x="1312" y="856">−21%</text>
+    </g>
+    <g font-size="8" fill="#8ba3c7" text-anchor="middle">
+      <text x="1192" y="1022">Sc1</text><text x="1232" y="1022">Sc2</text><text x="1272" y="1022">Sc3</text><text x="1312" y="1022">Sc4</text>
+    </g>
+  </g>
+  <!-- eutrophication: 0.116 gross; 6/17/26% -->
+  <g>
+    <text x="1408" y="836" font-size="9.5" fill="#dbe4f0" font-weight="700">Eutrophication fw.</text>
+    <text x="1408" y="850" font-size="8" fill="#5d7396">kg P eq · gross 0.116</text>
+    <line x1="1400" y1="1010" x2="1580" y2="1010" stroke="#1a335f"/>
+    <rect x="1408" y="860" width="28" height="150" fill="#1f77b4"/>
+    <rect x="1448" y="869" width="28" height="141" fill="#1f77b4"/><rect x="1448" y="860" width="28" height="9" fill="#2eb086"/>
+    <rect x="1488" y="886" width="28" height="124" fill="#1f77b4"/><rect x="1488" y="860" width="28" height="26" fill="#2eb086"/>
+    <rect x="1528" y="899" width="28" height="111" fill="#1f77b4"/><rect x="1528" y="860" width="28" height="39" fill="#2eb086"/>
+    <g font-size="8" fill="#2eb086" text-anchor="middle">
+      <text x="1462" y="856">−6%</text><text x="1502" y="856">−17%</text><text x="1542" y="856">−26%</text>
+    </g>
+    <g font-size="8" fill="#8ba3c7" text-anchor="middle">
+      <text x="1422" y="1022">Sc1</text><text x="1462" y="1022">Sc2</text><text x="1502" y="1022">Sc3</text><text x="1542" y="1022">Sc4</text>
+    </g>
+  </g>
+  <g font-size="9" fill="#8ba3c7">
+    <rect x="948" y="1044" width="14" height="10" fill="#1f77b4"/><text x="968" y="1053">net impact (what remains)</text>
+    <rect x="1148" y="1044" width="14" height="10" fill="#2eb086"/><text x="1168" y="1053">avoided burden (credit)</text>
+  </g>
+  <text x="908" y="1090" font-size="9.5" fill="#8ba3c7">The chart is your validated figure, rebuilt in UI geometry: three panels, four bars, credit stacked on net.</text>
+  <text x="908" y="1106" font-size="9.5" fill="#8ba3c7">Sc3 is the AR-DPP scenario — THIS PROTOTYPE's contribution — and Sc4 is what the Usage tab evidences (0.767).</text>
+  <text x="908" y="1130" font-size="9.5" fill="#f0c879">DATA: payload v0.19 `environmental.lca.scenarios[]` — gross/net/credit × 3 categories, from the notebook.</text>
+
+  <!-- ================= decisions ================= -->
+  <rect x="60" y="1300" width="1560" height="100" rx="18" fill="none" stroke="#f0c879" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="84" y="1328" font-size="13" font-weight="700" fill="#f0c879">DECISIONS BEFORE CODE</text>
+  <text x="84" y="1352" font-size="11" fill="#dbe4f0">1 · Payload v0.19: `environmental.lca` block (screening_shares · stages[5]×3 · scenarios[4]) GENERATED by a script reading the notebook's impact_*.csv outputs — I write the generator, you run it. Approve?</text>
+  <text x="84" y="1374" font-size="11" fill="#dbe4f0">2 · Pareto basis = the PEF normalised+weighted screening (minerals 72.5 % verified). I read the other shares from the outputs — point me to the right CSV if it is not impact_screening.csv.</text>
+  <text x="84" y="1392" font-size="11" fill="#dbe4f0">3 · LCA explorer diagram static in v1 (no stage-click) · 4 · Per-stage bars = % of each category's own total (three units cannot share one axis honestly) · 5 · No model tinting on this tab.</text>
+</svg>

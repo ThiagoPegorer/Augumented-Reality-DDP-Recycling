@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1240" viewBox="0 0 1680 1240" font-family="'Segoe UI','SF Pro Display',Arial,sans-serif">
+  <rect width="1680" height="1240" fill="#0a1526"/>
+
+  <text x="60" y="50" font-size="21" font-weight="700" fill="#dbe4f0">04a · USAGE &amp; SERVICE — v6 mock (three lenses, no page title)</text>
+  <text x="60" y="76" font-size="13" fill="#8ba3c7">General rule: data-canvas pages carry NO title/subtitle — the rail already names the tab (04c has worked this way since 08-06) · Reuse+Thermal → "Thermal Data" · Electrical+Data → "Electrical Data" · History → "Software" · real payload values · 2026-08-09</text>
+
+  <!-- ================= main row ================= -->
+
+  <!-- RAIL dimmed -->
+  <g opacity="0.55">
+    <rect x="60" y="110" width="240" height="470" rx="22" fill="#081733" stroke="#1a335f"/>
+    <rect x="78" y="130" width="204" height="40" rx="13" fill="#0d2144" stroke="#e24b4a" stroke-width="1.5"/>
+    <text x="180" y="155" font-size="11" fill="#dbe4f0" text-anchor="middle">Certificates &amp; safety</text>
+    <rect x="78" y="182" width="204" height="52" rx="13" fill="#0d2144" stroke="#21407a"/>
+    <text x="180" y="212" font-size="11" fill="#8ba3c7" text-anchor="middle">Product specifications</text>
+  </g>
+  <rect x="78" y="246" width="204" height="52" rx="13" fill="#16305c" stroke="#2eb086" stroke-width="2"/>
+  <rect x="78" y="256" width="4" height="32" rx="2" fill="#2eb086"/>
+  <text x="184" y="270" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Usage &amp;</text>
+  <text x="184" y="286" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">service</text>
+  <g opacity="0.55">
+    <rect x="78" y="310" width="204" height="52" rx="13" fill="#0d2144" stroke="#21407a"/>
+    <text x="180" y="340" font-size="11" fill="#8ba3c7" text-anchor="middle">Environmental impact</text>
+    <rect x="78" y="374" width="204" height="52" rx="13" fill="#0d2144" stroke="#21407a"/>
+    <text x="180" y="404" font-size="11" fill="#8ba3c7" text-anchor="middle">Training disassembly</text>
+  </g>
+
+  <!-- STAGE: verdict tint (default lens) -->
+  <text x="560" y="128" font-size="10.5" fill="#5d7396" text-anchor="middle">STAGE — Thermal Data (default) tints BY VERDICT: 0.767 legible as colour</text>
+  <g transform="rotate(-7 560 360)">
+    <g stroke="#2eb086" stroke-width="2.5"><line x1="496" y1="188" x2="496" y2="204"/><line x1="540" y1="182" x2="540" y2="198"/><line x1="600" y1="178" x2="600" y2="194"/><line x1="644" y1="184" x2="644" y2="200"/></g>
+    <path d="M482,218 L648,206 L668,222 L502,236 Z" fill="#2eb086"/>
+    <path d="M502,236 L668,222 L668,234 L502,248 Z" fill="#1f8062"/>
+    <rect x="512" y="272" width="26" height="10" fill="#21407a" transform="skewX(-6)"/>
+    <rect x="548" y="270" width="20" height="10" fill="#21407a" transform="skewX(-6)"/>
+    <rect x="578" y="268" width="30" height="10" fill="#21407a" transform="skewX(-6)"/>
+    <rect x="618" y="266" width="18" height="10" fill="#21407a" transform="skewX(-6)"/>
+    <path d="M486,302 L652,290 L670,304 L504,316 Z" fill="#21407a"/>
+    <path d="M504,316 L670,304 L670,311 L504,323 Z" fill="#182f57"/>
+    <g>
+      <circle cx="518" cy="352" r="15" fill="#f0c879" stroke="#c79c4f" stroke-width="4"/>
+      <circle cx="568" cy="348" r="15" fill="#f0c879" stroke="#c79c4f" stroke-width="4"/>
+      <circle cx="618" cy="344" r="15" fill="#f0c879" stroke="#c79c4f" stroke-width="4"/>
+    </g>
+    <path d="M478,386 L650,372 L672,392 L500,406 Z" fill="#33a184"/>
+    <path d="M500,406 L672,392 L672,450 L500,464 Z" fill="#2eb086"/>
+    <path d="M478,386 L500,406 L500,464 L478,444 Z" fill="#1f8062"/>
+  </g>
+  <g font-size="9" fill="#8ba3c7">
+    <text x="700" y="230">teal = reuse (shells, screws)</text>
+    <text x="700" y="246">gold = reuse after test (connectors)</text>
+    <text x="700" y="262">navy = material recovery (PCB, ICs)</text>
+    <text x="700" y="278">— deliberately NOT red</text>
+  </g>
+  <rect x="806" y="150" width="40" height="64" rx="12" fill="#2e5aa0" fill-opacity="0.62"/>
+  <circle cx="826" cy="172" r="14" fill="#0a1f44"/>
+  <rect x="820" y="169" width="12" height="9" rx="2" fill="none" stroke="#f28c28" stroke-width="2"/>
+  <path d="M822,169 v-3 a4,4 0 0 1 8,0 v3" fill="none" stroke="#f28c28" stroke-width="2"/>
+  <text x="826" y="200" font-size="6.5" font-weight="700" fill="#f28c28" text-anchor="middle">LINKED</text>
+
+  <!-- DATA CANVAS: Thermal Data (default) — NO TITLE, pills at the very top -->
+  <rect x="880" y="110" width="560" height="574" rx="24" fill="#0d2144" stroke="#1a335f" stroke-width="1.5"/>
+
+  <g font-size="11" text-anchor="middle">
+    <rect x="908" y="132" width="160" height="32" rx="16" fill="#16305c" stroke="#2eb086" stroke-width="1.5"/>
+    <text x="988" y="152" fill="#ffffff" font-weight="700">Thermal Data</text>
+    <rect x="1080" y="132" width="160" height="32" rx="16" fill="#0E2950" stroke="#21407a"/>
+    <text x="1160" y="152" fill="#8ba3c7">Electrical Data</text>
+    <rect x="1252" y="132" width="160" height="32" rx="16" fill="#0E2950" stroke="#21407a"/>
+    <text x="1332" y="152" fill="#8ba3c7">Software</text>
+  </g>
+
+  <!-- SOH + indicators -->
+  <text x="908" y="198" font-size="9.5" letter-spacing="1.5" fill="#2eb086">STATE OF HEALTH — min of mechanisms</text>
+  <text x="908" y="238" font-size="32" font-weight="700" fill="#dbe4f0">48 %</text>
+  <text x="1010" y="216" font-size="10" fill="#8ba3c7">limiting: thermal fatigue</text>
+  <text x="1010" y="234" font-size="9.5" fill="#dbe4f0">Flash endurance</text>
+  <rect x="1140" y="226" width="160" height="8" rx="4" fill="#0a1a38"/><rect x="1140" y="226" width="88" height="8" rx="4" fill="#f0c879"/>
+  <text x="1310" y="234" font-size="9.5" fill="#dbe4f0">55 %</text>
+  <text x="1010" y="252" font-size="9.5" fill="#dbe4f0">Thermal fatigue</text>
+  <rect x="1140" y="244" width="160" height="8" rx="4" fill="#0a1a38"/><rect x="1140" y="244" width="77" height="8" rx="4" fill="#f0c879"/>
+  <text x="1310" y="252" font-size="9.5" fill="#dbe4f0">48 %</text>
+
+  <!-- reuse strip + legend -->
+  <rect x="908" y="266" width="504" height="30" rx="10" fill="#0E2950"/>
+  <text x="920" y="285" font-size="10.5" fill="#2eb086" font-weight="700">0.767 of mass carries a reuse verdict</text>
+  <text x="1180" y="285" font-size="9" fill="#8ba3c7">→ inside Sc4's [A] 0.5–0.9 band</text>
+  <g font-size="9" fill="#8ba3c7">
+    <circle cx="916" cy="312" r="4.5" fill="#2eb086"/><text x="926" y="316">reuse 356.0 g</text>
+    <circle cx="1022" cy="312" r="4.5" fill="#f0c879"/><text x="1032" y="316">after test 150.1 g</text>
+    <circle cx="1146" cy="312" r="4.5" fill="#21407a"/><text x="1156" y="316">recovery 146.1 g</text>
+    <circle cx="1268" cy="312" r="4.5" fill="#6f86a8"/><text x="1278" y="316">consumable 8.0 g</text>
+  </g>
+
+  <!-- ΔT table -->
+  <text x="908" y="344" font-size="9" letter-spacing="1" fill="#5d7396">ΔT BAND · CYCLES · DAMAGE — where the 48 % comes from (Coffin-Manson + Miner)</text>
+  <g font-size="9.5" fill="#dbe4f0">
+    <text x="908" y="364">below 20 °C</text><text x="1030" y="364">4,200</text><rect x="1090" y="356" width="27" height="8" rx="3" fill="#f08a3c" opacity="0.55"/><text x="1300" y="364" text-anchor="end">0.039</text>
+    <text x="908" y="384">20–40 °C</text><text x="1030" y="384">4,600</text><rect x="1090" y="376" width="116" height="8" rx="3" fill="#f08a3c" opacity="0.75"/><text x="1300" y="384" text-anchor="end">0.173</text>
+    <text x="908" y="404">40–60 °C</text><text x="1030" y="404">2,000</text><rect x="1090" y="396" width="140" height="8" rx="3" fill="#f08a3c"/><text x="1300" y="404" text-anchor="end">0.208</text>
+    <text x="908" y="424">60–80 °C</text><text x="1030" y="424">420</text><rect x="1090" y="416" width="58" height="8" rx="3" fill="#f08a3c" opacity="0.65"/><text x="1300" y="424" text-anchor="end">0.086</text>
+    <text x="908" y="444">above 80 °C</text><text x="1030" y="444">30</text><rect x="1090" y="436" width="7" height="8" rx="3" fill="#f08a3c" opacity="0.55"/><text x="1300" y="444" text-anchor="end">0.010</text>
+  </g>
+  <line x1="908" y1="456" x2="1300" y2="456" stroke="#1a335f"/>
+  <text x="908" y="474" font-size="9.5" fill="#8ba3c7">Σ damage 0.516 → consumed 51.6 % · remaining 48 %</text>
+
+  <!-- findings -->
+  <rect x="908" y="490" width="504" height="24" rx="8" fill="#0a1a38"/>
+  <text x="920" y="506" font-size="9.5" fill="#dbe4f0">Over-temperature</text>
+  <text x="1080" y="506" font-size="9.5" fill="#8ba3c7">41 h above 80 °C limit · peak 94 °C</text>
+  <rect x="908" y="518" width="504" height="24" rx="8" fill="#0a1a38"/>
+  <text x="920" y="534" font-size="9.5" fill="#dbe4f0">Processor failure 2025-12</text>
+  <text x="1080" y="534" font-size="9.5" fill="#8ba3c7">replaced at 220,260 km · heat implicated</text>
+
+  <!-- bottom bar -->
+  <rect x="908" y="608" width="90" height="34" rx="17" fill="#10264a" stroke="#5d7396"/>
+  <text x="953" y="630" font-size="11" fill="#dbe4f0" text-anchor="middle">Back</text>
+  <rect x="1240" y="608" width="172" height="34" rx="17" fill="#2eb086"/>
+  <text x="1326" y="630" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="700">Next / Scan next product</text>
+
+  <!-- ================= second row ================= -->
+
+  <!-- ELECTRICAL DATA -->
+  <rect x="60" y="720" width="500" height="330" rx="18" fill="#0d2144" stroke="#1a335f"/>
+  <text x="80" y="748" font-size="12" font-weight="700" fill="#4da3ff">ELECTRICAL DATA</text>
+  <text x="215" y="748" font-size="9" fill="#8ba3c7">model: connectors + flash IC (ic_1) + bus interface (ic_4) lit</text>
+  <text x="80" y="776" font-size="9" letter-spacing="1" fill="#5d7396">ELECTRICAL</text>
+  <g font-size="10">
+    <text x="80" y="796" fill="#8ba3c7">Voltage transients</text><text x="520" y="796" fill="#dbe4f0" text-anchor="end">2,180 (ISO 7637-2)</text>
+    <text x="80" y="818" fill="#8ba3c7">Undervoltage events</text><text x="520" y="818" fill="#dbe4f0" text-anchor="end">37 — cluster at the 12 V battery failures (2012, 2020)</text>
+    <text x="80" y="840" fill="#8ba3c7">Load dumps</text><text x="520" y="840" fill="#dbe4f0" text-anchor="end">4</text>
+  </g>
+  <text x="80" y="872" font-size="9" letter-spacing="1" fill="#5d7396">DATA</text>
+  <g font-size="10">
+    <text x="80" y="892" fill="#8ba3c7">Flash write cycles</text><text x="520" y="892" fill="#dbe4f0" text-anchor="end">45,000 / 100,000 · 55 % left (hard limit)</text>
+    <text x="80" y="914" fill="#8ba3c7">CPU above 80 % load</text><text x="520" y="914" fill="#dbe4f0" text-anchor="end">675 h</text>
+    <text x="80" y="936" fill="#8ba3c7">ECC corrected · resets</text><text x="520" y="936" fill="#dbe4f0" text-anchor="end">118 · 9</text>
+    <text x="80" y="958" fill="#8ba3c7">CAN</text><text x="520" y="958" fill="#dbe4f0" text-anchor="end">8,640 error frames · 6 bus-off</text>
+    <text x="80" y="980" fill="#8ba3c7">Diagnostic codes</text><text x="520" y="980" fill="#dbe4f0" text-anchor="end">41 total · 1 active · 40 cleared</text>
+  </g>
+
+  <!-- SOFTWARE -->
+  <rect x="588" y="720" width="440" height="330" rx="18" fill="#0d2144" stroke="#1a335f"/>
+  <text x="608" y="748" font-size="12" font-weight="700" fill="#dbe4f0">SOFTWARE</text>
+  <text x="700" y="748" font-size="9" fill="#8ba3c7">(was "History") · model untinted · content kept</text>
+  <g font-size="10">
+    <text x="608" y="786" fill="#8ba3c7">Firmware</text><text x="988" y="786" fill="#dbe4f0" text-anchor="end">15 versions · v1.0 → v15.0</text>
+    <text x="608" y="812" fill="#8ba3c7">Calibration map changes</text><text x="988" y="812" fill="#dbe4f0" text-anchor="end">6</text>
+    <text x="608" y="838" fill="#8ba3c7">Sensor recalibrations</text><text x="988" y="838" fill="#dbe4f0" text-anchor="end">3</text>
+  </g>
+  <rect x="608" y="860" width="380" height="60" rx="10" fill="#0a1a38"/>
+  <text x="620" y="880" font-size="9.5" fill="#8ba3c7">13 diagnostic codes tie to logged service events — the unit</text>
+  <text x="620" y="894" font-size="9.5" fill="#8ba3c7">raises codes for the whole vehicle, which is why the service</text>
+  <text x="620" y="908" font-size="9.5" fill="#8ba3c7">log carries vehicle systems as well as its own faults (§4.6).</text>
+
+  <!-- PART RECORD -->
+  <rect x="1056" y="720" width="564" height="330" rx="18" fill="#0d2144" stroke="#2eb086" stroke-width="1.5"/>
+  <text x="1076" y="748" font-size="12" font-weight="700" fill="#2eb086">PART RECORD — pinch a body on this tab (unchanged from v5)</text>
+  <text x="1076" y="782" font-size="14" font-weight="700" fill="#dbe4f0">Connectors 3× AS018-35</text>
+  <circle cx="1084" cy="804" r="5.5" fill="#f0c879"/>
+  <text x="1096" y="808" font-size="10.5" fill="#f0c879">reuse after test</text>
+  <text x="1220" y="808" font-size="10.5" fill="#8ba3c7">150.1 g</text>
+  <rect x="1076" y="822" width="520" height="56" rx="10" fill="#0a1a38"/>
+  <text x="1088" y="842" font-size="9.5" fill="#8ba3c7">One SENS-B reseat logged 2022 — contact resistance to be verified before</text>
+  <text x="1088" y="856" font-size="9.5" fill="#8ba3c7">reuse. Verdicts follow the evidence on this screen, not a rule of thumb.</text>
+  <rect x="1076" y="894" width="86" height="28" rx="14" fill="#10264a" stroke="#5d7396"/>
+  <text x="1119" y="912" font-size="10" fill="#dbe4f0" text-anchor="middle">Back</text>
+  <text x="1076" y="948" font-size="9" fill="#8ba3c7">selected part keeps true colour, the rest ghost (α 0.30) · Back returns to the</text>
+  <text x="1076" y="962" font-size="9" fill="#8ba3c7">active lens · pinching another (ghosted) body switches the record directly</text>
+
+  <!-- ================= decisions ================= -->
+  <rect x="60" y="1080" width="1560" height="130" rx="18" fill="none" stroke="#f0c879" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="84" y="1110" font-size="13" font-weight="700" fill="#f0c879">DECISIONS BEFORE CODE (v6)</text>
+  <text x="84" y="1136" font-size="11" fill="#dbe4f0">1 · Thermal Data's model tint = VERDICT colours (as drawn) — the reuse story is the headline and 0.767 reads as colour. Alternative: the heat ramp (ic_1 hottest). Pick one; the other dies.</text>
+  <text x="84" y="1162" font-size="11" fill="#dbe4f0">2 · #f08a3c stays as a plain CHART colour for the damage bars only (like 04c's #1f77b4) — no new palette token, and it never appears on the model under decision 1.</text>
+  <text x="84" y="1188" font-size="11" fill="#dbe4f0">3 · "No page titles on data-canvas tabs" becomes a general rule in 00 (04c already complies; the cert page keeps its title — it is a reference page, not a tab). basis:"simulated" moves to a footnote line.</text>
+</svg>

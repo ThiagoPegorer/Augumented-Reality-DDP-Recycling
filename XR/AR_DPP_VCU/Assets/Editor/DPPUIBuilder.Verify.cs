@@ -171,6 +171,12 @@ namespace DPP.EditorTools
                 new Wire("SuperPanelView", "stageGestures",  "RBv2_1_1/1"),
                 // Round 4: the gesture column follows the FREED model.
                 new Wire("SuperPanelView", "hudFollower",    "RBv2_1_1/1"),
+                // 04e v2 (2026-08-08): the rail-bottom CTA — the only route into
+                // the teardown now that the Training tab is gone. An unset ref
+                // here means a recycler who reads everything still cannot proceed.
+                new Wire("SuperPanelView", "railCtaButton",  "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "railCtaFill",    "RBv2_1_1/1"),
+                new Wire("SuperPanelView", "railCtaLabel",   "RBv2_1_1/1"),
             },
             [typeof(DPP.DPPManager)] = new[]
             {
@@ -179,6 +185,21 @@ namespace DPP.EditorTools
                 // called out as "static copy that lies".
                 new Wire("DPPManager", "dppPage",      "RBv2_1/8"),
                 new Wire("DPPManager", "productSpecs", "RBv2_1/9"),
+            },
+            // Spec 06 (2026-08-09): Usage & service. Cross-phase only — the lens
+            // pills and rows are created and wired inside /3 itself.
+            [typeof(UsePhaseView)] = new[]
+            {
+                new Wire("UsePhaseView", "owner",     "RBv2_1_1/3"),
+                new Wire("UsePhaseView", "modelLink", "RBv2_1_1/3"),
+            },
+            // Spec 07 (2026-08-08): Environmental impact. Cross-phase only — the
+            // sub-tab pills, ring, panels and charts are created and wired inside
+            // /4 itself. There is deliberately NO modelLink: the approved decision
+            // is no model tint on this tab.
+            [typeof(EnvImpactView)] = new[]
+            {
+                new Wire("EnvImpactView", "owner", "RBv2_1_1/4"),
             },
             [typeof(StepFlowController)] = new[]
             {

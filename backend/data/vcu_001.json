@@ -3,7 +3,7 @@
   "dpp_meta": {
     "schema_version": "0.13",
     "reference_framework": "CIRPASS D2.2 Table 6 (pp. 41-42)",
-    "last_updated": "2026-08-06",
+    "last_updated": "2026-08-08",
     "completeness_note": "Prototype passport for a Master's thesis user study. Impact figures are the openLCA v4 / EF 3.1 deterministic centrals; material splits remain assumed pending VCU_BOM_v4 reconciliation. Attributes with basis/status 'not_provided' have no source yet - coverage against CIRPASS Table 6 is in DPP_UI_Specs/13b_information_model.md."
   },
   "identity": {
@@ -825,7 +825,143 @@
     "co2_footprint_kg": 73.4326,
     "method": "EF 3.1 (EN 15804+A2) · climate change · ecoinvent 3.8 APOS",
     "recycled_content_pct": null,
-    "lifecycle_stages": [],
+    "lifecycle_stages": [
+      {
+        "id": "S1",
+        "name": "Materials & construction",
+        "co2_kg": 38.4876,
+        "description": "Raw-material extraction and refinement; manufacture of the electronic components.",
+        "impacts": [
+          {
+            "category": "Resource use minerals and metals",
+            "unit": "kg Sb eq",
+            "value": 0.018334947627794227,
+            "basis": "modelled"
+          },
+          {
+            "category": "Climate change",
+            "unit": "kg CO2 eq",
+            "value": 38.48758672217703,
+            "basis": "modelled"
+          },
+          {
+            "category": "Eutrophication freshwater",
+            "unit": "kg P eq",
+            "value": 0.06252991527068107,
+            "basis": "modelled"
+          }
+        ],
+        "note": null
+      },
+      {
+        "id": "S2",
+        "name": "Hardware assembly",
+        "co2_kg": 0.4409,
+        "description": "Manufacturing at the provider: die-casting & SMT placement.",
+        "impacts": [
+          {
+            "category": "Resource use minerals and metals",
+            "unit": "kg Sb eq",
+            "value": 8.338094604656149e-05,
+            "basis": "modelled"
+          },
+          {
+            "category": "Climate change",
+            "unit": "kg CO2 eq",
+            "value": 0.4408816018294459,
+            "basis": "modelled"
+          },
+          {
+            "category": "Eutrophication freshwater",
+            "unit": "kg P eq",
+            "value": 0.0005687284330619102,
+            "basis": "modelled"
+          }
+        ],
+        "note": null
+      },
+      {
+        "id": "S3",
+        "name": "Distribution",
+        "co2_kg": 0.0279,
+        "description": "Road freight of the finished unit to the vehicle OEM.",
+        "impacts": [
+          {
+            "category": "Resource use minerals and metals",
+            "unit": "kg Sb eq",
+            "value": 6.226075852794333e-08,
+            "basis": "modelled"
+          },
+          {
+            "category": "Climate change",
+            "unit": "kg CO2 eq",
+            "value": 0.027915666173321085,
+            "basis": "modelled"
+          },
+          {
+            "category": "Eutrophication freshwater",
+            "unit": "kg P eq",
+            "value": 1.805648530042725e-06,
+            "basis": "modelled"
+          }
+        ],
+        "note": null
+      },
+      {
+        "id": "S4",
+        "name": "Use phase",
+        "co2_kg": 34.2997,
+        "description": "Operation in a battery-electric vehicle in Germany.",
+        "impacts": [
+          {
+            "category": "Resource use minerals and metals",
+            "unit": "kg Sb eq",
+            "value": 0.0003206960576662664,
+            "basis": "modelled"
+          },
+          {
+            "category": "Climate change",
+            "unit": "kg CO2 eq",
+            "value": 34.29968199710881,
+            "basis": "modelled"
+          },
+          {
+            "category": "Eutrophication freshwater",
+            "unit": "kg P eq",
+            "value": 0.05281697255488692,
+            "basis": "modelled"
+          }
+        ],
+        "note": null
+      },
+      {
+        "id": "S5",
+        "name": "End-of-life",
+        "co2_kg": 0.1765,
+        "description": "Recycling stage — collection and treatment. See the Recycling tab.",
+        "impacts": [
+          {
+            "category": "Resource use minerals and metals",
+            "unit": "kg Sb eq",
+            "value": 2.997403972249124e-08,
+            "basis": "modelled"
+          },
+          {
+            "category": "Climate change",
+            "unit": "kg CO2 eq",
+            "value": 0.1765201222166155,
+            "basis": "modelled"
+          },
+          {
+            "category": "Eutrophication freshwater",
+            "unit": "kg P eq",
+            "value": 2.166131726558107e-06,
+            "basis": "modelled"
+          }
+        ],
+        "note": "Value below is the Sc1 (no recycling) baseline; Sc2-Sc4 outcomes live in impact_recovery."
+      }
+    ],
     "recovery_potential": {
       "total_avoidable_kg": 15.4315,
       "note": "EF 3.1 climate saving of Sc4 vs Sc1, net of recycling process emissions. Per-material credit attribution is not exported by the openLCA runs.",
@@ -918,8 +1054,8 @@
     "recycled_content_basis": "not_provided",
     "lca_basis": "modelled",
     "lca_source": "openLCA v4 model, ecoinvent 3.8 APOS, EF 3.1. Deterministic centrals from LCA_Analysis/Outputs/3_impact_assessment/impact_EF31.csv (2026-07-25).",
-    "lifecycle_stages_basis": "not_provided",
-    "lifecycle_stages_note": "Per-stage (S1-S4) contribution is not among the openLCA exports; it needs one GUI contribution-tree export (Sc1, EF 3.1, climate change). The previous S1-S4 split belonged to the superseded assumed-BOM model and summed to 63.9 kg, contradicting this headline.",
+    "lifecycle_stages_basis": "modelled",
+    "lifecycle_stages_note": "S1-S4 direct contributions + S5 (Sc1 baseline) computed 2026-08-08 by stage_contributions.py: cumulative differencing of the chained stage product systems, EF 3.1, same model as impact_EF31.csv. S5 varies by scenario - see impact_recovery.",
     "impact_recovery": [
       {
         "category": "Resource use minerals and metals",
@@ -1827,7 +1963,7 @@
     "basis": "simulated",
     "note": "Use-phase telemetry a vehicle control unit would record about ITSELF. Every figure is derived from data already in this passport: powered hours and distance from environmental.usage_profile, DTC counts from repair_history.events, firmware from service.software_updates. Component ids match components[]."
   },
-  "schema_version": "0.18",
+  "schema_version": "0.19",
   "material_reference": {
     "adp_method": "EF 3.1 (adapted), Resource use minerals and metals, kg Sb eq",
     "adp_source": "openLCA LCIA Methods 2.4.0, category b2ad6494-c78d-11e6-9d9d-cec0c932ce01",

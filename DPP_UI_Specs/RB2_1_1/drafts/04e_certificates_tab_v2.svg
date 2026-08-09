@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="780" viewBox="0 0 1120 780" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="1120" height="780" fill="#071630"/>
+  <text x="24" y="34" fill="#eef4fb" font-size="19" font-weight="bold">04e v2 — RAIL restructure: Training removed · Certificates after Environmental · CTA at rail bottom · 2026-08-08</text>
+  <text x="24" y="54" fill="#5d7396" font-size="12">Data canvas untouched — the existing CertificatesPage stays exactly as it is. Only the RAIL (220×430) changes.</text>
+
+  <!-- ================= RAIL — RECYCLER, LOCKED ================= -->
+  <text x="40" y="96" fill="#2EC4B6" font-size="13" font-weight="bold">RAIL — recycler, gate locked</text>
+  <rect x="40" y="106" width="264" height="560" rx="18" fill="#081733" stroke="#1a335f" stroke-width="1.5"/>
+
+  <!-- tab 0: product specs (visited) -->
+  <rect x="62" y="130" width="220" height="82" rx="12" fill="#0E2950"/>
+  <circle cx="94" cy="171" r="17" fill="#16305c"/><text x="94" y="176" fill="#9fb0c9" font-size="12" text-anchor="middle">▦</text>
+  <text x="122" y="166" fill="#9fb0c9" font-size="14">Product</text>
+  <text x="122" y="184" fill="#9fb0c9" font-size="14">specifications</text>
+  <text x="266" y="176" fill="#27C46C" font-size="15" font-weight="bold" text-anchor="middle">✓</text>
+
+  <!-- tab 1: usage (visited) -->
+  <rect x="62" y="222" width="220" height="82" rx="12" fill="#0E2950"/>
+  <circle cx="94" cy="263" r="17" fill="#16305c"/><text x="94" y="268" fill="#9fb0c9" font-size="12" text-anchor="middle">◔</text>
+  <text x="122" y="258" fill="#9fb0c9" font-size="14">Usage &amp;</text>
+  <text x="122" y="276" fill="#9fb0c9" font-size="14">service</text>
+  <text x="266" y="268" fill="#27C46C" font-size="15" font-weight="bold" text-anchor="middle">✓</text>
+
+  <!-- tab 2: environmental (ACTIVE) -->
+  <rect x="62" y="314" width="220" height="82" rx="12" fill="#16305c" stroke="#2EC4B6" stroke-width="1.5"/>
+  <circle cx="94" cy="355" r="17" fill="#1d3f78"/><text x="94" y="360" fill="#eef4fb" font-size="12" text-anchor="middle">♻</text>
+  <text x="122" y="350" fill="#ffffff" font-size="14" font-weight="bold">Environmental</text>
+  <text x="122" y="368" fill="#ffffff" font-size="14" font-weight="bold">impact</text>
+
+  <!-- cert entry: NOT visited, red, moved here (Training's old slot) -->
+  <rect x="62" y="406" width="220" height="56" rx="12" fill="#4a1420" stroke="#e24b4a" stroke-width="1.5"/>
+  <circle cx="94" cy="434" r="15" fill="#5c1622"/><text x="94" y="439" fill="#e24b4a" font-size="12" text-anchor="middle">🛡</text>
+  <text x="120" y="439" fill="#f3b9b8" font-size="13.5" font-weight="bold">Certificates &amp; safety</text>
+  <text x="270" y="420" fill="#5d7396" font-size="11" text-anchor="middle"> </text>
+
+  <text x="72" y="486" fill="#5d7396" font-size="11">Training disassembly tile REMOVED — its slot is now the</text>
+  <text x="72" y="500" fill="#5d7396" font-size="11">certificates entry, keeping its CURRENT red style + page.</text>
+
+  <!-- CTA locked -->
+  <rect x="62" y="590" width="220" height="44" rx="22" fill="#2b3a52" stroke="#3a4a63" stroke-width="1.5"/>
+  <text x="172" y="617" fill="#7c8ba1" font-size="13.5" text-anchor="middle">🔒 Continue to disassembly</text>
+  <text x="172" y="652" fill="#5d7396" font-size="10.5" text-anchor="middle">locked: certificates not opened yet (3 of 4 done)</text>
+
+  <!-- ================= RAIL — RECYCLER, UNLOCKED ================= -->
+  <text x="360" y="96" fill="#2EC4B6" font-size="13" font-weight="bold">RAIL — recycler, all 4 visited</text>
+  <rect x="360" y="106" width="264" height="560" rx="18" fill="#081733" stroke="#1a335f" stroke-width="1.5"/>
+
+  <rect x="382" y="130" width="220" height="82" rx="12" fill="#0E2950"/>
+  <text x="442" y="166" fill="#9fb0c9" font-size="14">Product</text>
+  <text x="442" y="184" fill="#9fb0c9" font-size="14">specifications</text>
+  <circle cx="414" cy="171" r="17" fill="#16305c"/><text x="414" y="176" fill="#9fb0c9" font-size="12" text-anchor="middle">▦</text>
+  <text x="586" y="176" fill="#27C46C" font-size="15" font-weight="bold" text-anchor="middle">✓</text>
+
+  <rect x="382" y="222" width="220" height="82" rx="12" fill="#0E2950"/>
+  <circle cx="414" cy="263" r="17" fill="#16305c"/><text x="414" y="268" fill="#9fb0c9" font-size="12" text-anchor="middle">◔</text>
+  <text x="442" y="258" fill="#9fb0c9" font-size="14">Usage &amp;</text>
+  <text x="442" y="276" fill="#9fb0c9" font-size="14">service</text>
+  <text x="586" y="268" fill="#27C46C" font-size="15" font-weight="bold" text-anchor="middle">✓</text>
+
+  <rect x="382" y="314" width="220" height="82" rx="12" fill="#0E2950"/>
+  <circle cx="414" cy="355" r="17" fill="#16305c"/><text x="414" y="360" fill="#9fb0c9" font-size="12" text-anchor="middle">♻</text>
+  <text x="442" y="350" fill="#9fb0c9" font-size="14">Environmental</text>
+  <text x="442" y="368" fill="#9fb0c9" font-size="14">impact</text>
+  <text x="586" y="360" fill="#27C46C" font-size="15" font-weight="bold" text-anchor="middle">✓</text>
+
+  <rect x="382" y="406" width="220" height="56" rx="12" fill="#4a1420" stroke="#e24b4a" stroke-width="1.5"/>
+  <circle cx="414" cy="434" r="15" fill="#5c1622"/><text x="414" y="439" fill="#e24b4a" font-size="12" text-anchor="middle">🛡</text>
+  <text x="440" y="439" fill="#f3b9b8" font-size="13.5" font-weight="bold">Certificates &amp; safety</text>
+  <text x="586" y="439" fill="#27C46C" font-size="15" font-weight="bold" text-anchor="middle">✓</text>
+
+  <!-- CTA unlocked -->
+  <rect x="382" y="590" width="220" height="44" rx="22" fill="#27C46C"/>
+  <text x="492" y="617" fill="#08331c" font-size="13.5" font-weight="bold" text-anchor="middle">Continue to disassembly ➜</text>
+  <text x="492" y="652" fill="#5d7396" font-size="10.5" text-anchor="middle">green: routes into the guided step flow</text>
+
+  <!-- ================= RAIL — PRODUCT USER ================= -->
+  <text x="680" y="96" fill="#2EC4B6" font-size="13" font-weight="bold">RAIL — product user</text>
+  <rect x="680" y="106" width="264" height="560" rx="18" fill="#081733" stroke="#1a335f" stroke-width="1.5"/>
+  <text x="702" y="140" fill="#5d7396" font-size="11.5">same four entries above (no gate,</text>
+  <text x="702" y="155" fill="#5d7396" font-size="11.5">ticks still shown) …</text>
+
+  <rect x="702" y="590" width="220" height="44" rx="22" fill="#233a5c" stroke="#3a4a63" stroke-width="1.5"/>
+  <text x="812" y="617" fill="#c9d4e4" font-size="13.5" text-anchor="middle">⟵ Back</text>
+  <text x="812" y="652" fill="#5d7396" font-size="10.5" text-anchor="middle">always enabled → Stakeholder decision page</text>
+
+  <!-- ================= NOTES ================= -->
+  <text x="972" y="96" fill="#2EC4B6" font-size="13" font-weight="bold">DECISIONS</text>
+  <g font-size="11.5" fill="#9fb0c9">
+    <text x="972" y="118">1. Data canvas: NO change.</text>
+    <text x="984" y="132">CertificatesPage stays as-is,</text>
+    <text x="984" y="146">opened by the red entry.</text>
+    <text x="972" y="170">2. Gate = 3 tabs visited +</text>
+    <text x="984" y="184">certificates page opened</text>
+    <text x="984" y="198">at least once (rail ticks</text>
+    <text x="984" y="212">are the state).</text>
+    <text x="972" y="236">3. Locked press: nothing +</text>
+    <text x="984" y="250">hint line under the pill.</text>
+    <text x="972" y="274">4. Role comes from the</text>
+    <text x="984" y="288">Stakeholder decision:</text>
+    <text x="984" y="302">RECYCLER → gated CTA;</text>
+    <text x="984" y="316">PRODUCT USER → Back,</text>
+    <text x="984" y="330">never gated.</text>
+    <text x="972" y="354">5. Training removed from</text>
+    <text x="984" y="368">rail AND tabPages; the</text>
+    <text x="984" y="382">TrainingPage object is</text>
+    <text x="984" y="396">deleted (trap 4 — never</text>
+    <text x="984" y="410">left orphaned-active).</text>
+    <text x="972" y="434">6. CTA target = the same</text>
+    <text x="984" y="448">disassembly-intro route</text>
+    <text x="984" y="462">the Training tab used.</text>
+    <text x="972" y="486">7. Env page "Next" (tab 2,</text>
+    <text x="984" y="500">now the last data tab)</text>
+    <text x="984" y="514">opens the certificates</text>
+    <text x="984" y="528">page — keeps the page-</text>
+    <text x="984" y="542">grammar chain intact.</text>
+  </g>
+
+  <text x="40" y="716" fill="#f0c879" font-size="12" font-weight="bold">Build impact (code round, after approval):</text>
+  <text x="40" y="736" fill="#9fb0c9" font-size="11.5">DPPUIBuilder.SuperPanel.cs — cert entry into the 4th tab slot · Training tile + TrainingPage removed · rail-bottom CTA/Back built + wired ·</text>
+  <text x="40" y="752" fill="#9fb0c9" font-size="11.5">SuperPanelView — visited-set (3 tabs + certificates) · gate + role switch · RBv2_1_1/3 &amp; /4 tabPages merge drops slot 3 · Verify rows updated.</text>
+</svg>
