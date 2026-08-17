@@ -1,64 +1,96 @@
 ---
 name: thesis-schedule
-description: Live thesis schedule (refreshed 2026-08-14 from the Notion Task Tracker). Chapter 1 CLOSED 2026-08-13; Literature Review is 2 days late; Methodology now collides with study day 1. RBv2.1.1 frozen 2026-08-10. Includes the run-order trap.
+description: Live thesis state, rebuilt 2026-08-17 (Session 34) from the Notion Task Tracker and Thiago's own confirmation. Chapters 1 and 2 CLOSED, Methodology opener and 3.1 CLOSED. ALL PARTICIPANT STUDY SESSIONS ARE COMPLETE. Submission target 25 August, hard deadline 2 September 16:00.
 type: project
 ---
-# Milestone: RBv2.1.1 OFFICIALLY FROZEN 2026-08-10 (Thiago's declaration, Session 27)
 
-Prototype work is OVER except device-pass bug fixes (new version number each; last build >= 1 h
-before a participant; no changes to step content/order/difficulty). See [[rbv2-1-1-handoff]]
-§THE FREEZE. From here, EVERY session should default to WRITING unless a study session or a
-device bug says otherwise.
+# Where the thesis actually is (end of 2026-08-17)
 
-# Where the writing actually is (refreshed 2026-08-14)
+# THE STUDIES ARE DONE
 
-**✅ Chapter 1 is CLOSED (Session 30, 2026-08-13).** Sections 1.1, 1.1.1, 1.2 Objectives,
-1.3 Scope & Limitations and 1.4 Research Questions are written. 1.5 Structure/Overview was skipped
-as optional. Details in [[introduction_progress]] and [[research_questions_final]].
+Thiago confirmed on 2026-08-17: "All the studies is already done." This overrides the forward-looking
+wording in rbv2-1-1-handoff section 4, which still reads as though the sessions were upcoming.
 
-Three things changed in Chapter 1 that propagate forward:
-1. **Participants dismantle a 3D-printed replica, not a real VCU** — disclosed and scoped, not apologised for.
-2. **The reference device is a Bosch Motorsport MS 50.4** because no series-production VCU datasheet could be obtained.
-3. **The research questions were rebuilt** around a main question naming the recycler and the end-of-life routes; the registered set asked no environmental question. **Hypotheses were dropped** — the SRH template never asks for them.
+STILL UNRECORDED ANYWHERE, and section 3.5 needs all of it:
+- how many participants took part, and their group assignment
+- within or between subjects
+- what was captured (step times, errors, questionnaire, which instrument)
+- where the raw files live on disk
+- whether any session deviated from the protocol, and the build version flashed
+ASK HIM. Do not infer.
+Note: Chapter 1 describes participants as "of mixed background: people experienced in electronics, people
+experienced in Augmented Reality, and people meeting both the device and the technology for the first
+time." See ch1_verbatim_facts.
 
-**⬜ Literature Review is TWO DAYS LATE.** The Task Tracker carries two open rows: one starting
-2026-08-12 and one starting 2026-08-14, both `Not Started`. Nothing of it is written.
+# Chapters
 
-# Thesis schedule (Notion Start Dates are the trusted field; re-queried 2026-08-14)
+| chapter | state |
+|---|---|
+| 1 Introduction | CLOSED 2026-08-13, corrected 08-16 against Regulation (EU) 2026/1738 |
+| 2 Literature Review | CLOSED 2026-08-17. Jensen et al. (2023) added to block 2.4 on 08-17, plus six typo fixes |
+| 3 Methodology | opener CLOSED, 3.1 CLOSED, 3.2 is next. See ch3_methodology_progress |
+| 4 Findings | Not started. Study data exists; the LCA number trace is still owed |
+| 5 Discussion | Not started |
+| 6 Conclusion | Not started |
 
-- ~~08-10 Introduction~~ → written 08-11 and 08-13. **DONE.**
-- **08-12 + 08-14** — Literature Review (two rows, both still Not Started). **THIS IS THE SLIP.**
-- **08-15 08:30** — Methodology. ⚠ Same day as data collection (12:30–15:30) + lab study **Jin**
-  (15:30–17:30) + Results (18:45–02:30). Four things on one day.
-- **08-16 11:30** — Results. **08-17 06:15** — Results again + **08-17 12:15** Discussion +
-  lab study **Neighboors** (~19:45).
-- **08-18 / 08-19** — Conclusion & Abstract. **08-20 / 08-21** — Compile & formatting.
-- **08-25** — submission target. **Sep 2, 16:00** — hard deadline.
+# The real interim dates, from the Notion Task Tracker
 
-**Most at-risk item (unchanged in kind, worse in degree):** Methodology is now scheduled on study
-day 1, and Discussion on study day 2. Interpretation would be written hours after the data lands,
-with no buffer. Methodology is also the chapter that OWNS the prototype description, so it is the
-one chapter that could have been written any time in the last two weeks and was not.
+Tracker times are UTC; Berlin is UTC+2. THE TRACKER CARRIES ONE ROW PER WORKING DAY PER TASK, so a task
+appears several times. Read the whole set before judging a status, and query ALL statuses, not just
+"not Done" - filtering hides the rows that prove what already happened.
 
-**Second risk:** the Findings chapter is blocked until every LCA headline number is traced to its
-named CSV row. All are `[M]` under the zero-trust rule. That verification pass must NOT land on
-08-15/16 when study data also arrives.
+| date (UTC) | task | status |
+|---|---|---|
+| 08-11 to 08-13 | Write Introduction (4 rows) | Done on three |
+| 08-12 to 08-17 | Write Literature Review chapters (5 rows) | Done on four |
+| 08-17 13:00 | Write Methodology | Not Started (worked on this session) |
+| 08-19 07:15 | Write Methodology (second working day) | Not Started |
+| 08-19 19:15, 08-20 07:15, 08-21 07:15 | Write Results chapter | Not Started |
+| 08-22 06:30 | Write Conclusion & Abstract | Not Started |
+| 08-23 07:00 | Write Discussion chapter | Not Started |
+| 08-24 07:00 | Compile all chapters & thesis formatting | Not Started |
+| 08-26 10:00 | Final submission, USB drive to Exam Office | Not Started |
+| 09-19 | Defence and grading (target before 15 Sep) | Not Started |
 
-**Note on the tracker:** the separate "Write Prototype Development chapter" row that
-[[writing_phase_setup]] warned about no longer appears in the open task set as of 2026-08-14.
-Either it was renamed or closed. The prototype belongs to Methodology; there is no such chapter.
+ONE ORDERING DEFECT, flagged 2026-08-17 and not yet resolved: Conclusion & Abstract (08-22) is scheduled
+BEFORE Discussion (08-23). The Conclusion integrates the Discussion, so as ordered the integration is
+written before the interpretation.
 
-# Notion session log status
+# Google Calendar
 
-Latest row: **Session 31 — 2026-08-14** (memory system rebuilt; OPEN row, Part 2 pending — see
-[[session_logging_routine]]).
-Session 30 — 2026-08-13 (Chapter 1 closed). Session 29 — 2026-08-11 (first thesis words).
-UNLOGGED: only the 2026-08-02/03 backfill.
+Standing instruction from Thiago (2026-08-17): check the Calendar as well as Notion at every wake-up and
+write what it says into memory. THE CONNECTOR CURRENTLY RETURNS ZERO EVENTS on both real calendars
+(thiagomp4903@gmail.com and the read-only import "My Schedule"), with and without a time range. Metadata
+comes back fine. Until that is fixed the Notion Task Tracker is the schedule of record. Re-test each
+wake-up.
 
-# Run-order trap (durable — do not lose)
+# Fixed dates
 
-Teardown builders (menu 05/06) bind `FindFirstObjectByType<DisassemblyAnimator>` (active-only)
-and layer-hide — **never run while the stage clone exists**. If they must: delete
-`DppSuperPanel` first, then rebuild 10→14 ascending. Rig rebuild is always the chain
-09 → 10 → 11 → 12 → 13 → 14 → Verify → save (10 destroys ProductSpecsPage, the guided-mode
-rail/pages/controller and the stage clone).
+25 August submission target | 26 August 10:00 tracker submission slot | 2 September 16:00 hard deadline |
+defence target before 15 September.
+
+# Corpus defects still open
+
+1. CIRPASS D2.2: a working copy CIRPASS_D2.2_DPP_UseCases_Report_v2.0_FIXED.pdf was made 2026-08-17 and
+   IS readable. The ORIGINAL is still hardlinked. Thiago must delete it by hand and rename the copy back.
+2. _index/lit_index.jsonl stale since eighteen AR PDFs and Regulation (EU) 2026/1738 landed on 08-16.
+3. dpp_eol.pdf and DPP_vcu_connecting_producers_recyclers.pdf are the same paper. Delete one.
+4. "Driving sustainable circular economy in electronics.pdf" is still the one-page abstract.
+5. Adisorn page error (p. 9, not p. 10) in text already pasted; Chen et al. pages in 2.5 are pre-print.
+6. The American spelling pass across the .docx.
+7. Five CIRPASS in-text citations to convert to the hybrid author scheme.
+
+# Notion session log
+
+Latest row before this session: Session 33 (2026-08-17, Chapter 2 closed). This session is 34.
+Query live before writing a new row; other Cowork projects increment the same counter.
+Still UNLOGGED: the 2026-08-02/03 backfill.
+
+# Run-order trap (durable, do not lose)
+
+Teardown builders (menu 05/06) bind FindFirstObjectByType<DisassemblyAnimator> (active-only) and
+layer-hide. Never run while the stage clone exists. If they must: delete DppSuperPanel first, then
+rebuild 10-14 ascending. Rig rebuild is always 09 -> 10 -> 11 -> 12 -> 13 -> 14 -> Verify -> save.
+
+Related: ch3_methodology_progress, methodology_start_here, ch1_verbatim_facts, rbv2-1-1-handoff,
+voice_and_verification_rules, lca_findings_for_writing
