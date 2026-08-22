@@ -1,149 +1,179 @@
 ---
 name: voice-and-verification-rules
-description: The complete set of voice rules and verification rules learned from Thiago's edits, as of 2026-08-17. Nine voice rules, three verification rules, the chapter-boundary rule, and the two rules that INVERT in Methodology. READ THIS BEFORE WRITING ANY THESIS PROSE.
+description: The complete set of voice rules and verification rules learned from Thiago's edits, as of 2026-08-22. ELEVEN voice rules and four verification rules plus the chapter-boundary rule. READ THIS FILE BEFORE WRITING ANY THESIS PROSE. Rules 10 and 11 and verification rule D are new on 2026-08-22 and are absent from the synced academic-writer skill.
 type: reference
 ---
 
-# STATUS as of 2026-08-17 (Session 34)
+# 🔴 WHY THIS FILE EXISTS
 
-Earlier versions said the synced academic-writer skill's voice_rules.md was EMPTY. That is no longer
-true: it carries ten rules. But the synced copy is still BEHIND this file on four things, so this file
-remains authoritative:
-- Rule 5, sentence length: skill says "a hard limit, not a preference"; this file says "a check, not an
-  aspiration", with the block-2.4 boundary that the limit targets STACKED CLAUSES, not length.
-- Verification rule B (multi-measure studies): absent from the skill.
-- Verification rule C (never cite a review for a primary measurement): absent from the skill.
-- The chapter-boundary rule: absent from the skill.
+⚠ **The synced skill files are a READ-ONLY CACHE.** Editing
+`/root/.claude/skills/synced/academic-writer/references/voice_rules.md` does not change Thiago's
+account skill, and the session filesystem is discarded at close. **New rules go in THIS file.**
 
-# THE NINE VOICE RULES
+**The synced copy is behind this file on five things**, so this file remains authoritative:
+
+| Item | Synced skill | This file |
+|---|---|---|
+| Rule 5, sentence length | "a hard limit, not a preference" | "a check, not an aspiration", with the block-2.4 boundary that the limit targets *stacked clauses*, not length |
+| **Rule 10, cut the scaffolding** | **absent** | **present, 2026-08-22** |
+| **Rule 11, no headline openers in Methodology** | **absent** | **present, 2026-08-22** |
+| **Verification rule D, flags get a flag-free twin** | **absent** | **present, 2026-08-22** |
+| Verification rules B and C, and the chapter-boundary rule | absent | present |
+
+Read both. Where they disagree, **this file wins**.
+
+# THE ELEVEN VOICE RULES
 
 ### 1. No category-word subjects, and no metaphor standing in for the claim
-Rejected: "An impact figure is not a single quantity." / "European recovery law counts in kilograms."
-If the grammatical subject is a category word (a figure, a result, the law, the field, the literature) or
-a metaphor doing the claim's work, rewrite it. Put a named actor, a named instrument, a physical object
-or the actual quantity in the subject slot. Generic wording is a symptom of an unsharp claim, not a
-vocabulary problem. Negation openers are the commonest hiding place.
+Rejected: "An impact figure is not a single quantity." · "European recovery law counts in kilograms."
+If the grammatical subject is a category word (*a figure, a result, the law, the field, the literature*) or
+a metaphor doing the claim's work, rewrite it. Put a named actor, a named instrument, a physical object or
+the actual quantity in the subject slot. **Generic wording is a symptom of an unsharp claim.**
 
 ### 2. Never open with "Whether"
-It converts a claim into a suspended question. Legal mid-sentence after a governing verb.
+It converts a claim into a suspended question. Legal mid-sentence after a governing verb (assess whether,
+test whether) and inside quotations.
 
 ### 3. "Figure" means an image, never a number
-Substitute number, value, target, rate, share, score, percentage, result, quantity. Same for "table".
+Substitute number, value, target, rate, share, score, percentage, result, quantity. Same care with "table".
 
 ### 4. Organise by argument, not by source
 One topic per paragraph, ending on its own conclusion. No ordinal scaffolding unless the enumeration was
 already given.
 
 ### 5. Sentence length is a check, not an aspiration
-About twenty words, one idea. BOUNDARY: the accepted block 2.4 runs longer wherever the argument needs
-it. The limit targets STACKED CLAUSES, not length. Over-applying it produces staccato source reporting.
+About twenty words, one idea. **Boundary:** the accepted block 2.4 runs longer wherever the argument needs
+it. The limit targets *stacked clauses*, not length. Over-applying it produces staccato source reporting.
 
 ### 6. Paragraph shape depends on the paragraph's job
-OPEN ON A SYNTHESISED CLAIM when the paragraph compares positions across several authors (block 2.4).
-OPEN ON THE AUTHOR when the paragraph carries one author's position or one study's result (block 2.5).
-Both LAND ON A PAIRED CONTRAST: two short sentences, the second usually negative. From 2.4: "Adisorn et
-al. describe a recycler who receives product information. CIRPASS specifies a recycler who also supplies
-it."
-METHODOLOGY IS A THIRD CASE. It reports procedure, not positions. Both existing shapes were derived from
-Literature Review blocks. Extract the Methodology variant from Thiago's edits rather than forcing one of
-the existing two.
+**Open on a synthesised claim** when the paragraph compares positions across several authors (block 2.4).
+**Open on the author** when it carries one author's position or one study's result (block 2.5). Both **land
+on a paired contrast**: two short sentences, the second usually negative.
+
+✅ **The Methodology variant:** one mechanism per paragraph, opened on the mechanism, closed on its
+consequence or its reason. No paired contrast. See rule 11 for how NOT to open it.
 
 ### 7. Summarise the author's position, do not report their study
-The rule that finally made 2.5 work. Thiago's model paragraph: five sentences, about ninety words, no
-sample size, no protocol, no apparatus. Verbs: approach, argue, propose. Omit n, allocation, task
-description, device model, rounds, exclusions and procedure BY DEFAULT. A number enters only when that
-number is the point. Target about 100 words and no more than three sources per paragraph.
-RULE 7 INVERTS IN METHODOLOGY, and this is the single biggest carry-over risk into Chapter 3. The SRH
-contract demands prior studies cited AS METHOD PRECEDENTS, and demands the author's own procedure at a
-level permitting independent replication. Sample sizes, protocols, rounds and apparatus are REQUIRED
-there. The rule governs how OTHER PEOPLE'S studies are summarised when justifying a method choice; it
-does not govern the description of this study's own design.
+Omit n, allocation, task description, apparatus, rounds and exclusions **by default**. Target about 100
+words and no more than three sources per paragraph.
+
+⚠ **Rule 7 INVERTS in Methodology.** The SRH contract demands the author's own procedure at a level
+permitting replication. Sample sizes, protocols and apparatus are **required** there.
 
 ### 8. Never lead a result sentence with the baseline
-Rejected: "Against the same system running without that human step, accuracy rose by 10 %." Thiago read
-it as removing the human improving accuracy. THE THING THAT CHANGED TAKES THE SUBJECT SLOT AND THE VERB
-STATES THE DIRECTION: "Adding that correction step raised sorting accuracy by 10 %." Never open with
+**The thing that changed takes the subject slot and the verb states the direction.** Never open with
 "Against X", "Compared with X" or "Relative to X".
 
 ### 9. Do not carry the source's vocabulary into the paragraph
-Rejected as a "frankstein paragraph": "perception module", "first level of information",
-"semi-transparent coloured cube", "morphology-based object segmentation". A paper's technical vocabulary
-is written for that paper's readers; transplanted it reads as assembled and hides the mechanism behind a
-label. Explain in ordinary words and keep the page number. EXCEPTION: a term the thesis itself defines
-stays exact. In Methodology the exception is wide: the thesis's own named parts (guided disassembly mode,
-digital model exploration, ReBuilt, RBv2.1.1) and the named stack stay exact.
+Explain the mechanism in ordinary words and keep the page number. **Exception:** terms the thesis itself
+defines stay exact (guided disassembly mode, digital model exploration, ReBuilt, RBv2.1.1, the stack).
 
-# TWO RULES ADDED 2026-08-17 FROM THE METHODOLOGY OPENER
+### 10. 🔴 2026-08-22 — cut every sentence whose only job is to announce what comes next
+Three deletions in one edit of 3.4.2, all the same defect:
 
-### 10. Never cite a section or chapter number in running prose
-Seen twice in one block: "Section 2.6" became "the literature review"; "Chapter 4" became "the next
-chapter". OVERRIDES the academic-writer skill's cross-reference guidance, which instructs "as introduced
-in section 2.3". Name the chapter or give its relative position instead.
+1. **The figure roll-call.** "Figures 14 to 16 draw them in that order." **Never narrate the figure list.**
+2. **The preview paragraph.** A whole paragraph listing what the following paragraphs would say.
+3. **The negative opener.** "ReBuilt opens no menu and offers no home screen" became "The application
+   session runs in three routines." **State what the thing does, not what it lacks.**
 
-### 11. AMERICAN spelling
-Thiago changed "standardised" to "standardized" on 2026-08-17. Consequence: artefact -> artifact,
-organised -> organized, modelled -> modeled. The .docx is currently MIXED and needs a find-and-replace
-pass. ("analys" is not a signal: "analysis" is spelled the same in both variants.)
+**A Methodology paragraph earns its place by carrying a mechanism, a number, a reason or a decision. A
+paragraph that only orients the reader is deleted.**
 
-# THE THREE VERIFICATION RULES
+### 11. 🔴 2026-08-22 — in Methodology, no compressed headline openers
+Thiago on the first 3.5 draft: *"make it more simple and direct language. Those short sentences in the
+beginning of each paragraph is not been a good idea in this section."*
+
+**The rejected openers, all mine, all from one draft:**
+"Three objects carried each session." · "Eligibility was open." · "Understanding is the primary outcome."
+· "No tutorial preceded the AR condition." · "A session ran between forty-five and sixty minutes."
+
+They are grammatical and they obey rules 1 and 5. They still read wrong, because a Methodology section is
+an **account of what was done**, and a slogan is not an account.
+
+**The rule:** open a Methodology paragraph with a full, ordinary sentence that describes the action or the
+arrangement, then continue. The main point still comes first; it is stated, not compressed.
+
+| Rejected | Written instead |
+|---|---|
+| "Three objects carried each session." | "Each session used three objects: the printed teardown artifact, a printed manual and a head-mounted display." |
+| "Eligibility was open." | "Anyone could take part, with no requirement for a particular profession, prior disassembly experience or prior experience with headsets." |
+| "No tutorial preceded the AR condition." | "Participants worked out the gestures and the interface for themselves, because no tutorial was given before the AR condition." |
+| "Understanding is the primary outcome." | "The main measures ask the participant to compare the two versions directly." |
+
+⚠ **This does NOT contradict rule 10.** Rule 10 deletes paragraphs that only orient. Rule 11 governs how a
+paragraph that does carry substance opens. It does not license long openers.
+
+⚠ **Scope: Methodology.** Chapter 2's accepted blocks land on short paired contrasts and that stays.
+
+# THE FOUR VERIFICATION RULES
 
 ### A. A value the source does not print is a DERIVED value
-Caught by Thiago: "The junior group started 51 s behind and finished within seven seconds." Li's Table 1
-prints 316, 272 and 265; neither difference appears anywhere in the paper. Also caught: "an error rate of
-1 % against 10 %" where Windhausen prints ".10" and "0.01". Either print the source's own numbers and let
-the reader compare, or name the derivation. NEVER WRITE A COMPUTED VALUE IN THE GRAMMATICAL FORM OF A
-REPORTED ONE. A derived value written as a reported one is indistinguishable from a fabricated one to
-anyone checking the page. A coordinate read off a scatter plot is a derived value.
+Li's Table 1 prints 316, 272, 265; the differences appear nowhere. **Either print the source's own numbers
+or name the derivation. Never write a computed value in the grammatical form of a reported one.**
 
 ### B. Multi-measure studies, and check the baseline before naming it
-Caught by Thiago on Malta p. 7. Three faults in one sentence: the baseline was misdescribed; only one of
-two measures was reported (AR was slower to complete, 42 s against 34.5 s, and roughly twice as fast to
-locate, 4.9 s against 9.2 s); and the authors' own positive reading was omitted. Before writing any
-result, list every outcome measure the study reports. Report those bearing on the claim and any that run
-against it, or state which measure is used. Where measures diverge, the divergence is usually the better
-finding. And read a control condition's description, not its one-word label.
+Caught on Malta p. 7. **Before writing any result, list every outcome measure the study reports.** Where
+measures diverge, the divergence is usually the better finding. **Read a control condition's description,
+not its one-word label.**
 
 ### C. Never cite a review for a primary study's measurement
-Malta et al. is a systematic review. Its timing values belong to a primary study it summarises. Go to the
-primary study or drop the number. A review is citable for its own synthesis, method, funnel and verdict.
+Go to the primary study or drop the number. A review is citable for its own synthesis and verdict.
+
+### D. 🔴 Deleting a `[CITATION NEEDED]` flag does not close the gap. TWICE NOW.
+**2026-08-21:** the ISO sentence was dropped when pasting and the LCA method lost its only authority.
+**2026-08-22:** the flag was stripped from the red-beside-green sentence in 3.4.2, leaving an unsourced
+empirical claim about human colour vision.
+
+**He edits by deleting the bracket, not the claim.** So never hand over a bare flag. **Offer the flag-free
+rewrite in the same breath**, phrased so the sentence states his own design rule rather than an external
+fact:
+
+> before: "...color alone is not a reliable distinction for an operator with a red-green color vision
+> deficiency `[CITATION NEEDED]`"
+> after: "...so that no control is distinguished by color alone."
+
+**Exception that must be said out loud:** where no flag-free version exists, say so explicitly. The
+usability scale in 3.5 is a published instrument; using it unattributed is not a missing reference.
 
 # THE CHAPTER-BOUNDARY RULE
 
-A Literature Review synthesis gathers findings that are on the page. A Discussion interprets findings
-against the author's own results. The tell is citation density: a synthesis paragraph points at sources,
-a discussion paragraph points at reasoning. A causal-chain draft of 2.6 was rejected on exactly this
-ground and moved to the Discussion.
-METHODOLOGY'S OWN BOUNDARY, from the contract: if a sentence about the prototype would still be true had
-the study never run, it is description and belongs in Methodology, not Findings.
+**Methodology's own boundary:** if a sentence about the prototype would still be true had the study never
+run, it is description and belongs in Methodology, not Findings. **Methodology states, the Discussion
+defends.**
 
-# A FOURTH VERIFICATION HABIT, learned 2026-08-17
-
-CHECK THE WRITTEN DOCUMENT BEFORE TRUSTING MEMORY ABOUT ITS CONTENT. Section 3.1 was nearly drafted with
-two claims taken from the signed proposal that the written thesis contradicts (participant composition,
-and a "Stage 3 was cut" narrative that appears nowhere in the thesis). The document wins over the
-proposal, and over memory. See ch1_verbatim_facts.
+🔴 **AMENDED 2026-08-22: there is no 3.6.** The SRH template puts methodological limitations in the
+Discussion and the strengths-and-weaknesses summary in the Conclusion. The old three-way split
+(1.3 / 3.6 / Discussion) was a Claude-recorded ruling and the template outranks it.
 
 # STANDING PREFERENCES
 
-- NEVER USE THE EM DASH. Anywhere, including in replies to Thiago.
+- **Never use the em dash.** Anywhere, including in replies to Thiago.
 - Active voice by default. No inflated vocabulary. APA author-date.
-- Page numbers on every quoted number and every close paraphrase. Adopted 2026-08-16.
-- Study participants are P01, P02, never named.
-- Never cite Pegorer et al. (2025) as independent evidence.
+- **AMERICAN spelling.**
+- **Never cite a section or chapter number in running prose.** Appendices ARE cited by number.
+- **No untagged numbers.** Assumptions are welcome; unidentified numbers are not.
+- **Page numbers on every quoted number and every close paraphrase.**
+- Study participants are P01 to P05, never named. 🔴 **And never described in a way that identifies them:**
+  do not attach "was my supervisor" to a code the thesis uses elsewhere.
+- **Never cite Pegorer et al. (2025)** as independent evidence.
 - Git is manual: Claude edits, Thiago pushes from PowerShell.
 - Still open: the Oxford comma.
-- Terminology he uses and expects back: "digital model exploration" for the exploded action zone,
-  "guided disassembly mode" for the five-step flow, "ReBuilt" as the prototype name, versioned RBv2.1.1.
-- Watch for verbs that presuppose a positive result: "validate", "verify the efficiency", "improve",
-  "increase". Each was caught and reverted three times.
+- Terminology he expects back: "digital model exploration", "guided disassembly mode", "ReBuilt", RBv2.1.1.
+- **Shorter replies when discussing.** Deliverables may be long; arguments may not.
 
 # HOW HE WORKS
 
-He rejected five drafts of 2.5 and three of 2.6. Every rejection was correct. He reads the sources
-himself and checks tables. WHEN HE SAYS A PARAGRAPH IS CONFUSING, THE SENTENCE IS DEFECTIVE, NOT HIS
-READING. Diagnose the specific defect before rewriting. He wants disagreement with structure and a
-reason, not compliance. He overrules with reasons, and when the reason is genuinely new information,
-concede cleanly and say why.
+He rejected five drafts of 2.5 and three of 2.6, and every rejection was correct. He reads the sources
+himself and checks tables. **When he says a paragraph is confusing, the sentence is defective, not his
+reading.** He wants disagreement with structure and a reason, not compliance.
 
-Related: writing_phase_setup, ch3_methodology_progress, ch1_verbatim_facts, ch2_block2526_final,
-literature_review_chapter2, working_agreements
+**His editing pattern:** he keeps mechanism and reason, merges paragraphs that split one topic, and deletes
+orientation, previews and bracketed flags. Draft accordingly: fewer, denser paragraphs, ordinary openers,
+every flag paired with a flag-free alternative.
+
+⚠ **He corrects himself, sometimes more than once, and the last correction is not always right either.**
+On 2026-08-22 the condition order changed three times before he checked the notebook. **When a fact comes
+from recall, ask for the record before building anything on it.**
+
+Related: [[writing_phase_setup]], [[ch2_block2526_final]], [[methodology_start_here]],
+[[study_design_verified]], [[ch3_methodology_progress]], [[working_agreements]]
