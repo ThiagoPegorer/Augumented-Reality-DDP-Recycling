@@ -5,6 +5,10 @@ do not re-derive it.
 
 ## ⭐⭐ NEXT CHAT STARTS HERE, in this order
 
+0. [results_chapter_start_here.md](results_chapter_start_here.md) — 🔴🔴 **READ FIRST FOR
+   CHAPTER 4.** Where every number lives on disk, the template's own instructions for the
+   chapter, the three re-verifications required before writing a word, and the fact that
+   **Table 7 is already taken**
 1. [thesis-schedule.md](thesis-schedule.md) — 🔴 **READ FIRST. Chapter 3 is DRAFTED END TO END.
    Next is the Results chapter, and 23 August also carries five more participant sessions**
 2. [ch3_methodology_progress.md](ch3_methodology_progress.md) — 🔴 **THE Methodology file.** All of
