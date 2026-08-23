@@ -1,64 +1,66 @@
 # Memory index
 
-Refreshed 2026-08-22 at the close of **Session 39**. If you cannot find something, it is probably here;
-do not re-derive it.
+Refreshed 2026-08-23 at the close of **Session 40**. If you cannot find something, it is probably
+here; do not re-derive it.
 
 ## ⭐⭐ NEXT CHAT STARTS HERE, in this order
 
-0. [results_chapter_start_here.md](results_chapter_start_here.md) — 🔴🔴 **READ FIRST FOR
-   CHAPTER 4.** Where every number lives on disk, the template's own instructions for the
-   chapter, the three re-verifications required before writing a word, and the fact that
-   **Table 7 is already taken**
-1. [thesis-schedule.md](thesis-schedule.md) — 🔴 **READ FIRST. Chapter 3 is DRAFTED END TO END.
-   Next is the Results chapter, and 23 August also carries five more participant sessions**
-2. [ch3_methodology_progress.md](ch3_methodology_progress.md) — 🔴 **THE Methodology file.** All of
-   3.1 to 3.5 closed, **3.6 deleted**, seven tables, seventeen figures, seven appendices, twenty open items
-3. [study_design_verified.md](study_design_verified.md) — 🔴 **NEW.** The whole user study: the
-   corrected order table, the two blocks, the measures, the ethics, the instrument asymmetry
-4. [rbv2_1_1_ar_system_verified.md](rbv2_1_1_ar_system_verified.md) — the AR system as built, for 3.4
-5. [lca_methodology_3_3.md](lca_methodology_3_3.md) — all of 3.3 and the two supervisor rulings
-6. [voice_and_verification_rules.md](voice_and_verification_rules.md) — **READ BEFORE WRITING PROSE.
-   Eleven voice rules; 10 and 11 are new**
-7. [study_build_version_finding.md](study_build_version_finding.md) · [bosch_sources_verified.md](bosch_sources_verified.md)
-   · [ch1_verbatim_facts.md](ch1_verbatim_facts.md) · [table6_coverage_map.md](table6_coverage_map.md)
+0. [ch4_findings_progress.md](ch4_findings_progress.md) — 🔴🔴 **READ FIRST.** Section 4.1's running
+   order, what is written, the open ReCiPe decision with both halves computed, the three percentage
+   bases, the two decisions taken against advice, and **the Methodology contradiction on Sc4**
+1. [thesis-schedule.md](thesis-schedule.md) — 🔴 **Four days to submission. 4.2 and 4.3 NOT STARTED,
+   and 4.3 still has no machine-readable input.** Also: did the five participant sessions run?
+2. [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — 🔴 every LCA number for Chapter 4,
+   verified, plus the corrected reading of the "net" ruling and the deterministic-versus-median defect
+3. [results_chapter_start_here.md](results_chapter_start_here.md) — where every number lives on disk
+   ⚠ its table-numbering section is WRONG; [[ch4_findings_progress]] supersedes it
+4. [study_design_verified.md](study_design_verified.md) — the whole user study, for 4.3
+5. [voice_and_verification_rules.md](voice_and_verification_rules.md) — **READ BEFORE WRITING PROSE**
+6. [research_questions_final.md](research_questions_final.md) — 🔴 **the scenario-not-route ruling**
+7. [ch3_methodology_progress.md](ch3_methodology_progress.md) · [lca_methodology_3_3.md](lca_methodology_3_3.md)
+   · [rbv2_1_1_ar_system_verified.md](rbv2_1_1_ar_system_verified.md) — for 4.2
 
-## 🔴 NEW AND CHANGED 2026-08-22 (Session 39)
+## 🔴 NEW AND CHANGED 2026-08-23 (Session 40)
 
-- [study_design_verified.md](study_design_verified.md) — **NEW, and the most important file this session**
-- [ch3_methodology_progress.md](ch3_methodology_progress.md) · [thesis-schedule.md](thesis-schedule.md)
-  · [voice_and_verification_rules.md](voice_and_verification_rules.md) — all rewritten
+- [ch4_findings_progress.md](ch4_findings_progress.md) — **NEW. THE Chapter 4 file**
+- [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — **NEW. Every number, verified**
+- [research_questions_final.md](research_questions_final.md) · [thesis-schedule.md](thesis-schedule.md)
+  — both rewritten
 
-**Four things a future session must not re-derive:**
+**Five things a future session must not re-derive:**
 
-1. **SECTION 3.6 NO LONGER EXISTS.** The SRH template puts methodological limitations in the Discussion
-   and the strengths-and-weaknesses summary in the Conclusion. The old three-way split was a
-   Claude-recorded ruling; the template outranks it. Methodology ends at 3.5.
-2. **THE STUDY IS TWO BLOCKS.** P02 to P05 on RBv1.0 with manual v1; five more on 2026-08-23 on
-   RBv2.1.1 with manual v2. Nothing pools across them.
-3. **THE ORDER WAS NOT ALTERNATED.** Three of four met the 2D manual first, so the second-attempt
-   advantage helps the AR condition. The notebook table is in [[study_design_verified]].
-4. **VERSIONS STAY OUT OF 3.5**, on his instruction, but the 3.4 introduction already carries the
-   RBv1.0 versus RBv2.1.1 paragraph and it is good. Delete "named as RBv2.1.1" from 3.5's opener,
-   which otherwise contradicts it three pages away.
+1. 🔴 **"SCENARIO", NEVER "ROUTE"**, for the four modelled end-of-life constructs. Route survives only
+   in UI text, in a literature material route, in the 490 km transport leg, and as a verb.
+   **Never find-and-replace: three break, one of them the main research question.**
+   Full list at `MAIN PAPER/route_to_scenario_checklist.md`.
+2. 🔴 **The "net" ruling was TERMINOLOGICAL, not methodological.** The balance line is permitted.
+   The word is "balance". Gross minus avoided reproduces the old `*_net` columns exactly.
+3. ✅ **Monotonicity survives**: Sc2 avoided < Sc3 < Sc4 in all 16 EF 3.1 categories and all 18
+   ReCiPe midpoint categories. ⚠ **NOT at distribution level**, only 10 of 25 rows there.
+4. 🔴 **The deterministic value is not the central estimate.** Climate 73.4326 against a Monte Carlo
+   median of 91.33, roughly the 6th percentile. Fossils behaves the same; minerals is fine.
+5. 🔴 **3.3.3 forbids reporting Sc4 as a single value and 4.1 currently does it.** The fix is three
+   clauses; the bands are in [[ch4_findings_progress]].
 
-**Three lessons, all durable:**
+**Two lessons, both durable:**
 
-1. **Check what a block actually is before recording it.** 3.5 sat marked unwritable for five days over
-   items that were results, not method, while the design sat on disk.
-2. **When a fact comes from recall, ask for the record.** The condition order changed three times
-   before the notebook was opened, and two full analyses were built and discarded.
-3. **A stale spec loses to the code.** `04e_rail_gate.md` §1 and §2 and the gesture table's hover
-   outline are all superseded by `SuperPanelView.cs` and `HoverHighlight.cs`.
+1. **Read the document, never assert a table or figure number from memory.** A numbering note goes
+   stale the moment anything is inserted, and one cost him a needless correction.
+2. **Deliver every table as .xlsx, never as pasted text.** Excel turned `72.45` into `72.452.384` on
+   his first paste, corrupting 8 of 16 share values and all 16 cumulative values.
 
-## 🔴 CARRIED FROM SESSION 38, still binding
+## 🔴 CARRIED FORWARD, still binding
 
-1. **The term "net" is ABOLISHED. "Gross" stays.** ⚠ The framework's FINAL RESULTS table is headed
-   "Sc2 net / Sc3 net / Sc4 net" and **the core robustness claim is net-based** — it must move onto the
-   SAVING column and **monotonicity must be re-verified there before Results.**
-2. **ReCiPe 2016 Endpoint is DROPPED everywhere.**
-3. **The database view verifies; the log reports intent.**
-4. **A precedent can be an omission.** Peitzmeier et al. (2025) did not run an LCA.
-5. **Deleting a `[CITATION NEEDED]` flag does not close the gap.** Twice now.
+- **ReCiPe is a CHARACTERISATION cross-check only.** Never a second prioritisation. The two methods
+  select disjoint reporting sets and mineral scarcity lands at 0.0005 % under ReCiPe normalisation.
+- **ReCiPe 2016 Endpoint is DROPPED everywhere.**
+- **The database view verifies; the log reports intent.**
+- **A precedent can be an omission.** Peitzmeier et al. (2025) did not run an LCA.
+- **Deleting a `[CITATION NEEDED]` flag does not close the gap.**
+- **He drops details when pasting.** Four times this week. Hand him citations inline in the sentence.
+- **SECTION 3.6 NO LONGER EXISTS.** Methodology ends at 3.5.
+- **THE STUDY IS TWO BLOCKS** and nothing pools across them.
+- **Participants are P01 to P05 only.** Never a name.
 
 ## 🔴 STILL CURRENT
 
@@ -70,16 +72,15 @@ do not re-derive it.
   · [elv_regulation_partC_finding.md](elv_regulation_partC_finding.md)
 - [literature_review_chapter2.md](literature_review_chapter2.md) · [ch2_block2526_final.md](ch2_block2526_final.md)
   · [lca_method_sources.md](lca_method_sources.md) · [writing_phase_setup.md](writing_phase_setup.md)
-- ⚠ [dpp_payload_verified.md](dpp_payload_verified.md) — **SUPERSEDED on one point.** Quote
-  `schema_version` **0.13**, not 0.19
+- ⚠ [dpp_payload_verified.md](dpp_payload_verified.md) — quote `schema_version` **0.13**, not 0.19
 
 ## ⭐ Start here for the project itself
 
-- [rbv2-1-1-handoff.md](rbv2-1-1-handoff.md) — ⚠ **superseded on the world anchor and the tabs**
 - [working_agreements.md](working_agreements.md) — Zero-trust [P]/[M]/[A]/[X], manual Git
 - [user_role.md](user_role.md) — Solo hands-on builder across Unity/C#, FastAPI, Creo, Git
+- [rbv2-1-1-handoff.md](rbv2-1-1-handoff.md) — ⚠ superseded on the world anchor and the tabs
 
-## The prototype
+## The prototype, for section 4.2
 
 - [rbv2_1_1_ar_system_verified.md](rbv2_1_1_ar_system_verified.md) — 🔴 **THE verified record**
 - [rb2_1_dpp_page.md](rb2_1_dpp_page.md) — ⚠ superseded on the four tabs
@@ -96,44 +97,46 @@ do not re-derive it.
   · [pinch_gesture_implementation.md](pinch_gesture_implementation.md) · [gesture_ux_polish.md](gesture_ux_polish.md)
   · [render_quality_config.md](render_quality_config.md)
 
-## The user study
+## The user study and the results
 
-- 🔴 [study_design_verified.md](study_design_verified.md) — **the method, the order, the two blocks**
-- [study_build_version_finding.md](study_build_version_finding.md) — participants used RBv1.0
+- 🔴 [ch4_findings_progress.md](ch4_findings_progress.md) · [lca_results_verified_ch4.md](lca_results_verified_ch4.md)
+- 🔴 [study_design_verified.md](study_design_verified.md) — the method, the order, the two blocks
+- [results_chapter_start_here.md](results_chapter_start_here.md) (⚠ numbering section is stale)
+  · [study_build_version_finding.md](study_build_version_finding.md)
 
 ## Data and schema
 
-- [table6_coverage_map.md](table6_coverage_map.md) · [dpp_payload_verified.md](dpp_payload_verified.md) (⚠ see above)
+- [table6_coverage_map.md](table6_coverage_map.md) · [dpp_payload_verified.md](dpp_payload_verified.md)
   · [cirpass_d22_table6.md](cirpass_d22_table6.md) · [cirpass_d21_requirements.md](cirpass_d21_requirements.md)
   · [annex_vi_schema_gap.md](annex_vi_schema_gap.md) · [dpp_payload_v07_bom_reconciliation.md](dpp_payload_v07_bom_reconciliation.md)
   · [backend_state.md](backend_state.md) · [repo_architecture.md](repo_architecture.md)
-  · [github_repo_setup.md](github_repo_setup.md)
-- [dpp_data_model_cirpass.md](dpp_data_model_cirpass.md) — ⚠ superseded on Table 6's nature
+  · [github_repo_setup.md](github_repo_setup.md) · [dpp_data_model_cirpass.md](dpp_data_model_cirpass.md) (⚠ superseded)
 
 ## LCA and sustainability
 
-- 🔴 [lca_methodology_3_3.md](lca_methodology_3_3.md) — the written section and what the export corrected
+- 🔴 [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — the verified results
+- 🔴 [lca_methodology_3_3.md](lca_methodology_3_3.md) — the written section and the two rulings
 - [lca_scope_verified.md](lca_scope_verified.md) · [lca_findings_for_writing.md](lca_findings_for_writing.md)
   · [lca_scenario_source_audit.md](lca_scenario_source_audit.md) · [lca_v4_build_state.md](lca_v4_build_state.md)
   · [lca_method_sources.md](lca_method_sources.md) · [sustainability_scope.md](sustainability_scope.md)
   · [co2_scenarios.md](co2_scenarios.md) · [openlca_setup.md](openlca_setup.md)
 
-⚠ **The bill of materials is `LCA_Analysis/Docs/BOM_v4.md`, v4.1, 2026-07-24.** ⚠ Its header cites data
-sheet **245099915**, which is only the filename. The document number is **234686731**.
-
-🔴 **The APOS disclosure is supervisor-agreed (2026-07-02) and "declared throughout"**, per
-`LCA_framework_v4.md` lines 45 to 51. Agreed three-sentence wording is in [[ch3_methodology_progress]].
+⚠ **The bill of materials is `LCA_Analysis/Docs/BOM_v4.md`, v4.1.** Its header cites data sheet
+**245099915**, which is only the filename. The document number is **234686731**.
+⚠ `Outputs/2_eol_scenarios/contribuition_tree.xlsx` is **EMPTY**, one sheet, dimensions A1:A1.
+⚠ `LCA_explorer.ipynb`: cell 10's title is wrong, cell 14 is built on "net" and has an em dash,
+cell 32's `red_pct` computes a basis the thesis does not report. **Delete cells 14, 32, 35, 36.**
 
 ## Writing the thesis
 
-- [ch3_methodology_progress.md](ch3_methodology_progress.md) · [voice_and_verification_rules.md](voice_and_verification_rules.md)
-  · [lca_methodology_3_3.md](lca_methodology_3_3.md) · [ch1_verbatim_facts.md](ch1_verbatim_facts.md)
-  · [writing_phase_setup.md](writing_phase_setup.md) · [literature_review_chapter2.md](literature_review_chapter2.md)
-  · [ch2_block2526_final.md](ch2_block2526_final.md) · [ch2_block24_dpp_final.md](ch2_block24_dpp_final.md) (⚠ Adisorn is p. 9)
+- [ch4_findings_progress.md](ch4_findings_progress.md) · [ch3_methodology_progress.md](ch3_methodology_progress.md)
+  · [voice_and_verification_rules.md](voice_and_verification_rules.md) · [research_questions_final.md](research_questions_final.md)
+  · [ch1_verbatim_facts.md](ch1_verbatim_facts.md) · [writing_phase_setup.md](writing_phase_setup.md)
+  · [literature_review_chapter2.md](literature_review_chapter2.md) · [ch2_block2526_final.md](ch2_block2526_final.md)
+  · [ch2_block24_dpp_final.md](ch2_block24_dpp_final.md) (⚠ Adisorn is p. 9)
   · [ch2_block25_ar_sources.md](ch2_block25_ar_sources.md) (⚠ six wrong pages)
   · [ch2_block25_structure_rule.md](ch2_block25_structure_rule.md) · [ch2_evidence_block22.md](ch2_evidence_block22.md)
-  · [introduction_progress.md](introduction_progress.md) · [research_questions_final.md](research_questions_final.md)
-  · [methodology_start_here.md](methodology_start_here.md)
+  · [introduction_progress.md](introduction_progress.md) · [methodology_start_here.md](methodology_start_here.md)
 
 ## Literature and law
 
@@ -144,7 +147,7 @@ sheet **245099915**, which is only the filename. The document number is **234686
 - [literature.md](literature.md) — ⚠ **Index stale since 2026-08-16**
 
 ⚠ **Huijbregts et al. (2017) IS present** in `export.bib`. **ISO 14040/14044 are NOT on disk** — use
-Pokhrel et al. (2020), p. 2.
+Pokhrel et al. (2020), p. 2. ⚠ **Recommendation (EU) 2021/2279 is NOT on disk** — download it.
 
 ## Process, tools and rules
 
@@ -153,6 +156,8 @@ Pokhrel et al. (2020), p. 2.
 - [git_workflow.md](git_workflow.md) · [notion_workspace.md](notion_workspace.md)
   · [session_history_and_pace.md](session_history_and_pace.md)
 
+⚠ **Google Calendar still returns ZERO events** (fourth consecutive wake-up, 2026-08-23).
+
 ## Identity
 
 - [thesis_identity.md](thesis_identity.md) · [conference_talk_nextappcon.md](conference_talk_nextappcon.md)
@@ -160,8 +165,8 @@ Pokhrel et al. (2020), p. 2.
 ## ⚠ Stale or superseded
 
 - [thesis_schedule.md](thesis_schedule.md) — SUPERSEDED by `thesis-schedule.md`. Delete
-- [rb2_1_dpp_page.md](rb2_1_dpp_page.md) · [rbv2-1-1-handoff.md](rbv2-1-1-handoff.md) — superseded by
-  [[rbv2_1_1_ar_system_verified]] on the tabs and the world anchor
+- [results_chapter_start_here.md](results_chapter_start_here.md) — table numbering section is wrong
+- [rb2_1_dpp_page.md](rb2_1_dpp_page.md) · [rbv2-1-1-handoff.md](rbv2-1-1-handoff.md)
 - [dpp_payload_verified.md](dpp_payload_verified.md) · [registered_research_design.md](registered_research_design.md)
   · [dpp_data_model_cirpass.md](dpp_data_model_cirpass.md) · [ch2_block25_ar_sources.md](ch2_block25_ar_sources.md)
   · [unity_next_steps.md](unity_next_steps.md) · [openlca_setup.md](openlca_setup.md)

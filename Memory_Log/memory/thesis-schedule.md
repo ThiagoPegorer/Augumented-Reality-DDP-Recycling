@@ -1,102 +1,95 @@
 ---
 name: thesis-schedule
-description: Live thesis state, refreshed at the close of Session 39 (2026-08-22). CHAPTER 3 IS DRAFTED END TO END. 3.4 and 3.5 closed today, and 3.6 was deleted from Methodology because the SRH template puts methodological limitations in the Discussion. Next is the Results chapter. Five more participants run on 23 August on RBv2.1.1, which is also the first Results day.
+description: Live thesis state, refreshed at the close of Session 40 (2026-08-23). Section 4.1 LCA Results is written through the Monte Carlo block; only the ReCiPe cross-check remains. 4.2 and 4.3 have not been started, and 4.3's input data is still not machine-readable. Four days to submission.
 type: project
 ---
 
-# 🟢 WHERE THINGS STAND, close of Session 39
+# 🟢 WHERE THINGS STAND, close of Session 40
 
-**Chapter 3 is drafted end to end.** Session 39 closed 3.4 (intro, 3.4.1, 3.4.2, 3.4.3) and 3.5
-(purpose and conditions, the manual, the questionnaire), built five Miro figures, delivered three
-appendix documents, and removed 3.6 from the chapter entirely.
+**Section 4.1 is written from the chapter opener through the Monte Carlo block.** Nine paragraphs
+accepted, Tables 7, 8 and 9 and Figures 18, 19 and 20 placed, Figure 21 (the balance chart) built as
+a tested notebook cell, Figure 22 (Monte Carlo) supplied by him, one appendix table delivered.
+The section was also rewritten end to end for continuity, since it read as disconnected blocks.
 
-**3.5 was never actually blocked.** The block recorded since 2026-08-17 listed "the manual-condition
-timings, the study design, the interface feedback and the participant backgrounds". Three of those
-four are RESULTS. The design had been on disk in `AR_DPP/Docs/` since 2026-07-21. That was a category
-error costing five days of a section sitting marked unwritable. **Check what a block actually is
-before recording it.**
+**Only the ReCiPe cross-check is left in 4.1**, and the decision on it is open. See
+[[ch4_findings_progress]].
 
-# 🔴 THE PLAN
+# 🔴 THE PLAN, four days left
 
 | day | task | notes |
 |---|---|---|
-| **Wed 19 Aug** | Write Methodology | ✅ 3.1, 3.2, 3.2.1 |
-| **Thu 20 Aug** | Methodology 3.2.2, 3.2.3 | ✅ closed |
-| **Fri 21 Aug** | Methodology 3.3 | ✅ closed in full |
-| **Sat 22 Aug** | Methodology 3.4, 3.5, 3.6 | ✅ **3.4 and 3.5 closed. 3.6 moved to the Discussion** |
-| **Sun 23 Aug** | Write Results chapter | 🔴 **also carries five more participant sessions** |
-| **Mon 24 Aug** | Write Results chapter | |
-| **Tue 25 Aug** | Discussion + Conclusion + Abstract | 🔴 **now also carries the limitations section moved out of 3.6** |
-| **Wed 26 Aug** | Compile all chapters and formatting | the only day for the backlog |
+| **Sun 23 Aug** | Results chapter | ✅ **4.1 written through Monte Carlo.** ⚠ five participant sessions were scheduled for today and he **never mentioned running them** |
+| **Mon 24 Aug** | Results chapter | 🔴 **ReCiPe block, then ALL of 4.2 and ALL of 4.3.** This is the heaviest day of the week |
+| **Tue 25 Aug** | Discussion + Conclusion + Abstract | 🔴 also carries the limitations section moved out of 3.6 |
+| **Wed 26 Aug** | Compile and formatting | the only day for the backlog |
 | **Thu 27 Aug** | 📦 Final submission | hard deadline 2 Sep 16:00 |
 | **Sat 19 Sep** | 🎓 Defence | target before 15 Sep |
 
 **Do not re-litigate the schedule.** Record the position; he decides what gives.
 
-# 🔴 TOMORROW, 23 August: five more participants, and it is also Results day one
+# 🔴🔴 THE SINGLE MOST AT-RISK ITEM
 
-- **Build: RBv2.1.1**, not the RBv1.0 that P02 to P05 used. Thiago's explicit decision.
-- **Manual: v2**, tables removed, step names matched to RBv2.1.1. Delivered today.
-- So the study is **two blocks** and nothing pools across them without saying so. See
-  [[study_design_verified]].
-- **Standing recommendation, given twice, not yet answered: run all five AR-first.** The first block
-  ran three of four manual-first, so the second-attempt advantage currently helps the AR condition.
-  Five AR-first sessions take the split from 3:1 to 3:6 and tilt the residue conservatively.
+**Section 4.3 has no machine-readable input and one day to be written.** The manual-condition times,
+the error counts and the interview notes exist only in his paper notebook. The Google Forms responses
+have never been exported. Claude cannot write one sentence of 4.3 until both land on disk.
 
-# Chapters
+⚠ **Whether the five block-2 participant sessions ran on 23 August is UNCONFIRMED.** He decided that
+morning to run all five **AR-first** (taking the manual-first split from 3:1 to 3:6), and then spent
+the day writing. **Ask first thing next session.** If they did not run, the two-block design and every
+comparison in 4.3 change shape.
+
+# ✅ CHAPTERS
 
 | chapter | state |
 |---|---|
-| 1 Introduction | CLOSED. ⚠ **Live defect: "The teardown model reproduces the geometry"** (it does not; 200x150x60 against 166x121x41) |
+| 1 Introduction | CLOSED. ⚠ live defect: "The teardown model reproduces the geometry" (200x150x60 against 166x121x41) |
 | 2 Literature Review | CLOSED 2026-08-17 |
-| 3 Methodology | ✅ **DRAFTED END TO END.** opener ⚠ three defects · 3.1 to 3.5 closed · 3.6 deleted. See [[ch3_methodology_progress]] |
-| 4 Findings | **NEXT.** ⚠ Its headline table is built on "net", which the supervisor abolished. Re-verify monotonicity on the SAVING column |
-| 5 Discussion | 🔴 **Now also owns the limitations section**, drafted today. Plus the six defect items and the disjoint-reporting-set finding |
-| 6 Conclusion | Template asks for a brief strengths-and-weaknesses-against-findings summary |
-| Appendix I to IV | NX drawings · CIRPASS Table 6 · bill of materials · LCA inventory |
-| **Appendix V** | **2D manual v2. Delivered 2026-08-22** |
-| **Appendix VI** | **Participant consent form.** On disk at `AR_DPP/Docs/` |
-| **Appendix VII** | **User study questionnaire. Delivered 2026-08-22** |
+| 3 Methodology | DRAFTED END TO END. 🔴 **3.3.3 says Sc4 "may be reported only as a band and never as a single value" and 4.1 currently reports it as single values.** See [[ch4_findings_progress]] |
+| **4 Results** | 🔴 **4.1 nearly closed. 4.2 and 4.3 NOT STARTED** |
+| 5 Discussion | owns the limitations section, the six defect items, and now three ReCiPe explanations if the ranking is published |
+| 6 Conclusion | brief strengths-and-weaknesses-against-findings summary |
+| Appendix I to VII | NX drawings · CIRPASS Table 6 · BOM · LCA inventory · manual v2 · consent form · questionnaire |
+| **Appendix VIII** | **NEW. Monte Carlo percentile summary**, delivered as .xlsx |
 
-⚠ **LIST OF EQUATIONS must be KEPT.** 3.3.2 carries Equation 1.
+# 🔴 COMPILE-DAY BACKLOG, the items that change text
+
+1. **Sc4 band clauses** in 4.1, or 3.3.3 and 4.1 contradict each other.
+2. **"route" to "scenario"**, 25 paragraphs. List at `MAIN PAPER/route_to_scenario_checklist.md`.
+   ⚠ **Never find-and-replace.** Three break, one of them the main research question.
+3. **Table 8 caption** does not say gross. **Table 9 caption** still says "route" and owes its
+   derivation note. **Table 8 needs seven significant figures** to match Figure 21.
+4. **LIST OF TABLES and LIST OF FIGURES are stale.** Refresh fields.
+5. ⚠ **The 3.5 measures table has no caption in the body.** Captions jump Table 6 to Table 7.
+6. The Methodology opener: false sentence, "four stages" collision, missing verb.
+7. Chapter 1: "reproduces the geometry".
+8. Delete "named as RBv2.1.1" from 3.5's opening sentence.
+9. Delete the SRH template boilerplate still live under FINDINGS, DISCUSSION and CONCLUSION.
+10. Where the counterbalancing deviation lives. Currently nowhere.
+11. **The usability scale citation and its benchmark.** Still the one gap with no flag-free alternative.
+12. Email Saman Ghobadian for written agreement on the 2026-08-13 research-question changes.
+
+# ✅ CITATIONS CLOSED THIS SESSION
+
+- **Andreasi Bassi et al. (2023), EUR 31414 EN, printed p. 5** for the sixteen categories and the
+  definitions of normalisation and weighting. Verified first-hand.
+- **Commission Recommendation (EU) 2021/2279, Annex I, 6.3.1**, OJ page L 471/223, for the ≥80 %
+  most relevant categories rule. ⚠ **Not yet on disk.** Download it into LITERATURE.
 
 # Google Calendar
 
-⚠ The connector returned zero events on 08-17, 08-18 and 08-19 and was not re-tested since. **The
-Notion Task Tracker is the schedule of record.** Re-test once each wake-up, do not investigate.
-
-**Notion query traps.** One row per working day per task, so query ALL statuses. Column names in SQL
-are `date:<Prop>:start`, never `"Date"`.
-
-# Fixed dates
-
-**27 August** submission · **2 September 16:00** hard deadline · defence target before **15 September**.
-
-# 🔴 THE COMPILE-DAY BACKLOG
-
-The full list lives in [[ch3_methodology_progress]] under OPEN ITEMS, twenty entries. The ones that
-change text rather than files:
-
-1. The Methodology opener: false sentence, "four stages" collision, missing verb.
-2. Chapter 1: "reproduces the geometry".
-3. Delete "named as RBv2.1.1" from the 3.5 opening sentence, which contradicts 3.4 three pages away.
-4. The usability scale citation and its benchmark. **The one gap with no flag-free alternative.**
-5. Where the counterbalancing deviation lives. Currently nowhere.
-6. What Table 4 is.
-7. Delete the SRH template boilerplate still live in the .docx.
-8. The 3.3.3 ReCiPe 2010 reword; the five 3.3 citations still open.
+⚠ Returned zero events again on 2026-08-23, the fourth consecutive wake-up. **The Notion Task
+Tracker is the schedule of record.** Re-test once each wake-up, do not investigate.
 
 # Notion session log
 
-Latest row: **Session 39 (2026-08-22)**. The next session is **40**. Still UNLOGGED: the 2026-08-02/03
-backfill.
+Latest row: **Session 40 (2026-08-23)**. The next session is **41**. Still UNLOGGED: the
+2026-08-02/03 backfill.
 
 # Diagram channel
 
-**Miro is the standard channel.** Board "Master Thesis" (`uXjVGpjOAoU`). One frame per figure.
-⚠ Tell him to zoom in before exporting; Miro exports at the current zoom.
-⚠ Delete superseded frames: two old Figure 12s, and four landscape Figures 14 to 17.
-⚠ Captions on Figures 8 to 12 must say **Appendix IV**, not III.
+**Miro** for diagrams, **the LCA_explorer notebook** for data charts. Board "Master Thesis"
+(`uXjVGpjOAoU`). ⚠ Delete superseded frames: two old Figure 12s, four landscape Figures 14 to 17.
+⚠ Captions on Figures 8 to 12 must say Appendix IV.
 
 # Run-order trap (durable)
 
@@ -104,6 +97,6 @@ Teardown builders (menu 05/06) bind `FindFirstObjectByType<DisassemblyAnimator>`
 layer-hide. Never run while the stage clone exists. Rig rebuild is always 09 → 10 → 11 → 12 → 13 → 14
 → Verify → save.
 
-Related: [[ch3_methodology_progress]], [[study_design_verified]], [[rbv2_1_1_ar_system_verified]],
-[[lca_methodology_3_3]], [[study_build_version_finding]], [[voice_and_verification_rules]],
-[[bosch_sources_verified]], [[session_logging_routine]]
+Related: [[ch4_findings_progress]], [[lca_results_verified_ch4]], [[results_chapter_start_here]],
+[[study_design_verified]], [[research_questions_final]], [[voice_and_verification_rules]],
+[[lca_methodology_3_3]], [[session_logging_routine]]
