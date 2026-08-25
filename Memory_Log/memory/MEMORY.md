@@ -1,66 +1,104 @@
 # Memory index
 
-Refreshed 2026-08-23 at the close of **Session 40**. If you cannot find something, it is probably
+Refreshed 2026-08-25 at the close of **Session 42**. If you cannot find something, it is probably
 here; do not re-derive it.
+
+## 🔴🔴 WHERE FILES GO. Read this before writing anything to his disk.
+
+**[file_placement_rule.md](file_placement_rule.md) — his ruling 2026-08-25.**
+
+`MAIN PAPER` holds exactly three things: the `.docx`, `ai_use_log.md`, and `IMGS\` (flat, no
+subfolders, figures named and placed by him). **EVERY other file Claude produces goes to
+`C:\Claude\Projects\AR_DPP\Memory_Log\memory\`** — workbooks, notebooks, drafts, scaffolds, review
+documents, cells, the memory mirror, all of it.
+
+⚠ **Any older memory note giving a path like `MAIN PAPER/<working file>` is WRONG.** Those files are
+all in `Memory_Log\memory\`. On 2026-08-25 twenty-four files were committed into MAIN PAPER unasked
+and he had to move all of them. **Ask before committing anywhere new.**
 
 ## ⭐⭐ NEXT CHAT STARTS HERE, in this order
 
-0. [ch4_findings_progress.md](ch4_findings_progress.md) — 🔴🔴 **READ FIRST.** Section 4.1's running
-   order, what is written, the open ReCiPe decision with both halves computed, the three percentage
-   bases, the two decisions taken against advice, and **the Methodology contradiction on Sc4**
-1. [thesis-schedule.md](thesis-schedule.md) — 🔴 **Four days to submission. 4.2 and 4.3 NOT STARTED,
-   and 4.3 still has no machine-readable input.** Also: did the five participant sessions run?
-2. [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — 🔴 every LCA number for Chapter 4,
-   verified, plus the corrected reading of the "net" ruling and the deterministic-versus-median defect
-3. [results_chapter_start_here.md](results_chapter_start_here.md) — where every number lives on disk
-   ⚠ its table-numbering section is WRONG; [[ch4_findings_progress]] supersedes it
-4. [study_design_verified.md](study_design_verified.md) — the whole user study, for 4.3
-5. [voice_and_verification_rules.md](voice_and_verification_rules.md) — **READ BEFORE WRITING PROSE**
-6. [research_questions_final.md](research_questions_final.md) — 🔴 **the scenario-not-route ruling**
-7. [ch3_methodology_progress.md](ch3_methodology_progress.md) · [lca_methodology_3_3.md](lca_methodology_3_3.md)
-   · [rbv2_1_1_ar_system_verified.md](rbv2_1_1_ar_system_verified.md) — for 4.2
+**Tomorrow is the Discussion (morning) and the Conclusion (afternoon), then Abstract, Foreword and
+Acknowledgements. Chapter 4 is CLOSED.**
 
-## 🔴 NEW AND CHANGED 2026-08-23 (Session 40)
+1. [thesis-schedule.md](thesis-schedule.md) — 🔴 **READ FIRST. Submission moved to Monday 31 August.**
+   The paste queue, the compile backlog, the three most at-risk items
+2. [ch4_findings_progress.md](ch4_findings_progress.md) — 🔴 what Chapter 4 now contains, what is
+   still unpasted, **the affidavit denoting exposure**, and the six arguments Results hands to the
+   Discussion
+3. [study_results_verified.md](study_results_verified.md) — 🔴 **NEW. THE user-study file.** Every
+   number in 4.3, the three response scales, the condition order, the audit chain, three
+   discrepancies against the study spec
+4. [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — every LCA number, verified
+5. [recipe_cross_check_verified.md](recipe_cross_check_verified.md) — the whole ReCiPe block
+6. [voice_and_verification_rules.md](voice_and_verification_rules.md) — **READ BEFORE WRITING PROSE**
+7. [research_questions_final.md](research_questions_final.md) — 🔴 **the scenario-not-route ruling**
 
-- [ch4_findings_progress.md](ch4_findings_progress.md) — **NEW. THE Chapter 4 file**
-- [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — **NEW. Every number, verified**
-- [research_questions_final.md](research_questions_final.md) · [thesis-schedule.md](thesis-schedule.md)
-  — both rewritten
+## 🔴 NEW AND CHANGED 2026-08-25 (Session 42)
 
-**Five things a future session must not re-derive:**
+- [study_results_verified.md](study_results_verified.md) — **NEW. THE 4.3 file**
+- [file_placement_rule.md](file_placement_rule.md) — **NEW. Where every file goes, and the figure
+  names he chose himself**
+- [ch4_findings_progress.md](ch4_findings_progress.md) · [thesis-schedule.md](thesis-schedule.md) —
+  both rewritten
 
-1. 🔴 **"SCENARIO", NEVER "ROUTE"**, for the four modelled end-of-life constructs. Route survives only
-   in UI text, in a literature material route, in the 490 km transport leg, and as a verb.
-   **Never find-and-replace: three break, one of them the main research question.**
-   Full list at `MAIN PAPER/route_to_scenario_checklist.md`.
-2. 🔴 **The "net" ruling was TERMINOLOGICAL, not methodological.** The balance line is permitted.
-   The word is "balance". Gross minus avoided reproduces the old `*_net` columns exactly.
-3. ✅ **Monotonicity survives**: Sc2 avoided < Sc3 < Sc4 in all 16 EF 3.1 categories and all 18
-   ReCiPe midpoint categories. ⚠ **NOT at distribution level**, only 10 of 25 rows there.
-4. 🔴 **The deterministic value is not the central estimate.** Climate 73.4326 against a Monte Carlo
-   median of 91.33, roughly the 6th percentile. Fossils behaves the same; minerals is fine.
-5. 🔴 **3.3.3 forbids reporting Sc4 as a single value and 4.1 currently does it.** The fix is three
-   clauses; the bands are in [[ch4_findings_progress]].
+**Eight things a future session must not re-derive:**
 
-**Two lessons, both durable:**
+1. 🔴🔴 **THE AFFIDAVIT EXPOSURE, now across all of Chapter 4.** Claude's sentences are pasted
+   verbatim in 4.1 and 4.2 and 4.3 were delivered as prose. SRH requires AI phrasing **denoted in
+   the core text**. **Default back to scaffold unless he asks for prose**, and say so when he does.
+2. 🔴 **MAIN PAPER IS NOT A WORKING FOLDER.** See the block at the top.
+3. 🔴 **THE THREE RESPONSE SCALES ARE SETTLED.** Background 1 never used to 5 expert, **middle
+   points unlabelled on the form**; questionnaire 1 disagree to 5 agree; comparative **1 the
+   two-dimensional manual to 5 the Augmented Reality model.** Corroborated by the Session 12 Notion
+   page dated 2026-07-21.
+4. 🔴 **NEVER INVENT SCALE LABELS.** Three middle labels for the background scale were invented as
+   placeholders and had to be removed. Blank is honest; invented wording states an instrument that
+   was never run.
+5. 🔴 **COMPLETION TIME IS THE SUM OF THE FIVE STEP VALUES IN BOTH CONDITIONS.** Never the
+   application's `elapsed_s` for one side. Mixing them produced a stale median of +15.5.
+6. 🔴 **THE ORDER EFFECT.** Five of eight were faster in their second condition, and the headset was
+   the slower run for three of four who ran it first against two of four who ran it second. Counts
+   in Results, reading in the Discussion.
+7. 🔴 **A RECONCILIATION THAT RERUNS THE SAME CODE PROVES NOTHING.** The usability audit passed
+   while a wrong polarity column would also have passed. The fix was to test the inversion itself:
+   a flat answer of any value must score exactly 50.0.
+8. ✅ **The screening paragraph's citations were never missing.** Mendeley field citations are
+   invisible to python-docx. **Never conclude a citation is absent from a python-docx read.**
 
-1. **Read the document, never assert a table or figure number from memory.** A numbering note goes
-   stale the moment anything is inserted, and one cost him a needless correction.
-2. **Deliver every table as .xlsx, never as pasted text.** Excel turned `72.45` into `72.452.384` on
-   his first paste, corrupting 8 of 16 share values and all 16 cumulative values.
+**Five lessons, all durable:**
+
+1. **Read the document, never assert a table or figure number from memory.**
+2. **Deliver every table as .xlsx, never as pasted text.**
+3. **Check the .docx XML for `MENDELEY_CITATION_v3_` before claiming a citation gap.**
+4. **Raw data in the workbook, every derived value in the notebook.** Notes go in column B.
+5. **Every table must be auditable**, which means recomputed from the raw by a second route, not
+   printed twice.
 
 ## 🔴 CARRIED FORWARD, still binding
 
-- **ReCiPe is a CHARACTERISATION cross-check only.** Never a second prioritisation. The two methods
-  select disjoint reporting sets and mineral scarcity lands at 0.0005 % under ReCiPe normalisation.
+- **ReCiPe is a CHARACTERISATION cross-check**, built on **RATIOS AGAINST Sc2**, never Sc1-relative
+  percentages. The one normalised ranking is published to show method dependence.
 - **ReCiPe 2016 Endpoint is DROPPED everywhere.**
+- 🔴 **"The pairs that agree are exactly those sharing a unit" is FALSE** across all 15 pairs.
+- 🔴 **The Sc3 and Sc4 avoided intervals OVERLAP in freshwater eutrophication.** The only place the
+  simulation fails to separate two scenarios.
+- 🔴 **The deterministic GROSS value is not the central estimate.** False for the credits.
 - **The database view verifies; the log reports intent.**
 - **A precedent can be an omission.** Peitzmeier et al. (2025) did not run an LCA.
 - **Deleting a `[CITATION NEEDED]` flag does not close the gap.**
-- **He drops details when pasting.** Four times this week. Hand him citations inline in the sentence.
+- **He drops details when pasting.** Hand him citations inline in the sentence.
 - **SECTION 3.6 NO LONGER EXISTS.** Methodology ends at 3.5.
-- **THE STUDY IS TWO BLOCKS** and nothing pools across them.
-- **Participants are P01 to P05 only.** Never a name.
+- 🔴 **Participants are P01 to P09.** Never a name.
+- 🔴 **DO NOT MAKE THE TWO-BUILD DIFFERENCE EXPLICIT ANYWHERE.** His words: *"FOR THE LAST TIME, I
+  dont want to explicit this difference."* Nothing from the session-report fields except the step
+  count reaches 4.3.
+- 🔴 **THE INTERVIEW ANSWERS ARE HIS WORDS, NOT THE PARTICIPANTS'.** Counts for shared themes,
+  named participants for individual observations, **never inside quotation marks.**
+- 🔴 **"SCENARIO", NEVER "ROUTE"** for the four modelled constructs. **Never find-and-replace.**
+- 🔴 **The balance line is permitted.** The word is "balance".
+- **Never run git; give him the command.** **Never create Task Tracker rows without asking.**
+- **Never cite a section or chapter number in running prose.** Appendices ARE cited by number.
 
 ## 🔴 STILL CURRENT
 
@@ -77,6 +115,7 @@ here; do not re-derive it.
 ## ⭐ Start here for the project itself
 
 - [working_agreements.md](working_agreements.md) — Zero-trust [P]/[M]/[A]/[X], manual Git
+- [file_placement_rule.md](file_placement_rule.md) — 🔴 where every file goes
 - [user_role.md](user_role.md) — Solo hands-on builder across Unity/C#, FastAPI, Creo, Git
 - [rbv2-1-1-handoff.md](rbv2-1-1-handoff.md) — ⚠ superseded on the world anchor and the tabs
 
@@ -99,8 +138,10 @@ here; do not re-derive it.
 
 ## The user study and the results
 
-- 🔴 [ch4_findings_progress.md](ch4_findings_progress.md) · [lca_results_verified_ch4.md](lca_results_verified_ch4.md)
-- 🔴 [study_design_verified.md](study_design_verified.md) — the method, the order, the two blocks
+- 🔴 [study_results_verified.md](study_results_verified.md) — **THE 4.3 file**
+- 🔴 [ch4_findings_progress.md](ch4_findings_progress.md) · [recipe_cross_check_verified.md](recipe_cross_check_verified.md)
+  · [lca_results_verified_ch4.md](lca_results_verified_ch4.md)
+- 🔴 [study_design_verified.md](study_design_verified.md) — the method and the order as designed
 - [results_chapter_start_here.md](results_chapter_start_here.md) (⚠ numbering section is stale)
   · [study_build_version_finding.md](study_build_version_finding.md)
 
@@ -114,18 +155,19 @@ here; do not re-derive it.
 
 ## LCA and sustainability
 
-- 🔴 [lca_results_verified_ch4.md](lca_results_verified_ch4.md) — the verified results
+- 🔴 [lca_results_verified_ch4.md](lca_results_verified_ch4.md) · [recipe_cross_check_verified.md](recipe_cross_check_verified.md)
 - 🔴 [lca_methodology_3_3.md](lca_methodology_3_3.md) — the written section and the two rulings
 - [lca_scope_verified.md](lca_scope_verified.md) · [lca_findings_for_writing.md](lca_findings_for_writing.md)
   · [lca_scenario_source_audit.md](lca_scenario_source_audit.md) · [lca_v4_build_state.md](lca_v4_build_state.md)
   · [lca_method_sources.md](lca_method_sources.md) · [sustainability_scope.md](sustainability_scope.md)
   · [co2_scenarios.md](co2_scenarios.md) · [openlca_setup.md](openlca_setup.md)
 
-⚠ **The bill of materials is `LCA_Analysis/Docs/BOM_v4.md`, v4.1.** Its header cites data sheet
-**245099915**, which is only the filename. The document number is **234686731**.
-⚠ `Outputs/2_eol_scenarios/contribuition_tree.xlsx` is **EMPTY**, one sheet, dimensions A1:A1.
+⚠ **The bill of materials is `LCA_Analysis/Docs/BOM_v4.md`, v4.1.** Document number **234686731**.
+⚠ `Outputs/2_eol_scenarios/contribuition_tree.xlsx` is **EMPTY**, one sheet, A1:A1.
 ⚠ `LCA_explorer.ipynb`: cell 10's title is wrong, cell 14 is built on "net" and has an em dash,
 cell 32's `red_pct` computes a basis the thesis does not report. **Delete cells 14, 32, 35, 36.**
+⚠ `recipe_screening_log.txt` carries a **superseded ReCiPe 2008 endpoint screening** in which metal
+depletion ranks first at 22.1 %, contradicting the live 2016 numbers in the same file. Clean it.
 
 ## Writing the thesis
 
@@ -146,17 +188,24 @@ cell 32's `red_pct` computes a basis the thesis does not report. **Delete cells 
   · [paper-scout-skill.md](paper-scout-skill.md)
 - [literature.md](literature.md) — ⚠ **Index stale since 2026-08-16**
 
-⚠ **Huijbregts et al. (2017) IS present** in `export.bib`. **ISO 14040/14044 are NOT on disk** — use
-Pokhrel et al. (2020), p. 2. ⚠ **Recommendation (EU) 2021/2279 is NOT on disk** — download it.
+✅ **Huijbregts et al. (2017) IS in Mendeley and IS cited in the .docx**, verified 2026-08-24. The
+`academic-writer` facts register still says it is missing. **Correct the register.**
+⚠ **ISO 14040/14044 are NOT on disk** — use Pokhrel et al. (2020), p. 2.
+⚠ **Recommendation (EU) 2021/2279 is NOT on disk** — download it.
 
 ## Process, tools and rules
 
+- 🔴 [file_placement_rule.md](file_placement_rule.md) — **where every file goes. Read before any
+  commit to his disk**
 - [session_logging_routine.md](session_logging_routine.md) — 🔴 Wake-up, the Notion query traps, the
   row format, the Memory Log export rule
 - [git_workflow.md](git_workflow.md) · [notion_workspace.md](notion_workspace.md)
   · [session_history_and_pace.md](session_history_and_pace.md)
 
-⚠ **Google Calendar still returns ZERO events** (fourth consecutive wake-up, 2026-08-23).
+⚠ **Google Calendar still returns ZERO events** (sixth consecutive wake-up, 2026-08-25).
+⚠ **The Notion MCP query tool takes its arguments under a `data` object**, not as flat parameters.
+`{"data": {"data_source_urls": [...], "query": "SELECT ..."}}`. Flat arguments fail with
+`data: Invalid input`. Date columns are `"date:Date:start"`, never `"Date"`.
 
 ## Identity
 

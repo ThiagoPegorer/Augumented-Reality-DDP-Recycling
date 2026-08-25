@@ -1,155 +1,123 @@
 ---
 name: ch4-findings-progress
-description: "[P] Live record of Chapter 4 Findings, opened 2026-08-23 (Session 40). Section 4.1's structure and running order as the author fixed it, the accepted prose, the verified table and figure numbering, the author's rulings including two taken against advice, and the METHODOLOGY CONTRADICTION on how Sc4 may be reported."
+description: "[P] Live record of Chapter 4 Findings, refreshed 2026-08-25 (Session 42). RESULTS IS CLOSED. 4.1 complete, 4.2 drafted from 44 screenshots, 4.3 drafted end to end in three subsections from a fully audited data chain. Holds the live numbering, what is still unpasted, the affidavit exposure, and the defects that survive into compile day."
 type: project
 ---
 
-# ✅ STRUCTURE, fixed by the author 2026-08-23
+# 🟢 RESULTS IS CLOSED, 2026-08-25. Thiago: *"Results is done and close for now."*
 
-**4.1 LCA Results · 4.2 AR DPP Results · 4.3 AR DPP Test results.**
-**4.1 has NO subsections.** He asked for one continuous section and rejected splitting it.
+| section | state |
+|---|---|
+| **4.1 LCA Results** | written end to end in the .docx, four subsections. 🔴 **the ReCiPe block is still NOT PASTED** |
+| **4.2 AR DPP Prototype (RBv2.1.1)** | drafted from 44 headset screenshots, `section_4_2_draft.md` |
+| **4.3 Test Participants Results** | drafted end to end, three subsections, `section_4_3_full_draft.md` |
 
-**Running order inside 4.1, as of the close of Session 40:**
+# ✅ 4.3 STRUCTURE, his ruling 2026-08-25: three subsections
 
-1. Section opener, seven product systems, EF 3.1 primary and ReCiPe as cross-check
-2. Screening: sixteen categories, normalisation and weighting, the PEF rule
-3. The ranking is performed on Sc1, the baseline
-4. **Table 7** the screening · **Figure 18** the threshold chart · the three categories, 85.70 %
-5. **Figure 19** and **Table 8** gross per scenario · the gross barely changes
-6. Stages 1 to 4 identical, the difference is stage 5 · **Table 9** stage 5 shares
-7. **Figure 20** avoided impact · the avoided values · the Sc2 comparison
-8. **Figure 21** gross above and avoided below with the balance line · the balance falls
-9. **Figure 22** Monte Carlo box plots · the bands · the deterministic-versus-median disclosure
-10. 🔴 **ReCiPe cross-check LAST**, moved there by him on 2026-08-23
+- **4.3.1 Participants** — three figures and a table
+- **4.3.2 Task completion time and errors**
+- **4.3.3 Perceived usability and interview responses**
 
-⚠ **ReCiPe after Monte Carlo creates a reading problem:** the cross-check runs on characterised
-deterministic values and lands right after the paragraph saying those values are off centre.
-**Fix agreed as the cheaper one: the ReCiPe block opens by naming its level**, which 3.3.3 requires
-anyway. Do not reorder.
+Participants get their own numbered subsection rather than an unnumbered lead-in, since they carry
+three figures and a table. Draft is **1,562 words of prose**, no em dashes, no boundary words, no
+section numbers cited.
 
-# 🔴 THE ReCiPe BLOCK, the open decision for the next session
+🔴 **Every number in it is derived by `ARDPP_study_analysis.ipynb` and reconciled by 21 audit
+checks.** See [[study_results_verified]] for the whole dataset, the three response scales, the
+condition order and the three open discrepancies against the study spec.
 
-He proposed: rank all 16 ReCiPe categories, take the top set to 85 % cumulative, compare those with
-EF 3.1. **Computed 2026-08-23. The proposal has a good half and a costly half.**
+🔴 **`section_4_3_draft.md` is SUPERSEDED and carries stale numbers** (median difference +15.5,
+P03 AR 325, P02 AR 458). Renamed `_superseded_` on the working side. **Do not open it.**
 
-✅ **THE GOOD HALF, take it.** The ordering holds inside ReCiPe's OWN top set, which is a stronger
-robustness argument than comparing only the EF-selected categories:
+# ✅ 4.2, closed 2026-08-25
 
-| ReCiPe top category | share of its profile | Sc2 / Sc3 / Sc4 avoided, % of own Sc1 |
-|---|---|---|
-| Freshwater ecotoxicity | 37.77 % | 10.64 / 31.21 / 45.06 |
-| Marine ecotoxicity | 29.03 % | 10.49 / 30.90 / 44.66 |
-| Human carcinogenic toxicity | 24.52 % | 14.78 / 20.90 / 26.79 |
+Drafted from the 44 headset screenshots taken 14:15 to 14:33. Verified the application displays the
+EF 3.1 screening at 72.5 / 6.7 / 6.6 / 14.3 % and a 7 min 30 s summary.
 
-🔴 **THE COSTLY HALF, publishing the ranking. Three prices:**
+**Two paragraphs deleted on his instruction, do not reinstate:** the participant-driven-changes
+paragraph and the `co2_avoided_kg` paragraph. He said *"Dont argue."*
 
-1. **Marine ecotoxicity has NO EF counterpart.** 29.03 % of ReCiPe's profile, unpaired in EF 3.1.
-2. **Human carcinogenic toxicity diverges by −11.28 pp at Sc4** (ReCiPe 26.79 % vs EF 38.07 %),
-   which is LARGER than the minerals divergence already in the block.
-3. **The ranking exposes mineral scarcity at 0.0005 %**, contradicting the EF selection that block
-   (a) spends three paragraphs justifying, in a chapter that cannot explain it.
+⚠ **My colour-contradiction claim was WRONG.** His design standards §8 (printed) and §8.1 (CAD)
+already document brown/yellow/green against grey/near-black as two different objects. The
+screenshots match the printed unit. **All colours match.**
 
-**Claude's recommendation: keep the robustness test, drop the ranking table.** Three sentences carry
-the whole argument. Recommendation given, decision NOT yet taken. **Ask him.**
+# 🔴 NUMBERING, read from the .docx 2026-08-24. Read it again, never assert from memory.
 
-# ✅ THE EF vs ReCiPe CROSS-CHECK, verified
+Tables **7** screening · **8** gross · **9** stage 1 to 4 · **10** stage 5 share of gross ·
+**11 to 14** stage 5 per scenario (stacked) · **15 to 17** stage 5 per category (cross-tab) ·
+**18** Appendix II CIRPASS.
+Figures **18** threshold · **19** gross · **20** stage pies · **21** avoided · **22** balance ·
+**23** Monte Carlo.
+After the ReCiPe block lands: pairing table **18**, CIRPASS **19**, ranking **Figure 24**,
+ratios **Figure 25**. Then 4.2's images and 4.3's six figures continue from there.
 
-Avoided impact as a share of each method's own Sc1 gross. Delta is ReCiPe minus EF.
+# 🔴🔴 THE AFFIDAVIT EXPOSURE. Still the most under-attended risk in the thesis.
 
-| category | Sc2 | Sc3 | Sc4 |
-|---|---|---|---|
-| Climate change (kg CO2 eq both) | −0.01 pp | 0.00 pp | +0.04 pp |
-| Resource use, minerals and metals (kg Sb eq vs kg Cu eq) | +1.15 pp | −4.67 pp | **−8.40 pp** |
-| Eutrophication, freshwater (kg P eq both) | 0.00 pp | 0.00 pp | 0.00 pp |
+Claude's sentences are pasted verbatim in 4.1, and 4.2 and 4.3 are now **also delivered as prose**.
+His own `academic-writer` skill sets **scaffold** as the default precisely to prevent this, and the
+SRH affidavit requires AI-generated or AI-paraphrased phrasing to be **denoted in the core text**,
+not merely logged.
 
-Mean absolute disagreement 1.59 pp, maximum 8.40 pp. Ordering Sc2 < Sc3 < Sc4 holds under both.
+**Owed before signing:** a pass through 4.1, 4.2 and 4.3 marking retained AI phrasing, or a rewrite
+in his words. The **Session 41 AI-use log entry is still not pasted** into `ai_use_log.md`, and
+Session 42's is not written.
 
-🔴 **THE PAIR TABLE PREDICTS THE DISAGREEMENT.** Only **4 of 15 pairs share a unit**. The two
-reporting categories that agree share theirs; minerals does not, kg Sb eq against kg Cu eq, two
-different scarcity models. That is why the pairing table earns a place in the thesis.
-⚠ EF's "Eutrophication terrestrial" has no ReCiPe counterpart. Three ReCiPe categories are unpaired:
-marine ecotoxicity, terrestrial ecotoxicity, ozone formation for terrestrial ecosystems.
+# 🔴 STILL UNPASTED INTO THE .docx
 
-# 🔴🔴 A METHODOLOGY CONTRADICTION, OPEN AND UNRESOLVED
+1. **The ReCiPe block** and its **three Methodology edits** (`recipe_block_draft.md` Part 2).
+2. **The three open-answer provenance edits** (`open_answers_provenance_fix.md`): the session
+   sequence, the instrument paragraph, and the one clause in 4.3.
+3. All of 4.2 and all of 4.3.
 
-**Section 3.3.3 says, verbatim from the .docx:** *"For the fourth scenario it is not optional. Its
-functional yield is unsourced, so that scenario may be reported only as a band and never as a single
-value."*
+# 🔴 DEFECTS THAT SURVIVE INTO COMPILE DAY
 
-**Section 4.1 currently reports Sc4 as single values throughout**, and Figures 20 and 21 plot it as
-single bars. **Two chapters contradict each other.**
+1. **The stage 5 data is published TWICE**, Tables 11 to 14 against 15 to 17. He kept both.
+2. Decimal separators: Tables 7, 9, 11 to 17 use commas; Tables 8, 10 and all prose use periods.
+3. Table 8 prints 6 significant figures; its own paragraph prints 7.
+4. `%` against "percent" spelled out.
+5. Subsection heading capitalisation; 4.1.1 is the only en dash in the thesis.
+6. Grammar items in `ch4_1_review.md` section 4.
+7. 4.1.2 holds about 70 % of 4.1 and does three jobs. 4.1.3's title says "(Scenario 2 to 4)" while
+   the balance paragraph inside it reports Sc1.
 
-**The fix, three clauses in the avoided-impact paragraph:**
+⚠ **The screening paragraph's citations were never missing.** Mendeley field citations
+(`w:tag w:val="MENDELEY_CITATION_v3_…"`) are invisible to python-docx. The real finding is narrower:
+none carries a page locator. **Never conclude a citation is absent from a python-docx read.**
 
-| Sc4 avoided | point value | simulated p5 to p95 |
-|---|---|---|
-| Resource use, minerals and metals | 0.008870 kg Sb eq | 0.008271 to 0.009654 |
-| Climate change | 15.43 kg CO2 eq | 14.32 to 17.50 |
-| Eutrophication, freshwater | 0.029761 kg P eq | 0.022911 to 0.039715 |
+# ✅ RESOLVED THIS SESSION
 
-**Do NOT soften the 3.3.3 sentence.** It is a self-imposed rigor commitment and retreating from it
-under pressure reads worse than the edit.
+- **The Sc4 band contradiction**, by relocating the 3.3.3 sentence. Deterministic first, simulated
+  second. Replacement sentence in [[thesis-schedule]].
+- **The comparative-scale anchors**, blocked since 22 August. 1 is the two-dimensional manual, 5 is
+  the Augmented Reality model. Corroborated by the Session 12 Notion page.
+- **The condition order**, blocked since 22 August. Four and four among the eight.
+- **The background scale labels.** Endpoints only. The three invented middle labels were removed.
+- **The instrument naming.** Left unnamed. No citation owed, no benchmark sentence.
 
-# 🔴 NUMBERING, read from the .docx. Read it again, never assert from memory.
+# 🔴 DECISIONS TAKEN AGAINST ADVICE. Recorded, not to be reopened.
 
-Chapter 3's body closes at **Table 6** and **Figure 17**. Chapter 4 so far: Tables **7, 8, 9**,
-Figures **18, 19, 20**, plus **Figure 21** (balance) and **Figure 22** (Monte Carlo) to come.
-Appendix II CIRPASS is now Table 10 and shifts again with every body table added.
-**Appendix VIII** is new, the Monte Carlo percentile summary.
-⚠ **LIST OF TABLES and LIST OF FIGURES go stale on every insert. Refresh fields before reading them.**
-⚠ **The 3.5 measures table has no caption anywhere in the body.** Captions jump Table 6 to Table 7.
-Check section 3.5.
+1. The chapter opener omits the two-build fact. **4.3 must carry it** and currently does not.
+2. The sixteen-category ordering statement was cut from 4.1.
+3. **Both stage 5 table sets stay.**
+4. **The participants figure was split into three.** My objection was that three figure numbers and
+   three captions carry what one carried, and the disassembly chart has one empty level and four
+   bars of length 1 or 2. His call, executed.
+5. **A chart was built for the comparative items** after I argued a table was more honest. Built as
+   a response matrix that averages nothing, which is the version I can defend.
 
-# ⚠ THREE PERCENTAGE BASES ARE LIVE IN 4.1. Never mix two in one table.
+# ✅ WHAT GOES TO THE DISCUSSION, not to Results
 
-1. **Avoided as a share of Sc1 gross** — 9.99 / 32.16 / 47.34 minerals · 6.02 / 11.12 / 21.01 climate
-2. **Avoided against Sc2**, expressed as multipliers — 3.22x / 4.74x minerals · 1.85x / 3.49x climate
-3. **Balance against Sc1** — −9.99 / −32.15 / −47.33 minerals · −5.95 / −11.15 / −21.04 climate
+1. **The simplicity of the replica**, which stands behind both the absent errors and the eight of
+   nine who found the recovery information unhelpful. One cause, two findings.
+2. **Training rather than throughput.** Eight of nine name training, all nine would use it, the
+   times show no consistent gain. Three measures pointing the same way.
+3. **The hardware ceiling.** Passthrough sharpness 6 of 9, comfort 7 of 9.
+4. **The ceiling on the comparative items.** Ten items returning the same median from the same five
+   participants is a limit of the instrument on this sample.
+5. **The order effect.** Five of eight faster in their second condition, and AR slower for three of
+   four who ran it first against two of four who ran it second.
+6. **The ReCiPe "why it mismatches" block**, scaffold at `why_it_mismatches_placement.md`.
 
-🔴 **Basis 3 is DELIBERATELY NOT REPORTED.** It differs from basis 1 only in the second decimal, and
-printing both reads as a typo. The balance is reported in absolute values only.
-
-# ✅ WHAT IS WRITTEN AND ACCEPTED
-
-Section 4.1 is drafted through the Monte Carlo block. Only the ReCiPe block remains. The full
-annotated revision, paragraph by paragraph with the reason for each change, is at
-`MASTER THESIS/MAIN PAPER/section_4_1_revised.md`.
-
-**Data workbooks delivered, all in MAIN PAPER:** `EF31_normalization_weighting_screening.xlsx` ·
-`block_b_gross_burden_and_stages.xlsx` · `block_b_body_tables.xlsx` ·
-`block_c_avoided_impact.xlsx` · `appendix_monte_carlo_summary.xlsx`.
-**Notebook cell** for Figure 21 at `AR_DPP/LCA_Analysis/LCA_Notebook/cell_balance_chart.py`.
-**Route cleanup list** at `MAIN PAPER/route_to_scenario_checklist.md`.
-
-# 🔴 TWO DECISIONS TAKEN AGAINST ADVICE. Recorded, not to be reopened.
-
-1. **The chapter opener omits that the two study blocks used two different prototype builds.**
-   Closed with *"I will keep like this, dont argue, I know the consequences."* **4.3 must therefore
-   carry the two-build fact itself**, or the separate reporting of the blocks has no stated reason.
-2. **The sixteen-category ordering statement was cut from 4.1.** His reasoning: the framework and the
-   explorer are a study draft, the thesis reports only what survives his own filter. Consequence to
-   accept: the ordering claim is stated for three categories only, and the framework's own line
-   *"All 16 remain shown"* no longer describes the thesis.
-
-# ⚠ TWO RECURRING FAILURE MODES
-
-**He drops details when pasting.** The ISO sentence, the red-beside-green flag, both Andreasi Bassi
-page numbers, and the ordering paragraph. **Hand him citations inline in the sentence, never as a
-note beside it.**
-
-**Excel mangles decimals on paste.** His first Table 7 carried `72.452.384` for `72.45`; the decimal
-point became a thousands separator, corrupting 8 of 16 share values and all 16 cumulative values.
-**Deliver every table as .xlsx, never as pasted text.**
-
-# ⚠ NOTEBOOK ITEMS STILL OPEN
-
-`LCA_explorer.ipynb` cell 10's title still reads "saving impact per scenario, before recovery
-credits", which regenerates the wrong title on the next run. Cell 14 is built on "net" in three
-places and contains an em dash. Cell 32's `red_pct` computes the balance change against Sc1, which
-is percentage basis 3 and is not reported. **Delete cells 14, 32, 35 and 36** once the new cells are in.
-Cell 10's comment claims 8 s.f. separates all four scenarios; that was derived on the saving
-columns. **On the gross columns it is 7.**
-⚠ `Outputs/2_eol_scenarios/contribuition_tree.xlsx` is **empty**, one sheet, dimensions A1:A1.
-
-Related: [[lca_results_verified_ch4]], [[results_chapter_start_here]], [[research_questions_final]],
-[[voice_and_verification_rules]], [[thesis-schedule]], [[lca_methodology_3_3]]
+Related: [[study_results_verified]], [[recipe_cross_check_verified]], [[lca_results_verified_ch4]],
+[[thesis-schedule]], [[research_questions_final]], [[voice_and_verification_rules]],
+[[lca_methodology_3_3]]
