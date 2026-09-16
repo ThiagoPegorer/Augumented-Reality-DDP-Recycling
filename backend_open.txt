@@ -4,4 +4,5 @@ python -m uvicorn main:app --host 0.0.0.0 --port 8000
 
 
 hotspot -> http://172.20.10.8:8000
-WiFi home -> 192.168.178.65:8000
+WiFi home -> http://192.168.178.65:8000
+Kasia_office -> http://192.168.1.41:8000
