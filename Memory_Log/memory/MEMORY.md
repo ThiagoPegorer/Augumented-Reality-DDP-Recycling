@@ -1,6 +1,7 @@
 # Memory index
 
-Refreshed 2026-09-01 in **Session 47**. If you cannot find something, it is probably
+Refreshed 2026-09-16 in **Session 47 (log numbering)**. ⚠ Project memory was NOT reachable that
+session, so this exported copy is the only memory a later session can read until the tool works again. If you cannot find something, it is probably
 here; do not re-derive it.
 
 ## WHERE FILES GO. Read this before writing anything to his disk.
@@ -15,8 +16,28 @@ produces goes to `C:\Claude\Projects\AR_DPP\Memory_Log\memory\`.** Ask before co
 Examination Office, two days before the 2 September 16:00 deadline. Signed PDF and a OneDrive link
 also emailed to both supervisors. **Nothing about the paper is open.** See Notion Session 46.
 
-**THE DEFENSE IS NOT YET SCHEDULED.** He sent a separate email to arrange it and will tell Claude
-the date when he has it. That is the only open thread on the thesis itself.
+**THE DEFENSE IS STILL NOT CONFIRMED.** The supervisors proposed **25 or 28 September**; the Task
+Tracker carries a tentative row on **28 September at 10:00** (local). **20 minutes presentation, 10
+minutes questions, 30 minutes while the supervisors grade.** He wants a **LIVE PICO demo**.
+
+## 🔴 THE DEFENSE DECK IS THE LIVE WORK. Read these two files before anything else.
+
+- **[defense_storyline_2026-09-16.md](defense_storyline_2026-09-16.md)** — the argument the whole
+  talk defends, the **five findings to front-run**, the demo protocol with the 40 second abort rule,
+  what must not be said in the room, and the shipped defects with a ready answer each.
+- **[defense_agenda_17_18_sep.md](defense_agenda_17_18_sep.md)** — **the v2 Act spine, 18 slides,
+  exactly 20:00**, and the four work blocks for 17 and 18 September.
+
+**The v2 order is HIS, ruled 2026-09-16: the openLCA methodology, results and discussion come BEFORE
+the prototype.** It matches the thesis's own logical work order, SQ1, SQ4, SQ2, SQ3. The artifact is
+still revealed early for forty seconds on slide 7, and the live demo stays late, after the LCA
+results, so it lands as the payoff rather than as a gadget.
+
+**Division of labor, his ruling: he designs the slides, Claude supplies the data.** Every number
+handed to him names the file it came out of.
+
+🔴 **Two open risks no amount of deck work closes:** the defense date is unconfirmed, and the four
+research questions rewritten on 2026-08-13 still have **no written agreement from Saman Ghobadian**.
 
 **The writing phase is over.** The 204-item review, the AI-use declaration and the citation sweep
 are all closed. `REVIEW_INDEX_2026-08-28.md` and the review files in `Memory_Log\memory\` are now
